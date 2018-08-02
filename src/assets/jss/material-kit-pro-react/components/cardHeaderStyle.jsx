@@ -54,7 +54,7 @@ const cardHeaderStyle = {
   cardHeaderSignup: {
     marginLeft: "20px",
     marginRight: "20px",
-    marginTop: "-40px",
+    marginTop: "-250px",
     padding: "20px 0",
     width: "100%",
     marginBottom: "15px"

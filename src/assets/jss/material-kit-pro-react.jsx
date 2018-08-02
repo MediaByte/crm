@@ -29,7 +29,7 @@ const containerFluid = {
   paddingLeft: "15px",
   marginRight: "auto",
   marginLeft: "auto",
-  width: "100%"
+  width: "80%"
 };
 const container = {
   ...containerFluid,
@@ -74,7 +74,7 @@ const secondaryColor = "#fafafa";
 const warningColor = "#ff9800";
 const dangerColor = "#f44336";
 const successColor = "#4caf50";
-const infoColor = "#00acc1";
+const infoColor = "#0164CB";
 const roseColor = "#e91e63";
 const grayColor = "#999999";
 
@@ -84,7 +84,7 @@ const primaryBoxShadow = {
 };
 const infoBoxShadow = {
   boxShadow:
-    "0 12px 20px -10px rgba(0, 188, 212, 0.28), 0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(0, 188, 212, 0.2)"
+    "0 12px 20px -10px rgba(4, 89, 206, 0.28), 0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(4, 89, 206, 0.2)"
 };
 const successBoxShadow = {
   boxShadow:
@@ -120,7 +120,7 @@ const dangerCardHeader = {
 };
 const infoCardHeader = {
   color: "#fff",
-  background: "linear-gradient(60deg, #26c6da, #00acc1)",
+  background: "#0164CB",
   ...infoBoxShadow
 };
 const primaryCardHeader = {
@@ -171,7 +171,7 @@ const cardTitle = {
     ...title,
     marginTop: ".625rem",
     marginBottom: "0.75rem",
-    minHeight: "auto"
+    minHeight: "600",
   }
 };
 

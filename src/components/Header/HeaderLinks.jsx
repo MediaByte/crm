@@ -92,7 +92,7 @@ function HeaderLinks({ ...props }) {
           noLiPadding
           navDropdown
           hoverColor={dropdownHoverColor}
-          buttonText="Components"
+          buttonText="Apps"
           buttonProps={{
             className: classes.navLink,
             color: "transparent"
@@ -100,18 +100,11 @@ function HeaderLinks({ ...props }) {
           buttonIcon={Apps}
           dropdownList={[
             <Link to="/" className={classes.dropdownLink}>
-              <LineStyle className={classes.dropdownIcons} /> Presentation Page
+              <LineStyle className={classes.dropdownIcons} /> Placeholder
             </Link>,
-            <Link to="/components" className={classes.dropdownLink}>
-              <Layers className={classes.dropdownIcons} />All components
-            </Link>,
-            <a
-              href="https://demos.creative-tim.com/material-kit-pro-react/#/documentation/tutorial"
-              target="_blank"
-              className={classes.dropdownLink}
-            >
-              <ContentPaste className={classes.dropdownIcons} />Documentation
-            </a>
+            <Link to="/login" className={classes.dropdownLink}>
+              <Layers className={classes.dropdownIcons} />Placeholder
+            </Link>
           ]}
         />
       </ListItem>
@@ -120,7 +113,7 @@ function HeaderLinks({ ...props }) {
           noLiPadding
           navDropdown
           hoverColor={dropdownHoverColor}
-          buttonText="Sections"
+          buttonText="Reports"
           buttonProps={{
             className: classes.navLink,
             color: "transparent"
@@ -132,56 +125,56 @@ function HeaderLinks({ ...props }) {
               className={classes.dropdownLink}
               onClick={e => smoothScroll(e, "headers")}
             >
-              <Dns className={classes.dropdownIcons} /> Headers
+              <Dns className={classes.dropdownIcons} /> Placeholder
             </Link>,
             <Link
               to="/sections#features"
               className={classes.dropdownLink}
               onClick={e => smoothScroll(e, "features")}
             >
-              <Build className={classes.dropdownIcons} /> Features
+              <Build className={classes.dropdownIcons} /> Placeholder
             </Link>,
             <Link
               to="/sections#blogs"
               className={classes.dropdownLink}
               onClick={e => smoothScroll(e, "blogs")}
             >
-              <ListIcon className={classes.dropdownIcons} /> Blogs
+              <ListIcon className={classes.dropdownIcons} /> Placeholder
             </Link>,
             <Link
               to="/sections#teams"
               className={classes.dropdownLink}
               onClick={e => smoothScroll(e, "teams")}
             >
-              <People className={classes.dropdownIcons} /> Teams
+              <People className={classes.dropdownIcons} /> Placeholder
             </Link>,
             <Link
               to="/sections#projects"
               className={classes.dropdownLink}
               onClick={e => smoothScroll(e, "projects")}
             >
-              <Assignment className={classes.dropdownIcons} /> Projects
+              <Assignment className={classes.dropdownIcons} /> Placeholder
             </Link>,
             <Link
               to="/sections#pricing"
               className={classes.dropdownLink}
               onClick={e => smoothScroll(e, "pricing")}
             >
-              <MonetizationOn className={classes.dropdownIcons} /> Pricing
+              <MonetizationOn className={classes.dropdownIcons} /> Placeholder
             </Link>,
             <Link
               to="/sections#testimonials"
               className={classes.dropdownLink}
               onClick={e => smoothScroll(e, "testimonials")}
             >
-              <Chat className={classes.dropdownIcons} /> Testimonials
+              <Chat className={classes.dropdownIcons} /> Placeholder
             </Link>,
             <Link
               to="/sections#contacts"
               className={classes.dropdownLink}
               onClick={e => smoothScroll(e, "contacts")}
             >
-              <Call className={classes.dropdownIcons} /> Contacts
+              <Call className={classes.dropdownIcons} /> Placeholder
             </Link>
           ]}
         />
@@ -191,57 +184,55 @@ function HeaderLinks({ ...props }) {
           noLiPadding
           navDropdown
           hoverColor={dropdownHoverColor}
-          buttonText="Examples"
+          buttonText="Actions"
           buttonProps={{
             className: classes.navLink,
             color: "transparent"
           }}
           buttonIcon={ViewCarousel}
           dropdownList={[
-            <Link to="/about-us" className={classes.dropdownLink}>
-              <AccountBalance className={classes.dropdownIcons} /> About Us
+            <Link to="/login" className={classes.dropdownLink}>
+              <AccountBalance className={classes.dropdownIcons} /> Placeholder
             </Link>,
-            <Link to="/blog-post" className={classes.dropdownLink}>
-              <ArtTrack className={classes.dropdownIcons} /> Blog Post
+            <Link to="/login" className={classes.dropdownLink}>
+              <ArtTrack className={classes.dropdownIcons} /> Placeholder
             </Link>,
-            <Link to="/blog-posts" className={classes.dropdownLink}>
-              <ViewQuilt className={classes.dropdownIcons} /> Blog Posts
+            <Link to="/login" className={classes.dropdownLink}>
+              <ViewQuilt className={classes.dropdownIcons} /> Placeholder
             </Link>,
-            <Link to="/contact-us" className={classes.dropdownLink}>
-              <LocationOn className={classes.dropdownIcons} /> Contact Us
+            <Link to="/login" className={classes.dropdownLink}>
+              <LocationOn className={classes.dropdownIcons} /> Placeholder
             </Link>,
-            <Link to="/landing-page" className={classes.dropdownLink}>
-              <ViewDay className={classes.dropdownIcons} /> Landing Page
+            <Link to="/login" className={classes.dropdownLink}>
+              <ViewDay className={classes.dropdownIcons} /> Placeholder
             </Link>,
-            <Link to="/login-page" className={classes.dropdownLink}>
-              <Fingerprint className={classes.dropdownIcons} /> Login Page
+            <Link to="/login" className={classes.dropdownLink}>
+              <Fingerprint className={classes.dropdownIcons} /> Placeholder
             </Link>,
-            <Link to="/pricing" className={classes.dropdownLink}>
-              <AttachMoney className={classes.dropdownIcons} /> Pricing Page
+            <Link to="/login" className={classes.dropdownLink}>
+              <AttachMoney className={classes.dropdownIcons} /> Placeholder
             </Link>,
-            <Link to="/shopping-cart-page" className={classes.dropdownLink}>
-              <ShoppingBasket className={classes.dropdownIcons} /> Shopping Cart
+            <Link to="/login" className={classes.dropdownLink}>
+              <ShoppingBasket className={classes.dropdownIcons} /> Placeholder
             </Link>,
-            <Link to="/ecommerce-page" className={classes.dropdownLink}>
-              <Store className={classes.dropdownIcons} /> Ecommerce Page
+            <Link to="/login" className={classes.dropdownLink}>
+              <Store className={classes.dropdownIcons} /> Placeholder
             </Link>,
-            <Link to="/product-page" className={classes.dropdownLink}>
-              <ShoppingCart className={classes.dropdownIcons} /> Product Page
+            <Link to="/login" className={classes.dropdownLink}>
+              <ShoppingCart className={classes.dropdownIcons} /> Placeholder
             </Link>,
-            <Link to="/profile-page" className={classes.dropdownLink}>
-              <AccountCircle className={classes.dropdownIcons} /> Profile Page
+            <Link to="/login" className={classes.dropdownLink}>
+              <AccountCircle className={classes.dropdownIcons} /> Placeholder
             </Link>,
-            <Link to="/signup-page" className={classes.dropdownLink}>
-              <PersonAdd className={classes.dropdownIcons} /> Signup Page
+            <Link to="/login" className={classes.dropdownLink}>
+              <PersonAdd className={classes.dropdownIcons} /> Placeholder
             </Link>
           ]}
         />
       </ListItem>
       <ListItem className={classes.listItem}>
         <Button
-          href="https://www.creative-tim.com/product/material-kit-pro-react"
           color={window.innerWidth < 960 ? "info":"white"}
-          target="_blank"
           className={classes.navButton}
           round
         >

@@ -17,9 +17,6 @@ const signupPageStyle = {
     paddingTop: "20vh",
     color: "#FFFFFF"
   },
-  logo: {
-    margin: 20
-  },
   pageHeader: {
     minHeight: "100vh",
     maxHeight: "1000px",
@@ -49,7 +46,8 @@ const signupPageStyle = {
   },
   cardHeader: {
     width: "auto",
-    textAlign: "center"
+    textAlign: "center",
+    borderRadius: "8px"
   },
   socialLine: {
     marginTop: "1rem",
