@@ -20,7 +20,6 @@ import CustomInput from "components/CustomInput/CustomInput.jsx";
 import loginPageStyle from "assets/jss/material-kit-pro-react/views/loginPageStyle.jsx";
 //Media
 import Logo from 'assets/img/crmLogo.png'
-
 const gun = Gun('https://crm-server.herokuapp.com/gun');
 
 class LoginPage extends React.Component {
@@ -44,12 +43,12 @@ class LoginPage extends React.Component {
   }
 
   handleEmail(event) {
-      gun.get('users').get(event.target.value).once((data) => {
+      gun.get('users').get(event.target.value.toLowerCase()).once((data) => {
         data === undefined
           ? this.setState({ emailNotFound: true })
           : this.setState({ emailNotFound: false, correctEmail: true })
       })
-    this.setState({ username: event.target.value })
+    this.setState({ username: event.target.value.toLowerCase() })
   }
   handlePassword(event) {
     this.setState({ password: event.target.value })
@@ -59,7 +58,7 @@ class LoginPage extends React.Component {
     const { username, password } = this.state
     const ref = gun.get('users').get(username).get('password')
         ref.once((data) => {
-          password.toLowerCase() === data.toLowerCase()
+          password === data
             ? this.setState({ authenticated: true })
             : this.setState({ authenticated: false, inputError: true, password: '' })
         })
