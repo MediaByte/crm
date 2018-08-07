@@ -1,7 +1,10 @@
 import React from "react";
+//gundb
+import Gun from 'gun/gun'
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
 import InputAdornment from "@material-ui/core/InputAdornment";
+import FormHelperText from '@material-ui/core/FormHelperText';
 // @material-ui/icons
 import Email from "@material-ui/icons/Email";
 import LockOutline from "@material-ui/icons/LockOutline";
@@ -18,77 +21,156 @@ import loginPageStyle from "assets/jss/material-kit-pro-react/views/loginPageSty
 //Media
 import Logo from 'assets/img/crmLogo.png'
 
+const gun = Gun('https://crm-server.herokuapp.com/gun');
+
 class LoginPage extends React.Component {
+  
+  constructor(props) {
+    super(props);
+      this.state = {
+        username: '',
+        password: '',
+        authenticated: false,
+        inputError: false,
+        emailNotFound: false,
+        correctEmail: false
+      }
+    this.handleAuthentication = this.handleAuthentication.bind(this);
+  }
+
   componentDidMount() {
     window.scrollTo(0, 0);
     document.body.scrollTop = 0;
   }
+
+  handleEmail(event) {
+      gun.get('users').get(event.target.value).once((data) => {
+        data === undefined
+          ? this.setState({ emailNotFound: true })
+          : this.setState({ emailNotFound: false, correctEmail: true })
+      })
+    this.setState({ username: event.target.value })
+  }
+  handlePassword(event) {
+    this.setState({ password: event.target.value })
+  }
+
+  handleAuthentication() {
+    const { username, password } = this.state
+    const ref = gun.get('users').get(username).get('password')
+        ref.once((data) => {
+          password.toLowerCase() === data.toLowerCase()
+            ? this.setState({ authenticated: true })
+            : this.setState({ authenticated: false, inputError: true, password: '' })
+        })
+  }
+
   render() {
     const { classes } = this.props;
-    return (
-      <div>
-        <div className={classes.container}>
-          <GridContainer justify="center">
-            <GridItem xs={12} sm={12} md={4}>
-              <Card>
-                <form className={classes.form}>
-                  <CardHeader
-                    color="info"
-                    signup
-                    className={classes.cardHeader}
-                  >
-                    <div className={classes.cardTitle}>
-                      <img src={Logo} alt={'Login'}/>
-                    </div>
-                  </CardHeader>
-                  <CardBody signup>
-                    <CustomInput
-                      id="email"
-                      formControlProps={{
-                        fullWidth: true
-                      }}
-                      inputProps={{
-                        placeholder: "Email*",
-                        type: "email",
-                        autoComplete: "email",
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <Email className={classes.inputIconsColor} />
-                          </InputAdornment>
-                        )
-                      }}
-                    />
-                    <CustomInput
-                      id="pass"
-                      formControlProps={{
-                        fullWidth: true
-                      }}
-                      inputProps={{
-                        placeholder: "Password*",
-                        type: "password",
-                        autoComplete: "current-password",
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <LockOutline
-                              className={classes.inputIconsColor}
-                            />
-                          </InputAdornment>
-                        )
-                      }}
-                    />
-                    <div style={{ marginBottom: 15, }}>
-                      <Button fullWidth={true} color="info" variant="raised">
-                        Login
-                      </Button>
-                    </div>
-                  </CardBody>
-                </form>
-              </Card>
-            </GridItem>
-          </GridContainer>
-        </div>
-      </div>
-    );
+    const { authenticated, emailNotFound, correctEmail } = this.state;
+      return !authenticated 
+        ? (
+            <div>
+              <div className={classes.container}>
+                <GridContainer justify="center">
+                  <GridItem xs={12} sm={12} md={4}>
+                    <Card>
+                      <form className={classes.form}>
+                        <CardHeader
+                          color="info"
+                          signup
+                          className={classes.cardHeader}
+                        >
+                          <div className={classes.cardTitle}>
+                            <img src={Logo} alt={'Login'}/>
+                          </div>
+                        </CardHeader>
+                        <CardBody signup>
+                          <CustomInput
+                            id="email"
+                            labelText={ correctEmail ? 'Email*' : null }
+                            formControlProps={{
+                              fullWidth: true
+                            }}
+                            inputProps={{
+                              placeholder: "Email*",
+                              error: emailNotFound,
+                              type: "text",
+                              autoComplete: "email",
+                              onChange: (e) => this.handleEmail(e),
+                              startAdornment: (
+                                <InputAdornment position="start">
+                                  <Email className={classes.inputIconsColor} />
+                                </InputAdornment>
+                              )
+                            }}
+                          />
+                          {
+                            this.state.emailNotFound 
+                              ? <FormHelperText 
+                                  style={{marginTop: -10, marginLeft: 10}} 
+                                  error 
+                                  id="name-error-text"
+                                >
+                                  Incorrect Email
+                                </FormHelperText> 
+                              : null
+                          }
+                          <CustomInput
+                            id="pass"
+                            error={this.state.inputError}
+                            formControlProps={{
+                              fullWidth: true
+                            }}
+                            inputProps={{
+                              disabled: !correctEmail,
+                              error: this.state.inputError,
+                              value: this.state.password,
+                              placeholder: "Password*",
+                              type: "password",
+                              autoComplete: "current-password",
+                              onChange: (e) => this.handlePassword(e),
+                              startAdornment: (
+                                <InputAdornment position="start">
+                                  <LockOutline
+                                    className={classes.inputIconsColor}
+                                  />
+                                </InputAdornment>
+                              )
+                            }}
+                          />
+                          {
+                          this.state.inputError 
+                            ? <FormHelperText 
+                                style={{marginTop: -10, marginLeft: 10}} 
+                                error 
+                                id="name-error-text"
+                              >
+                                Incorrect Password/Email Combination
+                              </FormHelperText> 
+                            : null
+                          }
+                          <div style={{ marginBottom: 15, }}>
+                            <Button 
+                              fullWidth={true} 
+                              color="info" 
+                              variant="raised"
+                              onClick={this.handleAuthentication}
+                            >
+                              Login
+                            </Button>
+                          </div>
+                        </CardBody>
+                      </form>
+                    </Card>
+                  </GridItem>
+                </GridContainer>
+              </div>
+            </div>
+        )
+      : (
+        <h1> You are logged in </h1>
+        )
   }
 }
 
