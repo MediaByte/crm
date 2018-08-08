@@ -4,7 +4,25 @@ import {
   cardTitle
 } from "assets/jss/material-kit-pro-react.jsx";
 
-const signupPageStyle = {
+const loginPageStyle = {
+  logo: {
+    position: "relative",
+    padding: "0",
+    zIndex: "1",
+    marginLeft: "15px",
+    marginRight: "15px",
+    borderRadius: "6px",
+    "& img": {
+      width: "100%",
+      borderRadius: "6px",
+      pointerEvents: "none",
+      boxShadow:
+        "0 5px 15px -8px rgba(0, 0, 0, 0.24), 0 8px 10px -5px rgba(0, 0, 0, 0.2)"
+    },
+    "& a": {
+      display: "block"
+    }
+  },
   description,
   cardTitle: {
     ...cardTitle,
@@ -116,4 +134,4 @@ const signupPageStyle = {
   }
 };
 
-export default signupPageStyle;
+export default loginPageStyle;

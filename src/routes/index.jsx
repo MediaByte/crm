@@ -3,7 +3,7 @@ import LoginPage from "views/LoginPage/LoginPage.jsx";
 
 var indexRoutes = [
   { path: "/login", name: "LoginPage", component: LoginPage },
-  { path: "/Dashboard/:view?", name: "Dashboard", component: Dashboard },
+  { path: "/dashboard/:id", name: "Dashboard", component: Dashboard },
   { path: "/", name: "LoginPage", component: LoginPage }
 ];
 

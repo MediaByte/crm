@@ -1,6 +1,8 @@
 import React from "react";
 //gundb
 import Gun from 'gun/gun'
+//Navigation
+import { Redirect } from 'react-router-dom'
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -21,9 +23,7 @@ import loginPageStyle from "assets/jss/material-kit-pro-react/views/loginPageSty
 //Media
 import Logo from 'assets/img/crmLogo.png'
 const gun = Gun('https://crm-server.herokuapp.com/gun');
-
 class LoginPage extends React.Component {
-  
   constructor(props) {
     super(props);
       this.state = {
@@ -36,12 +36,10 @@ class LoginPage extends React.Component {
       }
     this.handleAuthentication = this.handleAuthentication.bind(this);
   }
-
   componentDidMount() {
     window.scrollTo(0, 0);
     document.body.scrollTop = 0;
   }
-
   handleEmail(event) {
       gun.get('users').get(event.target.value.toLowerCase()).once((data) => {
         data === undefined
@@ -53,7 +51,6 @@ class LoginPage extends React.Component {
   handlePassword(event) {
     this.setState({ password: event.target.value })
   }
-
   handleAuthentication() {
     const { username, password } = this.state
     const ref = gun.get('users').get(username).get('password')
@@ -63,10 +60,9 @@ class LoginPage extends React.Component {
             : this.setState({ authenticated: false, inputError: true, password: '' })
         })
   }
-
   render() {
     const { classes } = this.props;
-    const { authenticated, emailNotFound, correctEmail } = this.state;
+    const { authenticated, emailNotFound, correctEmail, username } = this.state;
       return !authenticated 
         ? (
             <div>
@@ -80,8 +76,8 @@ class LoginPage extends React.Component {
                           signup
                           className={classes.cardHeader}
                         >
-                          <div className={classes.cardTitle}>
-                            <img src={Logo} alt={'Login'}/>
+                          <div className={classes.logo}>
+                            <img src={Logo} alt={'Sign in to continue'}/>
                           </div>
                         </CardHeader>
                         <CardBody signup>
@@ -168,9 +164,8 @@ class LoginPage extends React.Component {
             </div>
         )
       : (
-        <h1> You are logged in </h1>
+          <Redirect push to={`/dashboard/${username}`}/>
         )
   }
 }
-
 export default withStyles(loginPageStyle)(LoginPage);
