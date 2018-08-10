@@ -40,6 +40,11 @@ class LoginPage extends React.Component {
     window.scrollTo(0, 0);
     document.body.scrollTop = 0;
   }
+  keyPress(e) {
+       if(e.keyCode === 13) {
+        this.handleAuthentication()
+      }
+  }
   handleEmail(event) {
       gun.get('users').get(event.target.value.toLowerCase()).once((data) => {
         data === undefined
@@ -125,6 +130,7 @@ class LoginPage extends React.Component {
                               type: "password",
                               autoComplete: "current-password",
                               onChange: (e) => this.handlePassword(e),
+                              onKeyDown: (e) => this.keyPress(e),
                               startAdornment: (
                                 <InputAdornment position="start">
                                   <LockOutline

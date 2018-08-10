@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+//project components
+import Navigation from 'components/Navigation/Navigation.jsx';
+
 //gundb
 import Gun from 'gun/gun';
 const gun = Gun('https://crm-server.herokuapp.com/gun');
@@ -18,10 +21,10 @@ class Dashboard extends Component {
 			});
 	}
 	render() {
-		const { user } = this.state;
+
 			return (
 				<div>
-					<h1>Welcome {user.username}</h1>
+					<Navigation />
 				</div>
 			)
 	}

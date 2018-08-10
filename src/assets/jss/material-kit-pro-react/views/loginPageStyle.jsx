@@ -32,7 +32,7 @@ const loginPageStyle = {
     ...container,
     zIndex: "2",
     position: "relative",
-    paddingTop: "20vh",
+    paddingTop: "9vh",
     color: "#FFFFFF"
   },
   pageHeader: {
