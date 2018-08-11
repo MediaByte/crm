@@ -11,6 +11,7 @@ import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from "@material-ui/core/InputAdornment";
 //material ui icons
 import MenuIcon from '@material-ui/icons/Menu';
+import Close from '@material-ui/icons/Close';
 import Search from '@material-ui/icons/Search';
 import Clear from '@material-ui/icons/Clear';
 import AccountCircle from '@material-ui/icons/AccountCircle'
@@ -61,7 +62,7 @@ class Navigation extends React.Component {
               className={classNames(classes.menuButtonOpened, !this.state.open && classes.hide)} 
               onClick={this.handleDrawerClose}
             >
-              <MenuIcon />
+              <Close />
             </IconButton>
           </div>
           <List className={classes.drawerList}>
@@ -70,8 +71,8 @@ class Navigation extends React.Component {
         </Drawer>
         <main className={classes.content}>
           <GridContainer>
-            <GridItem sm={1}/>
-            <GridItem xs={8}>
+            <GridItem xs={1} sm={1} md={1} lg={1}/>
+            <GridItem xs={7} sm={8} md={8} lg={8}>
               <CustomInput
                 id="search"
                 inputProps={{
@@ -92,8 +93,8 @@ class Navigation extends React.Component {
                 }}
               />
             </GridItem>
-            <GridItem xs={1} />
-            <GridItem xs={1}>
+            <GridItem xs={1} sm={1} md={1} lg={1}  />
+            <GridItem xs={1} sm={1} md={1} lg={1}>
               <IconButton
                 color="inherit"
               >

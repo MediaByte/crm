@@ -2,7 +2,10 @@ const drawerWidth = 280;
 
 const navStyles = theme => ({
   headerInput:{
-    marginTop: -17
+    marginTop: -17,
+    [theme.breakpoints.up('md')]: {
+      marginLeft: 40,
+    }
   },
   drawerList: {
     color: theme.palette.common.white,
@@ -11,6 +14,7 @@ const navStyles = theme => ({
     flexGrow: 1,
     height: '100%',
     zIndex: 1,
+    overflow: 'hidden',
     position: 'relative',
     display: 'flex',
   },
@@ -33,9 +37,11 @@ const navStyles = theme => ({
     color: theme.palette.common.white,
     backgroundColor: 'transparent',
     [theme.breakpoints.up('sm')]: {
-      marginLeft: 6
+      marginLeft: theme.spacing.unit * 27
     },
-    marginRight: 36,
+    [theme.breakpoints.down('xs')]: {
+      marginLeft: theme.spacing.unit * 27
+    }
   },
   menuButton: {
     color: theme.palette.common.white,
@@ -43,8 +49,7 @@ const navStyles = theme => ({
     marginLeft: 13,
     [theme.breakpoints.down('xs')]: {
       marginLeft: theme.spacing.unit / 2
-    },
-    marginRight: 36,
+    }
   },
   hide: {
     display: 'none',
@@ -58,6 +63,8 @@ const navStyles = theme => ({
     backgroundColor: '#00A7F8',
     whiteSpace: 'nowrap',
     width: drawerWidth,
+    minHeight: "100%",
+    maxHeight: "100%",
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
@@ -86,6 +93,7 @@ const navStyles = theme => ({
   content: {
     flexGrow: 1,
     backgroundColor: theme.palette.background.default,
+
   },
 });
 

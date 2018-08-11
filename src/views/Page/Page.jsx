@@ -8,7 +8,7 @@ import Navigation from 'components/Navigation/Navigation.jsx';
 import navStyles from 'assets/jss/material-kit-pro-react/components/navStyle.js';
 class Page extends React.Component {
 	render() {
-		const {children, classes} = this.props
+		const { children } = this.props
 			return (
 				<Navigation>
 					<div>
@@ -21,9 +21,7 @@ class Page extends React.Component {
 			)
 	}
 }
-
 Navigation.propTypes = {
   classes: PropTypes.object.isRequired,
 };
-
 export default withStyles(navStyles)(Page);
