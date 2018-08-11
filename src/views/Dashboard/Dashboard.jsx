@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 //project components
-import Navigation from 'components/Navigation/Navigation.jsx';
-
+import Page from 'views/Page/Page.jsx';
+import GridItem from "components/Grid/GridItem.jsx";
+import GridContainer from "components/Grid/GridContainer.jsx";
+import Cards from "components/Cards/Card.jsx";
 //gundb
 import Gun from 'gun/gun';
 const gun = Gun('https://crm-server.herokuapp.com/gun');
@@ -21,12 +23,22 @@ class Dashboard extends Component {
 			});
 	}
 	render() {
-
-			return (
-				<div>
-					<Navigation />
-				</div>
-			)
+		return (
+			<div>
+				<Page>
+					<GridContainer>
+						<GridItem md={1} />
+						<GridItem md={1} />
+						<GridItem md={4}>
+							<Cards />
+						</GridItem>
+						<GridItem md={4}>
+							<Cards />
+						</GridItem>
+					</GridContainer>
+				</Page>
+			</div>
+		)
 	}
 }
 export default Dashboard;
