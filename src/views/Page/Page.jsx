@@ -8,15 +8,12 @@ import Navigation from 'components/Navigation/Navigation.jsx';
 import navStyles from 'assets/jss/material-kit-pro-react/components/navStyle.js';
 class Page extends React.Component {
 	render() {
-		const { children } = this.props
+		const { children, ...classes } = this.props
 			return (
-				<Navigation>
+				<Navigation classes{...classes}>
 					<div>
-
 						{children}
-
 					</div>
-
 				</Navigation>
 			)
 	}

@@ -1,4 +1,5 @@
 import React from 'react';
+//Material-ui components
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -9,50 +10,63 @@ import PlaylistAddCheck from '@material-ui/icons/PlaylistAddCheck';
 import Laptop from '@material-ui/icons/Laptop';
 import Today from '@material-ui/icons/Today';
 import Map from '@material-ui/icons/Map';
+//project views
+
+//react router
+import { NavLink } from 'react-router-dom'
 
 export const navItems = (
   <div>
-    <ListItem button>
+    <ListItem 
+      button 
+      component={(props) => <NavLink to={'/dashboard/test@gmail.com'} style={{color: "#fff"}} {...props}/>}
+    >
       <ListItemIcon>
         <Dashboard style={{color: '#fff'}}/>
       </ListItemIcon>
-      <ListItemText primaryTypographyProps={{ variant: "Headline",  }} primary="Dashboard" />
+      <ListItemText primaryTypographyProps={{ variant: "title", color: "inherit" }} primary="Dashboard" />
     </ListItem>
     <ListItem button>
       <ListItemIcon>
         <Today style={{color: '#fff'}}/>
       </ListItemIcon>
-      <ListItemText primaryTypographyProps={{ variant: "Headline",  }} primary="Calendar" />
+      <ListItemText primaryTypographyProps={{ variant: "title", color: "inherit" }} primary="Calendar" />
     </ListItem>
     <ListItem button>
       <ListItemIcon>
         <Map style={{color: '#fff'}}/>
       </ListItemIcon>
-      <ListItemText primaryTypographyProps={{ variant: "Headline",  }} primary="Map" />
+      <ListItemText primaryTypographyProps={{ variant: "title", color: "inherit" }} primary="Map" />
     </ListItem>
-    <ListItem button>
+    <ListItem 
+      button       
+      component={(props) => <NavLink to={'/admin/test@gmail.com'} 
+      style={{
+        color: "#fff"
+      }} {...props}/>}
+    >
       <ListItemIcon>
         <Laptop style={{color: '#fff'}}/>
       </ListItemIcon>
-      <ListItemText primaryTypographyProps={{ variant: "Headline",  }} primary="Administration" />
+      <ListItemText primaryTypographyProps={{ variant: "title", color: "inherit" }} primary="Administration" />
     </ListItem>
     <ListItem button>
       <ListItemIcon>
         <PlaylistAddCheck style={{color: '#fff'}}/>
       </ListItemIcon>
-      <ListItemText primaryTypographyProps={{ variant: "Headline",  }} primary="Inspections" />
+      <ListItemText primaryTypographyProps={{ variant: "title", color: "inherit" }} primary="Inspections" />
     </ListItem>
     <ListItem button>
       <ListItemIcon>
         <TrendingUp style={{color: '#fff'}}/>
       </ListItemIcon>
-      <ListItemText primaryTypographyProps={{ variant: "Headline",  }} primary="Reports" />
+      <ListItemText primaryTypographyProps={{ variant: "title", color: "inherit" }} primary="Reports" />
     </ListItem>
     <ListItem button>
       <ListItemIcon>
         <Business style={{color: '#fff'}}/>
       </ListItemIcon>
-      <ListItemText primaryTypographyProps={{ variant: "Headline",  }} primary="Establishments" />
+      <ListItemText primaryTypographyProps={{ variant: "title", color: "inherit" }} primary="Establishments" />
     </ListItem>
   </div>
 );

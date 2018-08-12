@@ -12,7 +12,6 @@ import Cards from "components/Cards/Card.jsx";
 import Gun from 'gun/gun';
 const gun = Gun('https://crm-server.herokuapp.com/gun');
 const db = gun.get('users')
-
 const styles = theme => ({
 	content: {
 		[theme.breakpoints.up('md')]: {
@@ -53,8 +52,7 @@ class Dashboard extends Component {
 		const { classes } = this.props
 		return (
 			<div>
-				<Page>
-					<CssBaseline />
+				<Page><CssBaseline />
 					<div className={classes.content}>
 			          <GridContainer align={'center'}>
 			            <GridItem  xs={12} sm={12} md={6} lg={6}>
@@ -74,7 +72,6 @@ class Dashboard extends Component {
 		)
 	}
 }
-
 Dashboard.propTypes = {
   classes: PropTypes.object.isRequired,
 };
