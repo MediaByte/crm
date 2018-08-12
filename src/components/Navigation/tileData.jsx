@@ -40,10 +40,7 @@ export const navItems = (
     </ListItem>
     <ListItem 
       button       
-      component={(props) => <NavLink to={'/admin/test@gmail.com'} 
-      style={{
-        color: "#fff"
-      }} {...props}/>}
+      component={(props) => <NavLink to={'/admin/test@gmail.com'} style={{color: "#fff"}} {...props}/>}
     >
       <ListItemIcon>
         <Laptop style={{color: '#fff'}}/>
