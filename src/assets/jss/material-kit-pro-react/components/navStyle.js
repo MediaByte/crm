@@ -14,7 +14,6 @@ const navStyles = theme => ({
     flexGrow: 1,
     height: '100%',
     zIndex: 1,
-    overflow: 'hidden',
     position: 'relative',
     display: 'flex',
   },
@@ -59,7 +58,6 @@ const navStyles = theme => ({
     boxShadow: theme.shadows[24],
     fontSize: '1.5em',
     border: '1px solid black',
-    position: 'relative',
     backgroundColor: '#00A7F8',
     whiteSpace: 'nowrap',
     width: drawerWidth,
@@ -93,6 +91,7 @@ const navStyles = theme => ({
   content: {
     flexGrow: 1,
     backgroundColor: theme.palette.background.default,
+    marginLeft: theme.spacing.unit * 7
 
   },
 });
