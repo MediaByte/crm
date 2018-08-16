@@ -162,7 +162,7 @@ class Navigation extends React.Component {
               </IconButton>
             </GridItem>
           </GridContainer>
-          <div>
+          <div className={classes.children}>
             {children}
           </div>
         </main>

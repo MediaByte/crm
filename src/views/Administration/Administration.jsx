@@ -1,4 +1,6 @@
 import React from 'react';
+//react router
+import { NavLink } from 'react-router-dom'
 //material-ui components
 import { withStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -77,7 +79,10 @@ class AdminPanel extends React.Component {
 								</ListItemSecondaryAction>
 						</ListItem>
 					<Divider />
-						<ListItem button>
+						<ListItem 
+							button
+							component={(props) => <NavLink to={'/passwordrules'} {...props}/>}
+						>
 							<Typography variant="body2" gutterBottom noWrap align="left">Password Rules</Typography>
 								<ListItemSecondaryAction style={{marginTop: 6}}>
 									<ListItemIcon>
@@ -100,7 +105,7 @@ class AdminPanel extends React.Component {
 								</ListItemSecondaryAction>
 						</ListItem>
 					<Divider />
-						<ListItem button>
+						<ListItem  button>
 							<Typography variant="body2" gutterBottom noWrap align="left">Appearance</Typography>
 								<ListItemSecondaryAction style={{marginTop: 6}}>
 									<ListItemIcon>

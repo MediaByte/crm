@@ -54,6 +54,7 @@ const navStyles = theme => ({
     display: 'none',
   },
   drawerPaper: {
+    position: 'relative',
     fontWeight: '400',
     boxShadow: theme.shadows[24],
     fontSize: '1.5em',
@@ -91,9 +92,16 @@ const navStyles = theme => ({
   content: {
     flexGrow: 1,
     backgroundColor: theme.palette.background.default,
-    marginLeft: theme.spacing.unit * 7
+    margin: theme.spacing.unit,
+    height: '100%'
 
   },
+  children: {
+
+
+    display: 'block',
+    margin: 'auto',
+  }
 });
 
 export default navStyles;
