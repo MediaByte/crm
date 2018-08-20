@@ -26,7 +26,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Close from '@material-ui/icons/Close';
 import Search from '@material-ui/icons/Search';
 import Clear from '@material-ui/icons/Clear';
-import AccountCircle from '@material-ui/icons/AccountCircle'
+import MoreVert from '@material-ui/icons/MoreVert'
 //projects components
 import CustomInput from "components/CustomInput/CustomInput.jsx";
 import GridItem from "components/Grid/GridItem.jsx";
@@ -36,6 +36,7 @@ import navStyles from 'assets/jss/material-kit-pro-react/components/navStyle.js'
 class Navigation extends React.Component {
   state = {
     open: false,
+    disableUnderline: true
   };
   handleDrawerOpen = () => {
     this.setState({ open: true });
@@ -43,6 +44,13 @@ class Navigation extends React.Component {
   handleDrawerClose = () => {
     this.setState({ open: false });
   };
+  handleInputFocus = () => {
+    this.setState({ disableUnderline: false })
+    document.getElementById("search").focus()
+  };
+  handleInputBlur = () => {
+    this.setState({ disableUnderline: true })
+  }
   render() {
     const { classes, children } = this.props;
     return (
@@ -131,35 +139,32 @@ class Navigation extends React.Component {
         </Drawer>
         <main className={classes.content}>
           <GridContainer>
-            <GridItem xs={1} sm={1} md={1} lg={1}/>
-            <GridItem xs={7} sm={8} md={8} lg={8}>
+            <GridItem xs={1}>
+              <IconButton
+                color="inherit"
+              >
+                <MoreVert style={{fontSize: 35}} />
+              </IconButton>
+            </GridItem>
+            <GridItem xs={2}>
               <CustomInput
                 id="search"
                 inputProps={{
+                  disableUnderline: this.state.disableUnderline,
                   className: classes.headerInput,
-                  placeholder: "Search",
                   type: "text",
                   onChange: (e) => console.log(e),
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <Search style={{fontSize: 25}}/>
-                    </InputAdornment>
-                  ),
+                  onFocus: this.handleInputFocus,
+                  onBlur: this.handleInputBlur,
                   endAdornment: (
-                    <InputAdornment position="end">
-                      <Clear style={{fontSize: 12}} />
+                    <InputAdornment position="start">
+                      <IconButton color="inherit">
+                        <Search onClick={this.handleInputFocus} style={{fontSize: 25}}/>
+                      </IconButton>
                     </InputAdornment>
                   )
                 }}
               />
-            </GridItem>
-            <GridItem xs={1} sm={1} md={1} lg={1}  />
-            <GridItem xs={1} sm={1} md={1} lg={1}>
-              <IconButton
-                color="inherit"
-              >
-                <AccountCircle style={{fontSize: 35}} />
-              </IconButton>
             </GridItem>
           </GridContainer>
           <div className={classes.children}>

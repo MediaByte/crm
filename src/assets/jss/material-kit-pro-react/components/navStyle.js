@@ -2,10 +2,8 @@ const drawerWidth = 280;
 
 const navStyles = theme => ({
   headerInput:{
-    marginTop: -17,
-    [theme.breakpoints.up('md')]: {
-      marginLeft: 40,
-    }
+    display: 'flex',
+    justifyContent: 'flex-end'
   },
   drawerList: {
     color: theme.palette.common.white,
@@ -90,7 +88,7 @@ const navStyles = theme => ({
     ...theme.mixins.toolbar,
   },
   content: {
-    flexGrow: 1,
+    display: 'flex',
     backgroundColor: theme.palette.background.default,
     margin: theme.spacing.unit,
     height: '100%'
