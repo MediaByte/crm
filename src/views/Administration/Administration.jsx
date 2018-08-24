@@ -72,7 +72,10 @@ class AdminPanel extends React.Component {
 								</ListItemSecondaryAction>
 						</ListItem>
 					<Divider />
-						<ListItem button>
+						<ListItem 
+							button
+							component={(props) => <NavLink to={'/management/employees'} {...props}/>}
+						>
 							<Typography variant="body2" gutterBottom noWrap align="left">Manage Employees</Typography>
 								<ListItemSecondaryAction style={{marginTop: 6}}>
 									<ListItemIcon>
