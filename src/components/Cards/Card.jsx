@@ -16,9 +16,9 @@ import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 const styles = theme => ({
   card: {
-    maxWidth: '30em',
+    maxWidth: '500',
     padding: "20",
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       margin: theme.spacing.unit * 2,
       height: '100%'
     }

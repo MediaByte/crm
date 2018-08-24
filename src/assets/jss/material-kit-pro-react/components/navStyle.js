@@ -1,22 +1,21 @@
 const drawerWidth = 280;
 
 const navStyles = theme => ({
-  headerInput:{
-    display: 'flex',
-    justifyContent: 'flex-end'
+  title: {
+    flexGrow: 1,
+  },
+  headerInput: {
+    marginTop: -7,
   },
   drawerList: {
     color: theme.palette.common.white,
   },
   root: {
-    flexGrow: 1,
-    height: '100%',
-    zIndex: 1,
-    position: 'relative',
     display: 'flex',
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
+    backgroundColor: 'transparent',
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
@@ -32,6 +31,7 @@ const navStyles = theme => ({
   },
   menuButtonOpened: {
     color: theme.palette.common.white,
+    marginTop: -70,
     backgroundColor: 'transparent',
     [theme.breakpoints.up('sm')]: {
       marginLeft: theme.spacing.unit * 27
@@ -44,6 +44,7 @@ const navStyles = theme => ({
     color: theme.palette.common.white,
     backgroundColor: 'transparent',
     marginLeft: 13,
+    marginRight: 36,
     [theme.breakpoints.down('xs')]: {
       marginLeft: theme.spacing.unit / 2
     }
@@ -53,6 +54,7 @@ const navStyles = theme => ({
   },
   drawerPaper: {
     position: 'relative',
+    paddingTop: theme.spacing.unit * 7,
     fontWeight: '400',
     boxShadow: theme.shadows[24],
     fontSize: '1.5em',
@@ -60,8 +62,6 @@ const navStyles = theme => ({
     backgroundColor: '#00A7F8',
     whiteSpace: 'nowrap',
     width: drawerWidth,
-    minHeight: "100%",
-    maxHeight: "100%",
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
@@ -81,24 +81,21 @@ const navStyles = theme => ({
     },
   },
   toolbar: {
+    paddingRight: 24,
+  },
+  toolbarIcon: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'flex-start',
+    justifyContent: 'flex-end',
     padding: '0 8px',
     ...theme.mixins.toolbar,
   },
-  content: {
-    display: 'flex',
-    backgroundColor: theme.palette.background.default,
-    margin: theme.spacing.unit,
-    height: '100%'
 
-  },
   children: {
-
-
-    display: 'block',
-    margin: 'auto',
+    flexGrow: 1,
+    padding: theme.spacing.unit * 3,
+    height: '100vh',
+    overflow: 'auto',
   }
 });
 

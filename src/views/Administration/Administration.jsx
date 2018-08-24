@@ -41,10 +41,12 @@ const styles = theme => ({
 		[theme.breakpoints.up('md')]: {
 			marginLeft: theme.spacing.unit * 11,
 			marginRight: theme.spacing.unit * 10,
+			marginTop: theme.spacing.unit * 5
 		},
 		[theme.breakpoints.down('sm')]: {
 			marginLeft: theme.spacing.unit * 5,
 			marginRight: theme.spacing.unit * 3,
+			marginTop: theme.spacing.unit * 5
 		},
 		[theme.breakpoints.down('xs')]: {
 			marginLeft: theme.spacing.unit * 3,
@@ -57,7 +59,7 @@ class AdminPanel extends React.Component {
 	render() {
 		const { classes } = this.props
 		return (
-			<Page><CssBaseline />
+			<Page component={'administration'}><CssBaseline />
 				<Typography className={classes.panelTitle}  gutterBottom noWrap align="left">Users and Control</Typography>
 				<Paper className={classes.content} elevation={10}>
 					<List className={classes.button}>

@@ -18,7 +18,7 @@ const styles = theme => ({
 			margin: 'auto',
 			marginLeft: theme.spacing.unit * 18,
 			marginRight: theme.spacing.unit * 18,
-			marginTop: theme.spacing.unit * 2,
+			marginTop: theme.spacing.unit * 8,
 			height: '100%'
 		},
 		[theme.breakpoints.down('md')]: {
@@ -26,22 +26,21 @@ const styles = theme => ({
 			margin: 'auto',
 			marginLeft: theme.spacing.unit * 15,
 			marginRight: theme.spacing.unit * 13,
-			marginTop: theme.spacing.unit * 1
+			marginTop: theme.spacing.unit * 8
 		},
 		[theme.breakpoints.down('sm')]: {
 			display: 'block',
 			margin: 'auto',
 			marginLeft: theme.spacing.unit * 7,
 			marginRight: theme.spacing.unit * 7,
-			marginTop: theme.spacing.unit * 1,
+			marginTop: theme.spacing.unit * 8,
 			textAlign: 'center',
 		},
 		[theme.breakpoints.down('xs')]: {
 			display: 'block',
 			margin: 'auto',
-			marginTop: theme.spacing.unit * 1,
+			marginTop: theme.spacing.unit * 8,
 			textAlign: 'center'
-
 		},
 	},
 	grid: {
@@ -60,7 +59,7 @@ class PasswordRules extends Component {
 		const { classes } = this.props;
 		return (
 			<div>
-				<Page titleCaption={ 'Password Rules' }><CssBaseline />
+				<Page component={'administration'}>
 					<GridContainer className={classes.content}>
 						<Paper className={classes.paper}>
 							<GridContainer>
