@@ -14,6 +14,7 @@ import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
 import Cards from "components/Cards/Card.jsx";
 import CustomInput from "components/CustomInput/CustomInput.jsx";
+import UserProfile from "components/UserProfile/UserProfile.jsx";
 //gundb
 import Gun from 'gun/gun';
 const gun = Gun('https://crm-server.herokuapp.com/gun');
@@ -142,7 +143,7 @@ class AddUser extends Component {
 									<GridItem md={9} className={classes.grid} direction='column'>
 										<Paper className={classes.mainPanel}>
 											<div>
-												
+												<UserProfile />
 											</div>
 										</Paper>
 									</GridItem>
