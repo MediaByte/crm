@@ -28,7 +28,6 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import MenuIcon from '@material-ui/icons/Menu';
 import Close from '@material-ui/icons/Close';
 import Search from '@material-ui/icons/Search';
-import Clear from '@material-ui/icons/Clear';
 import MoreVert from '@material-ui/icons/MoreVert'
 //projects components
 import CustomInput from "components/CustomInput/CustomInput.jsx";
@@ -40,7 +39,7 @@ class Navigation extends React.Component {
     disableUnderline: true
   };
   componentDidMount() {
-    const { closed } = this.props;
+    // const { closed } = this.props;
   }
   handleDrawerOpen = () => {
     this.setState({ open: true });

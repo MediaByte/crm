@@ -12,7 +12,6 @@ import Search from '@material-ui/icons/Search';
 import Page from 'views/Page/Page.jsx';
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
-import Cards from "components/Cards/Card.jsx";
 import CustomInput from "components/CustomInput/CustomInput.jsx";
 import UserProfile from "components/UserProfile/UserProfile.jsx";
 //gundb
@@ -25,10 +24,13 @@ const styles = theme => ({
 		width: 215,
 	},
 	mainPanel: {
-		padding: 20,
+		paddingTop: 60,
+		paddingRight: 60,
+		paddingBottom: 20,
+		paddingLeft: 60,
 	},
 	item: {
-		// border: '1px solid black',
+		border: '1px solid black',
 		padding: 10,
 		width: 240
 	},
@@ -42,11 +44,18 @@ const styles = theme => ({
 		// border: '1px solid green',
 		padding: 5,
 	},
+	userProfileGrid: {
+		display: 'flex',	
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
 	gridContainer: {
 		display: 'flex',
 		justifyContent: 'center',
 	},
 	content: {
+		display: 'flex',
+		justifyContent: 'center',
 		[theme.breakpoints.up('lg')]: {
 			marginTop: theme.spacing.unit * 8,
 		},
@@ -75,7 +84,7 @@ class AddUser extends Component {
 			<div>
 				<Page component={'administration'}>
 					<GridContainer classNames={classes.content}>
-						<GridItem md={12}className={classes.grid}>
+						<GridItem md={3}className={classes.grid}>
 							<GridContainer className={classes.gridContainer} direction='column'>
 								<GridItem md={3} className={classes.grid} direction='column'>
 									<CustomInput
@@ -138,18 +147,16 @@ class AddUser extends Component {
 									</Paper>
 								</GridItem>
 							</GridContainer>
-							<GridItem md={9} className={classes.grid}>
-								<GridContainer>
-									<GridItem md={9} className={classes.grid} direction='column'>
-										<Paper className={classes.mainPanel}>
-											<div>
-												<UserProfile />
-											</div>
-										</Paper>
-									</GridItem>
-								</GridContainer>
-							</GridItem>
 						</GridItem>
+						<GridContainer>
+						<GridItem md={12} className={classes.userProfileGrid}>
+							<Paper className={classes.mainPanel}>
+								<div>
+									<UserProfile />
+								</div>
+							</Paper>
+						</GridItem>
+						</GridContainer>
 					</GridContainer>
 				</Page>
 			</div>

@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import Paper from '@material-ui/core/Paper'
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import CssBaseline from '@material-ui/core/CssBaseline';
 //project files & components
 import Page from 'views/Page/Page';
 import GridItem from "components/Grid/GridItem.jsx";
