@@ -19,7 +19,7 @@ const styles = theme => ({
     maxWidth: '500',
     padding: "20",
     [theme.breakpoints.down('sm')]: {
-      margin: theme.spacing.unit * 2,
+      padding: theme.spacing.unit * 2,
       height: '100%'
     }
     

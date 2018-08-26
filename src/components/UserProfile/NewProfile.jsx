@@ -1,6 +1,4 @@
 import React from "react";
-// nodejs library that concatenates classes
-import classNames from "classnames";
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
 import IconButton from "@material-ui/core/IconButton";
@@ -19,12 +17,6 @@ import CardBody from "components/Card/CardBody.jsx";
 // material-ui icons
 import AddCircle from '@material-ui/icons/AddCircle';
 import avatar from "assets/img/faces/marc.jpg";
-//styles
-import {
-  infoColor,
-  dangerColor,
-  successColor,
-} from "assets/jss/material-kit-pro-react.jsx";
 
 const styles = {
   labelRoot: {
@@ -58,6 +50,7 @@ const styles = {
   	display: 'flex',
   	justifyContent: 'center',
   	marginTop: '5px',
+  	cursor: 'pointer',
   },
   cardCategoryWhite: {
     color: "rgba(255,255,255,.62)",
@@ -75,25 +68,6 @@ const styles = {
     marginBottom: "3px",
     textDecoration: "none"
   },
-  underlineError: {
-    "&:after": {
-      borderBottomColor: dangerColor
-    }
-  },
-  underlineSuccess: {
-    "&:after": {
-      borderBottomColor: successColor
-    }
-  },
-  underline: {
-    "&:hover:not($disabled):before,&:before": {
-      borderBottomColor: "#D2D2D2 !important",
-      borderBottomWidth: "1px !important"
-    },
-    "&:after": {
-      borderBottomColor: infoColor
-    }
-  },
   whiteUnderline: {
     "&:hover:not($disabled):before,&:before": {
       borderBottomColor: "#FFFFFF"
@@ -104,7 +78,7 @@ const styles = {
   },
 };
 
-class UserProfile extends React.Component {
+class NewProfile extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -113,13 +87,7 @@ class UserProfile extends React.Component {
 		}
 	}
 	render() {
-	  const { classes, error, white, success } = this.props;
-	  const underlineClasses = classNames({
-	    [classes.underlineError]: error,
-	    [classes.underlineSuccess]: success && !error,
-	    [classes.underline]: true,
-	    [classes.whiteUnderline]: white
-	  });
+	  const { classes } = this.props;
 	  return (
 	    <div>
 	      <GridContainer className={classes.container}>
@@ -128,7 +96,7 @@ class UserProfile extends React.Component {
 				<GridItem xs={12} sm={12} md={12} direction='column' className={classes.avatar}>
 					<div>
 				        <CardAvatar profile>
-				          <a href="#pablo" onClick={e => e.preventDefault()}>
+				          <a onClick={e => e.preventDefault()}>
 				            <img src={avatar} alt="..." />
 				          </a>
 				        </CardAvatar>
@@ -257,11 +225,11 @@ class UserProfile extends React.Component {
 	        </GridItem>
 	      </GridContainer>
 	        <div className={classes.cardFooter}>
-	          <Button className={classes.button} color="white">Cancel</Button>
+	          <Button className={classes.button} onClick={this.props.toggleViews} color="white">Cancel</Button>
 	          <Button className={classes.button} color="info">Save</Button>
 	        </div>
 	    </div>
 	  );
 	}
 }
-export default withStyles(styles)(UserProfile);
+export default withStyles(styles)(NewProfile);
