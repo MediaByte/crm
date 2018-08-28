@@ -14,6 +14,7 @@ import CustomInput from "components/CustomInput/CustomInput.jsx";
 import Button from "components/CustomButtons/Button.jsx";
 import CardAvatar from "components/Card/CardAvatar.jsx";
 import CardBody from "components/Card/CardBody.jsx";
+import GroupsSelect from "components/UserProfile/GroupsSelect.jsx"
 // material-ui icons
 import AddCircle from '@material-ui/icons/AddCircle';
 import avatar from "assets/img/faces/marc.jpg";
@@ -86,32 +87,55 @@ class NewProfile extends React.Component {
 			displayAddress: false,
 		}
 	}
+
+  saveData(id, first, last, group, phone, email, address, password) {
+    let newEmployee = {
+      [id]: {
+        name: {
+          first: first,
+          last: last,
+        },
+        group: group,
+        contactInfo: {
+          phone: phone.toString(),
+          email: email,
+          address: address
+        },
+        password: password
+      }
+    };
+
+  }
+
 	render() {
 	  const { classes } = this.props;
 	  return (
 	    <div>
 	      <GridContainer className={classes.container}>
-			<GridItem xs={12} sm={12} md={4} direction='column'>
-				<GridContainer>
-				<GridItem xs={12} sm={12} md={12} direction='column' className={classes.avatar}>
-					<div>
-				        <CardAvatar profile>
-				          <a onClick={e => e.preventDefault()}>
-				            <img src={avatar} alt="..." />
-				          </a>
-				        </CardAvatar>
-				          <p className={classes.description}>Edit</p>
-				    </div>
-			    </GridItem>
-		        </GridContainer>
-		    </GridItem>
-	        <GridItem xs={12} sm={12} md={8} direction='column'>
+    			<GridItem xs={12} sm={12} md={4} direction='column'>
+    				<GridContainer>
+    				  <GridItem xs={12} sm={12} md={12} className={classes.avatar}>
+    					  <div>
+    				        <CardAvatar profile>
+    				          <a onClick={e => e.preventDefault()}>
+    				            <img src={avatar} alt="..." />
+    				          </a>
+    				        </CardAvatar>
+    				          <p className={classes.description}>Edit</p>
+    				    </div>
+    			    </GridItem>
+    		        </GridContainer>
+    		    </GridItem>
+	          <GridItem xs={12} sm={12} md={8}>
 	            <CardBody>
 	              <GridContainer>
 	                <GridItem xs={12} sm={12} md={12}>
 	                  <CustomInput
 	                    labelText="First Name"
 	                    id="first-name"
+                      inputProps={{
+                        onChange: (e) => console.log(e.target.value),
+                      }}
 	                    formControlProps={{
 	                      fullWidth: true
 	                    }}
@@ -121,112 +145,56 @@ class NewProfile extends React.Component {
 	                  <CustomInput
 	                    labelText="Last Name"
 	                    id="last-name"
+                      inputProps={{
+                        onChange: (e) => console.log(e.target.value),
+                      }}
 	                    formControlProps={{
 	                      fullWidth: true
 	                    }}
 	                  />
 	                </GridItem>
 	                <GridItem xs={12} sm={12} md={12}>
-					<FormControl
-                      fullWidth
-                      className={classes.selectFormControl}
-                    >
-                      <InputLabel
-                        htmlFor="simple-select"
-                        className={classes.labelRoot}
-                      >
-                        Group
-                      </InputLabel>
-                      <Select
-                        MenuProps={{
-                          className: classes.selectMenu
-                        }}
-                        classes={{
-                          select: classes.select
-                        }}
-                        value={this.state.simpleSelect}
-                        onChange={this.handleSimple}
-                        inputProps={{
-                          name: "simpleSelect",
-                          id: "simple-select"
-                        }}
-                      >
-                        <MenuItem
-                          disabled
-                          classes={{
-                            root: classes.selectMenuItem
-                          }}
-                        >
-                          Single Select
-                        </MenuItem>
-                        <MenuItem
-                          classes={{
-                            root: classes.selectMenuItem,
-                            selected: classes.selectMenuItemSelected
-                          }}
-                          value="2"
-                        >
-                          Paris
-                        </MenuItem>
-                        <MenuItem
-                          classes={{
-                            root: classes.selectMenuItem,
-                            selected: classes.selectMenuItemSelected
-                          }}
-                          value="3"
-                        >
-                          Bucharest
-                        </MenuItem>
-                        <MenuItem
-                          classes={{
-                            root: classes.selectMenuItem,
-                            selected: classes.selectMenuItemSelected
-                          }}
-                          value="4"
-                        >
-                          Rome
-                        </MenuItem>
-                      </Select>
-                    </FormControl>
+                    <GroupsSelect />
 	                </GridItem>
 	              </GridContainer>
-	                <GridContainer>
-						<GridItem xs={12} sm={12} md={12}>
-							<GridContainer>
-								<GridItem xs={12} sm={12} md={12}>
-									<Typography className={classes.buttonOption}>
-										<IconButton>
-											<AddCircle style={{fontSize: 32, color: 'green'}}/>
-										</IconButton>
-										add phone
-									</Typography>
-								</GridItem>
-								<GridItem xs={12} sm={12} md={8}>
-									<CustomInput
-					                    labelText="Email"
-					                    id="email-address"
-					                    formControlProps={{
-					                      fullWidth: true
-					                    }}
-					                 />
-								</GridItem>
-								<GridItem xs={12} sm={12} md={12}>
-									<Typography className={classes.buttonOption}>
-										<IconButton>
-											<AddCircle style={{fontSize: 32, color: 'green'}}/>
-										</IconButton>
-										add address
-									</Typography>
-								</GridItem>
-							</GridContainer>
-						</GridItem>
-					</GridContainer>
+      	         <GridContainer>
+      						<GridItem xs={12} sm={12} md={12}>
+      							<GridContainer>
+      								<GridItem xs={12} sm={12} md={12}>
+      									<Typography className={classes.buttonOption}>
+      										<IconButton>
+      											<AddCircle style={{fontSize: 32, color: 'green'}}/>
+      										</IconButton>
+      										add phone
+      									</Typography>
+      								</GridItem>
+      								<GridItem xs={12} sm={12} md={8}>
+      									<CustomInput
+      					                    labelText="Email"
+      					                    id="email-address"
+      					                    formControlProps={{
+      					                      fullWidth: true
+      					                    }}
+      					                 />
+      								</GridItem>
+      								<GridItem xs={12} sm={12} md={12}>
+      									<Typography className={classes.buttonOption}>
+      										<IconButton>
+      											<AddCircle style={{fontSize: 32, color: 'green'}}/>
+      										</IconButton>
+      										add address
+      									</Typography>
+      								</GridItem>
+      							</GridContainer>
+      						</GridItem>
+      					</GridContainer>
 	            </CardBody>
-	        </GridItem>
-	      </GridContainer>
+	          </GridItem>
+	        </GridContainer>
+
 	        <div className={classes.cardFooter}>
 	          <Button className={classes.button} onClick={this.props.toggleViews} color="white">Cancel</Button>
-	          <Button className={classes.button} color="info">Save</Button>
+	          <Button className={classes.button} onClick={this.saveData} color="info">Save</Button>
 	        </div>
 	    </div>
 	  );

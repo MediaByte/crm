@@ -33,6 +33,7 @@ import MoreVert from '@material-ui/icons/MoreVert'
 import CustomInput from "components/CustomInput/CustomInput.jsx";
 //styles
 import navStyles from 'assets/jss/material-kit-pro-react/components/navStyle.js';
+
 class Navigation extends React.Component {
   state = {
     open: false,
@@ -55,7 +56,7 @@ class Navigation extends React.Component {
     this.setState({ disableUnderline: true })
   }
   render() {
-    const { classes, children, component } = this.props;
+    const { classes, children, component, titleText } = this.props;
     return (
       <React.Fragment>
         <CssBaseline/>
@@ -76,15 +77,14 @@ class Navigation extends React.Component {
               >
                 <MenuIcon />
               </IconButton>
-                <Typography variant="title" color="black" noWrap className={classes.title}></Typography>
-
+                <Typography variant="title" noWrap className={classes.title}>{titleText}</Typography>
                 <CustomInput
                   id="search"
                   inputProps={{
                     className: classes.headerInput,
                     disableUnderline: this.state.disableUnderline,
                     type: "text",
-                    onChange: (e) => console.log(e),
+                    onChange: (e) => console.log(e.target.value),
                     onFocus: this.handleInputFocus,
                     onBlur: this.handleInputBlur,
                     endAdornment: (

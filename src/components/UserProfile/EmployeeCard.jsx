@@ -25,7 +25,7 @@ const styles = theme => ({
 	 justifyContent: 'center',
    height: '55vh',
    flexGrow: 1,
-   width: '100%',
+   minidth: '100%',
    // border: '2px solid green'
   },
   avatar: {
@@ -51,10 +51,7 @@ class EmployeeCard extends React.Component {
         addUser: false
   		}
 	}
-  componentDidMount() {
-    const { addUser } = this.props;
-      console.log(addUser)
-  }
+
 	render() {
 	  const { classes } = this.props;
 	  return (
@@ -76,7 +73,7 @@ class EmployeeCard extends React.Component {
   		    </GridItem>
 	        <GridItem xs={12} sm={12} md={8}>
 	            <CardBody>
-                <GridContainer>
+                <GridContainer className={classes.container} direction={'column'}>
 	                <GridItem xs={12} sm={12} md={12}>
                     <Typography variant='headline'>Employee Name</Typography>
                     <div>

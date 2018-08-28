@@ -88,6 +88,7 @@ class ManageEmployees extends Component {
 			db.get(profile).once((user) => {
 				this.setState({ user: user })
 			});
+			const testing = db.map().once((props)=>console.log(props))
 	}
 	toggleViews() {
     	this.setState({ addUser: !this.state.addUser })
@@ -97,18 +98,18 @@ class ManageEmployees extends Component {
 		const { addUser } = this.state
 		return (
 			<div>
-				<Page component={'administration'}>
+				<Page component={'administration'} titleText={'Employees'}>
 					<GridContainer className={classes.content}>
 						<GridItem sm={4} md={3} className={classes.grid}>
 							<GridContainer className={classes.gridContainer} direction='column'>
 								<GridItem md={12} className={classes.grid}>
 									<CustomInput
 					                  id="search"
+					                  fullwidth={true}
 					                  inputProps={{
 					                    className: classes.input,
 					                    type: "text",
 					                    placeholder: 'Search',
-					                    fullwidth: true,
 					                    onChange: (e) => console.log(e),
 					                    startAdornment: (
 					                      <InputAdornment position="end">

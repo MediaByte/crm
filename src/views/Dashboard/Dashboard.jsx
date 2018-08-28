@@ -39,6 +39,7 @@ class Dashboard extends Component {
 	componentDidMount() {
 		const { match } = this.props;
 		const profile = match.params.id
+		console.log(db)
 			db.get(profile).once((user) => {
 				this.setState({ user: user })
 			});
@@ -47,7 +48,7 @@ class Dashboard extends Component {
 		const { classes } = this.props
 		return (
 			<div classNames={classes.root}>
-				<Page component={'dashboard'}>
+				<Page component={'dashboard'} titleText={'Dashboard'}>
 					<div className={classes.content}>
 			          <GridContainer className={classes.layout} spacing={0}>
 			            <GridItem  xs={12} sm={12} md={6} lg={6} xl={6}>

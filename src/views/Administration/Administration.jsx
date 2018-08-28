@@ -59,7 +59,7 @@ class AdminPanel extends React.Component {
 	render() {
 		const { classes } = this.props
 		return (
-			<Page component={'administration'}><CssBaseline />
+			<Page component={'administration'} titleText={'Administration'}><CssBaseline />
 				<Typography className={classes.panelTitle}  gutterBottom noWrap align="left">Users and Control</Typography>
 				<Paper className={classes.content} elevation={10}>
 					<List className={classes.button}>
