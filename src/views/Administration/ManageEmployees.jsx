@@ -88,7 +88,7 @@ class ManageEmployees extends Component {
 			db.get(profile).once((user) => {
 				this.setState({ user: user })
 			});
-			const testing = db.map().once((props)=>console.log(props))
+			db.map().once((props)=>console.log(props))
 	}
 	toggleViews() {
     	this.setState({ addUser: !this.state.addUser })

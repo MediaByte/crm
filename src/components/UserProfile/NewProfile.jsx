@@ -1,12 +1,10 @@
 import React from "react";
+//a stateless react component that toggles the display of it's children
+import ToggleDisplay from 'react-toggle-display';
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
-import Select from '@material-ui/core/Select';
-import InputLabel from '@material-ui/core/InputLabel';
-import FormControl from "@material-ui/core/FormControl";
-import MenuItem from "@material-ui/core/MenuItem";
 // core components
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
@@ -14,21 +12,18 @@ import CustomInput from "components/CustomInput/CustomInput.jsx";
 import Button from "components/CustomButtons/Button.jsx";
 import CardAvatar from "components/Card/CardAvatar.jsx";
 import CardBody from "components/Card/CardBody.jsx";
-import GroupsSelect from "components/UserProfile/GroupsSelect.jsx"
+import GroupsSelect from "components/UserProfile/GroupsSelect.jsx";
+import PhoneInput from 'components/UserProfile/PhoneInput.jsx';
+import PhoneType from 'components/UserProfile/PhoneType.jsx';
 // material-ui icons
 import AddCircle from '@material-ui/icons/AddCircle';
 import avatar from "assets/img/faces/marc.jpg";
+//gundb
+import Gun from 'gun/gun';
+const gun = Gun('https://crm-server.herokuapp.com/gun');
+const db = gun.get('users');
 
-const styles = {
-  labelRoot: {
-    color: "#AAAAAA !important",
-    fontWeight: "400",
-    fontSize: "14px",
-
-    "& + $underline": {
-      marginTop: "0px"
-    }
-  },
+const styles = theme => ({
 
   buttonOption:{
 	marginLeft: -10
@@ -69,26 +64,45 @@ const styles = {
     marginBottom: "3px",
     textDecoration: "none"
   },
-  whiteUnderline: {
-    "&:hover:not($disabled):before,&:before": {
-      borderBottomColor: "#FFFFFF"
-    },
-    "&:after": {
-      borderBottomColor: "#FFFFFF"
-    }
+  phoneField: {
+    marginTop: theme.spacing.unit * 3
   },
-};
+  phoneFlex: {
+    display: 'flex',
+    justifyContent: 'flex-start',
+  },
+  addPhone: {
+    marginTop: theme.spacing.unit * 2,
+    display: 'flex',
+    flexWrap: 'wrap'
+  },
+
+});
 
 class NewProfile extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			displayPhone: false,
-			displayAddress: false,
+      id: 0, 
+      first: '',
+      last: '',
+      group: '',
+      phone: '(  )    -    ',
+      email: '',
+      address: '',
+      password: '',
+      showPhone1: false,
+      showPhone2: false,
+      showPhone3: false,
 		}
+    this.phoneField = this.phoneField.bind(this);
+    this.onChangeValues = this.onChangeValues.bind(this);
 	}
-
-  saveData(id, first, last, group, phone, email, address, password) {
+  componentDidMount() {
+    // db.map()
+  }
+  saveData() {
+    const { id, first, last, group, homePhone, cellPhone, workPhone, email, address, password } = this.state;
     let newEmployee = {
       [id]: {
         name: {
@@ -97,7 +111,11 @@ class NewProfile extends React.Component {
         },
         group: group,
         contactInfo: {
-          phone: phone.toString(),
+          phone: {
+            home: homePhone.toString(),
+            mobile: cellPhone.toString(),
+            work: workPhone.toString(),
+          },
           email: email,
           address: address
         },
@@ -105,14 +123,42 @@ class NewProfile extends React.Component {
       }
     };
 
+    db.put(newEmployee, (ack) => {
+      ack.err 
+        ? console.log(ack.err)
+        : console.log(ack.ok)
+    });
+  }
+  phoneField() {
+    if (!this.state.showPhone1) {
+      this.setState({
+        showPhone1: true
+      }); 
+    } else if (this.state.showPhone1 && !this.state.showPhone2) {
+      this.setState({
+        showPhone2: true
+      }); 
+    } else if (this.state.showPhone1 && this.state.showPhone2 && !this.state.showPhone3) {
+      this.setState({
+        showPhone3: true
+      });
+    }
+
   }
 
+  onChangeValues(event, key) {
+    this.setState({
+      [key]: event.target.value
+    });
+    console.log(key)
+  }
 	render() {
 	  const { classes } = this.props;
+    const { showPhone1, showPhone2, showPhone3 } = this.state
 	  return (
 	    <div>
 	      <GridContainer className={classes.container}>
-    			<GridItem xs={12} sm={12} md={4} direction='column'>
+    			<GridItem xs={12} sm={12} md={4}>
     				<GridContainer>
     				  <GridItem xs={12} sm={12} md={12} className={classes.avatar}>
     					  <div>
@@ -134,7 +180,7 @@ class NewProfile extends React.Component {
 	                    labelText="First Name"
 	                    id="first-name"
                       inputProps={{
-                        onChange: (e) => console.log(e.target.value),
+                        onChange: (e) => this.onChangeValues(e, 'first'),
                       }}
 	                    formControlProps={{
 	                      fullWidth: true
@@ -146,7 +192,7 @@ class NewProfile extends React.Component {
 	                    labelText="Last Name"
 	                    id="last-name"
                       inputProps={{
-                        onChange: (e) => console.log(e.target.value),
+                        onChange: (e) => this.onChangeValues(e, 'last'),
                       }}
 	                    formControlProps={{
 	                      fullWidth: true
@@ -154,28 +200,60 @@ class NewProfile extends React.Component {
 	                  />
 	                </GridItem>
 	                <GridItem xs={12} sm={12} md={12}>
-                    <GroupsSelect />
+                    <GroupsSelect onChangeValues={this.onChangeValues}/>
 	                </GridItem>
 	              </GridContainer>
       	         <GridContainer>
       						<GridItem xs={12} sm={12} md={12}>
       							<GridContainer>
       								<GridItem xs={12} sm={12} md={12}>
-      									<Typography className={classes.buttonOption}>
-      										<IconButton>
-      											<AddCircle style={{fontSize: 32, color: 'green'}}/>
-      										</IconButton>
-      										add phone
-      									</Typography>
+                        <ToggleDisplay show={showPhone1}>
+                          <div className={classes.phoneFlex}>
+                            <div>
+                              <PhoneType onChangeValues={this.onChangeValues} />  
+                            </div>
+                            <div className={classes.phoneField}>
+                              <PhoneInput value={this.state.phone} onChangeValues={this.onChangeValues} />
+                            </div>
+                          </div>
+                        </ToggleDisplay>
+                        <ToggleDisplay show={showPhone2}>
+                          <div className={classes.phoneFlex}>
+                            <div>
+                              <PhoneType onChangeValues={this.onChangeValues} />  
+                            </div>
+                            <div className={classes.phoneField}>
+                              <PhoneInput value={this.state.phone} onChangeValues={this.onChangeValues} />
+                            </div>
+                          </div>
+                        </ToggleDisplay>
+                        <ToggleDisplay show={showPhone3}>
+                          <div className={classes.phoneFlex}>
+                            <div>
+                              <PhoneType onChangeValues={this.onChangeValues} />  
+                            </div>
+                            <div className={classes.phoneField}>
+                              <PhoneInput value={this.state.phone} onChangeValues={this.onChangeValues} />
+                            </div>
+                          </div>
+                        </ToggleDisplay>
+                        <div className={classes.addPhone}>
+                          <Typography style={{cursor: 'pointer'}} onClick={this.phoneField} className={classes.buttonOption}>
+                            <IconButton>
+                              <AddCircle onClick={this.phoneField} style={{fontSize: 32, color: 'green'}}/>
+                            </IconButton>
+                            add phone
+                          </Typography>
+                        </div>
       								</GridItem>
       								<GridItem xs={12} sm={12} md={8}>
       									<CustomInput
-      					                    labelText="Email"
-      					                    id="email-address"
-      					                    formControlProps={{
-      					                      fullWidth: true
-      					                    }}
-      					                 />
+			                    labelText="Email"
+			                    id="email-address"
+			                    formControlProps={{
+			                      fullWidth: true
+			                    }}
+  			                />
       								</GridItem>
       								<GridItem xs={12} sm={12} md={12}>
       									<Typography className={classes.buttonOption}>

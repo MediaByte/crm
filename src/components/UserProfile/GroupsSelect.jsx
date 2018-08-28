@@ -5,9 +5,7 @@ import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
-import ListItemText from '@material-ui/core/ListItemText';
 import Select from '@material-ui/core/Select';
-import Checkbox from '@material-ui/core/Checkbox';
 import Chip from '@material-ui/core/Chip';
 
 const styles = theme => ({
@@ -39,16 +37,9 @@ const MenuProps = {
 };
 
 const names = [
-  'Oliver Hansen',
-  'Van Henry',
-  'April Tucker',
-  'Ralph Hubbard',
-  'Omar Alexander',
-  'Carlos Abbott',
-  'Miriam Wagner',
-  'Bradley Wilkerson',
-  'Virginia Andrews',
-  'Kelly Snyder',
+  'View',
+  'Edit',
+  'Create',
 ];
 
 class GroupsSelect extends React.Component {
@@ -57,8 +48,7 @@ class GroupsSelect extends React.Component {
   };
 
   handleChange = event => {
-    this.setState({ name: event.target.value });
-    console.log(event.target.value);
+    this.props.onChangeValues(event, 'groups')
   };
 
   render() {
@@ -66,16 +56,14 @@ class GroupsSelect extends React.Component {
 
     return (
       <div className={classes.root}>
-        <FormControl className={classes.formControl} fullwidth>
+        <FormControl className={classes.formControl}>
           <InputLabel htmlFor="select-multiple-checkbox">Tag</InputLabel>
             <Select
               multiple
-              autoWidth
               value={this.state.name}
               onChange={this.handleChange}
               input={<Input id="select-multiple-checkbox" />}
               MenuProps={MenuProps}
-
               renderValue={selected => (
                 <div className={classes.chips}>
                   {selected.map(value => (
@@ -83,7 +71,6 @@ class GroupsSelect extends React.Component {
                   ))}
                 </div>
               )}
-              MenuProps={MenuProps}
             >
               {names.map(name => (
                 <MenuItem
