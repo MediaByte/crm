@@ -7,7 +7,6 @@ import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from "@material-ui/core/InputAdornment";
 //material-ui icons
 import Search from '@material-ui/icons/Search';
-
 //project components
 import Page from 'views/Page/Page.jsx';
 import GridItem from "components/Grid/GridItem.jsx";

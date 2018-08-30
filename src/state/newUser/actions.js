@@ -23,13 +23,16 @@ import {
 	NEW_USER_WORK_ADDRESS_STATE,
 	NEW_USER_WORK_ADDRESS_ZIP,
 	NEW_USER_WORK_ADDRESS_COUNTRY,
+	NEW_USER_GROUP_VIEW,
+	NEW_USER_GROUP_EDIT, 
+	NEW_USER_GROUP_CREATE,
  } from './constants.js';
-export const firstName = (event) => ({ type: NEW_USER_FIRST_NAME, payload: event });
-export const lastName = (event) => ({ type: NEW_USER_LAST_NAME, payload: event });
+export const first = (event) => ({ type: NEW_USER_FIRST_NAME, payload: event });
+export const last = (event) => ({ type: NEW_USER_LAST_NAME, payload: event });
+export const email = (event) => ({ type: NEW_USER_EMAIL, payload: event });
 export const homePhone = (event) => ({ type: NEW_USER_HOME_PHONE, payload: event });
 export const mobilePhone = (event) => ({ type: NEW_USER_MOBILE_PHONE, payload: event });
 export const workPhone = (event) => ({ type: NEW_USER_WORK_PHONE, payload: event });
-export const email = (event) => ({ type: NEW_USER_EMAIL, payload: event });
 export const homeAddress1 = (event) => ({ type: NEW_USER_HOME_ADDRESS1, payload: event });
 export const homeAddress2 = (event) => ({ type: NEW_USER_HOME_ADDRESS2, payload: event });
 export const homeAddressCity = (event) => ({ type: NEW_USER_HOME_ADDRESS_CITY, payload: event });
@@ -48,3 +51,6 @@ export const workAddressCity = (event) => ({ type: NEW_USER_WORK_ADDRESS_CITY, p
 export const workAddressState = (event) => ({ type: NEW_USER_WORK_ADDRESS_STATE, payload: event });
 export const workAddressZip = (event) => ({ type: NEW_USER_WORK_ADDRESS_ZIP, payload: event });
 export const workAddressCountry = (event) => ({ type: NEW_USER_WORK_ADDRESS_COUNTRY, payload: event });
+export const groupView = (event) => ({ type: NEW_USER_GROUP_VIEW, payload: event });
+export const groupEdit = (event) => ({ type: NEW_USER_GROUP_EDIT, payload: event });
+export const groupCreate = (event) => ({ type: NEW_USER_GROUP_CREATE, payload: event });

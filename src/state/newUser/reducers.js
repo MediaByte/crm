@@ -23,8 +23,11 @@ import {
 	NEW_USER_WORK_ADDRESS_STATE,
 	NEW_USER_WORK_ADDRESS_ZIP,
 	NEW_USER_WORK_ADDRESS_COUNTRY,
+	NEW_USER_GROUP_VIEW,
+	NEW_USER_GROUP_EDIT, 
+	NEW_USER_GROUP_CREATE,
  } from './constants.js';
-const newUser = {
+const initialState = {
 	first: '',
 	last: '',
 	email: '',
@@ -49,14 +52,11 @@ const newUser = {
 	workAddressState: '',
 	workAddressZip: '',
 	workAddressCountry: '',
-	groups: {
-		view: false,
-		edit: true,
-		create: true
-	}
-
+	groupView: false,
+	groupEdit: false,
+	groupCreate: false,
 }
-export const newUser = (state=newUser, action={}) => {
+export const newUser = (state=initialState, action={}) => {
 	switch(action.type) {
 		case NEW_USER_FIRST_NAME:
 			return Object.assign({}, state, { first: action.payload });
@@ -106,6 +106,12 @@ export const newUser = (state=newUser, action={}) => {
 			return Object.assign({}, state, { workAddressZip: action.payload });
 		case NEW_USER_WORK_ADDRESS_COUNTRY:
 			return Object.assign({}, state, { workAddressCountry: action.payload });
+		case NEW_USER_GROUP_VIEW:
+			return Object.assign({}, state, { groupView: action.payload });
+		case NEW_USER_GROUP_EDIT:
+			return Object.assign({}, state, { groupEdit: action.payload });
+		case NEW_USER_GROUP_CREATE:
+			return Object.assign({}, state, { groupCreate: action.payload });
 		default: 
 			return state;
 	}

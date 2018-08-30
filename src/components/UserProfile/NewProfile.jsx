@@ -1,6 +1,8 @@
 import React from "react";
 //a stateless react component that toggles the display of it's children
 import ToggleDisplay from 'react-toggle-display';
+//gundb
+import Gun from 'gun/gun';
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
 import IconButton from "@material-ui/core/IconButton";
@@ -19,109 +21,112 @@ import AddressSelect from 'components/UserProfile/AddressSelect.jsx';
 // material-ui icons
 import AddCircle from '@material-ui/icons/AddCircle';
 import avatar from "assets/img/faces/marc.jpg";
-//gundb
-import Gun from 'gun/gun';
+//styles
+import styles from 'assets/jss/material-kit-pro-react/components/newProfileStyle.jsx';
+//State
+import { connect } from 'react-redux';
+import { 
+  first, 
+  last, 
+  email, 
+  homePhone, 
+  mobilePhone, 
+  workPhone, 
+  homeAddress1, 
+  homeAddress2, 
+  homeAddressCity, 
+  homeAddressState, 
+  homeAddressZip, 
+  homeAddressCountry,
+  workAddress1,
+  workAddress2,
+  workAddressCity,
+  workAddressState,
+  workAddressZip,
+  workAddressCountry,
+  mailAddress1,
+  mailAddress2,
+  mailAddressCity,
+  mailAddressState,
+  mailAddressZip,
+  mailAddressCountry
+} from 'state/newUser/actions.js';
 const gun = Gun('https://crm-server.herokuapp.com/gun');
 const db = gun.get('users');
-
-const styles = theme => ({
-
-  buttonOption:{
-	marginLeft: -10
-  },
-  container:{
-    
-  },
-  button:{
-	minWidth: '20%'
-  },
-  avatar: {
-	marginTop: 80,
-  },
-  cardFooter:{
-	display: 'flex',
-	justifyContent: 'flex-end',
-  },
-  description: {
-  	display: 'flex',
-  	justifyContent: 'center',
-  	marginTop: '5px',
-  	cursor: 'pointer',
-  },
-  cardCategoryWhite: {
-    color: "rgba(255,255,255,.62)",
-    margin: "0",
-    fontSize: "14px",
-    marginTop: "0",
-    marginBottom: "0"
-  },
-  cardTitleWhite: {
-    color: "#FFFFFF",
-    marginTop: "0px",
-    minHeight: "auto",
-    fontWeight: "300",
-    fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
-    marginBottom: "3px",
-    textDecoration: "none"
-  },
-  phoneField: {
-    marginTop: theme.spacing.unit * 3
-  },
-  phoneFlex: {
-    display: 'flex',
-    justifyContent: 'flex-start',
-  },
-  addPhone: {
-    marginTop: theme.spacing.unit * 2,
-    display: 'flex',
-    flexWrap: 'wrap'
-  },
-  addressFlex: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'flex-end',
-  },
-  addressType: {
-    margin: 'auto',
-    paddingLeft: '60px !important',
-    paddingRight: '60px !important',
-  },
-  profileContent: {
-    flexGrow: 1,
-    overflow: 'auto',
-    height: '550px',
-    width: '100%',
-    [theme.breakpoints.down('sm')]: {
-      height: '400px',
-    }
-  },
-});
+const mapStateToProps = (state) => {
+  return {
+    first: state.newUser.first,
+    last: state.newUser.last,
+    email: state.newUser.email,
+    homePhone: state.newUser.homePhone,
+    mobilePhone: state.newUser.mobilePhone,
+    workPhone: state.newUser.workPhone,
+    homeAddress1: state.newUser.homeAddress1,
+    homeAddress2: state.newUser.homeAddress2,
+    homeAddressCity: state.newUser.homeAddressCity,
+    homeAddressState: state.newUser.homeAddressState,
+    homeAddressZip: state.newUser.homeAddressZip,
+    homeAddressCountry: state.newUser.homeAddressCountry,
+    workAddress1: state.newUser.workAddress1,
+    workAddress2: state.newUser.workAddress2,
+    workAddressCity: state.newUser.workAddressCity,
+    workAddressState: state.newUser.workAddressState,
+    workAddressZip: state.newUser.workAddressZip,
+    workAddressCountry: state.newUser.workAddressCountry,
+    mailAddress1: state.newUser.mailAddress1,
+    mailAddress2: state.newUser.mailAddress2,
+    mailAddressCity: state.newUser.mailAddressCity,
+    mailAddressState: state.newUser.mailAddressState,
+    mailAddressZip: state.newUser.mailAddressZip,
+    mailAddressCountry: state.newUser.mailAddressCountry,
+  }
+}
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onChangeFirstName: (event) => dispatch(first(event)),
+    onChangeLastName: (event) => dispatch(last(event)),
+    onChangeEmail: (event) => dispatch(email(event)),
+    onChangeHomePhone: (event) => dispatch(homePhone(event)),
+    onChangeMobilePhone: (event) => dispatch(mobilePhone(event)),
+    onChangeWorkPhone: (event) => dispatch(workPhone(event)),
+    onChangeHomeAddress1: (event) => dispatch(homeAddress1(event)),
+    onChangeHomeAddress2: (event) => dispatch(homeAddress2(event)),
+    onChangeHomeAddressCity: (event) => dispatch(homeAddressCity(event)),
+    onChangeHomeAddressState: (event) => dispatch(homeAddressState(event)),
+    onChangeHomeAddressZip: (event) => dispatch(homeAddressZip(event)),
+    onChangeHomeAddressCountry: (event) => dispatch(homeAddressCountry(event)),
+    onChangeWorkAddress1: (event) => dispatch(workAddress1(event)),
+    onChangeWorkAddress2: (event) => dispatch(workAddress2(event)),
+    onChangeWorkAddressCity: (event) => dispatch(workAddressCity(event)),
+    onChangeWorkAddressState: (event) => dispatch(workAddressState(event)),
+    onChangeWorkAddressZip: (event) => dispatch(workAddressZip(event)),
+    onChangeWorkAddressCountry: (event) => dispatch(workAddressCountry(event)),
+    onChangeMailAddress1: (event) => dispatch(mailAddress1(event)),
+    onChangeMailAddress2: (event) => dispatch(mailAddress2(event)),
+    onChangeMailAddressCity: (event) => dispatch(mailAddressCity(event)),
+    onChangeMailAddressState: (event) => dispatch(mailAddressState(event)),
+    onChangeMailAddressZip: (event) => dispatch(mailAddressZip(event)),
+    onChangeMailAddressCountry: (event) => dispatch(mailAddressCountry(event)),
+    onChangeGroupsView: (event) => dispatch(mailAddressCountry(event)),
+    onChangeGroupsEdit: (event) => dispatch(mailAddressCountry(event)),
+    onChangeGroupsCreate: (event) => dispatch(mailAddressCountry(event)),
+  }
+}
 
 class NewProfile extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-      id: 0, 
-      first: '',
-      last: '',
-      group: '',
-      phone: '(  )    -    ',
-      email: '',
-      address: '',
-      password: '',
-      address1: '',
-      address2: '',
-      city: '',
-      state: '',
-      zip: '',
-      country: '',
-      showPhone1: false,
-      showPhone2: false,
-      showPhone3: false,
-      showAddress1: false,
-      showAddress2: false,
-      showAddress3: false,
-		}
+  		this.state = {
+        id: 0, 
+        group: '',
+        password: '',
+        showPhone1: false,
+        showPhone2: false,
+        showPhone3: false,
+        showAddress1: false,
+        showAddress2: false,
+        showAddress3: false,
+  		}
     this.phoneField = this.phoneField.bind(this);
     this.onChangeValues = this.onChangeValues.bind(this);
     this.addressField = this.addressField.bind(this);
@@ -130,7 +135,8 @@ class NewProfile extends React.Component {
     // db.map()
   }
   saveData() {
-    const { id, first, last, group, homePhone, cellPhone, workPhone, email, address, password } = this.state;
+    const { id, group, password } = this.state
+    const { first, last, email, homePhone, mobilePhone, workPhone } = this.props
     let newEmployee = {
       [id]: {
         name: {
@@ -141,11 +147,10 @@ class NewProfile extends React.Component {
         contactInfo: {
           phone: {
             home: homePhone.toString(),
-            mobile: cellPhone.toString(),
+            mobile: mobilePhone.toString(),
             work: workPhone.toString(),
           },
           email: email,
-          address: address
         },
         password: password
       }
@@ -191,10 +196,7 @@ class NewProfile extends React.Component {
   }
 
   onChangeValues(event, key) {
-    this.setState({
-      [key]: event.target.value
-    });
-    console.log(key)
+
   }
 
 	render() {
@@ -225,7 +227,7 @@ class NewProfile extends React.Component {
 	                    labelText="First Name"
 	                    id="first-name"
                       inputProps={{
-                        onChange: (e) => this.onChangeValues(e, 'first'),
+                        onChange: (event) => this.props.onChangeFirstName(event.target.value),
                       }}
 	                    formControlProps={{
 	                      fullWidth: true
@@ -237,7 +239,7 @@ class NewProfile extends React.Component {
 	                    labelText="Last Name"
 	                    id="last-name"
                       inputProps={{
-                        onChange: (e) => this.onChangeValues(e, 'last'),
+                        onChange: (event) => this.props.onChangeLastName(event.target.value),
                       }}
 	                    formControlProps={{
 	                      fullWidth: true
@@ -258,7 +260,7 @@ class NewProfile extends React.Component {
                               <PhoneType onChangeValues={this.onChangeValues} />  
                             </div>
                             <div className={classes.phoneField}>
-                              <PhoneInput value={this.state.phone} onChangeValues={this.onChangeValues} />
+                              <PhoneInput value={this.props.homePhone} onChangeValues={this.onChangeValues} />
                             </div>
                           </div>
                         </ToggleDisplay>
@@ -268,7 +270,7 @@ class NewProfile extends React.Component {
                               <PhoneType onChangeValues={this.onChangeValues} />  
                             </div>
                             <div className={classes.phoneField}>
-                              <PhoneInput value={this.state.phone} onChangeValues={this.onChangeValues} />
+                              <PhoneInput value={this.props.mobilePhone} onChangeValues={this.onChangeValues} />
                             </div>
                           </div>
                         </ToggleDisplay>
@@ -278,7 +280,7 @@ class NewProfile extends React.Component {
                               <PhoneType onChangeValues={this.onChangeValues} />  
                             </div>
                             <div className={classes.phoneField}>
-                              <PhoneInput value={this.state.phone} onChangeValues={this.onChangeValues} />
+                              <PhoneInput value={this.props.workPhone} onChangeValues={this.onChangeValues} />
                             </div>
                           </div>
                         </ToggleDisplay>
@@ -581,4 +583,6 @@ class NewProfile extends React.Component {
 	  );
 	}
 }
-export default withStyles(styles)(NewProfile);
+
+
+export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(NewProfile));

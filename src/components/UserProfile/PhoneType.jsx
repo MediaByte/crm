@@ -1,9 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+//Material-UI components
 import { withStyles } from '@material-ui/core/styles';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+
+
+
+
 
 const styles = theme => ({
   root: {
@@ -49,9 +54,9 @@ class PhoneType extends React.Component {
               }}
             >
               <option value="" />
-              <option value={'home'}>Home</option>
-              <option value={'mobile'}>Mobile</option>
-              <option value={'work'}>Work</option>
+              <option value={'homePhone'}>Home</option>
+              <option value={'mobilePhone'}>Mobile</option>
+              <option value={'workPhone'}>Work</option>
             </Select>
         </FormControl>
       </div>
