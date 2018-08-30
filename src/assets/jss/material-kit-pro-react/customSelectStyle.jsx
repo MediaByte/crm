@@ -1,13 +1,33 @@
-// ##############################
-// // // CustomSelects styles
-// #############################
-
 import {
-  primaryColor,
-  primaryBoxShadow
+  infoColor,
+  primaryBoxShadow,
+  defaultFont
 } from "assets/jss/material-kit-pro-react.jsx";
 
-const customSelectStyle = {
+const customSelectStyle = theme => ({
+
+ selectLabel: {
+    ...defaultFont,
+    lineHeight: "1.42857",
+    fontWeight: "400",
+    fontSize: "15px",
+    color: "#AAAAAA !important",
+    top: "2px",
+    "& + $underline": {
+      marginTop: "0px"
+    }
+  },
+  root: {
+    display: "flex",
+    justifyContent: "center"
+  },
+  chips: {
+    display: "flex",
+    flexWrap: "wrap"
+  },
+  chip: {
+    margin: theme.spacing.unit / 4
+  },
   select: {
     padding: "12px 0 7px",
     fontSize: ".75rem",
@@ -28,22 +48,16 @@ const customSelectStyle = {
     }
   },
   selectFormControl: {
-    margin: "10px 1px 10px 0px !important",
+    margin: "5px 1px 5px 0px !important",
     "& > div": {
       "&:before": {
         borderBottomWidth: "1px !important",
         borderBottomColor: "#D2D2D2 !important"
       },
       "&:after": {
-        borderBottomColor: primaryColor + "!important"
+        borderBottomColor: infoColor + "!important"
       }
     }
-  },
-  selectLabel: {
-    fontSize: "12px",
-    textTransform: "uppercase",
-    color: "#3C4858 !important",
-    top: "8px"
   },
   selectMenu: {
     "& > div > ul": {
@@ -79,18 +93,18 @@ const customSelectStyle = {
     color: "#333",
     paddingRight: "30px",
     "&:hover": {
-      backgroundColor: primaryColor,
+      backgroundColor: infoColor,
       color: "#FFFFFF",
       ...primaryBoxShadow
     }
   },
   selectMenuItemSelected: {
-    backgroundColor: primaryColor + "!important",
+    backgroundColor: infoColor + "!important",
     color: "#FFFFFF"
   },
   selectMenuItemSelectedMultiple: {
     "&:hover": {
-      backgroundColor: primaryColor + "!important",
+      backgroundColor: infoColor + "!important",
       color: "#FFFFFF",
       ...primaryBoxShadow,
       "&:after": {
@@ -128,6 +142,6 @@ const customSelectStyle = {
     backgroundColor: "transparent",
     maxHeight: "266px"
   }
-};
+});
 
 export default customSelectStyle;

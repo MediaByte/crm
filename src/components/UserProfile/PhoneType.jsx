@@ -12,6 +12,7 @@ const styles = theme => ({
   },
   formControl: {
     margin: theme.spacing.unit,
+    marginLeft: 0,
   },
   selectEmpty: {
     marginTop: theme.spacing.unit * 2,
@@ -19,12 +20,21 @@ const styles = theme => ({
 });
 
 class PhoneType extends React.Component {
-  state = {
-    type: '',
-  };
+  constructor(props) {
+    super(props)
+      this.state = {
+        type: '',
+      };
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange(event, key) {
+    const { onChangeValues } = this.props
+      onChangeValues(event, event.target.value)
+  }
 
   render() {
-    const { classes, onChangeValues } = this.props;
+    const { classes,  } = this.props;
     return (
       <div className={classes.root}>
         <FormControl className={classes.formControl}>
@@ -32,7 +42,7 @@ class PhoneType extends React.Component {
             <Select
               native
               value={this.state.type}
-              onChange={(e) => this.onChangeValues(e, null)}
+              onChange={this.handleChange}
               inputProps={{
                 name: 'phoneType',
                 id: 'phoneType',

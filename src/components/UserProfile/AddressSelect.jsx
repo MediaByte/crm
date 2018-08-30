@@ -10,9 +10,9 @@ import Chip from "@material-ui/core/Chip";
 
 import styles from "assets/jss/material-kit-pro-react/customSelectStyle.jsx";
 
-const names = ["View", "Edit", "Create"];
+const names = ["Home", "Mailing", "Work"];
 
-class GroupsSelect extends React.Component {
+class AddressSelect extends React.Component {
   state = {
     name: []
   };
@@ -27,28 +27,24 @@ class GroupsSelect extends React.Component {
     const { classes } = this.props;
 
     return (
-      <div className={classes.root}>
         <FormControl className={classes.selectFormControl} fullWidth>
           <InputLabel className={classes.selectLabel} htmlFor="select-multiple-chip">Select</InputLabel>
-          <Select
-            multiple
-            value={this.state.name}
-            onChange={this.handleChange}
-            input={<Input id="select-multiple-chip" />}
-            renderValue={selected => (
-              <div className={classes.chips}>
-                {selected.map(value => (
-                  <Chip key={value} label={value} className={classes.chip} />
-                ))}
-              </div>
-            )}
-            MenuProps={{
-              className: classes.selectMenu
-            }}
-            classes={{
-              select: classes.select
-            }}
-          >
+            <Select
+              value={this.state.name}
+              onChange={this.handleChange}
+              input={<Input id="select-multiple-chip" />}
+              renderValue={selected => (
+                <div className={classes.chips}>
+                    <Chip key={selected} label={selected} className={classes.chip} />
+                </div>
+              )}
+              MenuProps={{
+                className: classes.selectMenu
+              }}
+              classes={{
+                select: classes.select
+              }}
+            >
             {names.map(name => (
               <MenuItem
                 key={name}
@@ -63,14 +59,13 @@ class GroupsSelect extends React.Component {
             ))}
           </Select>
         </FormControl>
-      </div>
     );
   }
 }
 
-GroupsSelect.propTypes = {
+AddressSelect.propTypes = {
   classes: PropTypes.object.isRequired,
   theme: PropTypes.object.isRequired
 };
 
-export default withStyles(styles, { withTheme: true })(GroupsSelect);
+export default withStyles(styles, { withTheme: true })(AddressSelect);

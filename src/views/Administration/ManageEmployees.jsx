@@ -45,11 +45,8 @@ const styles = theme => ({
 		display: 'flex',
 		justifyContent: 'center',
 		alignItems: 'center',
-		// border: '1px solid green',
+		border: '1px solid green',
 		padding: 5,
-		[theme.breakpoints.up('md')]: {
-			justifyContent: 'flex-end',
-		},
 	},
 	userProfileGrid: {
 		display: 'flex',	
@@ -63,15 +60,7 @@ const styles = theme => ({
 	},
 	content: {
 		display: 'flex',
-		justifyContent: 'center',
-
-		[theme.breakpoints.up('md')]: {
-			paddingTop: theme.spacing.unit * 2,
-		},
-		[theme.breakpoints.down('xs')]: {
-			paddingTop: theme.spacing.unit * 5,
-			flexDirection: 'column-reverse',
-		},
+		flexWrap: 'wrap',
 	},
 })
 class ManageEmployees extends Component {

@@ -15,6 +15,7 @@ import CardBody from "components/Card/CardBody.jsx";
 import GroupsSelect from "components/UserProfile/GroupsSelect.jsx";
 import PhoneInput from 'components/UserProfile/PhoneInput.jsx';
 import PhoneType from 'components/UserProfile/PhoneType.jsx';
+import AddressSelect from 'components/UserProfile/AddressSelect.jsx';
 // material-ui icons
 import AddCircle from '@material-ui/icons/AddCircle';
 import avatar from "assets/img/faces/marc.jpg";
@@ -29,8 +30,7 @@ const styles = theme => ({
 	marginLeft: -10
   },
   container:{
-	display: 'flex',
-	justifyContent: 'center',
+    
   },
   button:{
 	minWidth: '20%'
@@ -76,7 +76,24 @@ const styles = theme => ({
     display: 'flex',
     flexWrap: 'wrap'
   },
-
+  addressFlex: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'flex-end',
+  },
+  addressType: {
+    margin: 'auto',
+    paddingLeft: '60px !important',
+    paddingRight: '60px !important',
+  },
+  profileContent: {
+    overflow: 'auto',
+    height: '550px',
+    width: '100%',
+    [theme.breakpoints.down('sm')]: {
+      height: '400px',
+    }
+  },
 });
 
 class NewProfile extends React.Component {
@@ -91,12 +108,22 @@ class NewProfile extends React.Component {
       email: '',
       address: '',
       password: '',
+      address1: '',
+      address2: '',
+      city: '',
+      state: '',
+      zip: '',
+      country: '',
       showPhone1: false,
       showPhone2: false,
       showPhone3: false,
+      showAddress1: false,
+      showAddress2: false,
+      showAddress3: false,
 		}
     this.phoneField = this.phoneField.bind(this);
     this.onChangeValues = this.onChangeValues.bind(this);
+    this.addressField = this.addressField.bind(this);
 	}
   componentDidMount() {
     // db.map()
@@ -129,6 +156,23 @@ class NewProfile extends React.Component {
         : console.log(ack.ok)
     });
   }
+
+  addressField() {
+    if (!this.state.showAddress1) {
+      this.setState({
+        showAddress1: true
+      }); 
+    } else if (this.state.showAddress1 && !this.state.showAddress2) {
+      this.setState({
+        showAddress2: true
+      }); 
+    } else if (this.state.showAddress1 && this.state.showAddress2 && !this.state.showAddress3) {
+      this.setState({
+        showAddress3: true
+      });
+    }
+  }
+
   phoneField() {
     if (!this.state.showPhone1) {
       this.setState({
@@ -143,7 +187,6 @@ class NewProfile extends React.Component {
         showPhone3: true
       });
     }
-
   }
 
   onChangeValues(event, key) {
@@ -152,9 +195,10 @@ class NewProfile extends React.Component {
     });
     console.log(key)
   }
+
 	render() {
 	  const { classes } = this.props;
-    const { showPhone1, showPhone2, showPhone3 } = this.state
+    const { showPhone1, showPhone2, showPhone3, showAddress1, showAddress2, showAddress3 } = this.state
 	  return (
 	    <div>
 	      <GridContainer className={classes.container}>
@@ -172,7 +216,7 @@ class NewProfile extends React.Component {
     			    </GridItem>
     		        </GridContainer>
     		    </GridItem>
-	          <GridItem xs={12} sm={12} md={8}>
+	          <GridItem xs={12} sm={12} md={8} className={classes.profileContent}>
 	            <CardBody>
 	              <GridContainer>
 	                <GridItem xs={12} sm={12} md={12}>
@@ -246,7 +290,8 @@ class NewProfile extends React.Component {
                           </Typography>
                         </div>
       								</GridItem>
-      								<GridItem xs={12} sm={12} md={8}>
+
+      								<GridItem xs={12} sm={12} md={6}>
       									<CustomInput
 			                    labelText="Email"
 			                    id="email-address"
@@ -255,25 +300,282 @@ class NewProfile extends React.Component {
 			                    }}
   			                />
       								</GridItem>
-      								<GridItem xs={12} sm={12} md={12}>
-      									<Typography className={classes.buttonOption}>
-      										<IconButton>
-      											<AddCircle style={{fontSize: 32, color: 'green'}}/>
-      										</IconButton>
-      										add address
-      									</Typography>
-      								</GridItem>
-      							</GridContainer>
-      						</GridItem>
-      					</GridContainer>
-	            </CardBody>
-	          </GridItem>
-	        </GridContainer>
 
-	        <div className={classes.cardFooter}>
-	          <Button className={classes.button} onClick={this.props.toggleViews} color="white">Cancel</Button>
-	          <Button className={classes.button} onClick={this.saveData} color="info">Save</Button>
-	        </div>
+                      <GridItem xs={12} sm={12} md={12}>
+                          <GridContainer>
+                            <GridItem xs={12} md={6} className={classes.addressType}>
+                            <ToggleDisplay show={showAddress1}>
+                              <div>
+                                <AddressSelect />
+                              </div>
+                            </ToggleDisplay>
+                            </GridItem>
+                            <GridItem xs={12} md={6}>
+                              <ToggleDisplay show={showAddress1}>
+                              <div className={classes.addressFlex}>
+                                <GridItem>
+                                  <CustomInput
+                                    labelText="Address 1"
+                                    id="address1"
+                                    inputProps={{
+                                      onChange: (e) => this.onChangeValues(e, 'address1'),
+                                    }}
+                                    formControlProps={{
+                                      fullWidth: true
+                                    }}
+                                  />
+                                </GridItem>
+                                <GridItem>
+                                  <CustomInput
+                                    labelText="Address 2"
+                                    id="address2"
+                                    inputProps={{
+                                      onChange: (e) => this.onChangeValues(e, 'address2'),
+                                    }}
+                                    formControlProps={{
+                                      fullWidth: true
+                                    }}
+                                  />
+                                </GridItem>
+                                <GridItem>
+                                  <CustomInput
+                                    labelText="City"
+                                    id="city"
+                                    inputProps={{
+                                      onChange: (e) => this.onChangeValues(e, 'city'),
+                                    }}
+                                    formControlProps={{
+                                      fullWidth: true
+                                    }}
+                                  />
+                                </GridItem>
+                                <GridItem xs={6}>
+                                  <CustomInput
+                                    labelText="State"
+                                    id="state"
+                                    inputProps={{
+                                      onChange: (e) => this.onChangeValues(e, 'state'),
+                                    }}
+                                    formControlProps={{
+                                      fullWidth: true
+                                    }}
+                                  />
+                                </GridItem>
+                                <GridItem xs={6}>
+                                  <CustomInput
+                                    labelText="Zip"
+                                    id="zip"
+                                    inputProps={{
+                                      onChange: (e) => this.onChangeValues(e, 'zip'),
+                                    }}
+                                    formControlProps={{
+                                      fullWidth: true
+                                    }}
+                                  />
+                                </GridItem>
+                                <GridItem>
+                                  <CustomInput
+                                    labelText="Country"
+                                    id="country"
+                                    inputProps={{
+                                      onChange: (e) => this.onChangeValues(e, 'country'),
+                                    }}
+                                    formControlProps={{
+                                      fullWidth: true
+                                    }}
+                                  />
+                                </GridItem>
+                              </div>
+                              </ToggleDisplay>  
+                            </GridItem>
+                            <GridItem xs={12} md={6} className={classes.addressType}>
+                            <ToggleDisplay show={showAddress2}>
+                              <div>
+                                <AddressSelect />
+                              </div>
+                            </ToggleDisplay>
+                            </GridItem>
+                            <GridItem xs={12} md={6}>
+                              <ToggleDisplay show={showAddress2}>
+                              <div className={classes.addressFlex}>
+                                <GridItem>
+                                  <CustomInput
+                                    labelText="Address 1"
+                                    id="address1"
+                                    inputProps={{
+                                      onChange: (e) => this.onChangeValues(e, 'address1'),
+                                    }}
+                                    formControlProps={{
+                                      fullWidth: true
+                                    }}
+                                  />
+                                </GridItem>
+                                <GridItem>
+                                  <CustomInput
+                                    labelText="Address 2"
+                                    id="address2"
+                                    inputProps={{
+                                      onChange: (e) => this.onChangeValues(e, 'address2'),
+                                    }}
+                                    formControlProps={{
+                                      fullWidth: true
+                                    }}
+                                  />
+                                </GridItem>
+                                <GridItem>
+                                  <CustomInput
+                                    labelText="City"
+                                    id="city"
+                                    inputProps={{
+                                      onChange: (e) => this.onChangeValues(e, 'city'),
+                                    }}
+                                    formControlProps={{
+                                      fullWidth: true
+                                    }}
+                                  />
+                                </GridItem>
+                                <GridItem xs={6}>
+                                  <CustomInput
+                                    labelText="State"
+                                    id="state"
+                                    inputProps={{
+                                      onChange: (e) => this.onChangeValues(e, 'state'),
+                                    }}
+                                    formControlProps={{
+                                      fullWidth: true
+                                    }}
+                                  />
+                                </GridItem>
+                                <GridItem xs={6}>
+                                  <CustomInput
+                                    labelText="Zip"
+                                    id="zip"
+                                    inputProps={{
+                                      onChange: (e) => this.onChangeValues(e, 'zip'),
+                                    }}
+                                    formControlProps={{
+                                      fullWidth: true
+                                    }}
+                                  />
+                                </GridItem>
+                                <GridItem>
+                                  <CustomInput
+                                    labelText="Country"
+                                    id="country"
+                                    inputProps={{
+                                      onChange: (e) => this.onChangeValues(e, 'country'),
+                                    }}
+                                    formControlProps={{
+                                      fullWidth: true
+                                    }}
+                                  />
+                                </GridItem>
+                              </div>
+                              </ToggleDisplay>  
+                            </GridItem>
+                            <GridItem xs={12} md={6} className={classes.addressType}>
+                            <ToggleDisplay show={showAddress3}>
+                              <div>
+                                <AddressSelect />
+                              </div>
+                            </ToggleDisplay>
+                            </GridItem>
+                            <GridItem xs={12} md={6}>
+                              <ToggleDisplay show={showAddress3}>
+                              <div className={classes.addressFlex}>
+                                <GridItem>
+                                  <CustomInput
+                                    labelText="Address 1"
+                                    id="address1"
+                                    inputProps={{
+                                      onChange: (e) => this.onChangeValues(e, 'address1'),
+                                    }}
+                                    formControlProps={{
+                                      fullWidth: true
+                                    }}
+                                  />
+                                </GridItem>
+                                <GridItem>
+                                  <CustomInput
+                                    labelText="Address 2"
+                                    id="address2"
+                                    inputProps={{
+                                      onChange: (e) => this.onChangeValues(e, 'address2'),
+                                    }}
+                                    formControlProps={{
+                                      fullWidth: true
+                                    }}
+                                  />
+                                </GridItem>
+                                <GridItem>
+                                  <CustomInput
+                                    labelText="City"
+                                    id="city"
+                                    inputProps={{
+                                      onChange: (e) => this.onChangeValues(e, 'city'),
+                                    }}
+                                    formControlProps={{
+                                      fullWidth: true
+                                    }}
+                                  />
+                                </GridItem>
+                                <GridItem xs={6}>
+                                  <CustomInput
+                                    labelText="State"
+                                    id="state"
+                                    inputProps={{
+                                      onChange: (e) => this.onChangeValues(e, 'state'),
+                                    }}
+                                    formControlProps={{
+                                      fullWidth: true
+                                    }}
+                                  />
+                                </GridItem>
+                                <GridItem xs={6}>
+                                  <CustomInput
+                                    labelText="Zip"
+                                    id="zip"
+                                    inputProps={{
+                                      onChange: (e) => this.onChangeValues(e, 'zip'),
+                                    }}
+                                    formControlProps={{
+                                      fullWidth: true
+                                    }}
+                                  />
+                                </GridItem>
+                                <GridItem>
+                                  <CustomInput
+                                    labelText="Country"
+                                    id="country"
+                                    inputProps={{
+                                      onChange: (e) => this.onChangeValues(e, 'country'),
+                                    }}
+                                    formControlProps={{
+                                      fullWidth: true
+                                    }}
+                                  />
+                                </GridItem>
+                              </div>
+                              </ToggleDisplay>  
+                            </GridItem>
+                          </GridContainer>
+                        <Typography style={{cursor: 'pointer'}} onClick={this.addressField} className={classes.buttonOption}>
+                          <IconButton>
+                            <AddCircle onClick={this.addressField} style={{fontSize: 32, color: 'green'}}/>
+                          </IconButton>
+                          add address
+                        </Typography>
+                      </GridItem>
+    							</GridContainer>
+    						</GridItem>
+    					</GridContainer>
+            </CardBody>
+          </GridItem>
+        </GridContainer>
+        <div className={classes.cardFooter}>
+          <Button className={classes.button} onClick={this.props.toggleViews} color="white">Cancel</Button>
+          <Button className={classes.button} onClick={this.saveData} color="info">Save</Button>
+        </div>
 	    </div>
 	  );
 	}
