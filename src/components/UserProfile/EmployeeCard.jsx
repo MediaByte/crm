@@ -20,16 +20,28 @@ const styles = theme => ({
   buttonOption:{
 	 marginLeft: -10
   },
+  cardBody:{
+    display: 'flex',
+    flexGrow: 1,
+    marginTop: theme.spacing.unit * 5,
+  },
   container: {
+   paddingTop: 10,
+   paddingRight: 20,
+   paddingBottom: 20,
+   paddingLeft: 20,
 	 display: 'flex',
 	 justifyContent: 'center',
-   height: '55vh',
+   height: '500px',
+   width: 'auto',
+   [theme.breakpoints.down('sm')]: {
+     maxHeight: 400
+   },
    flexGrow: 1,
-   minidth: '100%',
    // border: '2px solid green'
   },
   avatar: {
-	 paddingTop: 40,
+	 marginTop: theme.spacing.unit * 10,
   },
   cardFooter:{
 	 display: 'flex',
@@ -73,7 +85,7 @@ class EmployeeCard extends React.Component {
   		    </GridItem>
 	        <GridItem xs={12} sm={12} md={8}>
 	            <CardBody>
-                <GridContainer className={classes.container} direction={'column'}>
+                <GridContainer className={classes.cardBody} direction={'column'}>
 	                <GridItem xs={12} sm={12} md={12}>
                     <Typography variant='headline'>Employee Name</Typography>
                     <div>

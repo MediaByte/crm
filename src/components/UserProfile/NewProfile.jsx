@@ -87,6 +87,7 @@ const styles = theme => ({
     paddingRight: '60px !important',
   },
   profileContent: {
+    flexGrow: 1,
     overflow: 'auto',
     height: '550px',
     width: '100%',

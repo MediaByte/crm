@@ -25,13 +25,20 @@ const styles = theme => ({
 		marginBottom: -10,
 		width: 215,
 	},
+	gridMainPanel: {
+		flexGrow: 1,
+		width: '100%',
+	},
 	mainPanel: {
-		paddingTop: 40,
-		paddingRight: 40,
-		paddingBottom: 40,
-		paddingLeft: 40,
+		flexGrow: 1,
+		paddingTop: 10,
+		paddingRight: 20,
+		paddingBottom: 20,
+		paddingLeft: 20,
 		marginTop: 0,
 		marginBottom: 0,
+		width: '100%',
+		height: '100%'
 	},
 	item: {
 		border: '1px solid black',
@@ -45,13 +52,15 @@ const styles = theme => ({
 		display: 'flex',
 		justifyContent: 'center',
 		alignItems: 'center',
-		border: '1px solid green',
+		// border: '1px solid green',
 		padding: 5,
 	},
 	userProfileGrid: {
 		display: 'flex',	
 		justifyContent: 'center',
 		alignItems: 'center',
+		width: '100%',
+		flexGrow: 1,
 		// border: '1px solid green',
 	},
 	gridContainer: {
@@ -154,7 +163,7 @@ class ManageEmployees extends Component {
 							</GridContainer>
 						</GridItem>
 						<GridItem sm={8} md={9} className={classes.userProfileGrid}>
-							<GridContainer direction={'column'}>
+							<GridContainer className={classes.gridMainPanel} direction={'column'}>
 								<GridItem>
 									<Card raised className={classes.mainPanel}>
 										{ addUser 
@@ -176,6 +185,7 @@ class ManageEmployees extends Component {
 					</GridContainer>
 				</Page>
 			</div>
+
 		)
 	}
 }
