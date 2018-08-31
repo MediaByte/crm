@@ -16,7 +16,6 @@ import CardAvatar from "components/Card/CardAvatar.jsx";
 import CardBody from "components/Card/CardBody.jsx";
 import GroupsSelect from "components/UserProfile/GroupsSelect.jsx";
 import PhoneInput from 'components/UserProfile/PhoneInput.jsx';
-import PhoneType from 'components/UserProfile/PhoneType.jsx';
 import AddressSelect from 'components/UserProfile/AddressSelect.jsx';
 // material-ui icons
 import AddCircle from '@material-ui/icons/AddCircle';
@@ -254,9 +253,6 @@ class NewProfile extends React.Component {
       								<GridItem xs={12} sm={12} md={12}>
                         <ToggleDisplay show={showPhone1}>
                           <div className={classes.phoneFlex}>
-                            <div>
-                              <PhoneType onChangeValues={this.onChangeValues} />  
-                            </div>
                             <div className={classes.phoneField}>
                               <PhoneInput value={this.props.homePhone} onChangeValues={this.onChangeValues} />
                             </div>
@@ -264,9 +260,6 @@ class NewProfile extends React.Component {
                         </ToggleDisplay>
                         <ToggleDisplay show={showPhone2}>
                           <div className={classes.phoneFlex}>
-                            <div>
-                              <PhoneType onChangeValues={this.onChangeValues} />  
-                            </div>
                             <div className={classes.phoneField}>
                               <PhoneInput value={this.props.mobilePhone} onChangeValues={this.onChangeValues} />
                             </div>
@@ -274,9 +267,6 @@ class NewProfile extends React.Component {
                         </ToggleDisplay>
                         <ToggleDisplay show={showPhone3}>
                           <div className={classes.phoneFlex}>
-                            <div>
-                              <PhoneType onChangeValues={this.onChangeValues} />  
-                            </div>
                             <div className={classes.phoneField}>
                               <PhoneInput value={this.props.workPhone} onChangeValues={this.onChangeValues} />
                             </div>

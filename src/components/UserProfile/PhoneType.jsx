@@ -5,6 +5,26 @@ import { withStyles } from '@material-ui/core/styles';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+//State
+import { connect } from 'react-redux';
+import { homePhone, mobilePhone, workPhone } from 'state/newUser/actions.js';
+
+
+const mapStateToProps = (state) => {
+  return {
+    homePhone: state.newUser.homePhone,
+    mobilePhone: state.newUser.mobilePhone,
+    workPhone: state.newUser.workPhone,
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onChangeHomePhone: (event) => dispatch(homePhone(event)),
+    onChangeMobilePhone: (event) => dispatch(mobilePhone(event)),
+    onChangeWorkPhone: (event) => dispatch(workPhone(event)),
+  }
+}
 
 const styles = theme => ({
   root: {
@@ -30,8 +50,8 @@ class PhoneType extends React.Component {
   }
 
   handleChange(event, key) {
-    const { onChangeValues } = this.props
-      onChangeValues(event, event.target.value)
+    this.setState({ type: event.target.value })
+    console.log(event.target.value)
   }
 
   render() {
@@ -64,4 +84,4 @@ PhoneType.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(PhoneType);
+export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(PhoneType));

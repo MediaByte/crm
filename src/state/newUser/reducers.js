@@ -23,12 +23,14 @@ import {
 	NEW_USER_WORK_ADDRESS_STATE,
 	NEW_USER_WORK_ADDRESS_ZIP,
 	NEW_USER_WORK_ADDRESS_COUNTRY,
-	NEW_USER_GROUPS
+	NEW_USER_GROUPS,
+	NEW_USER_PHONE,
  } from './constants.js';
 const initialState = {
 	first: '',
 	last: '',
 	email: '',
+	phone: '(  )    -    ',
 	homePhone: '(  )    -    ',
 	mobilePhone: '(  )    -    ',
 	workPhone: '(  )    -    ',
@@ -50,11 +52,7 @@ const initialState = {
 	workAddressState: '',
 	workAddressZip: '',
 	workAddressCountry: '',
-	groups: [
-		{ groupView: false },
-		{ groupEdit: false },
-		{ groupCreate: false },
-	],
+	groups: [],
 }
 export const newUser = (state=initialState, action={}) => {
 	switch(action.type) {
@@ -108,6 +106,8 @@ export const newUser = (state=initialState, action={}) => {
 			return Object.assign({}, state, { workAddressCountry: action.payload });
 		case NEW_USER_GROUPS:
 			return Object.assign({}, state, { groups: action.payload });
+		case NEW_USER_PHONE:
+			return Object.assign({}, state, { phone: action.payload });
 		default: 
 			return state;
 	}

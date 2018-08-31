@@ -35,9 +35,6 @@ class GroupsSelect extends React.Component {
     super(props);
       this.state = {
         name: [],
-        groupView: false,
-        groupEdit: false,
-        groupCreate: false,
       }
       this.handleChange = this.handleChange.bind(this);
   }

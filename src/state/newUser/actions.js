@@ -23,11 +23,13 @@ import {
 	NEW_USER_WORK_ADDRESS_STATE,
 	NEW_USER_WORK_ADDRESS_ZIP,
 	NEW_USER_WORK_ADDRESS_COUNTRY,
-	NEW_USER_GROUPS
+	NEW_USER_GROUPS,
+	NEW_USER_PHONE
  } from './constants.js';
 export const first = (event) => ({ type: NEW_USER_FIRST_NAME, payload: event });
 export const last = (event) => ({ type: NEW_USER_LAST_NAME, payload: event });
 export const email = (event) => ({ type: NEW_USER_EMAIL, payload: event });
+export const phone = (event) => ({ type: NEW_USER_PHONE, payload: event });
 export const homePhone = (event) => ({ type: NEW_USER_HOME_PHONE, payload: event });
 export const mobilePhone = (event) => ({ type: NEW_USER_MOBILE_PHONE, payload: event });
 export const workPhone = (event) => ({ type: NEW_USER_WORK_PHONE, payload: event });
