@@ -11,23 +11,19 @@ import Select from "@material-ui/core/Select";
 import Chip from "@material-ui/core/Chip";
 //State Management
 import { connect } from 'react-redux';
-import { groupView, groupEdit, groupCreate } from 'state/newUser/actions.js';
+import { groups } from 'state/newUser/actions.js';
 
 //Styles
 import styles from "assets/jss/material-kit-pro-react/customSelectStyle.jsx";
 const mapStateToProps = (state) => {
   return {
-    groupView: state.newUser.groupView,
-    groupEdit: state.newUser.groupEdit,
-    groupCreate: state.newUser.groupCreate,
+    groups: state.newUser.groups
   }
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onChangeGroupView: (event) => dispatch(groupView(event)),
-    onChangeGroupEdit: (event) => dispatch(groupEdit(event)),
-    onChangeGroupCreate: (event) => dispatch(groupCreate(event)),
+    onGroupChange: (event) => dispatch(groups(event)),
   }
 };
 
@@ -47,33 +43,21 @@ class GroupsSelect extends React.Component {
   }
 
   handleChange (data) {
-    
     this.setState({ name: data });
 
-    //Will need this for later when app scales
-    // const suggestions = (suggestion) => names.filter(found => {
-    //   return found === suggestion
-    // });
-
-    // const groupType = data.map((value) => {
-    //   if (suggestions(value)) {
-    //       return { [`group${suggestions(value)[0]}`]: true }
-    //   }
-    //     return value;
-    // });
+    const suggestions = (suggestion) => names.filter(found => {
+      return found === suggestion
+    });
     
-    data.forEach(value => {
-      if (value === 'View'){
-        this.props.onChangeGroupView(true)
-      } 
-      if (value === 'Edit') {
-        this.props.onChangeGroupEdit(true)
-      } 
-      if (value === 'Create') {
-        this.props.onChangeGroupCreate(true)
+    const groupType = data.map((value) => {
+      if (!suggestions(value) || data <= 0) {
+        return { [`group${suggestions(value)[0]}`]: false }
+      } else {
+        return { [`group${suggestions(value)[0]}`]: true } 
       }
-    })
+    });
 
+    this.props.onGroupChange(groupType)
   }
 
   render() {

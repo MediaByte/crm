@@ -23,9 +23,7 @@ import {
 	NEW_USER_WORK_ADDRESS_STATE,
 	NEW_USER_WORK_ADDRESS_ZIP,
 	NEW_USER_WORK_ADDRESS_COUNTRY,
-	NEW_USER_GROUP_VIEW,
-	NEW_USER_GROUP_EDIT, 
-	NEW_USER_GROUP_CREATE,
+	NEW_USER_GROUPS
  } from './constants.js';
 export const first = (event) => ({ type: NEW_USER_FIRST_NAME, payload: event });
 export const last = (event) => ({ type: NEW_USER_LAST_NAME, payload: event });
@@ -51,6 +49,4 @@ export const workAddressCity = (event) => ({ type: NEW_USER_WORK_ADDRESS_CITY, p
 export const workAddressState = (event) => ({ type: NEW_USER_WORK_ADDRESS_STATE, payload: event });
 export const workAddressZip = (event) => ({ type: NEW_USER_WORK_ADDRESS_ZIP, payload: event });
 export const workAddressCountry = (event) => ({ type: NEW_USER_WORK_ADDRESS_COUNTRY, payload: event });
-export const groupView = (event) => ({ type: NEW_USER_GROUP_VIEW, payload: event });
-export const groupEdit = (event) => ({ type: NEW_USER_GROUP_EDIT, payload: event });
-export const groupCreate = (event) => ({ type: NEW_USER_GROUP_CREATE, payload: event });
+export const groups = (event) => ({ type: NEW_USER_GROUPS, payload: event });

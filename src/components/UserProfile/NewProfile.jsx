@@ -178,7 +178,6 @@ class NewProfile extends React.Component {
       });
     }
   }
-
   phoneField() {
     if (!this.state.showPhone1) {
       this.setState({
@@ -194,7 +193,6 @@ class NewProfile extends React.Component {
       });
     }
   }
-
   onChangeValues(event, key) {
 
   }
@@ -247,7 +245,7 @@ class NewProfile extends React.Component {
 	                  />
 	                </GridItem>
 	                <GridItem xs={12} sm={12} md={12}>
-                    <GroupsSelect onChangeValues={this.onChangeValues}/>
+                    <GroupsSelect/>
 	                </GridItem>
 	              </GridContainer>
       	         <GridContainer>
