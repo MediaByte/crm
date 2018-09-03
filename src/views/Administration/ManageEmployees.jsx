@@ -82,7 +82,6 @@ class ManageEmployees extends Component {
 	componentDidMount() {
 		const { match } = this.props;
 		const profile = match.params.id
-		const fetchRecords = db.map().once((props)=>console.log(props));
 			db.get(profile).once((user) => {
 				this.setState({ user: user })
 			});

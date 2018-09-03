@@ -162,7 +162,10 @@ class NewProfile extends React.Component {
       mailAddressState,
       mailAddressZip,
       mailAddressCountry,
-      groups
+      groups,
+      first,
+      last,
+
     } = this.props
 
     //schema
@@ -172,7 +175,7 @@ class NewProfile extends React.Component {
           first: first,
           last: last,
         },
-        groups: new Set(groups),
+        ...groups,
         contactInfo: {
           phone: {
             home: homePhone.toString(),
@@ -203,20 +206,22 @@ class NewProfile extends React.Component {
         },
       }
     };
+    let lastReset = new Date();
     //relations
     const newRelation = {
       [email]: {
         current: newPassword(),
         previous: null,
         temp: true,
-        lastReset: new Date()
+        lastReset: lastReset.toString(),
       }
     }
 
-    db.put(newEmployee, (ack) => {
+    db.set(newEmployee, (ack) => {
       ack.ok 
-        ? dbRelations.put(newRelation)
+        ? dbRelations.set(newRelation)
         : console.log(ack.err)
+        console.log(ack.ok)
     });
   }
 
