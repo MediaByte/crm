@@ -10,7 +10,7 @@ import Select from '@material-ui/core/Select';
 import FormControl from '@material-ui/core/FormControl'
 //State
 import { connect } from 'react-redux';
-import { homePhone, mobilePhone, workPhone, phone } from 'state/newUser/actions.js';
+import { homePhone, mobilePhone, workPhone, } from 'state/newUser/actions.js';
 
 
 const mapStateToProps = (state) => {
@@ -18,7 +18,6 @@ const mapStateToProps = (state) => {
     homePhone: state.newUser.homePhone,
     mobilePhone: state.newUser.mobilePhone,
     workPhone: state.newUser.workPhone,
-    phone: state.newUser.phone
   }
 }
 
@@ -27,7 +26,6 @@ const mapDispatchToProps = (dispatch) => {
     onChangeHomePhone: (event) => dispatch(homePhone(event)),
     onChangeMobilePhone: (event) => dispatch(mobilePhone(event)),
     onChangeWorkPhone: (event) => dispatch(workPhone(event)),
-    onChangePhone: (event) => dispatch(phone(event)),
   }
 }
 
@@ -78,30 +76,24 @@ class PhoneInput extends React.Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
-
-  handleChange(event, key) {
-
-    const data = event.target.value
-    const { type, number } = this.state;
-    this.setState({ [key]: data }, () => {
-      type === 'number' && data
-        ? this.props.onChangePhone(number)
-        : null
+  handleChange (event, key) {
+    const { onChangeHomePhone, onChangeMobilePhone, onChangeWorkPhone} = this.props
+    const type = document.getElementById(this.props.select).value
+    const input = document.getElementById(this.props.input).value
+    
+    this.setState({[key]: event.target.value});
+      // eslint-disable-next-line
       type === 'homePhone'
-        ? this.props.onChangeHomePhone(number)
-        : null
-      type === 'mobilePhone' 
-        ? this.props.onChangeMobilePhone(number)
-        : null
-      type === 'workPhone'
-        ? this.props.onChangeWorkPhone(number)
-        : null
-      })
+        ? onChangeHomePhone(input)
+        : type === 'mobilePhone'
+          ? onChangeMobilePhone(input)
+          : type === 'workPhone'
+            ? onChangeWorkPhone(input)
+            : null
   }
 
   render() {
-    const { classes } = this.props;
-
+    const { classes, select, input } = this.props;
     return (
       <React.Fragment>
         <div className={classes.root}>
@@ -113,7 +105,7 @@ class PhoneInput extends React.Component {
                 onChange={(e) => this.handleChange(e, 'type')}
                 inputProps={{
                   name: 'phoneType',
-                  id: 'phoneType',
+                  id: select,
                 }}
               >
                 <option value="" />
@@ -128,7 +120,7 @@ class PhoneInput extends React.Component {
             <Input
               value={this.state.number}
               onChange={(event) => this.handleChange(event, 'number')}
-              id="formatted-text-mask-input"
+              id={input}
               inputComponent={TextMaskCustom}
             />
           </FormControl>

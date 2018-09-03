@@ -7,32 +7,31 @@ import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import Chip from "@material-ui/core/Chip";
-
 import styles from "assets/jss/material-kit-pro-react/customSelectStyle.jsx";
 
 const names = ["Home", "Mailing", "Work"];
 
 class AddressSelect extends React.Component {
-  state = {
-    name: []
-  };
-
+  constructor(props) {
+    super(props);
+      this.state = {
+        name: [],
+      }
+  }
   handleChange = event => {
     this.setState({ name: event.target.value });
-
     console.log(event.target.value)
   };
-
   render() {
-    const { classes } = this.props;
-
+    const { classes, refID } = this.props;
     return (
         <FormControl className={classes.selectFormControl} fullWidth>
           <InputLabel className={classes.selectLabel} htmlFor="select-multiple-chip">Select</InputLabel>
             <Select
               value={this.state.name}
+              id={refID}
               onChange={this.handleChange}
-              input={<Input id="select-multiple-chip" />}
+              input={<Input />}
               renderValue={selected => (
                 <div className={classes.chips}>
                     <Chip key={selected} label={selected} className={classes.chip} />

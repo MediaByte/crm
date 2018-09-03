@@ -17,9 +17,14 @@ import CardBody from "components/Card/CardBody.jsx";
 import GroupsSelect from "components/UserProfile/GroupsSelect.jsx";
 import PhoneInput from 'components/UserProfile/PhoneInput.jsx';
 import AddressSelect from 'components/UserProfile/AddressSelect.jsx';
+import newPassword from 'components/UserProfile/generatePassword.js';
 // material-ui icons
 import AddCircle from '@material-ui/icons/AddCircle';
+import RemoveCircle from '@material-ui/icons/RemoveCircle';
+
+//files
 import avatar from "assets/img/faces/marc.jpg";
+
 //styles
 import styles from 'assets/jss/material-kit-pro-react/components/newProfileStyle.jsx';
 //State
@@ -51,7 +56,8 @@ import {
   mailAddressCountry
 } from 'state/newUser/actions.js';
 const gun = Gun('https://crm-server.herokuapp.com/gun');
-const db = gun.get('users');
+const db = gun.get('testRost').get('users');
+const dbRelations = gun.get('relation').get('users')
 const mapStateToProps = (state) => {
   return {
     first: state.newUser.first,
@@ -78,6 +84,7 @@ const mapStateToProps = (state) => {
     mailAddressState: state.newUser.mailAddressState,
     mailAddressZip: state.newUser.mailAddressZip,
     mailAddressCountry: state.newUser.mailAddressCountry,
+    groups: state.newUser.groups
   }
 }
 const mapDispatchToProps = (dispatch) => {
@@ -90,25 +97,22 @@ const mapDispatchToProps = (dispatch) => {
     onChangeWorkPhone: (event) => dispatch(workPhone(event)),
     onChangeHomeAddress1: (event) => dispatch(homeAddress1(event)),
     onChangeHomeAddress2: (event) => dispatch(homeAddress2(event)),
-    onChangeHomeAddressCity: (event) => dispatch(homeAddressCity(event)),
-    onChangeHomeAddressState: (event) => dispatch(homeAddressState(event)),
-    onChangeHomeAddressZip: (event) => dispatch(homeAddressZip(event)),
-    onChangeHomeAddressCountry: (event) => dispatch(homeAddressCountry(event)),
+    onChangeHomeCity: (event) => dispatch(homeAddressCity(event)),
+    onChangeHomeState: (event) => dispatch(homeAddressState(event)),
+    onChangeHomeZip: (event) => dispatch(homeAddressZip(event)),
+    onChangeHomeCountry: (event) => dispatch(homeAddressCountry(event)),
     onChangeWorkAddress1: (event) => dispatch(workAddress1(event)),
     onChangeWorkAddress2: (event) => dispatch(workAddress2(event)),
-    onChangeWorkAddressCity: (event) => dispatch(workAddressCity(event)),
-    onChangeWorkAddressState: (event) => dispatch(workAddressState(event)),
-    onChangeWorkAddressZip: (event) => dispatch(workAddressZip(event)),
-    onChangeWorkAddressCountry: (event) => dispatch(workAddressCountry(event)),
-    onChangeMailAddress1: (event) => dispatch(mailAddress1(event)),
-    onChangeMailAddress2: (event) => dispatch(mailAddress2(event)),
-    onChangeMailAddressCity: (event) => dispatch(mailAddressCity(event)),
-    onChangeMailAddressState: (event) => dispatch(mailAddressState(event)),
-    onChangeMailAddressZip: (event) => dispatch(mailAddressZip(event)),
-    onChangeMailAddressCountry: (event) => dispatch(mailAddressCountry(event)),
-    onChangeGroupsView: (event) => dispatch(mailAddressCountry(event)),
-    onChangeGroupsEdit: (event) => dispatch(mailAddressCountry(event)),
-    onChangeGroupsCreate: (event) => dispatch(mailAddressCountry(event)),
+    onChangeWorkCity: (event) => dispatch(workAddressCity(event)),
+    onChangeWorkState: (event) => dispatch(workAddressState(event)),
+    onChangeWorkZip: (event) => dispatch(workAddressZip(event)),
+    onChangeWorkCountry: (event) => dispatch(workAddressCountry(event)),
+    onChangeMailingAddress1: (event) => dispatch(mailAddress1(event)),
+    onChangeMailingAddress2: (event) => dispatch(mailAddress2(event)),
+    onChangeMailingCity: (event) => dispatch(mailAddressCity(event)),
+    onChangeMailingState: (event) => dispatch(mailAddressState(event)),
+    onChangeMailingZip: (event) => dispatch(mailAddressZip(event)),
+    onChangeMailingCountry: (event) => dispatch(mailAddressCountry(event)),
   }
 }
 
@@ -129,20 +133,46 @@ class NewProfile extends React.Component {
     this.phoneField = this.phoneField.bind(this);
     this.onChangeValues = this.onChangeValues.bind(this);
     this.addressField = this.addressField.bind(this);
+    this.saveData = this.saveData.bind(this);
 	}
   componentDidMount() {
     // db.map()
   }
   saveData() {
-    const { id, group, password } = this.state
-    const { first, last, email, homePhone, mobilePhone, workPhone } = this.props
+    const { 
+      email, 
+      homePhone, 
+      mobilePhone, 
+      workPhone, 
+      homeAddress1, 
+      homeAddress2, 
+      homeAddressCity, 
+      homeAddressState, 
+      homeAddressZip, 
+      homeAddressCountry,
+      workAddress1,
+      workAddress2,
+      workAddressCity,
+      workAddressState,
+      workAddressZip,
+      workAddressCountry,
+      mailAddress1,
+      mailAddress2,
+      mailAddressCity,
+      mailAddressState,
+      mailAddressZip,
+      mailAddressCountry,
+      groups
+    } = this.props
+
+    //schema
     let newEmployee = {
-      [id]: {
+      [email]: {
         name: {
           first: first,
           last: last,
         },
-        group: group,
+        groups: new Set(groups),
         contactInfo: {
           phone: {
             home: homePhone.toString(),
@@ -150,15 +180,43 @@ class NewProfile extends React.Component {
             work: workPhone.toString(),
           },
           email: email,
+          address: {
+            homeAddress1: homeAddress1,
+            homeAddress2: homeAddress2, 
+            homeAddressCity: homeAddressCity, 
+            homeAddressState: homeAddressState, 
+            homeAddressZip: homeAddressZip, 
+            homeAddressCountry: homeAddressCountry,
+            workAddress1: workAddress1,
+            workAddress2: workAddress2,
+            workAddressCity: workAddressCity,
+            workAddressState: workAddressState,
+            workAddressZip: workAddressZip,
+            workAddressCountry: workAddressCountry,
+            mailAddress1: mailAddress1,
+            mailAddress2: mailAddress2,
+            mailAddressCity: mailAddressCity,
+            mailAddressState: mailAddressState,
+            mailAddressZip: mailAddressZip,
+            mailAddressCountry: mailAddressCountry,
+          }
         },
-        password: password
       }
     };
+    //relations
+    const newRelation = {
+      [email]: {
+        current: newPassword(),
+        previous: null,
+        temp: true,
+        lastReset: new Date()
+      }
+    }
 
     db.put(newEmployee, (ack) => {
-      ack.err 
-        ? console.log(ack.err)
-        : console.log(ack.ok)
+      ack.ok 
+        ? dbRelations.put(newRelation)
+        : console.log(ack.err)
     });
   }
 
@@ -192,8 +250,18 @@ class NewProfile extends React.Component {
       });
     }
   }
-  onChangeValues(event, key) {
 
+  onChangeValues(event, key, reference=null) {
+    //buggy - not worth investing time into now
+    const functionString = `onChange${key}${reference}`;
+    const parsedMethod = this.props[functionString];
+    typeof parsedMethod === 'function' && key === 'Home'
+      ? parsedMethod(event) 
+      : typeof parsedMethod === 'function' && key === 'Mailing'
+        ? parsedMethod(event) 
+        : typeof method === 'function' && key === 'Work'
+          ? parsedMethod(event) 
+          : console.log(parsedMethod)
   }
 
 	render() {
@@ -254,21 +322,21 @@ class NewProfile extends React.Component {
                         <ToggleDisplay show={showPhone1}>
                           <div className={classes.phoneFlex}>
                             <div className={classes.phoneField}>
-                              <PhoneInput value={this.props.homePhone} onChangeValues={this.onChangeValues} />
+                              <PhoneInput select={'select1'} input={'input1'} /> <RemoveCircle style={{ color: 'red', fontSize: '25px', marginBottom: '0px', cursor: 'pointer' }} />
                             </div>
                           </div>
                         </ToggleDisplay>
                         <ToggleDisplay show={showPhone2}>
                           <div className={classes.phoneFlex}>
                             <div className={classes.phoneField}>
-                              <PhoneInput value={this.props.mobilePhone} onChangeValues={this.onChangeValues} />
+                              <PhoneInput select={'select2'} input={'input2'} /> <RemoveCircle style={{ color: 'red', fontSize: '25px', marginBottom: '0px', cursor: 'pointer' }} />
                             </div>
                           </div>
                         </ToggleDisplay>
                         <ToggleDisplay show={showPhone3}>
                           <div className={classes.phoneFlex}>
                             <div className={classes.phoneField}>
-                              <PhoneInput value={this.props.workPhone} onChangeValues={this.onChangeValues} />
+                              <PhoneInput select={'select3'} input={'input3'} /> <RemoveCircle style={{ color: 'red', fontSize: '25px', marginBottom: '0px', cursor: 'pointer'  }} />
                             </div>
                           </div>
                         </ToggleDisplay>
@@ -286,6 +354,9 @@ class NewProfile extends React.Component {
       									<CustomInput
 			                    labelText="Email"
 			                    id="email-address"
+                          inputProps={{
+                            onChange: (e) => this.props.onChangeEmail(e.target.value),
+                          }}
 			                    formControlProps={{
 			                      fullWidth: true
 			                    }}
@@ -297,7 +368,7 @@ class NewProfile extends React.Component {
                             <GridItem xs={12} md={6} className={classes.addressType}>
                             <ToggleDisplay show={showAddress1}>
                               <div>
-                                <AddressSelect />
+                                <AddressSelect control={this.onChangeValues} refID={'addressType1'} />
                               </div>
                             </ToggleDisplay>
                             </GridItem>
@@ -307,9 +378,9 @@ class NewProfile extends React.Component {
                                 <GridItem>
                                   <CustomInput
                                     labelText="Address 1"
-                                    id="address1"
+                                    id="address1-1"
                                     inputProps={{
-                                      onChange: (e) => this.onChangeValues(e, 'address1'),
+                                      onChange: (e) => this.onChangeValues(e.target.value, document.getElementById('addressType1').value, 'Address1'),
                                     }}
                                     formControlProps={{
                                       fullWidth: true
@@ -319,9 +390,9 @@ class NewProfile extends React.Component {
                                 <GridItem>
                                   <CustomInput
                                     labelText="Address 2"
-                                    id="address2"
+                                    id="address2-1"
                                     inputProps={{
-                                      onChange: (e) => this.onChangeValues(e, 'address2'),
+                                      onChange: (e) => this.onChangeValues(e.target.value, document.getElementById('addressType1').value, 'Address2'),
                                     }}
                                     formControlProps={{
                                       fullWidth: true
@@ -331,9 +402,9 @@ class NewProfile extends React.Component {
                                 <GridItem>
                                   <CustomInput
                                     labelText="City"
-                                    id="city"
+                                    id="city-1"
                                     inputProps={{
-                                      onChange: (e) => this.onChangeValues(e, 'city'),
+                                      onChange: (e) => this.onChangeValues(e.target.value, document.getElementById('addressType1').value, 'City'),
                                     }}
                                     formControlProps={{
                                       fullWidth: true
@@ -343,9 +414,9 @@ class NewProfile extends React.Component {
                                 <GridItem xs={6}>
                                   <CustomInput
                                     labelText="State"
-                                    id="state"
+                                    id="state-1"
                                     inputProps={{
-                                      onChange: (e) => this.onChangeValues(e, 'state'),
+                                      onChange: (e) => this.onChangeValues(e.target.value, document.getElementById('addressType1').value, 'State'),
                                     }}
                                     formControlProps={{
                                       fullWidth: true
@@ -355,9 +426,9 @@ class NewProfile extends React.Component {
                                 <GridItem xs={6}>
                                   <CustomInput
                                     labelText="Zip"
-                                    id="zip"
+                                    id="zip-1"
                                     inputProps={{
-                                      onChange: (e) => this.onChangeValues(e, 'zip'),
+                                      onChange: (e) => this.onChangeValues(e.target.value, document.getElementById('addressType1').value, 'Zip'),
                                     }}
                                     formControlProps={{
                                       fullWidth: true
@@ -367,9 +438,9 @@ class NewProfile extends React.Component {
                                 <GridItem>
                                   <CustomInput
                                     labelText="Country"
-                                    id="country"
+                                    id="country-1"
                                     inputProps={{
-                                      onChange: (e) => this.onChangeValues(e, 'country'),
+                                      onChange: (e) => this.onChangeValues(e.target.value, document.getElementById('addressType1').value, 'Country'),
                                     }}
                                     formControlProps={{
                                       fullWidth: true
@@ -382,7 +453,7 @@ class NewProfile extends React.Component {
                             <GridItem xs={12} md={6} className={classes.addressType}>
                             <ToggleDisplay show={showAddress2}>
                               <div>
-                                <AddressSelect />
+                                <AddressSelect refID={'addressType2'} />
                               </div>
                             </ToggleDisplay>
                             </GridItem>
@@ -392,9 +463,9 @@ class NewProfile extends React.Component {
                                 <GridItem>
                                   <CustomInput
                                     labelText="Address 1"
-                                    id="address1"
+                                    id="address1-2"
                                     inputProps={{
-                                      onChange: (e) => this.onChangeValues(e, 'address1'),
+                                      onChange: (e) => this.onChangeValues(e.target.value, document.getElementById('addressType2').value, 'Address1'),
                                     }}
                                     formControlProps={{
                                       fullWidth: true
@@ -404,9 +475,9 @@ class NewProfile extends React.Component {
                                 <GridItem>
                                   <CustomInput
                                     labelText="Address 2"
-                                    id="address2"
+                                    id="address2-2"
                                     inputProps={{
-                                      onChange: (e) => this.onChangeValues(e, 'address2'),
+                                      onChange: (e) => this.onChangeValues(e.target.value, document.getElementById('addressType2').value, 'Address2'),
                                     }}
                                     formControlProps={{
                                       fullWidth: true
@@ -416,9 +487,9 @@ class NewProfile extends React.Component {
                                 <GridItem>
                                   <CustomInput
                                     labelText="City"
-                                    id="city"
+                                    id="city-2"
                                     inputProps={{
-                                      onChange: (e) => this.onChangeValues(e, 'city'),
+                                      onChange: (e) => this.onChangeValues(e.target.value, document.getElementById('addressType2').value, 'City'),
                                     }}
                                     formControlProps={{
                                       fullWidth: true
@@ -428,9 +499,9 @@ class NewProfile extends React.Component {
                                 <GridItem xs={6}>
                                   <CustomInput
                                     labelText="State"
-                                    id="state"
+                                    id="state-2"
                                     inputProps={{
-                                      onChange: (e) => this.onChangeValues(e, 'state'),
+                                      onChange: (e) => this.onChangeValues(e.target.value, document.getElementById('addressType2').value, 'State'),
                                     }}
                                     formControlProps={{
                                       fullWidth: true
@@ -440,9 +511,9 @@ class NewProfile extends React.Component {
                                 <GridItem xs={6}>
                                   <CustomInput
                                     labelText="Zip"
-                                    id="zip"
+                                    id="zip-2"
                                     inputProps={{
-                                      onChange: (e) => this.onChangeValues(e, 'zip'),
+                                      onChange: (e) => this.onChangeValues(e.target.value, document.getElementById('addressType2').value, 'Zip'),
                                     }}
                                     formControlProps={{
                                       fullWidth: true
@@ -452,9 +523,9 @@ class NewProfile extends React.Component {
                                 <GridItem>
                                   <CustomInput
                                     labelText="Country"
-                                    id="country"
+                                    id="country-2"
                                     inputProps={{
-                                      onChange: (e) => this.onChangeValues(e, 'country'),
+                                      onChange: (e) => this.onChangeValues(e.target.value, document.getElementById('addressType2').value, 'Country'),
                                     }}
                                     formControlProps={{
                                       fullWidth: true
@@ -467,7 +538,7 @@ class NewProfile extends React.Component {
                             <GridItem xs={12} md={6} className={classes.addressType}>
                             <ToggleDisplay show={showAddress3}>
                               <div>
-                                <AddressSelect />
+                                <AddressSelect refID={'addressType3'} />
                               </div>
                             </ToggleDisplay>
                             </GridItem>
@@ -477,9 +548,9 @@ class NewProfile extends React.Component {
                                 <GridItem>
                                   <CustomInput
                                     labelText="Address 1"
-                                    id="address1"
+                                    id="address1-3"
                                     inputProps={{
-                                      onChange: (e) => this.onChangeValues(e, 'address1'),
+                                      onChange: (e) => this.onChangeValues(e.target.value, document.getElementById('addressType3').value, 'Address1'),
                                     }}
                                     formControlProps={{
                                       fullWidth: true
@@ -489,9 +560,9 @@ class NewProfile extends React.Component {
                                 <GridItem>
                                   <CustomInput
                                     labelText="Address 2"
-                                    id="address2"
+                                    id="address2-3"
                                     inputProps={{
-                                      onChange: (e) => this.onChangeValues(e, 'address2'),
+                                      onChange: (e) => this.onChangeValues(e.target.value, document.getElementById('addressType3').value, 'Address2'),
                                     }}
                                     formControlProps={{
                                       fullWidth: true
@@ -501,9 +572,9 @@ class NewProfile extends React.Component {
                                 <GridItem>
                                   <CustomInput
                                     labelText="City"
-                                    id="city"
+                                    id="city-3"
                                     inputProps={{
-                                      onChange: (e) => this.onChangeValues(e, 'city'),
+                                      onChange: (e) => this.onChangeValues(e.target.value, document.getElementById('addressType3').value, 'City'),
                                     }}
                                     formControlProps={{
                                       fullWidth: true
@@ -513,9 +584,9 @@ class NewProfile extends React.Component {
                                 <GridItem xs={6}>
                                   <CustomInput
                                     labelText="State"
-                                    id="state"
+                                    id="state-3"
                                     inputProps={{
-                                      onChange: (e) => this.onChangeValues(e, 'state'),
+                                      onChange: (e) => this.onChangeValues(e.target.value, document.getElementById('addressType3').value, 'State'),
                                     }}
                                     formControlProps={{
                                       fullWidth: true
@@ -525,9 +596,9 @@ class NewProfile extends React.Component {
                                 <GridItem xs={6}>
                                   <CustomInput
                                     labelText="Zip"
-                                    id="zip"
+                                    id="zip-3"
                                     inputProps={{
-                                      onChange: (e) => this.onChangeValues(e, 'zip'),
+                                      onChange: (e) => this.onChangeValues(e.target.value, document.getElementById('addressType3').value, 'Zip'),
                                     }}
                                     formControlProps={{
                                       fullWidth: true
@@ -537,9 +608,9 @@ class NewProfile extends React.Component {
                                 <GridItem>
                                   <CustomInput
                                     labelText="Country"
-                                    id="country"
+                                    id="country-3"
                                     inputProps={{
-                                      onChange: (e) => this.onChangeValues(e, 'country'),
+                                      onChange: (e) => this.onChangeValues(e.target.value, document.getElementById('addressType3').value, 'Country'),
                                     }}
                                     formControlProps={{
                                       fullWidth: true

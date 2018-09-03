@@ -18,7 +18,7 @@ import Card from "components/Card/Card.jsx";
 //gundb
 import Gun from 'gun/gun';
 const gun = Gun('https://crm-server.herokuapp.com/gun');
-const db = gun.get('users')
+const db = gun.get('testRost').get('users')
 const styles = theme => ({
 	input: {
 		marginBottom: -10,
@@ -82,10 +82,10 @@ class ManageEmployees extends Component {
 	componentDidMount() {
 		const { match } = this.props;
 		const profile = match.params.id
+		const fetchRecords = db.map().once((props)=>console.log(props));
 			db.get(profile).once((user) => {
 				this.setState({ user: user })
 			});
-			db.map().once((props)=>console.log(props))
 	}
 	toggleViews() {
     	this.setState({ addUser: !this.state.addUser })
