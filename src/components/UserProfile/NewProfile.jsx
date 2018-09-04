@@ -21,10 +21,8 @@ import newPassword from 'components/UserProfile/generatePassword.js';
 // material-ui icons
 import AddCircle from '@material-ui/icons/AddCircle';
 import RemoveCircle from '@material-ui/icons/RemoveCircle';
-
 //files
 import avatar from "assets/img/faces/marc.jpg";
-
 //styles
 import styles from 'assets/jss/material-kit-pro-react/components/newProfileStyle.jsx';
 //State
@@ -115,7 +113,6 @@ const mapDispatchToProps = (dispatch) => {
     onChangeMailingCountry: (event) => dispatch(mailAddressCountry(event)),
   }
 }
-
 class NewProfile extends React.Component {
 	constructor(props) {
 		super(props);
@@ -167,7 +164,6 @@ class NewProfile extends React.Component {
       last,
 
     } = this.props
-
     //schema
     let newEmployee = {
       [email]: {
@@ -216,15 +212,15 @@ class NewProfile extends React.Component {
         lastReset: lastReset.toString(),
       }
     }
-
     db.set(newEmployee, (ack) => {
       ack.ok 
         ? dbRelations.set(newRelation)
         : console.log(ack.err)
         console.log(ack.ok)
     });
-  }
 
+    this.props.toggleViews();
+  }
   addressField() {
     if (!this.state.showAddress1) {
       this.setState({
@@ -255,7 +251,6 @@ class NewProfile extends React.Component {
       });
     }
   }
-
   onChangeValues(event, key, reference=null) {
     //buggy - not worth investing time into now
     const functionString = `onChange${key}${reference}`;
@@ -268,7 +263,6 @@ class NewProfile extends React.Component {
           ? parsedMethod(event) 
           : console.log(parsedMethod)
   }
-
 	render() {
 	  const { classes } = this.props;
     const { showPhone1, showPhone2, showPhone3, showAddress1, showAddress2, showAddress3 } = this.state
@@ -647,6 +641,4 @@ class NewProfile extends React.Component {
 	  );
 	}
 }
-
-
 export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(NewProfile));

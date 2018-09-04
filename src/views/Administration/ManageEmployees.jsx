@@ -17,8 +17,8 @@ import EmployeeCard from 'components/UserProfile/EmployeeCard'
 import Card from "components/Card/Card.jsx";
 //gundb
 import Gun from 'gun/gun';
+import open from 'gun/lib/open.js'
 const gun = Gun('https://crm-server.herokuapp.com/gun');
-const db = gun.get('testRost').get('users')
 const styles = theme => ({
 	input: {
 		marginBottom: -10,
@@ -71,20 +71,30 @@ const styles = theme => ({
 		flexWrap: 'wrap',
 	},
 })
+
+const formatData = items => Object.keys(items)
+  .map(key => ({ key, val: items[key] }))
+  .filter(t => Boolean(t.val) && t.key !== '_')
+
 class ManageEmployees extends Component {
 	constructor(props) {
 		super(props);
 			this.state = {
-				addUser: true,
+				addUser: true, 
+				items: []
 			}
 		this.toggleViews = this.toggleViews.bind(this)
 	}
+  componentWillMount() {
+    gun.get('testRost').get('users').on(items => this.setState({
+      items: formatData(items)
+    }))
+  }
 	componentDidMount() {
-		const { match } = this.props;
-		const profile = match.params.id
-			db.get(profile).once((user) => {
-				this.setState({ user: user })
-			});
+		// const { match } = this.props;
+		// const profile = match.params.id
+		console.log('items:', this.state.items)
+
 	}
 	toggleViews() {
     	this.setState({ addUser: !this.state.addUser })
