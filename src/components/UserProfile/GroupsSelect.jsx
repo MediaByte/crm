@@ -48,9 +48,9 @@ class GroupsSelect extends React.Component {
     
     const groupType = data.map((value) => {
       if (!suggestions(value) || data <= 0) {
-        return { [`group${suggestions(value)[0]}`]: false }
+        return `${suggestions(value)[0]}`
       } else {
-        return { [`group${suggestions(value)[0]}`]: true } 
+        return `${suggestions(value)[0]}`
       }
     });
 

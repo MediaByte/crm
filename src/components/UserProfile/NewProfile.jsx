@@ -55,7 +55,7 @@ import {
 } from 'state/newUser/actions.js';
 const gun = Gun('https://crm-server.herokuapp.com/gun');
 const db = gun.get('testRost').get('users');
-const dbRelations = gun.get('relation').get('users')
+const dbRelations = gun.get('testRost').get('relation').get('users');
 const mapStateToProps = (state) => {
   return {
     first: state.newUser.first,
@@ -162,61 +162,53 @@ class NewProfile extends React.Component {
       groups,
       first,
       last,
-
     } = this.props
     //schema
     let newEmployee = {
       [email]: {
-        name: {
-          first: first,
-          last: last,
-        },
-        ...groups,
-        contactInfo: {
-          phone: {
-            home: homePhone.toString(),
-            mobile: mobilePhone.toString(),
-            work: workPhone.toString(),
-          },
-          email: email,
-          address: {
-            homeAddress1: homeAddress1,
-            homeAddress2: homeAddress2, 
-            homeAddressCity: homeAddressCity, 
-            homeAddressState: homeAddressState, 
-            homeAddressZip: homeAddressZip, 
-            homeAddressCountry: homeAddressCountry,
-            workAddress1: workAddress1,
-            workAddress2: workAddress2,
-            workAddressCity: workAddressCity,
-            workAddressState: workAddressState,
-            workAddressZip: workAddressZip,
-            workAddressCountry: workAddressCountry,
-            mailAddress1: mailAddress1,
-            mailAddress2: mailAddress2,
-            mailAddressCity: mailAddressCity,
-            mailAddressState: mailAddressState,
-            mailAddressZip: mailAddressZip,
-            mailAddressCountry: mailAddressCountry,
-          }
-        },
+        first: first,
+        last: last,
+        groups: groups.toString(),
+        home: homePhone.toString(),
+        mobile: mobilePhone.toString(),
+        work: workPhone.toString(),
+        email: email,
+        homeAddress1: homeAddress1,
+        homeAddress2: homeAddress2, 
+        homeAddressCity: homeAddressCity, 
+        homeAddressState: homeAddressState, 
+        homeAddressZip: homeAddressZip, 
+        homeAddressCountry: homeAddressCountry,
+        workAddress1: workAddress1,
+        workAddress2: workAddress2,
+        workAddressCity: workAddressCity,
+        workAddressState: workAddressState,
+        workAddressZip: workAddressZip,
+        workAddressCountry: workAddressCountry,
+        mailAddress1: mailAddress1,
+        mailAddress2: mailAddress2,
+        mailAddressCity: mailAddressCity,
+        mailAddressState: mailAddressState,
+        mailAddressZip: mailAddressZip,
+        mailAddressCountry: mailAddressCountry,
       }
     };
     let lastReset = new Date();
     //relations
     const newRelation = {
       [email]: {
-        current: newPassword(),
+        current: 'presto', //newPassword() <---- Needed later
         previous: null,
         temp: true,
         lastReset: lastReset.toString(),
       }
     }
-    db.set(newEmployee, (ack) => {
-      ack.ok 
-        ? dbRelations.set(newRelation)
-        : console.log(ack.err)
-        console.log(ack.ok)
+    db.put(newEmployee, (ack) => {
+      !ack.err 
+        ? dbRelations.put(newRelation)
+        : null
+
+        
     });
 
     this.props.toggleViews();

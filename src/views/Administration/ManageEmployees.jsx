@@ -17,8 +17,16 @@ import EmployeeCard from 'components/UserProfile/EmployeeCard'
 import Card from "components/Card/Card.jsx";
 //gundb
 import Gun from 'gun/gun';
-import open from 'gun/lib/open.js'
 const gun = Gun('https://crm-server.herokuapp.com/gun');
+const db = gun.get('testRost').get('users')
+const formatData = data => Object.keys(data).map((user, i) => {
+	
+	user !== '_' && user !== 'null' && user !== 'undefined'
+		? user 
+		: null 
+
+
+}).filter(n=>n)
 const styles = theme => ({
 	input: {
 		marginBottom: -10,
@@ -72,10 +80,6 @@ const styles = theme => ({
 	},
 })
 
-const formatData = items => Object.keys(items)
-  .map(key => ({ key, val: items[key] }))
-  .filter(t => Boolean(t.val) && t.key !== '_')
-
 class ManageEmployees extends Component {
 	constructor(props) {
 		super(props);
@@ -85,15 +89,9 @@ class ManageEmployees extends Component {
 			}
 		this.toggleViews = this.toggleViews.bind(this)
 	}
-  componentWillMount() {
-    gun.get('testRost').get('users').on(items => this.setState({
-      items: formatData(items)
-    }))
-  }
 	componentDidMount() {
-		// const { match } = this.props;
-		// const profile = match.params.id
-		console.log('items:', this.state.items)
+		let x =[]
+    	db.map((data, key) => [...data]);
 
 	}
 	toggleViews() {
@@ -128,46 +126,26 @@ class ManageEmployees extends Component {
 					                />
 
 								</GridItem>
-								<GridItem md={12} className={classes.grid}>
-									<Card className={classes.item} raised>
-										<Typography variant='title'>Employee Name</Typography>
-										<div className={classes.itemSubContent}>
-											<Typography variant='body2'>Group</Typography>
-											<Typography variant='body1'>Phone</Typography>
-											<Typography variant='body1'>Email</Typography>
-										</div>
-									</Card>
-								</GridItem>
-								<GridItem md={12} className={classes.grid}>
-									<Card className={classes.item} raised>
-										<Typography variant='title'>Employee Name</Typography>
-										<div className={classes.itemSubContent}>
-											<Typography variant='body2'>Group</Typography>
-											<Typography variant='body1'>Phone</Typography>
-											<Typography variant='body1'>Email</Typography>
-										</div>
-									</Card>
-								</GridItem>
-								<GridItem md={12} className={classes.grid}>
-									<Card className={classes.item} raised>
-										<Typography variant='title'>Employee Name</Typography>
-										<div className={classes.itemSubContent}>
-											<Typography variant='body2'>Group</Typography>
-											<Typography variant='body1'>Phone</Typography>
-											<Typography variant='body1'>Email</Typography>
-										</div>
-									</Card>
-								</GridItem>
-								<GridItem md={12} className={classes.grid}>
-									<Card className={classes.item} raised>
-										<Typography variant='title'>Employee Name</Typography>
-										<div className={classes.itemSubContent}>
-											<Typography variant='body2'>Group</Typography>
-											<Typography variant='body1'>Phone</Typography>
-											<Typography variant='body1'>Email</Typography>
-										</div>
-									</Card>
-								</GridItem>
+{ 
+									this.state.items.map((user) => {
+										user !== null
+											? (
+												<GridItem md={12} className={classes.grid}>
+													<Card className={classes.item} raised>
+														<Typography variant='title'>{user.first + ' ' + user.last}</Typography>
+														<div className={classes.itemSubContent}>
+															<Typography variant='body2'>{user.groups}</Typography>
+															<Typography variant='body1'>{user.home}</Typography>
+															<Typography variant='body1'>{user.email}</Typography>
+														</div>
+													</Card>
+												</GridItem>
+											  )
+											: null
+										})
+
+}
+								
 							</GridContainer>
 						</GridItem>
 						<GridItem sm={8} md={9} className={classes.userProfileGrid}>
@@ -200,4 +178,4 @@ class ManageEmployees extends Component {
 ManageEmployees.propTypes = {
   classes: PropTypes.object.isRequired,
 };
-export default withStyles(styles)(ManageEmployees);
+export default withStyles(styles)(ManageEmployees);	
