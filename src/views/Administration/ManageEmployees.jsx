@@ -19,14 +19,7 @@ import Card from "components/Card/Card.jsx";
 import Gun from 'gun/gun';
 const gun = Gun('https://crm-server.herokuapp.com/gun');
 const db = gun.get('testRost').get('users')
-const formatData = data => Object.keys(data).map((user, i) => {
-	
-	user !== '_' && user !== 'null' && user !== 'undefined'
-		? user 
-		: null 
 
-
-}).filter(n=>n)
 const styles = theme => ({
 	input: {
 		marginBottom: -10,
@@ -85,14 +78,20 @@ class ManageEmployees extends Component {
 		super(props);
 			this.state = {
 				addUser: true, 
-				items: []
+				users: []
 			}
 		this.toggleViews = this.toggleViews.bind(this)
 	}
-	componentDidMount() {
-		let x =[]
-    	db.map((data, key) => [...data]);
 
+	componentWillMount() {
+	let users = []
+    	db.map((user) => {
+			users.push(user || {})
+    	}).on()
+    	this.setState({ users: users })
+	}
+	componentDidMount() {
+		console.log(this.state.users)
 	}
 	toggleViews() {
     	this.setState({ addUser: !this.state.addUser })
@@ -127,9 +126,9 @@ class ManageEmployees extends Component {
 
 								</GridItem>
 { 
-									this.state.items.map((user) => {
-										user !== null
-											? (
+									this.state.users.map((user, i) => {
+										if ( user.hasOwnProperty('first')) {
+											return (
 												<GridItem md={12} className={classes.grid}>
 													<Card className={classes.item} raised>
 														<Typography variant='title'>{user.first + ' ' + user.last}</Typography>
@@ -140,8 +139,8 @@ class ManageEmployees extends Component {
 														</div>
 													</Card>
 												</GridItem>
-											  )
-											: null
+											)
+										}
 										})
 
 }
