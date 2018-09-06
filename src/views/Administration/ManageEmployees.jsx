@@ -17,6 +17,12 @@ import EmployeeCard from 'components/UserProfile/EmployeeCard'
 import Card from "components/Card/Card.jsx";
 //gundb
 import Gun from 'gun/gun';
+
+
+const formatData = data => Object.keys(data)
+	.map(key => ({ key, ...data[key]  }))
+	.filter(m => m.key !== '_')
+
 const styles = theme => ({
 	input: {
 		marginBottom: -10,
@@ -91,13 +97,13 @@ class ManageEmployees extends Component {
 		this.showUser = this.showUser.bind(this)
 	}
 
-	componentWillUpdate(prev, next) {
-
-	}
 	componentWillMount() {
 		let users = []
-		this.gun.get('testRost').get('users').map(user => users.push(user || {})).on()
-	    	this.setState({ users: users })
+		this.gun.get('testRost').get('users').map().on((user, key) => {
+			users[key] = user
+			this.setState({ users: Object.assign({}, this.state.users, users) })
+		})
+	    	
 	}
 	toggleViews() {
     	this.setState({ addUser: !this.state.addUser })
@@ -114,6 +120,7 @@ class ManageEmployees extends Component {
 	render() {
 		const { classes } = this.props
 		const { addUser } = this.state
+		let parsedData = formatData(this.state.users)
 		return (
 			<div>
 				<Page component={'administration'} titleText={'Employees'}>
@@ -142,7 +149,7 @@ class ManageEmployees extends Component {
 								</GridItem>
 								<div className={classes.renderUsers}>
 {
-									this.state.users.map((user, i) => {
+									parsedData.map((user, i) => {
 										if ( user.hasOwnProperty('first')) {
 											return (
 												<div key={i}>
