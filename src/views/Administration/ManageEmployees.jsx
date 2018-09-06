@@ -17,9 +17,6 @@ import EmployeeCard from 'components/UserProfile/EmployeeCard'
 import Card from "components/Card/Card.jsx";
 //gundb
 import Gun from 'gun/gun';
-const gun = Gun('https://crm-server.herokuapp.com/gun');
-const db = gun.get('testRost').get('users')
-
 const styles = theme => ({
 	input: {
 		marginBottom: -10,
@@ -67,15 +64,21 @@ const styles = theme => ({
 		display: 'flex',
 		justifyContent: 'center',
 	},
+	renderUsers: {
+		position: 'absolute',
+    	overflow: 'auto',
+    	width: '80%',
+    	height: '100%'
+	},
 	content: {
 		display: 'flex',
 		flexWrap: 'wrap',
 	},
 })
-
 class ManageEmployees extends Component {
 	constructor(props) {
 		super(props);
+		this.gun = Gun('https://crm-server.herokuapp.com/gun');
 			this.state = {
 				addUser: true, 
 				users: [],
@@ -88,9 +91,12 @@ class ManageEmployees extends Component {
 		this.showUser = this.showUser.bind(this)
 	}
 
+	componentWillUpdate(prev, next) {
+
+	}
 	componentWillMount() {
 		let users = []
-	    	db.map(user => users.push(user || {})).on()
+		this.gun.get('testRost').get('users').map(user => users.push(user || {})).on()
 	    	this.setState({ users: users })
 	}
 	toggleViews() {
@@ -134,7 +140,8 @@ class ManageEmployees extends Component {
 					                />
 
 								</GridItem>
-{ 
+								<div className={classes.renderUsers}>
+{
 									this.state.users.map((user, i) => {
 										if ( user.hasOwnProperty('first')) {
 											return (
@@ -155,7 +162,7 @@ class ManageEmployees extends Component {
 										})
 
 }
-								
+							</div>
 							</GridContainer>
 						</GridItem>
 						<GridItem sm={8} md={9} className={classes.userProfileGrid}>
