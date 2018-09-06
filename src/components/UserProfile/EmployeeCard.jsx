@@ -65,7 +65,7 @@ class EmployeeCard extends React.Component {
 	}
 
 	render() {
-	  const { classes } = this.props;
+	  const { classes, first, last, email, phone, group } = this.props;
 	  return (
 	    <div>
 	      <GridContainer className={classes.container}>
@@ -87,11 +87,11 @@ class EmployeeCard extends React.Component {
 	            <CardBody>
                 <GridContainer className={classes.cardBody} direction={'column'}>
 	                <GridItem xs={12} sm={12} md={12}>
-                    <Typography variant='headline'>Employee Name</Typography>
+                    <Typography variant='headline'>{ first === "" ? 'Employee Name' : first + ' ' + last}</Typography>
                     <div>
-                      <Typography variant='body1'>Group</Typography>
-                      <Typography variant='body1'>Phone</Typography>
-                      <Typography variant='body1'>Email</Typography>
+                      <Typography variant='body1'>{ first === "" ? 'Group' : group}</Typography>
+                      <Typography variant='body1'>{ first === "" ? 'Phone' : phone}</Typography>
+                      <Typography variant='body1'>{ first === "" ? 'Email' : email}</Typography>
                     </div>
 	                </GridItem>
                 </GridContainer>

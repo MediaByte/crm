@@ -78,23 +78,32 @@ class ManageEmployees extends Component {
 		super(props);
 			this.state = {
 				addUser: true, 
-				users: []
+				users: [],
+				first: '',
+				last: '',
+				group: '',
+				email: '',
 			}
 		this.toggleViews = this.toggleViews.bind(this)
+		this.showUser = this.showUser.bind(this)
 	}
 
 	componentWillMount() {
-	let users = []
-    	db.map((user) => {
-			users.push(user || {})
-    	}).on()
-    	this.setState({ users: users })
-	}
-	componentDidMount() {
-		console.log(this.state.users)
+		let users = []
+	    	db.map(user => users.push(user || {})).on()
+	    	this.setState({ users: users })
 	}
 	toggleViews() {
     	this.setState({ addUser: !this.state.addUser })
+  	}
+  	showUser(user) {
+		this.setState({ 
+			first: user.first,
+			last: user.last,
+			email: user.email,
+			group: user.groups
+		})
+		console.log(user)
   	}
 	render() {
 		const { classes } = this.props
@@ -129,16 +138,18 @@ class ManageEmployees extends Component {
 									this.state.users.map((user, i) => {
 										if ( user.hasOwnProperty('first')) {
 											return (
-												<GridItem md={12} className={classes.grid}>
-													<Card className={classes.item} raised>
-														<Typography variant='title'>{user.first + ' ' + user.last}</Typography>
-														<div className={classes.itemSubContent}>
-															<Typography variant='body2'>{user.groups}</Typography>
-															<Typography variant='body1'>{user.home}</Typography>
-															<Typography variant='body1'>{user.email}</Typography>
-														</div>
-													</Card>
-												</GridItem>
+												<div key={i}>
+													<GridItem md={12} className={classes.grid} style={{ cursor: 'pointer' }}>
+														<Card className={classes.item} raised onClick={()=>this.showUser(user)}>
+															<Typography variant='title'>{user.first + ' ' + user.last}</Typography>
+															<div className={classes.itemSubContent}>
+																<Typography variant='body2'>{user.groups}</Typography>
+																<Typography variant='body1'>{user.home}</Typography>
+																<Typography variant='body1'>{user.email}</Typography>
+															</div>
+														</Card>
+													</GridItem>
+												</div>
 											)
 										}
 										})
@@ -154,7 +165,15 @@ class ManageEmployees extends Component {
 										{ addUser 
 											? (
 												<div>
-												    <EmployeeCard toggleViews={this.toggleViews} addUser={addUser}/>
+												    <EmployeeCard 
+												    	toggleViews={this.toggleViews} 
+												    	addUser={addUser}
+														first={this.state.first}
+														last={this.state.last}
+														group={this.state.group}
+														email={this.state.email}
+														phone={this.state.phone}
+												    />
 												</div>
 											  )
 											: (
