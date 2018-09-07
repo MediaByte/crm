@@ -53,9 +53,13 @@ const styles = theme => ({
 })
 
 class PasswordRules extends Component {
-
+	componentDidMount() {
+	    window.scrollTo(0, 0);
+	    document.body.scrollTop = 0;
+	}
 	render() {
 		const { classes } = this.props;
+
 		return (
 			<div>
 				<Page component={'administration'}>

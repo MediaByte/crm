@@ -36,6 +36,7 @@ class Dashboard extends Component {
 				user: '',
 			}
 	}
+
 	componentDidMount() {
 		const { match } = this.props;
 		const profile = match.params.id
@@ -43,6 +44,9 @@ class Dashboard extends Component {
 			db.get(profile).once((user) => {
 				this.setState({ user: user })
 			});
+
+	    window.scrollTo(0, 0);
+	    document.body.scrollTop = 0;
 	}
 	render() {
 		const { classes } = this.props

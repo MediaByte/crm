@@ -15,7 +15,6 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 //project files
 import Page from 'views/Page/Page';
-
 const styles = theme => ({
 	content: {
 		[theme.breakpoints.up('md')]: {
@@ -54,8 +53,11 @@ const styles = theme => ({
 
 	}
 })
-
 class AdminPanel extends React.Component {
+	componentDidMount() {
+	    window.scrollTo(0, 0);
+	    document.body.scrollTop = 0;
+	}
 	render() {
 		const { classes } = this.props
 		return (

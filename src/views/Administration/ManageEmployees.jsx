@@ -18,7 +18,6 @@ import Card from "components/Card/Card.jsx";
 //gundb
 import Gun from 'gun/gun';
 
-
 const formatData = data => Object.keys(data)
 	.map(key => ({ key, ...data[key]  }))
 	.filter(m => m.key !== '_')
@@ -71,10 +70,9 @@ const styles = theme => ({
 		justifyContent: 'center',
 	},
 	renderUsers: {
-		position: 'absolute',
     	overflow: 'auto',
-    	width: '80%',
-    	height: '100%'
+    	width: '100%',
+    	height: '600px'
 	},
 	content: {
 		display: 'flex',
@@ -96,14 +94,21 @@ class ManageEmployees extends Component {
 		this.toggleViews = this.toggleViews.bind(this)
 		this.showUser = this.showUser.bind(this)
 	}
-
+	componentDidMount() {
+		let users = []
+		this.gun.get('testRost').get('users').map().on((user, key) => {
+			users[key] = user
+			this.setState({ users: Object.assign({}, this.state.users, users) })
+		})
+	    window.scrollTo(0, 0);
+	    document.body.scrollTop = 0;
+	}
 	componentWillMount() {
 		let users = []
 		this.gun.get('testRost').get('users').map().on((user, key) => {
 			users[key] = user
 			this.setState({ users: Object.assign({}, this.state.users, users) })
 		})
-	    	
 	}
 	toggleViews() {
     	this.setState({ addUser: !this.state.addUser })
@@ -149,24 +154,26 @@ class ManageEmployees extends Component {
 								</GridItem>
 								<div className={classes.renderUsers}>
 {
-									parsedData.map((user, i) => {
-										if ( user.hasOwnProperty('first')) {
-											return (
-												<div key={i}>
-													<GridItem md={12} className={classes.grid} style={{ cursor: 'pointer' }}>
-														<Card className={classes.item} raised onClick={()=>this.showUser(user)}>
-															<Typography variant='title'>{user.first + ' ' + user.last}</Typography>
-															<div className={classes.itemSubContent}>
-																<Typography variant='body2'>{user.groups}</Typography>
-																<Typography variant='body1'>{user.home}</Typography>
-																<Typography variant='body1'>{user.email}</Typography>
-															</div>
-														</Card>
-													</GridItem>
-												</div>
-											)
-										}
-										})
+									parsedData
+										.map((user, i) => {
+											if ( user.hasOwnProperty('first')) {
+												return (
+													<div key={i}>
+														<GridItem md={12} className={classes.grid} style={{ cursor: 'pointer' }}>
+															<Card className={classes.item} raised onClick={()=>this.showUser(user)}>
+																<Typography variant='title'>{user.first + ' ' + user.last}</Typography>
+																<div className={classes.itemSubContent}>
+																	<Typography variant='body2'>{user.groups}</Typography>
+																	<Typography variant='body1'>{user.home}</Typography>
+																	<Typography variant='body1'>{user.email}</Typography>
+																</div>
+															</Card>
+														</GridItem>
+													</div>
+												)
+											}
+											})
+										.reverse()
 
 }
 							</div>
