@@ -77,7 +77,8 @@ class LoginPage extends React.Component {
                     <Card>
                       <form className={classes.form}>
                         <CardHeader
-                          color="info"
+                          color="transparent"
+                          noShadow
                           signup
                           className={classes.cardHeader}
                         >
