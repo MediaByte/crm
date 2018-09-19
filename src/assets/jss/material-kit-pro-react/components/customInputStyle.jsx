@@ -33,17 +33,20 @@ const customInputStyle = {
   },
   labelRoot: {
     ...defaultFont,
-    color: "#AAAAAA !important",
-    fontWeight: "400",
-    fontSize: "14px",
+    color: "#AAAAAA ",
+    fontWeight: "600",
+    fontSize: "16px",
     lineHeight: "1.42857",
     top: "10px",
     "& + $underline": {
-      marginTop: "0px"
+      marginTop: "0px",
     }
   },
   labelRootError: {
     color: dangerColor + " !important"
+  },
+    labelRootFocus: {
+    color: infoColor + " !important"
   },
   labelRootSuccess: {
     color: successColor + " !important"

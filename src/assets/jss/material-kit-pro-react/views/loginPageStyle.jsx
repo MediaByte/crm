@@ -13,7 +13,6 @@ const loginPageStyle = {
     marginRight: "15px",
     borderRadius: "6px",
     "& img": {
-      width: "100%",
       borderRadius: "6px",
       pointerEvents: "none",
       boxShadow:
@@ -34,6 +33,12 @@ const loginPageStyle = {
     position: "relative",
     paddingTop: "9vh",
     color: "#FFFFFF"
+  },
+  cardContainer: {
+    width: '306px', 
+    height: '350px',
+    border: '1px solid #EEEEEE',
+    borderRadius: '14px'
   },
   pageHeader: {
     minHeight: "100vh",

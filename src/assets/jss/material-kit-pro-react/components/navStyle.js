@@ -59,7 +59,7 @@ const navStyles = theme => ({
     boxShadow: theme.shadows[24],
     fontSize: '1.5em',
     border: '1px solid black',
-    backgroundColor: '#00A7F8',
+    backgroundColor: '#0DACC4',
     whiteSpace: 'nowrap',
     width: drawerWidth,
     transition: theme.transitions.create('width', {
@@ -70,7 +70,7 @@ const navStyles = theme => ({
   drawerPaperClose: {
     boxShadow: theme.shadows[20],
     overflowX: 'hidden',
-    backgroundColor: '#00A7F8',
+    backgroundColor: '#0DACC4',
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,

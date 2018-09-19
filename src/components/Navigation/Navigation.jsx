@@ -5,6 +5,8 @@ import classNames from 'classnames';
 //react router
 import { NavLink } from 'react-router-dom'
 //Material-ui components
+import IconButton from '@material-ui/core/IconButton';
+import Divider from '@material-ui/core/Divider';
 import Dashboard from '@material-ui/icons/Dashboard';
 import AppBar from '@material-ui/core/AppBar';
 import Typography from '@material-ui/core/Typography';
@@ -22,7 +24,6 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from "@material-ui/core/InputAdornment";
 //material ui icons
 import MenuIcon from '@material-ui/icons/Menu';
@@ -31,6 +32,8 @@ import Search from '@material-ui/icons/Search';
 import MoreVert from '@material-ui/icons/MoreVert'
 //projects components
 import CustomInput from "components/CustomInput/CustomInput.jsx";
+import NotificationsCenter from "components/NotificationCenter/NotificationsCenter.js";
+
 //styles
 import navStyles from 'assets/jss/material-kit-pro-react/components/navStyle.js';
 
@@ -96,9 +99,7 @@ class Navigation extends React.Component {
                     )
                   }}
                 />
-              <IconButton>
-                <MoreVert/>
-              </IconButton>
+              <NotificationsCenter />
             </Toolbar>
           </AppBar>
           <Drawer
@@ -116,6 +117,7 @@ class Navigation extends React.Component {
                 <Close />
               </IconButton>
             </div>
+            <Divider style={{ backgroundColor: 'white', marginTop: '8px', }} />
             <List 
               className={classes.drawerList}
               style={this.state.open ? {marginTop: -24} : null}
@@ -126,7 +128,7 @@ class Navigation extends React.Component {
                   ? { color: 'grey', backgroundColor: 'white', borderRadius:'5px', border: '2px solid #00A7F8' }
                   : { color: "#fff" }  
                 } 
-                component={(props) => <NavLink to={'/dashboard/test@gmail.com'} {...props}/>}
+                component={(props) => <NavLink to={`/pinecone/dashboard/test@gmail.com`} {...props}/>}
               >
                 <ListItemIcon>
                   <Dashboard 
@@ -153,7 +155,7 @@ class Navigation extends React.Component {
               <ListItem 
                 button
                 style={ component === 'administration' 
-                  ? { color: 'grey', backgroundColor: 'white', borderRadius:'5px', border: '2px solid #00A7F8' }
+                  ? { color: 'grey', backgroundColor: 'white', borderRadius:'5px', border: '2px solid #00000' }
                   : { color: "#fff" }  
                 }        
                 component={(props) => <NavLink to={'/admin/test@gmail.com'} {...props}/>}

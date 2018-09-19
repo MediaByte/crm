@@ -54,10 +54,9 @@ const cardHeaderStyle = {
   cardHeaderSignup: {
     marginLeft: "20px",
     marginRight: "20px",
-    marginTop: "-200px",
+    marginTop: "-120px",
+    marginBottom: '-10px',
     padding: "20px 0",
-    width: "100%",
-    marginBottom: "15px"
   },
   warningCardHeader,
   successCardHeader,

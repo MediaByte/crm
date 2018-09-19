@@ -7,7 +7,7 @@ import Landing from "views/Landing/Landing.js";
 
 var indexRoutes = [
   { path: "/login", name: "LoginPage", component: LoginPage },
-  { path: "/dashboard/:id", name: "Dashboard", component: DashboardMain },
+  { path: "/pinecone/dashboard/:id", name: "Dashboard", component: DashboardMain },
   { path: "/admin/:id", name: "Administration", component: AdminPanel, exact: true },
   { path: "/passwordrules", name: "Administration", component: PasswordRules },
   { path: "/management/employees", name: "Administration", component: ManageEmployees },

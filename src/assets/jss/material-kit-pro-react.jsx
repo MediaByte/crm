@@ -55,7 +55,7 @@ const secondaryColor = "#fafafa";
 const warningColor = "#ff9800";
 const dangerColor = "#f44336";
 const successColor = "#4caf50";
-const infoColor = "#0164CB";
+const infoColor = "#0dacc4";
 const roseColor = "#e91e63";
 const grayColor = "#999999";
 

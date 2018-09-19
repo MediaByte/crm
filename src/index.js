@@ -17,6 +17,17 @@ import { createLogger } from 'redux-logger';
 //Styles
 import "assets/scss/material-kit-pro-react.css";
 
+//Material-UI Theme Override
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+    	main: '#0dacc4',
+    }
+  },
+});
+
 //Reducers
 const rootReducers = combineReducers({ newUser, isUserAuthorized });
 
@@ -32,11 +43,13 @@ const hist = createBrowserHistory();
 ReactDOM.render(
 <Provider store={store}>
   <Router history={hist}>
-    <Switch>
-      {indexRoutes.map((prop, key) => {
-        return <Route path={prop.path} key={key} component={prop.component} />;
-      })}
-    </Switch>
+    <MuiThemeProvider theme={theme}>
+	    <Switch>
+	      {indexRoutes.map((prop, key) => {
+	        return <Route path={prop.path} key={key} component={prop.component} />;
+	      })}
+	    </Switch>
+    </MuiThemeProvider>
   </Router>
 </Provider>,
   document.getElementById("root")

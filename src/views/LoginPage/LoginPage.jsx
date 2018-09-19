@@ -74,51 +74,40 @@ class LoginPage extends React.Component {
               <div className={classes.container}>
                 <GridContainer justify="center">
                   <GridItem xs={12} sm={12} md={4}>
-                    <Card>
+                    <Card className={classes.cardContainer}>
                       <form className={classes.form}>
                         <CardHeader
-                          color="transparent"
                           noShadow
                           signup
                           className={classes.cardHeader}
                         >
                           <div className={classes.logo}>
-                            <img src={Logo} alt={'Sign in to continue'}/>
+                            <img width={194} height={220} src={Logo} alt={'Sign in to continue'}/>
                           </div>
                         </CardHeader>
                         <CardBody signup>
                           <CustomInput
                             id="email"
-                            labelText={ correctEmail ? 'Email*' : null }
+                            labelText="Email*"
+                            success={correctEmail}
+
                             formControlProps={{
-                              fullWidth: true
+                              fullWidth: true,
+
                             }}
                             inputProps={{
-                              placeholder: "Email*",
-                              error: emailNotFound,
-                              type: "text",
-                              autoComplete: "email",
+                              autoComplete: 'false',
                               onChange: (e) => this.handleEmail(e),
-                              startAdornment: (
-                                <InputAdornment position="start">
-                                  <Email className={classes.inputIconsColor} />
+                              endAdornment: (
+                                <InputAdornment position="end">
+                                  { !correctEmail ? <Email className={classes.inputIconsColor} /> : null}
                                 </InputAdornment>
                               )
                             }}
                           />
-                          {
-                            this.state.emailNotFound 
-                              ? <FormHelperText 
-                                  style={{marginTop: -10, marginLeft: 10}} 
-                                  error 
-                                  id="name-error-text"
-                                >
-                                  Incorrect Email
-                                </FormHelperText> 
-                              : null
-                          }
                           <CustomInput
                             id="pass"
+                            labelText="Password*"
                             error={this.state.inputError}
                             formControlProps={{
                               fullWidth: true
@@ -127,13 +116,11 @@ class LoginPage extends React.Component {
                               disabled: !correctEmail,
                               error: this.state.inputError,
                               value: this.state.password,
-                              placeholder: "Password*",
                               type: "password",
-                              autoComplete: "current-password",
                               onChange: (e) => this.handlePassword(e),
                               onKeyDown: (e) => this.keyPress(e),
-                              startAdornment: (
-                                <InputAdornment position="start">
+                              endAdornment: (
+                                <InputAdornment position="end">
                                   <LockOutline
                                     className={classes.inputIconsColor}
                                   />
@@ -171,7 +158,7 @@ class LoginPage extends React.Component {
             </div>
         )
       : (
-          <Redirect push to={`/dashboard/${username}`}/>
+          <Redirect push to={`/pinecone/dashboard/${username}`}/>
         )
   }
 }
