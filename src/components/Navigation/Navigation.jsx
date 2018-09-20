@@ -80,7 +80,7 @@ class Navigation extends React.Component {
               >
                 <MenuIcon />
               </IconButton>
-                <Typography variant="title" noWrap className={classes.title}>{titleText}</Typography>
+                <Typography variant="title" noWrap className={classes.title}></Typography>
                 <CustomInput
                   id="search"
                   inputProps={{
@@ -125,7 +125,7 @@ class Navigation extends React.Component {
               <ListItem 
                 button
                 style={ component === 'dashboard' 
-                  ? { color: 'grey', backgroundColor: 'white', borderRadius:'5px', border: '2px solid #00A7F8' }
+                  ? { color: 'grey', backgroundColor: 'white', borderRadius:'5px', border: '2px solid #00000' }
                   : { color: "#fff" }  
                 } 
                 component={(props) => <NavLink to={`/pinecone/dashboard/test@gmail.com`} {...props}/>}
@@ -193,6 +193,7 @@ class Navigation extends React.Component {
             </List>
           </Drawer>
             <main className={classes.children}>
+              <Typography variant="title" noWrap className={classes.title}>{titleText}</Typography>
                 {children}
             </main>
         </div>

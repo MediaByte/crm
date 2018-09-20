@@ -16,7 +16,8 @@ const styles = theme => ({
 
 	},
 	layout: {
-
+		display: 'flex',
+		justifyContent: 'space-between',
 	},
 	content: {
 		display: 'flex',
@@ -54,13 +55,13 @@ class Dashboard extends Component {
 			<div classNames={classes.root}>
 				<Page component={'dashboard'} titleText={'Dashboard'}>
 					<div className={classes.content}>
-			          <GridContainer className={classes.layout} spacing={0}>
-			            <GridItem  xs={12} sm={12} md={6} lg={6} xl={6}>
+			          <GridContainer className={classes.layout}>
+			            <GridItem  xs={12} sm={6} md={6} lg={6} xl={6}>
 				            <div>
-				 				<Cards />
+				 				<Cards /> <br />
 				 			</div>
 			            </GridItem>
-			            <GridItem xs={12} sm={12} md={6} lg={6} xl={6}>
+			            <GridItem xs={12} sm={6} md={6} lg={6} xl={6}>
 				            <div>
 				 				<Cards />
 				 			</div>

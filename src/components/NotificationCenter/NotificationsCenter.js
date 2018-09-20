@@ -10,20 +10,22 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 const styles = {
   list: {
-    width: 250,
+    width: 270,
   },
   fullList: {
-    position: 'fixed',
+    position: 'absolute',
     bottom: '0',
-    width: 250,
+    width: 270,
   },
   drawerPaper: {
     backgroundColor: '#E0E0E0',
-    borderRadius: '5px'
+    borderRadius: '1px'
   },
   header: {
     display: 'flex',
-    margin: '0, auto',
+    margin: 'auto',
+    marginTop: '15px',
+    marginBottom: '15px',
     justifyContent: 'center',
   },
   clock: {
@@ -43,8 +45,7 @@ const styles = {
   },
   bottomPanel: {
     display: 'flex',
-    justifyContent: 'space-around',
-    alignContent: 'center'
+    margin: 'auto',
   },
   userIcon: {
     fontSize: '35px',
@@ -113,13 +114,7 @@ class NotificationsCenter extends React.Component {
             paper: classes.drawerPaper
           }}
         >
-          <div
-            tabIndex={0}
-            role="button"
-            onClick={this.toggleDrawer('right', false)}
-            onKeyDown={this.toggleDrawer('right', false)}
-            className
-          >
+          <div>
             {sideList}
             <List></List>
             {fullList}
