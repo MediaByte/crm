@@ -8,14 +8,17 @@ import Divider from '@material-ui/core/Divider';
 import Icon from '@material-ui/core/Icon';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-const styles = {
+import GridItem from 'components/Grid/GridItem.jsx';
+import GridContainer from 'components/Grid/GridContainer.jsx';
+
+const styles = theme => ({
   list: {
-    width: 270,
+    width: 317,
   },
   fullList: {
     position: 'absolute',
     bottom: '0',
-    width: 270,
+    width: 317,
   },
   drawerPaper: {
     backgroundColor: '#E0E0E0',
@@ -24,37 +27,42 @@ const styles = {
   header: {
     display: 'flex',
     margin: 'auto',
-    marginTop: '15px',
-    marginBottom: '15px',
+    marginTop: '20px',
+    marginBottom: '20px',
     justifyContent: 'center',
   },
   clock: {
-    marginRight: '10px'
+    fontFamily: '"Montserrat", sans-serif',
+    fontSize: "33px",
   },
   date: {
-    marginTop: '15px'
-  },
-  userName: {
-    margin: 'auto'
+    [theme.breakpoints.up('sm')]: {
+      paddingTop: '5px',
+    },
+    margin: 'auto',
+    fontFamily: '"Montserrat", sans-serif',
+    fontSize: "17px",
   },
   signOut: {
-    margin: 'auto'
-  },
-  settings: {
-    margin: 'auto'
+    margin: 'auto',
+    display: 'flex',
+    justifyContent: 'flex-end',
+    fontFamily: '"Montserrat", sans-serif',
+    cursor: 'pointer',
   },
   bottomPanel: {
     display: 'flex',
-    margin: 'auto',
   },
   userIcon: {
-    fontSize: '35px',
-    margin: 'auto'
+    fontSize: '45px',
+    margin: 'auto',
+    marginLeft: '20px',
+    fontWeight: 100,
   },
-};
+});
 class NotificationsCenter extends React.Component {
   state = {
-    right: false,
+    right: true,
   };
 
   toggleDrawer = (side, open) => () => {
@@ -65,37 +73,37 @@ class NotificationsCenter extends React.Component {
   render() {
     const { classes } = this.props;
 
-    const sideList = (
+    const header = (
       <div className={classes.list}>
-      <div className={classes.header}>
-        <div className={classes.clock}>
-          <Typography variant={'display1'}>
+      <GridContainer className={classes.header}>
+        <GridItem xs={12} sm={3}>
+          <Typography className={classes.clock}>
             3:03
           </Typography>
-        </div>       
-        <div>
-          <Typography className={classes.date} variant={'body1'}>
+        </GridItem>       
+        <GridItem xs ={12} sm={9} className={classes.date}>
+          <Typography style={{ color: 'gray' }} className={classes.date} variant={'body1'}>
             Thursday, September 13
           </Typography>
-        </div>
-      </div>
+        </GridItem>
+      </GridContainer>
         <Divider />
       </div>
     );
 
-    const fullList = (
+    const footer = (
       <div className={classes.fullList}>
         <Divider />
-        <div className={classes.bottomPanel}>
-          <Icon className={classes.userIcon}>perm_identity</Icon>
-          <Typography className={classes.userName} variant={'body1'}>
-            John Smith
-          </Typography>
-          <Typography color='primary' className={classes.signOut} variant={'button'}>
-            SIGN OUT
-          </Typography>
-          <Icon className={classes.settings} style={{ fontSize: '22px' }}>settings</Icon>
-        </div>
+        <GridContainer className={classes.bottomPanel}>
+          <GridItem xs={6}>
+            <Icon className={classes.userIcon}>perm_identity</Icon>
+          </GridItem>
+          <GridItem xs={6} className={classes.signOut}>
+            <Typography className={classes.signOut} color='primary' variant={'button'}>
+              SIGN OUT
+            </Typography>
+          </GridItem>
+        </GridContainer>
       </div>
     );
 
@@ -115,9 +123,9 @@ class NotificationsCenter extends React.Component {
           }}
         >
           <div>
-            {sideList}
+            {header}
             <List></List>
-            {fullList}
+            {footer}
           </div>
         </Drawer>
       </div>
