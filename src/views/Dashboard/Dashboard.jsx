@@ -18,12 +18,13 @@ const styles = theme => ({
 	layout: {
 		display: 'flex',
 		justifyContent: 'space-between',
+
 	},
 	content: {
 		display: 'flex',
 		justifyContent: 'center', 
 		[theme.breakpoints.up('sm')]: {
-			marginTop: theme.spacing.unit * 2,
+			marginTop: '0px',
 		},
 		[theme.breakpoints.down('xs')]: {
 			marginTop: theme.spacing.unit * 2
@@ -56,6 +57,16 @@ class Dashboard extends Component {
 				<Page component={'dashboard'} titleText={'Dashboard'}>
 					<div className={classes.content}>
 			          <GridContainer className={classes.layout}>
+			            <GridItem  xs={12} sm={6} md={6} lg={6} xl={6}>
+				            <div>
+				 				<Cards /> <br />
+				 			</div>
+			            </GridItem>
+			            <GridItem xs={12} sm={6} md={6} lg={6} xl={6}>
+				            <div>
+				 				<Cards />
+				 			</div>
+			            </GridItem>
 			            <GridItem  xs={12} sm={6} md={6} lg={6} xl={6}>
 				            <div>
 				 				<Cards /> <br />

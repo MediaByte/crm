@@ -23,22 +23,17 @@ const styles = theme => ({
   cardBody:{
     display: 'flex',
     flexGrow: 1,
-    marginTop: theme.spacing.unit * 5,
+    // marginTop: theme.spacing.unit * 5,
   },
   container: {
-   paddingTop: 10,
-   paddingRight: 20,
-   paddingBottom: 20,
-   paddingLeft: 20,
 	 display: 'flex',
-	 justifyContent: 'center',
+	 justifyContent: 'space-around',
    height: '500px',
-   width: 'auto',
    [theme.breakpoints.down('sm')]: {
      maxHeight: 400
    },
    flexGrow: 1,
-   // border: '2px solid green'
+   border: '2px solid green'
   },
   avatar: {
 	 marginTop: theme.spacing.unit * 10,
@@ -68,7 +63,7 @@ class EmployeeCard extends React.Component {
 	  const { classes, first, last, email, phone, group } = this.props;
 	  return (
 	    <div>
-	      <GridContainer className={classes.container}>
+	      <GridContainer justify='center' className={classes.container}>
   			   <GridItem xs={12} sm={12} md={4}>
               <GridContainer>
   				      <GridItem xs={12} sm={12} md={12} className={classes.avatar}>
@@ -84,8 +79,8 @@ class EmployeeCard extends React.Component {
               </GridContainer>
   		    </GridItem>
 	        <GridItem xs={12} sm={12} md={8}>
-	            <CardBody>
-                <GridContainer className={classes.cardBody} direction={'column'}>
+	            <CardBody className={classes.cardBody}>
+                <GridContainer className={classes.container} direction={'column'}>
 	                <GridItem xs={12} sm={12} md={12}>
                     <Typography variant='headline'>{ first === "" ? 'Employee Name' : first + ' ' + last}</Typography>
                     <div>

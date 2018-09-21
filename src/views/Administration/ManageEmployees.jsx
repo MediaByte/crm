@@ -34,7 +34,7 @@ const styles = theme => ({
 	mainPanel: {
 		flexGrow: 1,
 		paddingTop: 10,
-		paddingRight: 20,
+		// paddingRight: 20,
 		paddingBottom: 20,
 		paddingLeft: 20,
 		marginTop: 0,
@@ -54,16 +54,12 @@ const styles = theme => ({
 		display: 'flex',
 		justifyContent: 'center',
 		alignItems: 'center',
-		// border: '1px solid green',
 		padding: 5,
 	},
 	userProfileGrid: {
 		display: 'flex',	
 		justifyContent: 'center',
 		alignItems: 'center',
-		width: '100%',
-		flexGrow: 1,
-		// border: '1px solid green',
 	},
 	gridContainer: {
 		display: 'flex',
@@ -71,12 +67,12 @@ const styles = theme => ({
 	},
 	renderUsers: {
     	overflow: 'auto',
-    	width: '100%',
+
     	height: '600px'
 	},
 	content: {
-		display: 'flex',
-		flexWrap: 'wrap',
+
+
 	},
 })
 class ManageEmployees extends Component {
@@ -129,9 +125,9 @@ class ManageEmployees extends Component {
 		return (
 			<div>
 				<Page component={'administration'} titleText={'Employees'}>
-					<GridContainer className={classes.content}>
+					<GridContainer justify={'center'}>
 						<GridItem sm={4} md={3} className={classes.grid}>
-							<GridContainer className={classes.gridContainer} direction='column'>
+							<GridContainer className={classes.gridContainer}>
 								<GridItem md={12} className={classes.grid}>
 									<CustomInput
 					                  id="search"
@@ -181,7 +177,7 @@ class ManageEmployees extends Component {
 							</GridContainer>
 						</GridItem>
 						<GridItem sm={8} md={9} className={classes.userProfileGrid}>
-							<GridContainer className={classes.gridMainPanel} direction={'column'}>
+							<GridContainer className={classes.gridMainPanel}>
 								<GridItem>
 									<Card raised className={classes.mainPanel}>
 										{ addUser 

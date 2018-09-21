@@ -3,7 +3,7 @@ import {
  } from './constants.js';
 
 const initialState = {
-	open: true,
+	open: false,
 }
 
 export const sideBar = (state=initialState, action={}) => {

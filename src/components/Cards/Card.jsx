@@ -10,16 +10,13 @@ import CardActions from '@material-ui/core/CardActions';
 import Collapse from '@material-ui/core/Collapse';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import red from '@material-ui/core/colors/red';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 const styles = theme => ({
   card: {
-    maxWidth: '500',
-    padding: "20",
+    maxWidth: '300',
     [theme.breakpoints.down('sm')]: {
-      padding: theme.spacing.unit * 2,
       height: '100%'
     }
     
@@ -44,9 +41,6 @@ const styles = theme => ({
   expandOpen: {
     transform: 'rotate(180deg)',
   },
-  avatar: {
-    backgroundColor: red[500],
-  },
 });
 
 class CardComponent extends React.Component {
@@ -64,11 +58,11 @@ class CardComponent extends React.Component {
         <Card className={classes.card}>
           <CardMedia
             className={classes.media}
-            image="/static/images/cards/paella.jpg"
+            image="https://media.istockphoto.com/photos/coming-soon-picture-id843847560?k=6&m=843847560&s=612x612&w=0&h=30XwbcIkhbZlcjWxOiQ1qZdFHStvAI_ogrgNB-ch7pI="
             title="Contemplative Reptile"
           />
           <CardHeader
-            title="Shrimp and Chorizo Paella"
+            title="Action Buttons"
             subheader="September 14, 2016"
           />
           <CardContent>

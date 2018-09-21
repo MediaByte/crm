@@ -12,10 +12,10 @@ class Page extends React.Component {
 		const { children, classes, ...navProps } = this.props
 			return (
 				<Navigation classes{...navProps}>
-					<div className={classes.titleStyle} >
-						<Typography variant="title" noWrap className={classes.title}>{this.props.titleText}</Typography>
-							{children}					
-					</div>
+					<Typography variant="title" noWrap className={classes.title}>{this.props.titleText}</Typography>
+						<div className={classes.titleStyle}>
+								{children}					
+						</div>
 				</Navigation>
 			)
 	}

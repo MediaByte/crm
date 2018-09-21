@@ -10,7 +10,6 @@ import Divider from '@material-ui/core/Divider';
 import Dashboard from '@material-ui/icons/Dashboard';
 import AppBar from '@material-ui/core/AppBar';
 import Typography from '@material-ui/core/Typography';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import { withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -18,11 +17,9 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InputAdornment from "@material-ui/core/InputAdornment";
 //material ui icons
 import MenuIcon from '@material-ui/icons/Menu';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
-import Search from '@material-ui/icons/Search';
 import Laptop from '@material-ui/icons/Laptop';
 import People from '@material-ui/icons/People';
 import Event from '@material-ui/icons/Event';
@@ -30,7 +27,7 @@ import AccountBalance from '@material-ui/icons/AccountBalance';
 import CreditCard from '@material-ui/icons/CreditCard';
 import MailOutline from '@material-ui/icons/MailOutline';
 //projects components
-import CustomInput from "components/CustomInput/CustomInput.jsx";
+import SearchField from 'components/Navigation/SearchField.jsx'
 import NotificationsCenter from "components/NotificationCenter/NotificationsCenter.js";
 //styles
 import navStyles from 'assets/jss/material-kit-pro-react/components/navStyle.js';
@@ -62,25 +59,16 @@ class Navigation extends React.Component {
   handleDrawerClose = () => {
     this.props.toggleDrawer(false);
   };
-  handleInputFocus = () => {
-    this.setState({ disableUnderline: false })
-    document.getElementById("search").focus()
-  };
-  handleInputBlur = () => {
-    this.setState({ disableUnderline: true })
-  }
   render() {
     const { classes, children, component } = this.props;
     return (
-      <React.Fragment>
-        <CssBaseline/>
         <div className={classes.root}>
           <AppBar
-            position="absolute"
+            position="fixed"
             elevation={0}
             className={classNames(classes.appBar, this.props.open && classes.appBarShift)}
           >
-            <Toolbar variant={'dense'} disableGutters={true} className={classes.toolbar}>
+            <Toolbar disableGutters={true} className={classes.toolbar}>
               <IconButton
                 color="inherit"
                 aria-label="Open drawer"
@@ -94,24 +82,7 @@ class Navigation extends React.Component {
 
                 <Typography variant="title" noWrap className={classes.title}></Typography>
                 
-                <CustomInput
-                  id="search"
-                  inputProps={{
-                    className: classes.headerInput,
-                    disableUnderline: this.state.disableUnderline,
-                    type: "text",
-                    onChange: (e) => console.log(e.target.value),
-                    onFocus: this.handleInputFocus,
-                    onBlur: this.handleInputBlur,
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <IconButton color="inherit">
-                          <Search onClick={this.handleInputFocus} style={{fontSize: 25}}/>
-                        </IconButton>
-                      </InputAdornment>
-                    )
-                  }}
-                />
+              <SearchField />
               <NotificationsCenter />
             </Toolbar>
           </AppBar>
@@ -130,7 +101,8 @@ class Navigation extends React.Component {
                 <KeyboardArrowLeft />
               </IconButton>
             </div>
-            <List 
+            <div>
+            <List
               className={classes.drawerList}
               style={this.props.open ? {marginTop: -24} : null}
             >
@@ -209,12 +181,14 @@ class Navigation extends React.Component {
                 <ListItemText primaryTypographyProps={{ variant: "title", color: "inherit" }} primary="Mass Email" />
               </ListItem>
             </List>
+            </div>
           </Drawer>
             <main className={classes.children}>
+              <div className={classes.frame}>
                 {children}
+              </div>
             </main>
         </div>
-      </React.Fragment>
     );
   }
 }

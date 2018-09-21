@@ -33,7 +33,7 @@ const styles = theme => ({
     marginTop: "0px",
     minHeight: "auto",
     fontWeight: "300",
-    fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
+    fontFamily: "'Montserrat', sans-serif",
     marginBottom: "3px",
     textDecoration: "none"
   },

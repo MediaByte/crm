@@ -6,10 +6,11 @@ const navStyles = theme => ({
   },
   titleStyle: {
     [theme.breakpoints.up('sm')]: {
-      paddingTop: '45px',
+      paddingTop: '40px',
     },
     [theme.breakpoints.down('xs')]: {
-      marginTop: '50px',
+      paddingTop: '20px',
+      paddingBottom: '30px',
     }
   },
   headerInput: {
@@ -25,7 +26,7 @@ const navStyles = theme => ({
     display: 'flex',
   },
   appBar: {
-    zIndex: theme.zIndex.drawer + 1,
+    zIndex: theme.zIndex.drawer + 2,
     backgroundColor: 'transparent',
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
@@ -68,6 +69,7 @@ const navStyles = theme => ({
     },
     backgroundColor: 'transparent',
     marginLeft: 13,
+    position: 'fixed',
   },
   hide: {
     display: 'none',
@@ -91,8 +93,9 @@ const navStyles = theme => ({
     }),
   },
   drawerPaperClose: {
+    position: 'relative',
+    minHeight: '100vh',
     boxShadow: theme.shadows[20],
-    overflowX: 'hidden',
     backgroundColor: '#0DACC4',
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
@@ -104,7 +107,7 @@ const navStyles = theme => ({
     },
     [theme.breakpoints.down('xs')]: {
       width: '0px',
-      position: 'fixed',
+
     },
 
   },
@@ -124,14 +127,16 @@ const navStyles = theme => ({
   },
 
   children: {
-    flexGrow: 1,
     [theme.breakpoints.down('xs')]: {
-      position: 'fixed',
+      position: 'auto',
+      paddingBottom: '20px',
     },
     padding: theme.spacing.unit * 3,
-    height: '100%',
-    overflow: 'auto',
-  }
+    height: '100vh',
+    overflowX: 'hidden',
+    paddingBottom: '20px',
+  },
+
 });
 
 export default navStyles;
