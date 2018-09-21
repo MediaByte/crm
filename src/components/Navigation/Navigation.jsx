@@ -10,13 +10,7 @@ import Divider from '@material-ui/core/Divider';
 import Dashboard from '@material-ui/icons/Dashboard';
 import AppBar from '@material-ui/core/AppBar';
 import Typography from '@material-ui/core/Typography';
-import Business from '@material-ui/icons/Business';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import TrendingUp from '@material-ui/icons/TrendingUp';
-import PlaylistAddCheck from '@material-ui/icons/PlaylistAddCheck';
-import Laptop from '@material-ui/icons/Laptop';
-import Today from '@material-ui/icons/Today';
-import Map from '@material-ui/icons/Map';
 import { withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -27,29 +21,46 @@ import ListItemText from '@material-ui/core/ListItemText';
 import InputAdornment from "@material-ui/core/InputAdornment";
 //material ui icons
 import MenuIcon from '@material-ui/icons/Menu';
-import Close from '@material-ui/icons/Close';
+import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import Search from '@material-ui/icons/Search';
-import MoreVert from '@material-ui/icons/MoreVert'
+import Laptop from '@material-ui/icons/Laptop';
+import People from '@material-ui/icons/People';
+import Event from '@material-ui/icons/Event';
+import AccountBalance from '@material-ui/icons/AccountBalance';
+import CreditCard from '@material-ui/icons/CreditCard';
+import MailOutline from '@material-ui/icons/MailOutline';
 //projects components
 import CustomInput from "components/CustomInput/CustomInput.jsx";
 import NotificationsCenter from "components/NotificationCenter/NotificationsCenter.js";
-
 //styles
 import navStyles from 'assets/jss/material-kit-pro-react/components/navStyle.js';
+//State
+import { connect } from 'react-redux';
+import { drawerState } from 'state/App/actions.js';
+const mapStateToProps = (state) => {
+  console.log(state)
+  return {
+    open: state.sideBar.open
+  }
+}
+const mapDispatchToProps = (dispatch) => {
+  return {
+    toggleDrawer: (event) => dispatch(drawerState(event)),
+  }
+}
 
 class Navigation extends React.Component {
   state = {
-    open: false,
     disableUnderline: true
   };
   componentDidMount() {
     // const { closed } = this.props;
   }
   handleDrawerOpen = () => {
-    this.setState({ open: true });
+    this.props.toggleDrawer(true);
   };
   handleDrawerClose = () => {
-    this.setState({ open: false });
+    this.props.toggleDrawer(false);
   };
   handleInputFocus = () => {
     this.setState({ disableUnderline: false })
@@ -59,7 +70,7 @@ class Navigation extends React.Component {
     this.setState({ disableUnderline: true })
   }
   render() {
-    const { classes, children, component, titleText } = this.props;
+    const { classes, children, component } = this.props;
     return (
       <React.Fragment>
         <CssBaseline/>
@@ -67,20 +78,22 @@ class Navigation extends React.Component {
           <AppBar
             position="absolute"
             elevation={0}
-            className={classNames(classes.appBar, this.state.open && classes.appBarShift)}
+            className={classNames(classes.appBar, this.props.open && classes.appBarShift)}
           >
-            <Toolbar variant={'dense'} disableGutters={!this.state.open} className={classes.toolbar}>
+            <Toolbar variant={'dense'} disableGutters={true} className={classes.toolbar}>
               <IconButton
                 color="inherit"
                 aria-label="Open drawer"
                 onClick={this.handleDrawerOpen}
                 className={classNames(
                   classes.menuButton, 
-                  this.state.open && classes.hide)}
+                  this.props.open && classes.hide)}
               >
-                <MenuIcon />
+                <MenuIcon style={{ fontSize: '30px', fontWeight: 500}} />
               </IconButton>
+
                 <Typography variant="title" noWrap className={classes.title}></Typography>
+                
                 <CustomInput
                   id="search"
                   inputProps={{
@@ -105,27 +118,27 @@ class Navigation extends React.Component {
           <Drawer
             variant="permanent"
             classes={{
-              paper: classNames(classes.drawerPaper, !this.state.open && classes.drawerPaperClose),
+              paper: classNames(classes.drawerPaper, !this.props.open && classes.drawerPaperClose),
             }}
             open={this.state.open}
           >
             <div>
               <IconButton 
-                className={classNames(classes.menuButtonOpened, !this.state.open && classes.hide)} 
+                className={classNames(classes.menuButtonOpened, !this.props.open && classes.hide)} 
                 onClick={this.handleDrawerClose}
               >
-                <Close />
+                <KeyboardArrowLeft />
               </IconButton>
             </div>
-            <Divider style={{ backgroundColor: 'white', marginTop: '8px', }} />
             <List 
               className={classes.drawerList}
-              style={this.state.open ? {marginTop: -24} : null}
+              style={this.props.open ? {marginTop: -24} : null}
             >
+              <Divider className={classNames(classes.menuDivider, this.props.open && classes.menuDividerOpened)} />
               <ListItem 
                 button
                 style={ component === 'dashboard' 
-                  ? { color: 'grey', backgroundColor: 'white', borderRadius:'5px', border: '2px solid #00000' }
+                  ? { color: 'grey', backgroundColor: 'white', borderRadius:'5px', border: '2px solid #00000'}
                   : { color: "#fff" }  
                 } 
                 component={(props) => <NavLink to={`/pinecone/dashboard/test@gmail.com`} {...props}/>}
@@ -133,8 +146,8 @@ class Navigation extends React.Component {
                 <ListItemIcon>
                   <Dashboard 
                   style={ component === 'dashboard' 
-                    ? {color: 'grey'}
-                    : {color: '#fff'}
+                    ? {color: 'grey', fontSize: '30px', fontWeight: 500}
+                    : {color: '#fff', fontSize: '30px', fontWeight: 500}
                   }
                   />
                 </ListItemIcon>
@@ -142,21 +155,21 @@ class Navigation extends React.Component {
               </ListItem>
               <ListItem button>
                 <ListItemIcon>
-                  <Today style={{color: '#fff'}}/>
+                  <i style={{color: '#fff', fontSize: '30px'}} className="fas fa-tasks"></i>
                 </ListItemIcon>
-                <ListItemText primaryTypographyProps={{ variant: "title", color: "inherit" }} primary="Calendar" />
+                <ListItemText primaryTypographyProps={{ variant: "title", color: "inherit" }} primary="Tasks" />
               </ListItem>
               <ListItem button>
                 <ListItemIcon>
-                  <Map style={{color: '#fff'}}/>
+                  <People style={{color: '#fff', fontSize: '30px', fontWeight: 500}}/>
                 </ListItemIcon>
-                <ListItemText primaryTypographyProps={{ variant: "title", color: "inherit" }} primary="Map" />
+                <ListItemText primaryTypographyProps={{ variant: "title", color: "inherit" }} primary="People" />
               </ListItem>
               <ListItem 
                 button
                 style={ component === 'administration' 
-                  ? { color: 'grey', backgroundColor: 'white', borderRadius:'5px', border: '2px solid #00000' }
-                  : { color: "#fff" }  
+                  ? { color: 'grey', backgroundColor: 'white', borderRadius:'5px', border: '2px solid #00000', fontSize: '30px', fontWeight: 500 }
+                  : { color: "#fff", fontSize: '30px' , fontWeight: 500}  
                 }        
                 component={(props) => <NavLink to={'/admin/test@gmail.com'} {...props}/>}
 
@@ -164,8 +177,8 @@ class Navigation extends React.Component {
                 <ListItemIcon>
                   <Laptop 
                     style={ component === 'administration' 
-                      ? {color: 'grey'}
-                      : {color: '#fff'}
+                      ? {color: 'grey', fontSize: '30px', fontWeight: 500}
+                      : {color: '#fff', fontSize: '30px', fontWeight: 500}
                     }
                     />
                 </ListItemIcon>
@@ -173,27 +186,31 @@ class Navigation extends React.Component {
               </ListItem>
               <ListItem button>
                 <ListItemIcon>
-                  <PlaylistAddCheck style={{color: '#fff'}}/>
+                  <Event style={{color: '#fff', fontSize: '30px', fontWeight: 500}}/>
                 </ListItemIcon>
-                <ListItemText primaryTypographyProps={{ variant: "title", color: "inherit" }} primary="Inspections" />
+                <ListItemText primaryTypographyProps={{ variant: "title", color: "inherit" }} primary="Events" />
               </ListItem>
               <ListItem button>
                 <ListItemIcon>
-                  <TrendingUp style={{color: '#fff'}}/>
+                  <AccountBalance style={{color: '#fff', fontSize: '30px', fontWeight: 500}}/>
                 </ListItemIcon>
-                <ListItemText primaryTypographyProps={{ variant: "title", color: "inherit" }} primary="Reports" />
+                <ListItemText primaryTypographyProps={{ variant: "title", color: "inherit" }} primary="Agencies" />
               </ListItem>
               <ListItem button>
                 <ListItemIcon>
-                  <Business style={{color: '#fff'}}/>
+                  <CreditCard style={{color: '#fff', fontSize: '30px', fontWeight: 500}}/>
                 </ListItemIcon>
-                <ListItemText primaryTypographyProps={{ variant: "title", color: "inherit" }} primary="Establishments" />
+                <ListItemText primaryTypographyProps={{ variant: "title", color: "inherit" }} primary="Expenses" />
               </ListItem>
-
+              <ListItem button>
+                <ListItemIcon>
+                  <MailOutline style={{color: '#fff', fontSize: '30px', fontWeight: 500}}/>
+                </ListItemIcon>
+                <ListItemText primaryTypographyProps={{ variant: "title", color: "inherit" }} primary="Mass Email" />
+              </ListItem>
             </List>
           </Drawer>
             <main className={classes.children}>
-              <Typography variant="title" noWrap className={classes.title}>{titleText}</Typography>
                 {children}
             </main>
         </div>
@@ -205,4 +222,4 @@ Navigation.propTypes = {
   classes: PropTypes.object.isRequired,
   theme: PropTypes.object.isRequired,
 };
-export default withStyles(navStyles, { withTheme: true })(Navigation);
+export default withStyles(navStyles, { withTheme: true })(connect(mapStateToProps, mapDispatchToProps)(Navigation));

@@ -12,6 +12,7 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { newUser } from 'state/newUser/reducers.js';
 import { isUserAuthorized } from 'state/authentication/reducers.js';
+import { sideBar } from 'state/App/reducers.js'
 import { createLogger } from 'redux-logger';
 
 //Styles
@@ -29,7 +30,7 @@ const theme = createMuiTheme({
 });
 
 //Reducers
-const rootReducers = combineReducers({ newUser, isUserAuthorized });
+const rootReducers = combineReducers({ newUser, isUserAuthorized, sideBar });
 
 //Redux Middleware for debugging components
 const logger = createLogger();

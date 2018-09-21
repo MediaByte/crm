@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
-import Button from '@material-ui/core/Button';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
 import Icon from '@material-ui/core/Icon';
@@ -57,12 +56,11 @@ const styles = theme => ({
     fontSize: '45px',
     margin: 'auto',
     marginLeft: '20px',
-    fontWeight: 100,
   },
 });
 class NotificationsCenter extends React.Component {
   state = {
-    right: true,
+    right: false,
   };
 
   toggleDrawer = (side, open) => () => {

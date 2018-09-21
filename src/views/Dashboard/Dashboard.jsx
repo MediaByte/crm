@@ -22,11 +22,11 @@ const styles = theme => ({
 	content: {
 		display: 'flex',
 		justifyContent: 'center', 
-		[theme.breakpoints.up('lg')]: {
-			marginTop: theme.spacing.unit * 8,
+		[theme.breakpoints.up('sm')]: {
+			marginTop: theme.spacing.unit * 2,
 		},
-		[theme.breakpoints.down('md')]: {
-			marginTop: theme.spacing.unit * 8
+		[theme.breakpoints.down('xs')]: {
+			marginTop: theme.spacing.unit * 2
 		},
 	},
 })

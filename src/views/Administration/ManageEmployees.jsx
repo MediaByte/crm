@@ -155,6 +155,7 @@ class ManageEmployees extends Component {
 								<div className={classes.renderUsers}>
 {
 									parsedData
+									// eslint-disable-next-line
 										.map((user, i) => {
 											if ( user.hasOwnProperty('first')) {
 												return (

@@ -28,7 +28,6 @@ function CustomInput({ ...props }) {
     white,
     inputRootCustomClasses,
     success,
-    defaultColor=true
   } = props;
 
   const labelClasses = classNames({

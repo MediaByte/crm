@@ -1,11 +1,22 @@
-const drawerWidth = 280;
+const drawerWidth = 267;
 
 const navStyles = theme => ({
   title: {
     flexGrow: 1,
   },
+  titleStyle: {
+    [theme.breakpoints.up('sm')]: {
+      paddingTop: '45px',
+    },
+    [theme.breakpoints.down('xs')]: {
+      marginTop: '50px',
+    }
+  },
   headerInput: {
     marginTop: -7,
+  },
+  menuDividerOpened: {
+    backgroundColor: 'white',
   },
   drawerList: {
     color: theme.palette.common.white,
@@ -29,6 +40,13 @@ const navStyles = theme => ({
       duration: theme.transitions.duration.enteringScreen,
     }),
   },
+  menuDivider: {
+    backgroundColor: 'white',
+    marginBottom: theme.spacing.unit * 1.8,
+    margin: 'auto',
+    width: '85%',
+
+  },
   menuButtonOpened: {
     color: theme.palette.common.white,
     marginTop: -70,
@@ -41,27 +59,32 @@ const navStyles = theme => ({
     }
   },
   menuButton: {
-    color: theme.palette.common.white,
+    [theme.breakpoints.down('xs')]: {
+      color: theme.palette.primary.main,
+      marginLeft: theme.spacing.unit / 2
+    },
+    [theme.breakpoints.up('sm')]: {
+      color: theme.palette.common.white
+    },
     backgroundColor: 'transparent',
     marginLeft: 13,
-    marginRight: 36,
-    [theme.breakpoints.down('xs')]: {
-      marginLeft: theme.spacing.unit / 2
-    }
   },
   hide: {
     display: 'none',
   },
   drawerPaper: {
     position: 'relative',
+    [theme.breakpoints.down('xs')]: {
+      position: 'fixed',
+    },
     paddingTop: theme.spacing.unit * 7,
     fontWeight: '400',
     boxShadow: theme.shadows[24],
     fontSize: '1.5em',
-    border: '1px solid black',
     backgroundColor: '#0DACC4',
     whiteSpace: 'nowrap',
     width: drawerWidth,
+    minWidth: 0,
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
@@ -75,13 +98,22 @@ const navStyles = theme => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    width: theme.spacing.unit * 7,
+    width: theme.spacing.unit * 9,
     [theme.breakpoints.up('sm')]: {
       width: theme.spacing.unit * 9,
     },
+    [theme.breakpoints.down('xs')]: {
+      width: '0px',
+      position: 'fixed',
+    },
+
   },
   toolbar: {
-    paddingRight: 24,
+    [theme.breakpoints.down('xs')]: {
+      backgroundColor: theme.palette.common.white,
+      height: '58px',
+      boxShadow: theme.shadows[5],
+    }
   },
   toolbarIcon: {
     display: 'flex',
@@ -93,8 +125,11 @@ const navStyles = theme => ({
 
   children: {
     flexGrow: 1,
+    [theme.breakpoints.down('xs')]: {
+      position: 'fixed',
+    },
     padding: theme.spacing.unit * 3,
-    height: '100vh',
+    height: '100%',
     overflow: 'auto',
   }
 });

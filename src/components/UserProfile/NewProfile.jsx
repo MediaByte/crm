@@ -17,7 +17,7 @@ import CardBody from "components/Card/CardBody.jsx";
 import GroupsSelect from "components/UserProfile/GroupsSelect.jsx";
 import PhoneInput from 'components/UserProfile/PhoneInput.jsx';
 import AddressSelect from 'components/UserProfile/AddressSelect.jsx';
-import newPassword from 'components/UserProfile/generatePassword.js';
+// import newPassword from 'components/UserProfile/generatePassword.js';
 // material-ui icons
 import AddCircle from '@material-ui/icons/AddCircle';
 import RemoveCircle from '@material-ui/icons/RemoveCircle';
@@ -204,6 +204,7 @@ class NewProfile extends React.Component {
       }
     }
     db.put(newEmployee, (ack) => {
+      // eslint-disable-next-line
       !ack.err 
         ? dbRelations.put(newRelation)
         : null

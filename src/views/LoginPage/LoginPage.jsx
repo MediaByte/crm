@@ -67,7 +67,7 @@ class LoginPage extends React.Component {
   }
   render() {
     const { classes } = this.props;
-    const { authenticated, emailNotFound, correctEmail, username } = this.state;
+    const { authenticated, correctEmail, username } = this.state;
       return !authenticated 
         ? (
             <div>
