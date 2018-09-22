@@ -23,9 +23,9 @@ const content = (
         autoFocus: true,
         onChange: (e) => console.log(e.target.value),
 		endAdornment: (
-          <InputAdornment position="end">
-            <IconButton disableRipple color="inherit">
-              <Close style={{fontSize: 15  }}/>
+          <InputAdornment style={{marginLeft: '20px'}} position="end">
+            <IconButton style={{marginLeft: '20px'}} disableRipple color="inherit">
+              <Close style={{fontSize: 15, marginLeft: '20px' }}/>
             </IconButton>
           </InputAdornment>
         )
@@ -34,14 +34,10 @@ const content = (
    );
 
 const styles = theme => ({
-	drawerStyle:{
-		height: '8vh',
-	},
-	drawerContent: {
+	searchBar: {
 		display: 'flex',
 		justifyContent: 'center',
-		marginTop: '-9px',
-		width: '40%',
+		marginTop: -9,
 		[theme.breakpoints.up('md')]: {
 			width: '30%'
 		},
@@ -49,8 +45,23 @@ const styles = theme => ({
 			width: '60%',
 		},
 		[theme.breakpoints.down('xs')]: {
+			marginTop: -11.5,
+			marginLeft: '20px',
 			width: '90%',
-		},
+		}
+	},
+	drawerStyle:{
+		height: '8vh',
+		marginLeft: '72px',
+		marginBottom: 0,
+		[theme.breakpoints.down('xs')]:{
+			height: '7.5vh',
+			marginLeft: 0,
+		}
+	},
+	drawerContent: {
+		display: 'flex',
+		justifyContent: 'center',
 	},
 })
 class SearchField extends React.Component {
@@ -73,12 +84,12 @@ class SearchField extends React.Component {
 			          <Search style={{marginTop: '2px', fontSize: 24, color: 'grey'}}/>
 			        </IconButton>
 			    </div>
-				<Drawer variant={'persistent'} elevation={0} classes={{paper: classes.drawerStyle}} anchor="top" open={this.state.openSearch} onClose={this.toggleSearchField}>
+				<Drawer elevation={0} classes={{paper: classes.drawerStyle}} anchor="top" open={this.state.openSearch} onClose={this.toggleSearchField}>
 		          <div tabIndex={0} className={classes.drawerContent}>
-		            <div style={{  marginTop: '5px'}}>
+		            <div className={classes.searchBar}>
 		            	{content}
 		            </div>
-					<Button onClick={this.toggleSearchField} size={'large'} disableRipple color="primary" simple>CANCEL</Button>
+					<Button style={{marginTop: '12px'}} onClick={this.toggleSearchField} size={'large'} disableRipple color="primary" simple>CANCEL</Button>
 		          </div>
 		        </Drawer>
 		    </div>

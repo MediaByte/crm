@@ -33,7 +33,7 @@ const styles = theme => ({
      maxHeight: 400
    },
    flexGrow: 1,
-   border: '2px solid green'
+   // border: '2px solid green'
   },
   avatar: {
 	 marginTop: theme.spacing.unit * 10,
