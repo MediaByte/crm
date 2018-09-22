@@ -107,6 +107,7 @@ const navStyles = theme => ({
     },
     [theme.breakpoints.down('xs')]: {
       width: '0px',
+      marginLeft: '-1px'
 
     },
 
@@ -128,11 +129,12 @@ const navStyles = theme => ({
 
   children: {
     [theme.breakpoints.down('xs')]: {
-      position: 'auto',
+      position: 'absolute',
       paddingBottom: '20px',
     },
     padding: theme.spacing.unit * 3,
     height: '100vh',
+    width: '100%',
     overflowX: 'hidden',
     paddingBottom: '20px',
   },
