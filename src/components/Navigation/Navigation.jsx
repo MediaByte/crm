@@ -184,7 +184,7 @@ class Navigation extends React.Component {
             </div>
           </Drawer>
             <main className={classes.children}>
-              <div className={classes.frame}>
+              <div>
                 {children}
               </div>
             </main>

@@ -35,15 +35,13 @@ const content = (
 
 const styles = theme => ({
 	drawerStyle:{
-		backgroundColor: 'transparent',
-		height: '100vh',
+		height: '8vh',
 	},
 	drawerContent: {
 		display: 'flex',
 		justifyContent: 'center',
-		marginTop: '-7px',
+		marginTop: '-9px',
 		width: '40%',
-		margin: 'auto',
 		[theme.breakpoints.up('md')]: {
 			width: '30%'
 		},
@@ -51,7 +49,7 @@ const styles = theme => ({
 			width: '60%',
 		},
 		[theme.breakpoints.down('xs')]: {
-			width: '60%',
+			width: '90%',
 		},
 	},
 })
@@ -77,7 +75,9 @@ class SearchField extends React.Component {
 			    </div>
 				<Drawer variant={'persistent'} elevation={0} classes={{paper: classes.drawerStyle}} anchor="top" open={this.state.openSearch} onClose={this.toggleSearchField}>
 		          <div tabIndex={0} className={classes.drawerContent}>
-		            {content}
+		            <div style={{  marginTop: '5px'}}>
+		            	{content}
+		            </div>
 					<Button onClick={this.toggleSearchField} size={'large'} disableRipple color="primary" simple>CANCEL</Button>
 		          </div>
 		        </Drawer>

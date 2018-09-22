@@ -3,6 +3,9 @@ const drawerWidth = 267;
 const navStyles = theme => ({
   title: {
     flexGrow: 1,
+    [theme.breakpoints.down('xs')]: {
+      marginTop: '50px',
+    },
   },
   titleStyle: {
     [theme.breakpoints.up('sm')]: {
@@ -46,7 +49,6 @@ const navStyles = theme => ({
     marginBottom: theme.spacing.unit * 1.8,
     margin: 'auto',
     width: '85%',
-
   },
   menuButtonOpened: {
     color: theme.palette.common.white,
@@ -108,9 +110,7 @@ const navStyles = theme => ({
     [theme.breakpoints.down('xs')]: {
       width: '0px',
       marginLeft: '-1px'
-
     },
-
   },
   toolbar: {
     [theme.breakpoints.down('xs')]: {
@@ -126,7 +126,6 @@ const navStyles = theme => ({
     padding: '0 8px',
     ...theme.mixins.toolbar,
   },
-
   children: {
     [theme.breakpoints.down('xs')]: {
       position: 'absolute',
@@ -138,7 +137,5 @@ const navStyles = theme => ({
     overflowX: 'hidden',
     paddingBottom: '20px',
   },
-
 });
-
 export default navStyles;
