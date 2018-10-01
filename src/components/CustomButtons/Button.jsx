@@ -4,12 +4,12 @@ import classNames from "classnames";
 // nodejs library to set properties for components
 import PropTypes from "prop-types";
 
-// @material-ui/core components
+// material-ui components
 import withStyles from "@material-ui/core/styles/withStyles";
 import Button from "@material-ui/core/Button";
 
-import buttonStyle from "assets/jss/material-kit-pro-react/components/buttonStyle.jsx";
-function RegularButton(props) {
+import buttonStyle from "assets/jss/material-dashboard-pro-react/components/buttonStyle.jsx";
+function RegularButton({ ...props }) {
   const {
     classes,
     color,
@@ -22,8 +22,8 @@ function RegularButton(props) {
     block,
     link,
     justIcon,
-    fileButton,
     className,
+    muiClasses,
     ...rest
   } = props;
   const btnClasses = classNames({
@@ -37,11 +37,10 @@ function RegularButton(props) {
     [classes.block]: block,
     [classes.link]: link,
     [classes.justIcon]: justIcon,
-    [classes.fileButton]: fileButton,
     [className]: className
   });
   return (
-    <Button {...rest} className={btnClasses}>
+    <Button {...rest} classes={muiClasses} className={btnClasses}>
       {children}
     </Button>
   );
@@ -51,7 +50,6 @@ RegularButton.propTypes = {
   classes: PropTypes.object.isRequired,
   color: PropTypes.oneOf([
     "primary",
-    "secondary",
     "info",
     "success",
     "warning",
@@ -69,7 +67,6 @@ RegularButton.propTypes = {
     "behance",
     "dribbble",
     "reddit",
-    "instagram",
     "transparent"
   ]),
   size: PropTypes.oneOf(["sm", "lg"]),
@@ -80,7 +77,8 @@ RegularButton.propTypes = {
   block: PropTypes.bool,
   link: PropTypes.bool,
   justIcon: PropTypes.bool,
-  fileButton: PropTypes.bool
+  className: PropTypes.string,
+  muiClasses: PropTypes.object
 };
 
 export default withStyles(buttonStyle)(RegularButton);

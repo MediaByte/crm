@@ -3,18 +3,14 @@ import React from "react";
 import PropTypes from "prop-types";
 // nodejs library that concatenates classes
 import classNames from "classnames";
-
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
+import FormHelperText from "@material-ui/core/FormHelperText";
 import Input from "@material-ui/core/Input";
-// @material-ui/icons
-import Clear from "@material-ui/icons/Clear";
-import Check from "@material-ui/icons/Check";
-// core components
 
-import customInputStyle from "assets/jss/material-kit-pro-react/components/customInputStyle.jsx";
+import customInputStyle from "assets/jss/material-dashboard-pro-react/components/customInputStyle.jsx";
 
 function CustomInput({ ...props }) {
   const {
@@ -28,6 +24,7 @@ function CustomInput({ ...props }) {
     white,
     inputRootCustomClasses,
     success,
+    helpText
   } = props;
 
   const labelClasses = classNames({
@@ -56,6 +53,10 @@ function CustomInput({ ...props }) {
   } else {
     formControlClasses = classes.formControl;
   }
+  var helpTextClasses = classNames({
+    [classes.labelRootError]: error,
+    [classes.labelRootSuccess]: success && !error
+  });
   return (
     <FormControl {...formControlProps} className={formControlClasses}>
       {labelText !== undefined ? (
@@ -77,10 +78,10 @@ function CustomInput({ ...props }) {
         id={id}
         {...inputProps}
       />
-      {error ? (
-        <Clear className={classes.feedback + " " + classes.labelRootError} />
-      ) : success ? (
-        <Check className={classes.feedback + " " + classes.labelRootSuccess} />
+      {helpText !== undefined ? (
+        <FormHelperText id={id + "-text"} className={helpTextClasses}>
+          {helpText}
+        </FormHelperText>
       ) : null}
     </FormControl>
   );
@@ -96,7 +97,8 @@ CustomInput.propTypes = {
   inputRootCustomClasses: PropTypes.string,
   error: PropTypes.bool,
   success: PropTypes.bool,
-  white: PropTypes.bool
+  white: PropTypes.bool,
+  helpText: PropTypes.node
 };
 
 export default withStyles(customInputStyle)(CustomInput);

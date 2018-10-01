@@ -12,8 +12,10 @@ import Divider from '@material-ui/core/Divider';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 //Material-ui icons
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
-//project files
-import Page from 'views/Page/Page';
+
+//Project Components
+import ManageEmployees from './ManageEmployees.jsx';
+
 const styles = theme => ({
 	content: {
 		width: '100%',
@@ -47,7 +49,7 @@ class AdminPanel extends React.Component {
 	render() {
 		const { classes } = this.props
 		return (
-			<Page component={'administration'} titleText={'Administration'}>
+			<div>
 				<Typography className={classes.panelTitle}  gutterBottom noWrap align="left">Users and Control</Typography>
 				<Paper className={classes.content}elevation={10}>
 					<List className={classes.button}>
@@ -62,7 +64,7 @@ class AdminPanel extends React.Component {
 					<Divider />
 						<ListItem 
 							button
-							component={(props) => <NavLink to={'/management/employees'} {...props}/>}
+							component={(props) => <NavLink to={'/employees'} {...props}/>}
 						>
 							<Typography variant="body2" gutterBottom noWrap align="left">Manage Employees</Typography>
 								<ListItemSecondaryAction style={{marginTop: 6}}>
@@ -108,7 +110,7 @@ class AdminPanel extends React.Component {
 						</ListItem>
 					</List>
 		        </Paper>
-			</Page>
+			</div>
 		);
 	}
 }

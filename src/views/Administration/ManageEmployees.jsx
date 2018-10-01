@@ -8,7 +8,6 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 //material-ui icons
 import Search from '@material-ui/icons/Search';
 //project components
-import Page from 'views/Page/Page.jsx';
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
 import CustomInput from "components/CustomInput/CustomInput.jsx";
@@ -16,15 +15,14 @@ import NewProfile from "components/UserProfile/NewProfile.jsx";
 import EmployeeCard from 'components/UserProfile/EmployeeCard'
 import Card from "components/Card/Card.jsx";
 //gundb
-import Gun from 'gun/gun';
+import Gun from "gun/gun";
 
 const formatData = data => Object.keys(data)
 	.map(key => ({ key, ...data[key]  }))
 	.filter(m => m.key !== '_')
-
 const styles = theme => ({
 	input: {
-		marginBottom: -10,
+		marginTop: -30,
 		width: 215,
 	},
 	gridMainPanel: {
@@ -33,14 +31,12 @@ const styles = theme => ({
 	},
 	mainPanel: {
 		flexGrow: 1,
-		paddingTop: 10,
 		// paddingRight: 20,
 		paddingBottom: 20,
 		paddingLeft: 20,
 		marginTop: 0,
 		marginBottom: 0,
 		width: '100%',
-		height: '100%'
 	},
 	item: {
 		border: '1px solid black',
@@ -53,13 +49,11 @@ const styles = theme => ({
 	grid: {
 		display: 'flex',
 		justifyContent: 'center',
-		alignItems: 'center',
 		padding: 5,
 	},
 	userProfileGrid: {
 		display: 'flex',	
 		justifyContent: 'center',
-		alignItems: 'center',
 	},
 	gridContainer: {
 		display: 'flex',
@@ -67,8 +61,7 @@ const styles = theme => ({
 	},
 	renderUsers: {
     	overflow: 'auto',
-
-    	height: '600px'
+    	height: '550px',
 	},
 	content: {
 
@@ -124,88 +117,83 @@ class ManageEmployees extends Component {
 		let parsedData = formatData(this.state.users)
 		return (
 			<div>
-				<Page component={'administration'} titleText={'Employees'}>
-					<GridContainer justify={'center'}>
-						<GridItem sm={4} md={3} className={classes.grid}>
-							<GridContainer className={classes.gridContainer}>
-								<GridItem md={12} className={classes.grid}>
-									<CustomInput
-					                  id="search"
-					                  fullwidth={true}
-					                  inputProps={{
-					                    className: classes.input,
-					                    type: "text",
-					                    placeholder: 'Search',
-					                    onChange: (e) => console.log(e),
-					                    startAdornment: (
-					                      <InputAdornment position="end">
-					                        <IconButton color="inherit">
-					                          <Search onClick={this.handleInputFocus} style={{fontSize: 25}}/>
-					                        </IconButton>
-					                      </InputAdornment>
-					                    )
-					                  }}
-					                />
+				<GridContainer justify={'center'}>
+					<GridItem sm={4} md={3} className={classes.grid}>
+						<GridContainer className={classes.gridContainer}>
+							<GridItem md={12} className={classes.grid}>
+								<CustomInput
+				                  id="search"
+				                  fullwidth={true}
+				                  inputProps={{
+				                    className: classes.input,
+				                    type: "text",
+				                    placeholder: 'Search',
+				                    onChange: (e) => console.log(e),
+				                    startAdornment: (
+				                      <InputAdornment position="end">
+				                        <IconButton color="inherit">
+				                          <Search onClick={this.handleInputFocus} style={{fontSize: 25}}/>
+				                        </IconButton>
+				                      </InputAdornment>
+				                    )
+				                  }}
+				                />
 
-								</GridItem>
-								<div className={classes.renderUsers}>
-{
-									parsedData
-									// eslint-disable-next-line
-										.map((user, i) => {
-											if ( user.hasOwnProperty('first')) {
-												return (
-													<div key={i}>
-														<GridItem md={12} className={classes.grid} style={{ cursor: 'pointer' }}>
-															<Card className={classes.item} raised onClick={()=>this.showUser(user)}>
-																<Typography variant='title'>{user.first + ' ' + user.last}</Typography>
-																<div className={classes.itemSubContent}>
-																	<Typography variant='body2'>{user.groups}</Typography>
-																	<Typography variant='body1'>{user.home}</Typography>
-																	<Typography variant='body1'>{user.email}</Typography>
-																</div>
-															</Card>
-														</GridItem>
-													</div>
-												)
-											}
-											})
-										.reverse()
-
-}
-							</div>
-							</GridContainer>
-						</GridItem>
-						<GridItem sm={8} md={9} className={classes.userProfileGrid}>
-							<GridContainer className={classes.gridMainPanel}>
-								<GridItem>
-									<Card raised className={classes.mainPanel}>
-										{ addUser 
-											? (
-												<div>
-												    <EmployeeCard 
-												    	toggleViews={this.toggleViews} 
-												    	addUser={addUser}
-														first={this.state.first}
-														last={this.state.last}
-														group={this.state.group}
-														email={this.state.email}
-														phone={this.state.phone}
-												    />
+							</GridItem>
+							<div className={classes.renderUsers}>
+	{
+								parsedData
+								// eslint-disable-next-line
+									.map((user, i) => {
+										if ( user.hasOwnProperty('first')) {
+											return (
+												<div key={i}>
+													<GridItem md={12} className={classes.grid} style={{ cursor: 'pointer' }}>
+														<Card className={classes.item} raised onClick={()=>this.showUser(user)}>
+															<Typography variant='title'>{user.first + ' ' + user.last}</Typography>
+															<div className={classes.itemSubContent}>
+																<Typography variant='body2'>{user.groups}</Typography>
+																<Typography variant='body1'>{user.home}</Typography>
+																<Typography variant='body1'>{user.email}</Typography>
+															</div>
+														</Card>
+													</GridItem>
 												</div>
-											  )
-											: (
-												<div>
-													<NewProfile toggleViews={this.toggleViews} addUser={addUser} />
-												</div>
-											  ) 
+											)
 										}
-									</Card>
-								</GridItem>
-							</GridContainer>
-						</GridItem>
-					</GridContainer>
-				</Page>
+										})
+									.reverse()
+
+	}
+						</div>
+						</GridContainer>
+					</GridItem>
+					<GridItem sm={8} md={9} className={classes.userProfileGrid}>
+
+								<Card raised className={classes.mainPanel}>
+									{ addUser 
+										? (
+											<div>
+											    <EmployeeCard 
+											    	toggleViews={this.toggleViews} 
+											    	addUser={addUser}
+													first={this.state.first}
+													last={this.state.last}
+													group={this.state.group}
+													email={this.state.email}
+													phone={this.state.phone}
+											    />
+											</div>
+										  )
+										: (
+											<div>
+												<NewProfile toggleViews={this.toggleViews} addUser={addUser} />
+											</div>
+										  ) 
+									}
+								</Card>
+					</GridItem>
+				</GridContainer>
 			</div>
 
 		)
