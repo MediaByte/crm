@@ -53,7 +53,7 @@ import {
   mailAddressZip,
   mailAddressCountry
 } from 'state/newUser/actions.js';
-const gun = Gun('https://crm-server.herokuapp.com/gun');
+const gun = Gun('https://pineconeserver.herokuapp.com/gun');
 const db = gun.get('testRost').get('users');
 const dbRelations = gun.get('testRost').get('relation').get('users');
 const mapStateToProps = (state) => {
