@@ -71,7 +71,7 @@ const styles = theme => ({
 class ManageEmployees extends Component {
 	constructor(props) {
 		super(props);
-		this.gun = Gun('https://crm-server.herokuapp.com/gun');
+		this.gun = Gun('https://pineconeserver.herokuapp.com/gun');
 			this.state = {
 				addUser: true, 
 				users: [],
