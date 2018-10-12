@@ -8,7 +8,7 @@ import withStyles from "@material-ui/core/styles/withStyles";
 // @material-ui/icons
 
 // core components
-import cardHeaderStyle from "assets/jss/material-dashboard-pro-react/components/cardHeaderStyle.jsx";
+import cardHeaderStyle from "assets/jss/material-kit-pro-react/components/cardHeaderStyle.jsx";
 
 function CardHeader({ ...props }) {
   const {
@@ -20,9 +20,7 @@ function CardHeader({ ...props }) {
     image,
     contact,
     signup,
-    stats,
-    icon,
-    text,
+    noShadow,
     ...rest
   } = props;
   const cardHeaderClasses = classNames({
@@ -32,9 +30,7 @@ function CardHeader({ ...props }) {
     [classes.cardHeaderImage]: image,
     [classes.cardHeaderContact]: contact,
     [classes.cardHeaderSignup]: signup,
-    [classes.cardHeaderStats]: stats,
-    [classes.cardHeaderIcon]: icon,
-    [classes.cardHeaderText]: text,
+    [classes.noShadow]: noShadow,
     [className]: className !== undefined
   });
   return (
@@ -59,9 +55,7 @@ CardHeader.propTypes = {
   image: PropTypes.bool,
   contact: PropTypes.bool,
   signup: PropTypes.bool,
-  stats: PropTypes.bool,
-  icon: PropTypes.bool,
-  text: PropTypes.bool
+  noShadow: PropTypes.bool
 };
 
 export default withStyles(cardHeaderStyle)(CardHeader);

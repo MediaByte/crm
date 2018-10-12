@@ -8,7 +8,7 @@ import withStyles from "@material-ui/core/styles/withStyles";
 // @material-ui/icons
 
 // core components
-import cardBodyStyle from "assets/jss/material-dashboard-pro-react/components/cardBodyStyle.jsx";
+import cardBodyStyle from "assets/jss/material-kit-pro-react/components/cardBodyStyle.jsx";
 
 function CardBody({ ...props }) {
   const {
@@ -21,8 +21,6 @@ function CardBody({ ...props }) {
     pricing,
     signup,
     color,
-    profile,
-    calendar,
     ...rest
   } = props;
   const cardBodyClasses = classNames({
@@ -33,8 +31,6 @@ function CardBody({ ...props }) {
     [classes.cardPricing]: pricing,
     [classes.cardSignup]: signup,
     [classes.cardBodyColor]: color,
-    [classes.cardBodyProfile]: profile,
-    [classes.cardBodyCalendar]: calendar,
     [className]: className !== undefined
   });
   return (
@@ -52,9 +48,7 @@ CardBody.propTypes = {
   formHorizontal: PropTypes.bool,
   pricing: PropTypes.bool,
   signup: PropTypes.bool,
-  color: PropTypes.bool,
-  profile: PropTypes.bool,
-  calendar: PropTypes.bool
+  color: PropTypes.bool
 };
 
 export default withStyles(cardBodyStyle)(CardBody);

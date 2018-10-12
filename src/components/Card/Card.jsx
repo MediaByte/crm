@@ -8,7 +8,7 @@ import withStyles from "@material-ui/core/styles/withStyles";
 // @material-ui/icons
 
 // core components
-import cardStyle from "assets/jss/material-dashboard-pro-react/components/cardStyle.jsx";
+import cardStyle from "assets/jss/material-kit-pro-react/components/cardStyle.jsx";
 
 function Card({ ...props }) {
   const {
@@ -24,8 +24,6 @@ function Card({ ...props }) {
     color,
     product,
     testimonial,
-    chart,
-    login,
     ...rest
   } = props;
   const cardClasses = classNames({
@@ -40,8 +38,6 @@ function Card({ ...props }) {
     [classes[color]]: color,
     [classes.cardPricing]: pricing,
     [classes.cardProduct]: product,
-    [classes.cardChart]: chart,
-    [classes.cardLogin]: login,
     [className]: className !== undefined
   });
   return (
@@ -69,9 +65,7 @@ Card.propTypes = {
     "danger",
     "rose"
   ]),
-  product: PropTypes.bool,
-  chart: PropTypes.bool,
-  login: PropTypes.bool
+  product: PropTypes.bool
 };
 
 export default withStyles(cardStyle)(Card);
