@@ -25,7 +25,7 @@ import TextField from "@material-ui/core/TextField";
 import loginPageStyle from "assets/jss/material-kit-pro-react/views/loginPageStyle.jsx";
 //Media
 import Logo from 'assets/img/crmLogo.png'
-const gun = Gun('https://crm-server.herokuapp.com/gun');
+const gun = Gun('https://pineconeserver.herokuapp.com/gun');
 class LoginPage extends React.Component {
   constructor(props) {
     super(props);
