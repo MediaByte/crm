@@ -10,7 +10,10 @@ const containerFluid = {
   paddingLeft: "15px",
   marginRight: "auto",
   marginLeft: "auto",
-  width: "80%"
+  width: "90%",
+  "@media (min-width: 576px)": {
+    width: "80%"
+  }
 };
 const container = {
   ...containerFluid,

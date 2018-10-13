@@ -31,14 +31,22 @@ const loginPageStyle = {
     ...container,
     zIndex: "2",
     position: "relative",
-    paddingTop: "9vh",
-    color: "#FFFFFF"
+    paddingTop: "5vh",
+    color: "#FFFFFF",
+    "@media (min-width: 576px)": {
+      paddingTop: "9vh",
+    }
   },
   cardContainer: {
-    width: '306px', 
-    height: '350px',
+    maxWidth: '306px',
+    marginLeft: "auto",
+    marginRight: "auto",
+    "@media (min-width: 576px)": {
+      width: "306px"
+    },
+    // height: '350px',
     border: '1px solid #EEEEEE',
-    borderRadius: '14px'
+    borderRadius: '10px'
   },
   pageHeader: {
     minHeight: "100vh",
@@ -78,7 +86,7 @@ const loginPageStyle = {
     padding: "0"
   },
   inputIconsColor: {
-    color: "#495057"
+    color: "#888"
   },
   textCenter: {
     textAlign: "center"

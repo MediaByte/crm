@@ -8,8 +8,8 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import FormHelperText from '@material-ui/core/FormHelperText';
 // @material-ui/icons
-import Email from "@material-ui/icons/Email";
-import LockOutline from "@material-ui/icons/LockOutline";
+import EmailOutlined from "@material-ui/icons/EmailOutlined";
+import LockOutlined from "@material-ui/icons/LockOutlined";
 // core components
 import GridContainer from "components/Grid/GridContainer.jsx";
 import GridItem from "components/Grid/GridItem.jsx";
@@ -18,6 +18,9 @@ import Card from "components/Card/Card.jsx";
 import CardBody from "components/Card/CardBody.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
 import CustomInput from "components/CustomInput/CustomInput.jsx";
+import Grid from "@material-ui/core/Grid";
+import TextField from "@material-ui/core/TextField";
+
 //Styles
 import loginPageStyle from "assets/jss/material-kit-pro-react/views/loginPageStyle.jsx";
 //Media
@@ -86,59 +89,62 @@ class LoginPage extends React.Component {
                           </div>
                         </CardHeader>
                         <CardBody signup>
-                          <CustomInput
-                            id="email"
-                            labelText="Email*"
-                            success={correctEmail}
+                          <Grid container item xs={12} alignItems="flex-end">
+                            <Grid item xs={2}>
+                              <EmailOutlined className={classes.inputIconsColor} />
+                            </Grid>
+                            <Grid item xs={10}>
+                              <CustomInput
+                                id="email"
+                                labelText="Email*"
+                                success={correctEmail}
 
-                            formControlProps={{
-                              fullWidth: true,
+                                formControlProps={{
+                                  fullWidth: true,
 
-                            }}
-                            inputProps={{
-                              autoComplete: 'false',
-                              onChange: (e) => this.handleEmail(e),
-                              endAdornment: (
-                                <InputAdornment position="end">
-                                  { !correctEmail ? <Email className={classes.inputIconsColor} /> : null}
-                                </InputAdornment>
-                              )
-                            }}
-                          />
-                          <CustomInput
-                            id="pass"
-                            labelText="Password*"
-                            error={this.state.inputError}
-                            formControlProps={{
-                              fullWidth: true
-                            }}
-                            inputProps={{
-                              disabled: !correctEmail,
-                              error: this.state.inputError,
-                              value: this.state.password,
-                              type: "password",
-                              onChange: (e) => this.handlePassword(e),
-                              onKeyDown: (e) => this.keyPress(e),
-                              endAdornment: (
-                                <InputAdornment position="end">
-                                  <LockOutline
-                                    className={classes.inputIconsColor}
-                                  />
-                                </InputAdornment>
-                              )
-                            }}
-                          />
-                          {
-                          this.state.inputError 
-                            ? <FormHelperText 
-                                style={{marginTop: -10, marginLeft: 10}} 
-                                error 
-                                id="name-error-text"
-                              >
-                                Incorrect Password/Email Combination
-                              </FormHelperText> 
-                            : null
-                          }
+                                }}
+                                inputProps={{
+                                  autoComplete: 'false',
+                                  onChange: (e) => this.handleEmail(e)
+                                }}
+                              />
+                            </Grid>
+                          </Grid>
+                          <Grid container item xs={12} alignItems="flex-end">
+                            <Grid item xs={2}>
+                              <LockOutlined className={classes.inputIconsColor} />
+                            </Grid>
+                            <Grid item xs={10}>
+                              <CustomInput
+                                id="pass"
+                                labelText="Password*"
+                                error={this.state.inputError}
+                                formControlProps={{
+                                  fullWidth: true
+                                }}
+                                inputProps={{
+                                  disabled: !correctEmail,
+                                  error: this.state.inputError,
+                                  value: this.state.password,
+                                  type: "password",
+                                  onChange: (e) => this.handlePassword(e),
+                                  onKeyDown: (e) => this.keyPress(e)
+                                }}
+                              />
+                              {
+                              this.state.inputError 
+                                ? <FormHelperText 
+                                    style={{marginTop: -10, marginLeft: 10}} 
+                                    error 
+                                    id="name-error-text"
+                                  >
+                                    Incorrect Password/Email Combination
+                                  </FormHelperText> 
+                                : null
+                              }
+                            </Grid>
+                          </Grid>
+                          <br />
                           <div style={{ marginBottom: 15, }}>
                             <Button 
                               fullWidth={true} 
