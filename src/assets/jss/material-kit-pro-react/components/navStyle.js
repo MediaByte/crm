@@ -99,11 +99,11 @@ const navStyles = theme => ({
     display: 'none',
   },
   drawerPaper: {
-    position: 'relative',
     backgroundColor: "#0dacc4",
-    // [theme.breakpoints.down('sm')]: {
-    //   backgroundColor: "#fff",
-    // },
+    [theme.breakpoints.up('sm')]: {
+      position: 'relative',
+      // backgroundColor: "#fff",
+    },
     whiteSpace: 'nowrap',
     zIndex: theme.zIndex.drawer + 2,
     width: drawerWidth,

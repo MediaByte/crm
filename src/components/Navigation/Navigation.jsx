@@ -70,7 +70,8 @@ const styles = {
 
 class Navigation extends React.Component {
   state = {
-    disableUnderline: true
+    disableUnderline: true,
+    value: 0
   };
   componentDidMount() {
     // const { closed } = this.props;
@@ -81,8 +82,13 @@ class Navigation extends React.Component {
   handleDrawerClose = () => {
     this.props.toggleDrawer(false);
   };
+
+  handleChange = (event, value) => {
+    this.setState({ value });
+  };
   render() {
     const { classes, children, component } = this.props;
+    const { value } = this.state;
     return (
         <div>
         <div className={classes.root}>
@@ -220,8 +226,8 @@ class Navigation extends React.Component {
             </main>
           </div>
           <BottomNavigation
-            // value={value}
-            // onChange={this.handleChange}
+            value={value}
+            onChange={this.handleChange}
             showLabels
             className={classes.bottom}
           >
