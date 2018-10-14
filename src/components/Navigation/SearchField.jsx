@@ -34,6 +34,11 @@ const content = (
    );
 
 const styles = theme => ({
+	icon: {
+		[theme.breakpoints.up('sm')]: {
+			display: 'none'
+		}
+	},
 	searchBar: {
 		display: 'flex',
 		justifyContent: 'center',
@@ -48,7 +53,7 @@ const styles = theme => ({
 			marginTop: -11.5,
 			marginLeft: '20px',
 			width: '90%',
-		}
+		},
 	},
 	drawerStyle:{
 		height: '8vh',
@@ -80,7 +85,7 @@ class SearchField extends React.Component {
 		return (
 			<div>
 		        <div>
-			        <IconButton disableRipple onClick={this.toggleSearchField} color="inherit">
+			        <IconButton disableRipple onClick={this.toggleSearchField} color="inherit" className={classes.icon}>
 			          <Search style={{marginTop: '2px', fontSize: 24, color: 'grey'}}/>
 			        </IconButton>
 			    </div>

@@ -113,7 +113,7 @@ class Navigation extends React.Component {
               )}
 
                 <Typography variant="title" noWrap className={classes.title}>{this.props.title}</Typography>
-                
+                <SearchField />
                 <div className={classes.grow} />
                   <div className={classes.search}>
                     <div className={classes.searchIcon}>
@@ -226,8 +226,8 @@ class Navigation extends React.Component {
             className={classes.bottom}
           >
             <BottomNavigationAction component={(props) => <NavLink to={`/pinecone/dashboard/test@gmail.com`} {...props}/>} label="Dashboard" icon={<Dashboard />} />
-            <BottomNavigationAction label="People" icon={<People/>} />
-            <BottomNavigationAction component={(props) => <NavLink to={'/admin/test@gmail.com'} {...props}/>} label="Administration" icon={<Laptop />} />
+            <BottomNavigationAction label="Agencies" icon={<AccountBalance/>} />
+            <BottomNavigationAction label="Events" icon={<Event/>} />
           </BottomNavigation>
         </div>
     );

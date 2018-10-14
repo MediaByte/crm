@@ -5,12 +5,15 @@ const drawerWidth = 220;
 const navStyles = theme => ({
   title: {
     flexGrow: 1,
-    visibility: 'hidden',
-    [theme.breakpoints.up('sm')]: {
-      visibility: 'visible',
+    // visibility: 'hidden',
+    [theme.breakpoints.down('xs')]: {
+      fontWeight: '900',
+      textAlign: 'center',
+      fontSize: '15px',
     },
   },
   titleContent: {
+    display: 'none',
     visibility: 'visible',
     marginTop: '60px',
     [theme.breakpoints.up('sm')]: {
@@ -21,9 +24,10 @@ const navStyles = theme => ({
     // [theme.breakpoints.down('sm')]: {
     //   paddingTop: '40px',
     // },
-    [theme.breakpoints.down('sm')]: {
-      paddingTop: '20px',
-      paddingBottom: '30px',
+    paddingTop: '40px',
+    paddingBottom: '30px',
+    [theme.breakpoints.up('sm')]: {
+      paddingTop: '70px',
     }
   },
   headerInput: {
@@ -47,9 +51,9 @@ const navStyles = theme => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    [theme.breakpoints.down('xs')]: {
-      backgroundColor: "#0dacc4",
-    },
+    // [theme.breakpoints.down('xs')]: {
+    //   backgroundColor: "#0dacc4",
+    // },
     // boxShadow: "0 0 10px #eee",
     backgroundColor: "#fff",
     borderBottom: "1px solid #eee",
@@ -63,6 +67,7 @@ const navStyles = theme => ({
     // }),
   },
   menuButton: {
+    color: "#0dacc4",
     // marginLeft: 12,
     marginRight: 10,
     [theme.breakpoints.up('sm')]: {
@@ -96,9 +101,9 @@ const navStyles = theme => ({
   drawerPaper: {
     position: 'relative',
     backgroundColor: "#0dacc4",
-    [theme.breakpoints.down('sm')]: {
-      backgroundColor: "#fff",
-    },
+    // [theme.breakpoints.down('sm')]: {
+    //   backgroundColor: "#fff",
+    // },
     whiteSpace: 'nowrap',
     zIndex: theme.zIndex.drawer + 2,
     width: drawerWidth,
@@ -160,21 +165,17 @@ const navStyles = theme => ({
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
     backgroundColor: fade('#f6f6f6', 1),
-    [theme.breakpoints.down('xs')]: {
-      backgroundColor: "#0dacc4",
-    },
     '&:hover': {
       backgroundColor: fade('#eee', 1),
-      [theme.breakpoints.down('xs')]: {
-        backgroundColor: "#0dacc4",
-      },
     },
     marginLeft: 0,
     width: '100%',
+    display: 'none',
     [theme.breakpoints.up('sm')]: {
       marginLeft: theme.spacing.unit,
       width: 'auto',
-    },
+      display: 'block',
+  },
   },
   searchIcon: {
     width: theme.spacing.unit * 9,
@@ -212,7 +213,7 @@ const navStyles = theme => ({
     fontWeight: 600
   },
   iconMenu: {
-    // color: '#fff'
+    color: '#fff'
   },
   bottom: {
     display: 'flex',
