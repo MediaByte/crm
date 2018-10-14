@@ -56,29 +56,69 @@ class Dashboard extends Component {
 			<div classNames={classes.root}>
 				<Page component={'dashboard'} titleText={'Dashboard'}>
 					<div className={classes.content}>
-			          <GridContainer className={classes.layout}>
-			            <GridItem  xs={12} sm={6} md={6} lg={6} xl={6}>
-				            <div>
-				 				<Cards /> <br />
-				 			</div>
-			            </GridItem>
-			            <GridItem xs={12} sm={6} md={6} lg={6} xl={6}>
-				            <div>
-				 				<Cards />
-				 			</div>
-			            </GridItem>
-			            <GridItem  xs={12} sm={6} md={6} lg={6} xl={6}>
-				            <div>
-				 				<Cards /> <br />
-				 			</div>
-			            </GridItem>
-			            <GridItem xs={12} sm={6} md={6} lg={6} xl={6}>
-				            <div>
-				 				<Cards />
-				 			</div>
-			            </GridItem>
-			          </GridContainer>
-		          	</div>
+						<GridContainer className={classes.layout}>
+							<GridItem  xs={12} sm={6} md={6} lg={6} xl={6}>
+								<div>
+									<Cards />
+									<br />
+								</div>
+							</GridItem>
+							<GridItem  xs={12} sm={6} md={6} lg={6} xl={6}>
+								<div>
+									<Cards />
+									<br />
+								</div>
+							</GridItem>
+							<GridItem  xs={12} sm={6} md={6} lg={6} xl={6}>
+								<div>
+									<Cards />
+									<br />
+								</div>
+							</GridItem>
+							<GridItem  xs={12} sm={6} md={6} lg={6} xl={6}>
+								<div>
+									<Cards />
+									<br />
+								</div>
+							</GridItem>
+							<GridItem  xs={12} sm={6} md={6} lg={6} xl={6}>
+								<div>
+									<Cards />
+									<br />
+								</div>
+							</GridItem>
+							<GridItem  xs={12} sm={6} md={6} lg={6} xl={6}>
+								<div>
+									<Cards />
+									<br />
+								</div>
+							</GridItem>
+							<GridItem  xs={12} sm={6} md={6} lg={6} xl={6}>
+								<div>
+									<Cards />
+									<br />
+								</div>
+							</GridItem>
+							<GridItem  xs={12} sm={6} md={6} lg={6} xl={6}>
+								<div>
+									<Cards />
+									<br />
+								</div>
+							</GridItem>
+							<GridItem  xs={12} sm={6} md={6} lg={6} xl={6}>
+								<div>
+									<Cards />
+									<br />
+								</div>
+							</GridItem>
+							<GridItem  xs={12} sm={6} md={6} lg={6} xl={6}>
+								<div>
+									<Cards />
+									<br />
+								</div>
+							</GridItem>
+						</GridContainer>
+					</div>
 				</Page>
 			</div>
 		)

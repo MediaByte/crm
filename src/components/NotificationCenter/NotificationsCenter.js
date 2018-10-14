@@ -12,16 +12,19 @@ import GridContainer from 'components/Grid/GridContainer.jsx';
 
 const styles = theme => ({
   list: {
-    width: 317,
+    width: 280,
   },
   fullList: {
     position: 'absolute',
     bottom: '0',
-    width: 317,
+    width: 280,
   },
   drawerPaper: {
-    backgroundColor: '#E0E0E0',
-    borderRadius: '1px'
+    // position: 'relative',
+    // backgroundColor: '#E0E0E0',
+    // borderRadius: '1px',
+    // theme.zIndex.drawer + 1
+    zIndex: theme.zIndex.drawer + 1,
   },
   header: {
     display: 'flex',

@@ -1,17 +1,27 @@
-const drawerWidth = 267;
+import { fade } from '@material-ui/core/styles/colorManipulator';
+
+const drawerWidth = 220;
 
 const navStyles = theme => ({
   title: {
     flexGrow: 1,
-    [theme.breakpoints.down('xs')]: {
-      marginTop: '50px',
+    visibility: 'hidden',
+    [theme.breakpoints.up('sm')]: {
+      visibility: 'visible',
+    },
+  },
+  titleContent: {
+    visibility: 'visible',
+    marginTop: '60px',
+    [theme.breakpoints.up('sm')]: {
+      visibility: 'hidden',
     },
   },
   titleStyle: {
-    [theme.breakpoints.up('sm')]: {
-      paddingTop: '40px',
-    },
-    [theme.breakpoints.down('xs')]: {
+    // [theme.breakpoints.down('sm')]: {
+    //   paddingTop: '40px',
+    // },
+    [theme.breakpoints.down('sm')]: {
       paddingTop: '20px',
       paddingBottom: '30px',
     }
@@ -29,76 +39,77 @@ const navStyles = theme => ({
     display: 'flex',
   },
   appBar: {
-    zIndex: theme.zIndex.drawer + 2,
-    backgroundColor: 'transparent',
+    zIndex: theme.zIndex.drawer - 1,
+    [theme.breakpoints.up('sm')]: {
+      zIndex: theme.zIndex.drawer + 1,
+    },
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
+    [theme.breakpoints.down('xs')]: {
+      backgroundColor: "#0dacc4",
+    },
+    // boxShadow: "0 0 10px #eee",
+    backgroundColor: "#fff",
+    borderBottom: "1px solid #eee",
   },
   appBarShift: {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  menuDivider: {
-    backgroundColor: 'white',
-    marginBottom: theme.spacing.unit * 1.8,
-    margin: 'auto',
-    width: '85%',
-  },
-  menuButtonOpened: {
-    color: theme.palette.common.white,
-    marginTop: -70,
-    backgroundColor: 'transparent',
-    [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing.unit * 27
-    },
-    [theme.breakpoints.down('xs')]: {
-      marginLeft: theme.spacing.unit * 27
-    }
+    // marginLeft: drawerWidth,
+    // width: `calc(100% - ${drawerWidth}px)`,
+    // transition: theme.transitions.create(['width', 'margin'], {
+    //   easing: theme.transitions.easing.sharp,
+    //   duration: theme.transitions.duration.enteringScreen,
+    // }),
   },
   menuButton: {
-    [theme.breakpoints.down('xs')]: {
-      color: theme.palette.primary.main,
-      marginLeft: theme.spacing.unit / 2
-    },
+    // marginLeft: 12,
+    marginRight: 10,
     [theme.breakpoints.up('sm')]: {
-      color: theme.palette.common.white
+      marginLeft: '75px',
+      // marginRight: 22,
     },
-    backgroundColor: 'transparent',
-    marginLeft: 13,
-    position: 'fixed',
+    transition: theme.transitions.create(['margin'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    })
+  },
+  menuButtonOpened: {
+    transition: theme.transitions.create(['margin'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+    [theme.breakpoints.up('sm')]: {
+      marginLeft: 230,
+    },
+    // marginLeft: '50px'
+  },
+  menuButtonMobile: {
+    display: 'block',
+    [theme.breakpoints.up('sm')]: {
+      display: 'none',
+    },
   },
   hide: {
     display: 'none',
   },
   drawerPaper: {
     position: 'relative',
-    [theme.breakpoints.down('xs')]: {
-      position: 'fixed',
+    backgroundColor: "#0dacc4",
+    [theme.breakpoints.down('sm')]: {
+      backgroundColor: "#fff",
     },
-    paddingTop: theme.spacing.unit * 7,
-    fontWeight: '400',
-    boxShadow: theme.shadows[24],
-    fontSize: '1.5em',
-    backgroundColor: '#0DACC4',
     whiteSpace: 'nowrap',
+    zIndex: theme.zIndex.drawer + 2,
     width: drawerWidth,
-    minWidth: 0,
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
   },
   drawerPaperClose: {
-    position: 'relative',
-    minHeight: '100vh',
-    boxShadow: theme.shadows[20],
-    backgroundColor: '#0DACC4',
+    backgroundColor: "#0dacc4",
+    overflowX: 'visible',
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
@@ -113,18 +124,18 @@ const navStyles = theme => ({
     },
   },
   toolbar: {
-    [theme.breakpoints.down('xs')]: {
-      backgroundColor: theme.palette.common.white,
-      height: '58px',
-      boxShadow: theme.shadows[5],
-    }
-  },
-  toolbarIcon: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-end',
     padding: '0 8px',
+    backgroundColor: "transparent",
+    // backgroundColor: "#eee",
     ...theme.mixins.toolbar,
+  },
+  content: {
+    flexGrow: 1,
+    backgroundColor: theme.palette.background.default,
+    padding: theme.spacing.unit * 3,
   },
   children: {
     [theme.breakpoints.down('xs')]: {
@@ -136,6 +147,88 @@ const navStyles = theme => ({
     width: '100%',
     overflowX: 'hidden',
     paddingBottom: '20px',
+    // flexGrow: 1,
+    // backgroundColor: theme.palette.background.default,
+    // padding: theme.spacing.unit * 3,
+    // minWidth: 0,
   },
+  imgLogo: {
+    margin: "0 auto"
+  },
+
+  search: {
+    position: 'relative',
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor: fade('#f6f6f6', 1),
+    [theme.breakpoints.down('xs')]: {
+      backgroundColor: "#0dacc4",
+    },
+    '&:hover': {
+      backgroundColor: fade('#eee', 1),
+      [theme.breakpoints.down('xs')]: {
+        backgroundColor: "#0dacc4",
+      },
+    },
+    marginLeft: 0,
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      marginLeft: theme.spacing.unit,
+      width: 'auto',
+    },
+  },
+  searchIcon: {
+    width: theme.spacing.unit * 9,
+    height: '100%',
+    position: 'absolute',
+    pointerEvents: 'none',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  inputRoot: {
+    color: 'inherit',
+    width: '100%',
+  },
+  inputInput: {
+    paddingTop: theme.spacing.unit,
+    paddingRight: theme.spacing.unit,
+    paddingBottom: theme.spacing.unit,
+    paddingLeft: theme.spacing.unit * 10,
+    transition: theme.transitions.create('width'),
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      width: 120,
+      '&:focus': {
+        width: 200,
+      },
+    },
+  },
+  active: {
+    color: '#fff'
+  },
+  selected: {
+    backgroundColor: "rgba(255,255,255,0.2) !important",
+    color: "white !important",
+    fontWeight: 600
+  },
+  iconMenu: {
+    // color: '#fff'
+  },
+  bottom: {
+    display: 'flex',
+    width: '100%',
+    // minHeight: '100vh',
+    // flexDirection: 'column',
+    // [theme.breakpoints.up('sm')]: {
+    //   display: 'none',
+    // },
+    borderTop: "1px solid #eee",
+    position: "fixed",
+    bottom: '0',
+    [theme.breakpoints.up('sm')]: {
+      display: 'none',
+    },
+  },
+  
 });
 export default navStyles;

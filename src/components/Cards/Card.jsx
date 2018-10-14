@@ -56,11 +56,11 @@ class CardComponent extends React.Component {
     return (
       <div>
         <Card className={classes.card}>
-          <CardMedia
+          {/* <CardMedia
             className={classes.media}
             image="https://media.istockphoto.com/photos/coming-soon-picture-id843847560?k=6&m=843847560&s=612x612&w=0&h=30XwbcIkhbZlcjWxOiQ1qZdFHStvAI_ogrgNB-ch7pI="
             title="Contemplative Reptile"
-          />
+          /> */}
           <CardHeader
             title="Action Buttons"
             subheader="September 14, 2016"
