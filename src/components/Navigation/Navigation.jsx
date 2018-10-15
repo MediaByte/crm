@@ -228,7 +228,7 @@ class Navigation extends React.Component {
           <BottomNavigation
             value={value}
             onChange={this.handleChange}
-            showLabels
+            // showLabels
             className={classes.bottom}
           >
             <BottomNavigationAction component={(props) => <NavLink to={`/pinecone/dashboard/test@gmail.com`} {...props}/>} label="Dashboard" icon={<Dashboard />} />
