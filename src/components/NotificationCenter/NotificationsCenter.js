@@ -9,6 +9,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import GridItem from 'components/Grid/GridItem.jsx';
 import GridContainer from 'components/Grid/GridContainer.jsx';
+import NotificationsOutlined from '@material-ui/icons/NotificationsOutlined';
 
 const styles = theme => ({
   list: {
@@ -110,11 +111,11 @@ class NotificationsCenter extends React.Component {
 
     return (
       <div>
-        <IconButton onClick={this.toggleDrawer('right', true)}>
-          <Icon>
-            vertical_split
+        {/* <IconButton onClick={this.toggleDrawer('right', true)}> */}
+          <Icon onClick={this.toggleDrawer('right', true)}>
+            <NotificationsOutlined />
           </Icon>
-        </IconButton>
+        {/* </IconButton> */}
         <Drawer 
           anchor="right" 
           open={this.state.right} 

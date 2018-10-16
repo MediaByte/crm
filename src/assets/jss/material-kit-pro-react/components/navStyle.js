@@ -99,6 +99,10 @@ const navStyles = theme => ({
     display: 'none',
   },
   drawerPaper: {
+    width: drawerWidth,
+    
+
+    color: "#fff !important",
     backgroundColor: "#0dacc4",
     [theme.breakpoints.up('sm')]: {
       position: 'relative',
@@ -106,7 +110,7 @@ const navStyles = theme => ({
     },
     whiteSpace: 'nowrap',
     zIndex: theme.zIndex.drawer + 2,
-    width: drawerWidth,
+    // width: drawerWidth,
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
@@ -136,6 +140,11 @@ const navStyles = theme => ({
     backgroundColor: "transparent",
     // backgroundColor: "#eee",
     ...theme.mixins.toolbar,
+  },
+  toolbarLink: {
+    display: 'block',
+    textAlign: 'center',
+    width: '100%',
   },
   content: {
     flexGrow: 1,
@@ -183,7 +192,7 @@ const navStyles = theme => ({
     position: 'absolute',
     pointerEvents: 'none',
     display: 'flex',
-    alignItems: 'center',
+    alignItems: '100%',
     justifyContent: 'center',
   },
   inputRoot: {
@@ -230,6 +239,13 @@ const navStyles = theme => ({
       display: 'none',
     },
   },
-  
+  label: {
+    ' span': {
+      display: 'none'
+    }
+  },
+  white: {
+    color: "#fff"
+  }
 });
 export default navStyles;

@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 //npm package for concatenating classes
 import classNames from 'classnames';
 //react router
-import { NavLink } from 'react-router-dom'
+import { NavLink, Link, Redirect } from 'react-router-dom'
 //Material-ui components
+import Hidden from '@material-ui/core/Hidden';
 import IconButton from '@material-ui/core/IconButton';
 import Divider from '@material-ui/core/Divider';
 import Dashboard from '@material-ui/icons/Dashboard';
@@ -71,7 +72,8 @@ const styles = {
 class Navigation extends React.Component {
   state = {
     disableUnderline: true,
-    value: 0
+    value: 0,
+    mobileOpen: false
   };
   componentDidMount() {
     // const { closed } = this.props;
@@ -83,12 +85,112 @@ class Navigation extends React.Component {
     this.props.toggleDrawer(false);
   };
 
-  handleChange = (event, value) => {
-    this.setState({ value });
+  handleDrawerToggle = () => {
+    this.setState(state => ({ mobileOpen: !state.mobileOpen }));
   };
+
+  handleChange = (event, value) => {
+    console.log('handleChange', value);
+    let page;
+    switch (value) {
+      case 0:
+        page = '/pinecone/dashboard/test@gmail.com'
+      case 1:
+        page = '/admin/test@gmail.com'
+      default:
+        page = '/admin/test@gmail.com'
+        break
+    }
+    console.log('page', page);
+    
+    this.setState({ value });
+    return <Redirect to={page} />
+  };
+
   render() {
     const { classes, children, component } = this.props;
     const { value } = this.state;
+
+    const renderMenu = (
+      <div>
+      <div className={classes.toolbar}>
+        <Link to='/pinecone/dashboard/test@gmail.com' className={classes.toolbarLink}><img width={25} src={Logo} alt={'Sign in to continue'} className={classes.imgLogo}/></Link>
+        <IconButton 
+          className={classNames(classes.menuButtonMobile)} 
+          onClick={this.handleDrawerClose}
+        >
+          <MenuIcon />
+        </IconButton>
+      </div>
+      <div>
+      <Divider />
+      <List
+        className={classes.drawerList}
+        style={{marginTop: -8}}
+      >
+        <ListItem 
+          selected={component === 'dashboard'}
+          classes={{ selected: classes.selected }}
+          button
+          component={(props) => <NavLink to={`/pinecone/dashboard/test@gmail.com`} {...props}/>}
+        >
+          <ListItemIcon className={classes.iconMenu}>
+            <Dashboard />
+          </ListItemIcon>
+          <ListItemText disableTypography primary="Dashboard" style={{color: "#fff"}} />
+        </ListItem>
+        <ListItem button>
+          <ListItemIcon className={classes.iconMenu}>
+            <i style={{fontSize: '23px'}} className="fas fa-tasks"></i>
+          </ListItemIcon>
+          <ListItemText disableTypography primary="Tasks" />
+        </ListItem>
+        <ListItem button>
+          <ListItemIcon className={classes.iconMenu}>
+            <People/>
+          </ListItemIcon>
+          <ListItemText disableTypography primary="People" />
+        </ListItem>
+        <ListItem 
+          selected={component === 'administration'}
+          classes={{ selected: classes.selected }}
+          button
+          component={(props) => <NavLink to={'/admin/test@gmail.com'} {...props}/>}
+        >
+          <ListItemIcon className={classes.iconMenu}>
+            <Laptop />
+          </ListItemIcon>
+          <ListItemText disableTypography primary="Administration" />
+        </ListItem>
+        <ListItem button>
+          <ListItemIcon className={classes.iconMenu}>
+            <Event/>
+          </ListItemIcon>
+          <ListItemText disableTypography primary="Events" />
+        </ListItem>
+        <ListItem button>
+          <ListItemIcon className={classes.iconMenu}>
+            <AccountBalance/>
+          </ListItemIcon>
+          <ListItemText disableTypography primary="Agencies" />
+        </ListItem>
+        <ListItem button>
+          <ListItemIcon className={classes.iconMenu}>
+            <CreditCard/>
+          </ListItemIcon>
+          <ListItemText disableTypography primary="Expenses" />
+        </ListItem>
+        <ListItem button>
+          <ListItemIcon className={classes.iconMenu}>
+            <MailOutline/>
+          </ListItemIcon>
+          <ListItemText disableTypography primary="Mass Email" />
+        </ListItem>
+      </List>
+      </div>
+      </div>
+    );
+
     return (
         <div>
         <div className={classes.root}>
@@ -119,106 +221,37 @@ class Navigation extends React.Component {
               )}
 
                 <Typography variant="title" noWrap className={classes.title}>{this.props.title}</Typography>
-                <SearchField />
-                <div className={classes.grow} />
-                  <div className={classes.search}>
-                    <div className={classes.searchIcon}>
-                      <SearchIcon />
-                    </div>
-                    <InputBase
-                      placeholder="Search…"
-                      classes={{
-                        root: classes.inputRoot,
-                        input: classes.inputInput,
-                      }}
-                    />
-                  </div>
-              <NotificationsCenter />
+                <IconButton>
+                  <MenuIcon style={{visibility: 'hidden'}} />
+                </IconButton>
+                {/* <SearchField /> */}
             </Toolbar>
           </AppBar>
-          <Drawer
-            variant="permanent"
-            classes={{
-              paper: classNames(classes.drawerPaper, !this.props.open && classes.drawerPaperClose),
-            }}
-            open={this.state.open}
-          >
-            <div className={classes.toolbar}>
-              <img width={25} src={Logo} alt={'Sign in to continue'} className={classes.imgLogo}/>
-              <IconButton 
-                className={classNames(classes.menuButtonMobile)} 
-                onClick={this.handleDrawerClose}
-              >
-                <MenuIcon />
-              </IconButton>
-            </div>
-            <div>
-            <Divider />
-            <List
-              className={classes.drawerList}
-              style={{marginTop: -8}}
+          {/* <Hidden smUp>
+            <Drawer
+              variant="persistent"
+              open={this.state.mobileOpen}
+              onClose={this.handleDrawerToggle}
+              classes={{
+                paper: classNames(classes.drawerPaper, !this.props.open && classes.drawerPaperClose),
+              }}
+              open={this.state.open}
             >
-              <ListItem 
-                selected={component === 'dashboard'}
-                classes={{ selected: classes.selected }}
-                button
-                component={(props) => <NavLink to={`/pinecone/dashboard/test@gmail.com`} {...props}/>}
-              >
-                <ListItemIcon className={classes.iconMenu}>
-                  <Dashboard />
-                </ListItemIcon>
-                <ListItemText primary="Dashboard" />
-              </ListItem>
-              <ListItem button>
-                <ListItemIcon className={classes.iconMenu}>
-                  <i style={{fontSize: '23px'}} className="fas fa-tasks"></i>
-                </ListItemIcon>
-                <ListItemText primary="Tasks" />
-              </ListItem>
-              <ListItem button>
-                <ListItemIcon className={classes.iconMenu}>
-                  <People/>
-                </ListItemIcon>
-                <ListItemText primary="People" />
-              </ListItem>
-              <ListItem 
-                selected={component === 'administration'}
-                classes={{ selected: classes.selected }}
-                button
-                component={(props) => <NavLink to={'/admin/test@gmail.com'} {...props}/>}
-              >
-                <ListItemIcon className={classes.iconMenu}>
-                  <Laptop />
-                </ListItemIcon>
-                <ListItemText primary="Administration" />
-              </ListItem>
-              <ListItem button>
-                <ListItemIcon className={classes.iconMenu}>
-                  <Event/>
-                </ListItemIcon>
-                <ListItemText primary="Events" />
-              </ListItem>
-              <ListItem button>
-                <ListItemIcon className={classes.iconMenu}>
-                  <AccountBalance/>
-                </ListItemIcon>
-                <ListItemText primary="Agencies" />
-              </ListItem>
-              <ListItem button>
-                <ListItemIcon className={classes.iconMenu}>
-                  <CreditCard/>
-                </ListItemIcon>
-                <ListItemText primary="Expenses" />
-              </ListItem>
-              <ListItem button>
-                <ListItemIcon className={classes.iconMenu}>
-                  <MailOutline/>
-                </ListItemIcon>
-                <ListItemText primary="Mass Email" />
-              </ListItem>
-            </List>
-            </div>
-          </Drawer>
+              {renderMenu}
+            </Drawer>
+          </Hidden> */}
+          {/* <Hidden smDown implementation="css"> */}
+            <Drawer
+              variant="permanent"
+              classes={{
+                paper: classNames(classes.drawerPaper, !this.props.open && classes.drawerPaperClose),
+              }}
+              open={this.state.open}
+            >
+              {renderMenu}
+            </Drawer>
+          {/* </Hidden> */}
+            
             <main className={classes.children}>
               <div>
                 {children}
@@ -228,12 +261,13 @@ class Navigation extends React.Component {
           <BottomNavigation
             value={value}
             onChange={this.handleChange}
-            // showLabels
+            showLabels
             className={classes.bottom}
           >
-            <BottomNavigationAction component={(props) => <NavLink to={`/pinecone/dashboard/test@gmail.com`} {...props}/>} label="Dashboard" icon={<Dashboard />} />
-            <BottomNavigationAction label="Agencies" icon={<AccountBalance/>} />
-            <BottomNavigationAction label="Events" icon={<Event/>} />
+            <BottomNavigationAction to='/' label="Dashboard" icon={<Dashboard />} />
+            <BottomNavigationAction component={(props) => <button><Link to={`/admin/test@gmail.com`} {...props}/></button>} label="Calendar" icon={<Event/>} />
+            <BottomNavigationAction label="Search" icon={<SearchIcon />} />
+            <BottomNavigationAction label="Notifications" icon={<NotificationsCenter />} />
           </BottomNavigation>
         </div>
     );

@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 //material ui components
+import { NavLink } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from "@material-ui/core/InputAdornment";
+import Grid from '@material-ui/core/Grid';
 //material-ui icons
 import Search from '@material-ui/icons/Search';
+import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 //project components
 import Page from 'views/Page/Page.jsx';
 import GridItem from "components/Grid/GridItem.jsx";
@@ -15,6 +18,13 @@ import CustomInput from "components/CustomInput/CustomInput.jsx";
 import NewProfile from "components/UserProfile/NewProfile.jsx";
 import EmployeeCard from 'components/UserProfile/EmployeeCard'
 import Card from "components/Card/Card.jsx";
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import Avatar from '@material-ui/core/Avatar';
 //gundb
 import Gun from 'gun/gun';
 
@@ -74,6 +84,9 @@ const styles = theme => ({
 
 
 	},
+	demo: {
+		backgroundColor: "#fff"
+	}
 })
 class ManageEmployees extends Component {
 	constructor(props) {
@@ -121,90 +134,127 @@ class ManageEmployees extends Component {
 	render() {
 		const { classes } = this.props
 		const { addUser } = this.state
+		const data = [
+			{ name: "Josh Carey", role: "Administrator"},
+			{ name: "Osny Neto", role: "Administrator"},
+			{ name: "Abdul Aziz", role: "Administrator"},
+			{ name: "Josh Carey", role: "Administrator"},
+			{ name: "Osny Neto", role: "Administrator"},
+			{ name: "Abdul Aziz", role: "Administrator"},
+		]
 		let parsedData = formatData(this.state.users)
+
+		const leftMenu = (
+			<div>
+				<List>
+					{data.map((item, index) => (
+						<ListItem key={index} component={(props) => <NavLink to={'/management/employees'} {...props}/>}>
+							<ListItemAvatar>
+								<Avatar>
+									aa
+								</Avatar>
+							</ListItemAvatar>
+							<ListItemText
+								primary={item.name}
+								secondary={item.role}
+							/>
+							<ListItemSecondaryAction>
+								<IconButton>
+									<KeyboardArrowRight />
+								</IconButton>
+							</ListItemSecondaryAction>
+						</ListItem>
+					))}
+
+					{/* parsedData
+						.map((user, i) => {
+							if ( user.hasOwnProperty('first')) {
+								return (
+									<div key={i}>
+										<GridItem md={12} className={classes.grid} style={{ cursor: 'pointer' }}>
+											<Card className={classes.item} raised onClick={()=>this.showUser(user)}>
+												<Typography variant='title'>{user.first + ' ' + user.last}</Typography>
+												<div className={classes.itemSubContent}>
+													<Typography variant='body2'>{user.groups}</Typography>
+													<Typography variant='body1'>{user.home}</Typography>
+													<Typography variant='body1'>{user.email}</Typography>
+												</div>
+											</Card>
+										</GridItem>
+									</div>
+								)
+							}
+							})
+						.reverse() */}
+				</List>
+			</div>
+		)
 		return (
 			<div>
 				<Page component={'administration'} titleText={'Employees'}>
-					<GridContainer justify={'center'}>
-						<GridItem sm={4} md={3} className={classes.grid}>
-							<GridContainer className={classes.gridContainer}>
-								<GridItem md={12} className={classes.grid}>
-									<CustomInput
-					                  id="search"
-					                  fullwidth={true}
-					                  inputProps={{
-					                    className: classes.input,
-					                    type: "text",
-					                    placeholder: 'Search',
-					                    onChange: (e) => console.log(e),
-					                    startAdornment: (
-					                      <InputAdornment position="end">
-					                        <IconButton color="inherit">
-					                          <Search onClick={this.handleInputFocus} style={{fontSize: 25}}/>
-					                        </IconButton>
-					                      </InputAdornment>
-					                    )
-					                  }}
-					                />
-
-								</GridItem>
-								<div className={classes.renderUsers}>
-{
-									parsedData
-									// eslint-disable-next-line
-										.map((user, i) => {
-											if ( user.hasOwnProperty('first')) {
-												return (
-													<div key={i}>
-														<GridItem md={12} className={classes.grid} style={{ cursor: 'pointer' }}>
-															<Card className={classes.item} raised onClick={()=>this.showUser(user)}>
-																<Typography variant='title'>{user.first + ' ' + user.last}</Typography>
-																<div className={classes.itemSubContent}>
-																	<Typography variant='body2'>{user.groups}</Typography>
-																	<Typography variant='body1'>{user.home}</Typography>
-																	<Typography variant='body1'>{user.email}</Typography>
-																</div>
-															</Card>
-														</GridItem>
-													</div>
-												)
-											}
-											})
-										.reverse()
-
-}
+					<Grid
+						container
+						direction="row"
+						justify="flex-start"
+						alignItems="stretch"
+						spacing={24}
+					>
+						<Grid item sm={4} md={3}>
+							<div className={classes.demo}>
+								<br/>
+								<CustomInput
+									id="search"
+									fullwidth={true}
+									inputProps={{
+										className: classes.input,
+										type: "text",
+										placeholder: 'Search',
+										onChange: (e) => console.log(e),
+										startAdornment: (
+											<InputAdornment position="end">
+												<IconButton color="inherit">
+													<Search onClick={this.handleInputFocus} style={{fontSize: 25}}/>
+												</IconButton>
+											</InputAdornment>
+										)
+									}}
+								/>
+								<br/>
+								<br/>
+								{leftMenu}
 							</div>
-							</GridContainer>
-						</GridItem>
-						<GridItem sm={8} md={9} className={classes.userProfileGrid}>
-							<GridContainer className={classes.gridMainPanel}>
-								<GridItem>
-									<Card raised className={classes.mainPanel}>
+						</Grid>
+						<Grid item sm={4} md={9}>
+							<div className={classes.demo}>
+								
+								<GridContainer className={classes.gridMainPanel}>
+									<GridItem>
 										{ addUser 
 											? (
 												<div>
-												    <EmployeeCard 
-												    	toggleViews={this.toggleViews} 
-												    	addUser={addUser}
+														<EmployeeCard 
+															toggleViews={this.toggleViews} 
+															addUser={addUser}
 														first={this.state.first}
 														last={this.state.last}
 														group={this.state.group}
 														email={this.state.email}
 														phone={this.state.phone}
-												    />
+														/>
 												</div>
-											  )
+												)
 											: (
 												<div>
 													<NewProfile toggleViews={this.toggleViews} addUser={addUser} />
 												</div>
-											  ) 
+												) 
 										}
-									</Card>
-								</GridItem>
-							</GridContainer>
-						</GridItem>
-					</GridContainer>
+									</GridItem>
+								</GridContainer>
+
+							</div>
+						</Grid>
+					</Grid>
 				</Page>
 			</div>
 
