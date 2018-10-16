@@ -85,8 +85,13 @@ const styles = theme => ({
 
 	},
 	demo: {
-		backgroundColor: "#fff"
+		backgroundColor: "#fff",
+		width: "100%"
+	},
+	list: {
+		width: "100%"
 	}
+
 })
 class ManageEmployees extends Component {
 	constructor(props) {
@@ -145,10 +150,10 @@ class ManageEmployees extends Component {
 		let parsedData = formatData(this.state.users)
 
 		const leftMenu = (
-			<div>
-				<List>
+			<div style={{width: "100%"}}>
+				<List component="nav" className={classes.list}>
 					{data.map((item, index) => (
-						<ListItem key={index} component={(props) => <NavLink to={'/management/employees'} {...props}/>}>
+						<ListItem className={classes.list} key={index} component={(props) => <NavLink to={'/management/employees'} {...props}/>}>
 							<ListItemAvatar>
 								<Avatar>
 									aa
@@ -195,16 +200,16 @@ class ManageEmployees extends Component {
 					<Grid
 						container
 						direction="row"
-						justify="flex-start"
+						justify="space-between"
 						alignItems="stretch"
 						spacing={24}
 					>
-						<Grid item sm={4} md={3}>
+						<Grid item sx={12} md={3}>
 							<div className={classes.demo}>
 								<br/>
 								<CustomInput
 									id="search"
-									fullwidth={true}
+									// fullwidth={true}
 									inputProps={{
 										className: classes.input,
 										type: "text",
@@ -224,7 +229,7 @@ class ManageEmployees extends Component {
 								{leftMenu}
 							</div>
 						</Grid>
-						<Grid item sm={4} md={9}>
+						<Grid item sx={12} md={9}>
 							<div className={classes.demo}>
 								
 								<GridContainer className={classes.gridMainPanel}>
