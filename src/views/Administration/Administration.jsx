@@ -18,7 +18,10 @@ import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import Page from 'views/Page/Page';
 const styles = theme => ({
 	demo: {
-		backgroundColor: theme.palette.background.paper,
+		[theme.breakpoints.down('sm')]: {
+			marginRight: -20,
+			marginLeft: -20,
+		}
 	},
 	content: {
 		width: '100%',
@@ -35,16 +38,24 @@ const styles = theme => ({
 	},
 	panelTitle: {
 		fontWeight: 'bold',
-		fontSize: '16px',
+		fontSize: '14px',
 		marginBottom: '15px',
 		[theme.breakpoints.up('md')]: {
 			marginTop: theme.spacing.unit * 5
 		},
 		[theme.breakpoints.down('sm')]: {
-			marginRight: theme.spacing.unit * 3,
-			marginTop: theme.spacing.unit * 5
+			fontSize: '14px',
+			marginTop: theme.spacing.unit * 2,
+			marginBottom: 0
 		},
-
+	},
+	listItem: {
+		backgroundColor: theme.palette.background.paper,
+		[theme.breakpoints.down('sm')]: {
+			paddingTop: 7,
+			paddingBottom: 7,
+			marginBottom: 1,
+		}
 	}
 })
 class AdminPanel extends React.Component {
@@ -60,7 +71,7 @@ class AdminPanel extends React.Component {
 				<Typography className={classes.panelTitle}  gutterBottom noWrap align="left">Users and Control</Typography>
 				<div className={classes.demo}>
 					<List>
-						<ListItem component={(props) => <NavLink to={'/passwordrules'} {...props}/>}>
+						<ListItem component={(props) => <NavLink to={'/management/user-groups'} {...props}/>} className={classes.listItem}>
 							<ListItemText primary="Manage User Groups" />
 							<ListItemSecondaryAction>
 								<IconButton>
@@ -68,9 +79,7 @@ class AdminPanel extends React.Component {
 								</IconButton>
 							</ListItemSecondaryAction>
 						</ListItem>
-					</List>
-					<List>
-						<ListItem component={(props) => <NavLink to={'/management/employees'} {...props}/>}>
+						<ListItem component={(props) => <NavLink to={'/management/employees'} {...props}/>} className={classes.listItem}>
 							<ListItemText primary="Manage Employees" />
 							<ListItemSecondaryAction>
 								<IconButton>
@@ -78,9 +87,7 @@ class AdminPanel extends React.Component {
 								</IconButton>
 							</ListItemSecondaryAction>
 						</ListItem>
-					</List>
-					<List>
-						<ListItem component={(props) => <NavLink to={'/passwordrules'} {...props}/>}>
+						<ListItem component={(props) => <NavLink to={'/passwordrules'} {...props}/>} className={classes.listItem}>
 							<ListItemText primary="Password Rules" />
 							<ListItemSecondaryAction>
 								<IconButton>
@@ -94,7 +101,7 @@ class AdminPanel extends React.Component {
 				<Typography className={classes.panelTitle}  gutterBottom noWrap align="left">General</Typography>
 				<div className={classes.demo}>
 					<List>
-						<ListItem component={(props) => <NavLink to={'/management/employees'} {...props}/>}>
+						<ListItem component={(props) => <NavLink to={'/management/employees'} {...props}/>} className={classes.listItem}>
 							<ListItemText primary="Agency Details" />
 							<ListItemSecondaryAction>
 								<IconButton>
@@ -102,9 +109,7 @@ class AdminPanel extends React.Component {
 								</IconButton>
 							</ListItemSecondaryAction>
 						</ListItem>
-					</List>
-					<List>
-						<ListItem component={(props) => <NavLink to={'/management/employees'} {...props}/>}>
+						<ListItem component={(props) => <NavLink to={'/management/employees'} {...props}/>} className={classes.listItem}>
 							<ListItemText primary="Uploads" />
 							<ListItemSecondaryAction>
 								<IconButton>
@@ -115,20 +120,18 @@ class AdminPanel extends React.Component {
 					</List>
 				</div>
 				
-				<Typography className={classes.panelTitle}  gutterBottom noWrap align="left">General</Typography>
+				<Typography className={classes.panelTitle}  gutterBottom noWrap align="left">Customization</Typography>
 				<div className={classes.demo}>
 					<List>
-						<ListItem component={(props) => <NavLink to={'/management/employees'} {...props}/>}>
-							<ListItemText primary="Notes and Properties" />
+						<ListItem component={(props) => <NavLink to={'/management/employees'} {...props}/>} className={classes.listItem}>
+							<ListItemText primary="Nodes and Properties" />
 							<ListItemSecondaryAction>
 								<IconButton>
 									<KeyboardArrowRight/>
 								</IconButton>
 							</ListItemSecondaryAction>
 						</ListItem>
-					</List>
-					<List>
-						<ListItem component={(props) => <NavLink to={'/management/employees'} {...props}/>}>
+						<ListItem component={(props) => <NavLink to={'/management/employees'} {...props}/>} className={classes.listItem}>
 							<ListItemText primary="Email Templates" />
 							<ListItemSecondaryAction>
 								<IconButton>
@@ -136,9 +139,7 @@ class AdminPanel extends React.Component {
 								</IconButton>
 							</ListItemSecondaryAction>
 						</ListItem>
-					</List>
-					<List>
-						<ListItem component={(props) => <NavLink to={'/management/employees'} {...props}/>}>
+						<ListItem component={(props) => <NavLink to={'/management/employees'} {...props}/>} className={classes.listItem}>
 							<ListItemText primary="Letter Templates" />
 							<ListItemSecondaryAction>
 								<IconButton>
@@ -152,7 +153,7 @@ class AdminPanel extends React.Component {
 				<Typography className={classes.panelTitle}  gutterBottom noWrap align="left">Financial</Typography>
 				<div className={classes.demo}>
 					<List>
-						<ListItem component={(props) => <NavLink to={'/management/employees'} {...props}/>}>
+						<ListItem component={(props) => <NavLink to={'/management/employees'} {...props}/>} className={classes.listItem}>
 							<ListItemText primary="Expense Settings" />
 							<ListItemSecondaryAction>
 								<IconButton>
@@ -160,9 +161,7 @@ class AdminPanel extends React.Component {
 								</IconButton>
 							</ListItemSecondaryAction>
 						</ListItem>
-					</List>
-					<List>
-						<ListItem component={(props) => <NavLink to={'/management/employees'} {...props}/>}>
+						<ListItem component={(props) => <NavLink to={'/management/employees'} {...props}/>} className={classes.listItem}>
 							<ListItemText primary="Invoice Settings" />
 							<ListItemSecondaryAction>
 								<IconButton>
@@ -170,9 +169,7 @@ class AdminPanel extends React.Component {
 								</IconButton>
 							</ListItemSecondaryAction>
 						</ListItem>
-					</List>
-					<List>
-						<ListItem component={(props) => <NavLink to={'/management/employees'} {...props}/>}>
+						<ListItem component={(props) => <NavLink to={'/management/employees'} {...props}/>} className={classes.listItem}>
 							<ListItemText primary="Fees" />
 							<ListItemSecondaryAction>
 								<IconButton>
@@ -180,9 +177,7 @@ class AdminPanel extends React.Component {
 								</IconButton>
 							</ListItemSecondaryAction>
 						</ListItem>
-					</List>
-					<List>
-						<ListItem component={(props) => <NavLink to={'/management/employees'} {...props}/>}>
+						<ListItem component={(props) => <NavLink to={'/management/employees'} {...props}/>} className={classes.listItem}>
 							<ListItemText primary="License Settings" />
 							<ListItemSecondaryAction>
 								<IconButton>
@@ -196,7 +191,7 @@ class AdminPanel extends React.Component {
 				<Typography className={classes.panelTitle}  gutterBottom noWrap align="left">Automation</Typography>
 				<div className={classes.demo}>
 					<List>
-						<ListItem component={(props) => <NavLink to={'/management/employees'} {...props}/>}>
+						<ListItem component={(props) => <NavLink to={'/management/employees'} {...props}/>} className={classes.listItem}>
 							<ListItemText primary="Action Builder" />
 							<ListItemSecondaryAction>
 								<IconButton>
@@ -204,9 +199,7 @@ class AdminPanel extends React.Component {
 								</IconButton>
 							</ListItemSecondaryAction>
 						</ListItem>
-					</List>
-					<List>
-						<ListItem component={(props) => <NavLink to={'/management/employees'} {...props}/>}>
+						<ListItem component={(props) => <NavLink to={'/management/employees'} {...props}/>} className={classes.listItem}>
 							<ListItemText primary="Webhooks" />
 							<ListItemSecondaryAction>
 								<IconButton>
@@ -214,9 +207,7 @@ class AdminPanel extends React.Component {
 								</IconButton>
 							</ListItemSecondaryAction>
 						</ListItem>
-					</List>
-					<List>
-						<ListItem component={(props) => <NavLink to={'/management/employees'} {...props}/>}>
+						<ListItem component={(props) => <NavLink to={'/management/employees'} {...props}/>} className={classes.listItem}>
 							<ListItemText primary="Mass Data Change" />
 							<ListItemSecondaryAction>
 								<IconButton>
@@ -224,9 +215,7 @@ class AdminPanel extends React.Component {
 								</IconButton>
 							</ListItemSecondaryAction>
 						</ListItem>
-					</List>
-					<List>
-						<ListItem component={(props) => <NavLink to={'/management/employees'} {...props}/>}>
+						<ListItem component={(props) => <NavLink to={'/management/employees'} {...props}/>} className={classes.listItem}>
 							<ListItemText primary="Portal" />
 							<ListItemSecondaryAction>
 								<IconButton>

@@ -118,6 +118,7 @@ class Navigation extends React.Component {
         <IconButton 
           className={classNames(classes.menuButtonMobile)} 
           onClick={this.handleDrawerClose}
+          style={{color: "#fff"}}
         >
           <MenuIcon />
         </IconButton>
@@ -253,7 +254,7 @@ class Navigation extends React.Component {
           {/* </Hidden> */}
             
             <main className={classes.children}>
-              <div>
+              <div style={{height: "100%"}}>
                 {children}
               </div>
             </main>

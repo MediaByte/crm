@@ -6,7 +6,7 @@ const navStyles = theme => ({
   title: {
     flexGrow: 1,
     // visibility: 'hidden',
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('sm')]: {
       fontWeight: '900',
       textAlign: 'center',
       fontSize: '15px',
@@ -16,6 +16,7 @@ const navStyles = theme => ({
     display: 'none',
     visibility: 'visible',
     marginTop: '60px',
+    height: "100%",
     [theme.breakpoints.up('sm')]: {
       visibility: 'hidden',
     },
@@ -24,6 +25,7 @@ const navStyles = theme => ({
     // [theme.breakpoints.down('sm')]: {
     //   paddingTop: '40px',
     // },
+    height: "100%",
     paddingTop: '40px',
     paddingBottom: '30px',
     [theme.breakpoints.up('sm')]: {
@@ -157,10 +159,14 @@ const navStyles = theme => ({
       paddingBottom: '20px',
     },
     padding: theme.spacing.unit * 3,
-    height: '100vh',
+    // height: '100vh',
     width: '100%',
-    overflowX: 'hidden',
+    // overflowX: 'hidden',
     paddingBottom: '20px',
+    [theme.breakpoints.up('sm')]: {
+      height: '100vh',
+      overflowX: 'hidden',
+    },
     // flexGrow: 1,
     // backgroundColor: theme.palette.background.default,
     // padding: theme.spacing.unit * 3,

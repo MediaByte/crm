@@ -204,7 +204,7 @@ class ManageEmployees extends Component {
 						alignItems="stretch"
 						spacing={24}
 					>
-						<Grid item sx={12} md={3}>
+						<Grid item xs={12} md={3}>
 							<div className={classes.demo}>
 								<br/>
 								<CustomInput
@@ -229,7 +229,7 @@ class ManageEmployees extends Component {
 								{leftMenu}
 							</div>
 						</Grid>
-						<Grid item sx={12} md={9}>
+						<Grid item xs={12} md={9}>
 							<div className={classes.demo}>
 								
 								<GridContainer className={classes.gridMainPanel}>
