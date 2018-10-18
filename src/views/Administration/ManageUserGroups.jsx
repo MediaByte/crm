@@ -14,13 +14,15 @@ import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import ErrorOutlineOutlined from '@material-ui/icons/ErrorOutlineOutlined';
 import FilterList from '@material-ui/icons/FilterList';
 //project components
-import Page from 'views/Page/Page.jsx';
+import NewUserGroup from './NewUserGroup';
+import PageColumn from 'views/Page/PageColumn.jsx';
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
 import CustomInput from "components/CustomInput/CustomInput.jsx";
 import NewProfile from "components/UserProfile/NewProfile.jsx";
 import EmployeeCard from 'components/UserProfile/EmployeeCard'
 import Card from "components/Card/Card.jsx";
+import TextField from '@material-ui/core/TextField';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
@@ -80,7 +82,9 @@ const styles = theme => ({
 	},
 	gridContainer: {
 		display: 'flex',
-		justifyContent: 'center',
+    justifyContent: 'center',
+    alignItems: "stretch",
+    height: "100%",
 	},
 	renderUsers: {
     	overflow: 'auto',
@@ -88,16 +92,19 @@ const styles = theme => ({
     	height: '600px'
 	},
 	content: {
-
-
 	},
 	demo: {
-		backgroundColor: "#fff",
+		backgroundColor: "#f6f6f6",
 		width: "100%",
 		height: "100%",
+  },
+	demoLeft: {
+		backgroundColor: "#fff",
+		width: "100%",
+    height: "100%",
+    borderRight: '1px solid #ddd',
 	},
 	demoContent: {
-    backgroundColor: "#fff",
     padding: 20,
 	},
 	list: {
@@ -114,7 +121,7 @@ const styles = theme => ({
     color: "#999"
   },
   toolbar: {
-    padding: 15
+    padding: '15px 15px 15px 25px'
   },
   heading: {
     fontSize: theme.typography.pxToRem(15),
@@ -125,6 +132,20 @@ const styles = theme => ({
   },
   title: {
     marginBottom: 10
+  },
+  titlePadding: {
+    marginBottom: 10,
+    paddingLeft: 25,
+  },
+  icons: {
+    cursor: 'pointer'
+  },
+  filterButton: {
+    cursor: 'pointer',
+    float: 'right'
+  },
+  padding: {
+    paddingLeft: 25
   }
 })
 class ManageUserGroups extends Component {
@@ -132,12 +153,17 @@ class ManageUserGroups extends Component {
 		super(props);
 		this.gun = Gun('https://pineconeserver.herokuapp.com/gun');
 			this.state = {
-				addUser: true, 
+				addUser: false, 
 				users: [
           { id: 1, name: "Administrator", status: "Active"},
           { id: 2, name: "User", status: "Inactive"}
         ],
+        usersCopy: [
+          { id: 1, name: "Administrator", status: "Active"},
+          { id: 2, name: "User", status: "Inactive"}
+        ],
         selected: false,
+        filterActive: false,
 				first: '',
 				last: '',
 				group: '',
@@ -181,7 +207,7 @@ class ManageUserGroups extends Component {
       return (
         <div className={classes.noGroups}>
           <ErrorOutlineOutlined className={classes.icon} />
-          No User Groups yet
+          No User Groups found
         </div>
       )
     } else {
@@ -234,7 +260,7 @@ class ManageUserGroups extends Component {
     const user = users[selected]
     if (selected !== false) {
       return (
-        <div>
+        <div className={classes.demoContent}>
           <Typography variant="title" noWrap className={classes.title}>Permissions</Typography>
           <ExpansionPanel>
             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
@@ -287,7 +313,7 @@ class ManageUserGroups extends Component {
       )
     } else {
       return (
-        <div className={classes.demo}>
+        <div>
           <div className={classes.noGroups}>
             <ErrorOutlineOutlined className={classes.icon} />
             No User Group selected
@@ -298,7 +324,26 @@ class ManageUserGroups extends Component {
   }
 
   selectUser (id) {
-    this.setState({selected: id-1})
+    this.setState({selected: id-1, addUser: false})
+  }
+
+  addNewGroup () {
+    this.setState({ addUser: true, selected: false })
+  }
+
+  showSearch () {
+    this.setState({filterActive: !this.state.filterActive})
+  }
+
+  onChangeFilter (e) {
+    const value = e.target.value
+    let users
+    if (value === '') {
+      users = this.state.usersCopy
+    } else {
+      users = this.state.users.filter((item) => item.name.includes(value))
+    }
+    this.setState({ users })
   }
 
 	render() {
@@ -308,26 +353,39 @@ class ManageUserGroups extends Component {
     
 		return (
 			<div>
-				<Page component={'administration'} titleText={'User Groups'}>
+				<PageColumn component={'administration'} titleText={'User Groups'}>
 					<Grid
 						container
 						direction="row"
 						justify="center"
 						alignItems="stretch"
-						spacing={24}
+            spacing={24}
+            className={classes.gridContainer}
 					>
-						<Grid item xs={12} sm={5} md={3}>
-							<div className={classes.demo}>
+						<Grid item xs={12} sm={5} md={3} className={classes.demoLeft}>
+							<div>
+                <Typography variant="title" noWrap className={classes.titlePadding}>Groups</Typography>
                 <div className={classes.toolbar}>
                   <Grid container>
                     <Grid item xs={9} sm={8} md={9}>
                       <span>{users.length} records</span>
                     </Grid>
                     <Grid item xs={3} sm={4} sm={3}>
-                      <Add />
-                      <FilterList style={{float: 'right'}} />
+                      <Add className={classes.icons} onClick={()=>this.addNewGroup()} />
+                      <FilterList className={classes.filterButton} onClick={()=>this.showSearch()} />
                     </Grid>
                   </Grid>
+                  {this.state.filterActive && (
+                    <div>
+                      <TextField
+                        type="search"
+                        margin="normal"
+                        fullWidth
+                        placeholder="Search Groups"
+                        onChange={(e)=> this.onChangeFilter(e)}
+                      />
+                    </div>
+                  )}
                 </div>
                 <Divider />
 								{/* <br/>
@@ -351,11 +409,15 @@ class ManageUserGroups extends Component {
 								{this.renderUserGroups()}
 							</div>
 						</Grid>
-						<Grid item xs={12} sm={7} md={9}>
-              {this.renderContent()}
+						<Grid item xs={12} sm={7} md={9} className={classes.demo}>
+              {this.state.addUser ? (
+                <NewUserGroup />
+              ) : (
+                this.renderContent()
+              )}
 						</Grid>
 					</Grid>
-				</Page>
+				</PageColumn>
 			</div>
 
 		)
