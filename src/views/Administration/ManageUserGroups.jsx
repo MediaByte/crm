@@ -34,6 +34,12 @@ import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Button from '@material-ui/core/Button';
+import AppBar from '@material-ui/core/AppBar';
+import Dialog from '@material-ui/core/Dialog';
+import Toolbar from '@material-ui/core/Toolbar';
+import CloseIcon from '@material-ui/icons/Close';
+import Slide from '@material-ui/core/Slide';
 //gundb
 import Gun from 'gun/gun';
 
@@ -148,12 +154,18 @@ const styles = theme => ({
     paddingLeft: 25
   }
 })
+
+function Transition(props) {
+  return <Slide direction="up" {...props} />;
+}
+
 class ManageUserGroups extends Component {
 	constructor(props) {
 		super(props);
 		this.gun = Gun('https://pineconeserver.herokuapp.com/gun');
 			this.state = {
-				addUser: false, 
+        addUser: false,
+        open: false, 
 				users: [
           { id: 1, name: "Administrator", status: "Active"},
           { id: 2, name: "User", status: "Inactive"}
@@ -260,7 +272,7 @@ class ManageUserGroups extends Component {
     const user = users[selected]
     if (selected !== false) {
       return (
-        <div className={classes.demoContent}>
+        <div>
           <Typography variant="title" noWrap className={classes.title}>Permissions</Typography>
           <ExpansionPanel>
             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
@@ -346,6 +358,14 @@ class ManageUserGroups extends Component {
     this.setState({ users })
   }
 
+  handleClickOpen = () => {
+    this.setState({ open: true });
+  };
+
+  handleClose = () => {
+    this.setState({ open: false });
+  };
+
 	render() {
 		const { classes } = this.props
 		const { addUser, users } = this.state
@@ -410,11 +430,13 @@ class ManageUserGroups extends Component {
 							</div>
 						</Grid>
 						<Grid item xs={12} sm={7} md={9} className={classes.demo}>
-              {this.state.addUser ? (
-                <NewUserGroup />
-              ) : (
-                this.renderContent()
-              )}
+              <div className={classes.demoContent}>
+                {this.state.addUser ? (
+                  <NewUserGroup />
+                ) : (
+                  this.renderContent()
+                )}
+              </div>
 						</Grid>
 					</Grid>
 				</PageColumn>
