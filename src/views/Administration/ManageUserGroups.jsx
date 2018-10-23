@@ -11,8 +11,10 @@ import Divider from '@material-ui/core/Divider';
 //material-ui icons
 import Add from '@material-ui/icons/Add';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
+import ArrowBack from '@material-ui/icons/ArrowBack';
 import ErrorOutlineOutlined from '@material-ui/icons/ErrorOutlineOutlined';
 import FilterList from '@material-ui/icons/FilterList';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 //project components
 import NewUserGroup from './NewUserGroup';
 import PageColumn from 'views/Page/PageColumn.jsx';
@@ -40,6 +42,7 @@ import Dialog from '@material-ui/core/Dialog';
 import Toolbar from '@material-ui/core/Toolbar';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
+import Hidden from '@material-ui/core/Hidden';
 //gundb
 import Gun from 'gun/gun';
 
@@ -87,6 +90,7 @@ const styles = theme => ({
 		alignItems: 'center',
 	},
 	gridContainer: {
+    flexGrow: 1,
 		display: 'flex',
     justifyContent: 'center',
     alignItems: "stretch",
@@ -101,14 +105,16 @@ const styles = theme => ({
 	},
 	demo: {
 		backgroundColor: "#f6f6f6",
-		width: "100%",
+		// width: "100%",
 		height: "100%",
+    overflow: 'scroll'
   },
 	demoLeft: {
 		backgroundColor: "#fff",
-		width: "100%",
+		// width: "100%",
     height: "100%",
     borderRight: '1px solid #ddd',
+    overflow: 'scroll'
 	},
 	demoContent: {
     padding: 20,
@@ -152,12 +158,47 @@ const styles = theme => ({
   },
   padding: {
     paddingLeft: 25
+  },
+  appBar: {
+    // flexGrow: 1,
+    dropShadow: 'none'
+  },
+  menuButton: {
+    marginLeft: -12,
+    marginRight: 20,
+  },
+  grow: {
+    flexGrow: 1,
+  },
+  noShadow: {
+    dropShadow: 'none'
+  },
+  newTitle: {
+    fontWeight: '900',
+    textAlign: 'center',
+    fontSize: '15px',
+    textTransform: 'capitalize',
   }
 })
 
 function Transition(props) {
   return <Slide direction="up" {...props} />;
 }
+
+const users = [
+  { id: 1, name: "Administrator", status: "Active"},
+  { id: 2, name: "User", status: "Inactive"},
+  { id: 3, name: "User 3", status: "Inactive"},
+  { id: 4, name: "User 4", status: "Inactive"},
+  { id: 5, name: "User 5", status: "Inactive"},
+  { id: 6, name: "User 6", status: "Inactive"},
+  { id: 7, name: "User 7", status: "Inactive"},
+  { id: 8, name: "User 8", status: "Inactive"},
+  { id: 9, name: "User 9", status: "Inactive"},
+  { id: 10, name: "User 10", status: "Inactive"},
+  { id: 11, name: "User 11", status: "Inactive"},
+  { id: 12, name: "User 12", status: "Inactive"},
+]
 
 class ManageUserGroups extends Component {
 	constructor(props) {
@@ -166,16 +207,11 @@ class ManageUserGroups extends Component {
 			this.state = {
         addUser: false,
         open: false, 
-				users: [
-          { id: 1, name: "Administrator", status: "Active"},
-          { id: 2, name: "User", status: "Inactive"}
-        ],
-        usersCopy: [
-          { id: 1, name: "Administrator", status: "Active"},
-          { id: 2, name: "User", status: "Inactive"}
-        ],
+				users: users,
+        usersCopy: users,
         selected: false,
         filterActive: false,
+        title: '',
 				first: '',
 				last: '',
 				group: '',
@@ -225,21 +261,20 @@ class ManageUserGroups extends Component {
     } else {
       return (
         <div style={{width: "100%"}}>
-          <List component="nav" className={classes.list}>
-            {this.state.users.map((item, index) => (
-              <ListItem selected={this.state.selected === item.id-1} className={classes.list} key={index} onClick={()=> this.selectUser(item.id)}>
-                <ListItemText
-                  primary={item.name}
-                  secondary={item.status}
-                />
-                <ListItemSecondaryAction>
-                  <IconButton>
-                    <KeyboardArrowRight />
-                  </IconButton>
-                </ListItemSecondaryAction>
-              </ListItem>
-            ))}
-
+            <List component="nav" className={classes.list}>
+              {this.state.users.map((item, index) => (
+                <ListItem selected={this.state.selected === item.id-1} className={classes.list} key={index} onClick={()=> this.selectUser(item.id)}>
+                  <ListItemText
+                    primary={item.name}
+                    secondary={item.status}
+                  />
+                  <ListItemSecondaryAction>
+                    <IconButton>
+                      <KeyboardArrowRight />
+                    </IconButton>
+                  </ListItemSecondaryAction>
+                </ListItem>
+              ))}
             {/* parsedData
               .map((user, i) => {
                 if ( user.hasOwnProperty('first')) {
@@ -336,11 +371,14 @@ class ManageUserGroups extends Component {
   }
 
   selectUser (id) {
-    this.setState({selected: id-1, addUser: false})
+    const openModal = window.innerWidth < 750
+    const user = this.state.users[id-1]
+    this.setState({selected: id-1, addUser: false, open: openModal, title: user.name})
   }
 
   addNewGroup () {
-    this.setState({ addUser: true, selected: false })
+    const openModal = window.innerWidth < 750
+    this.setState({ addUser: true, selected: false, open: openModal, title: 'New User Group' })
   }
 
   showSearch () {
@@ -348,12 +386,12 @@ class ManageUserGroups extends Component {
   }
 
   onChangeFilter (e) {
-    const value = e.target.value
+    const value = e.target.value.toLowerCase()
     let users
     if (value === '') {
       users = this.state.usersCopy
     } else {
-      users = this.state.users.filter((item) => item.name.includes(value))
+      users = this.state.users.filter((item) => item.name.toLowerCase().includes(value))
     }
     this.setState({ users })
   }
@@ -363,8 +401,18 @@ class ManageUserGroups extends Component {
   };
 
   handleClose = () => {
-    this.setState({ open: false });
+    this.setState({ open: false, title: '' });
   };
+
+  renderContentWrapper() {
+    console.log('renderContentWrapper', this.state);
+    // this.openInModal();
+    if (this.state.addUser) {
+      return <NewUserGroup />
+    } else {
+      return this.renderContent()
+    }
+  }
 
 	render() {
 		const { classes } = this.props
@@ -431,11 +479,32 @@ class ManageUserGroups extends Component {
 						</Grid>
 						<Grid item xs={12} sm={7} md={9} className={classes.demo}>
               <div className={classes.demoContent}>
-                {this.state.addUser ? (
-                  <NewUserGroup />
-                ) : (
-                  this.renderContent()
-                )}
+                <Hidden smUp>
+                  <Dialog
+                    fullScreen
+                    open={this.state.open}
+                    onClose={this.handleClose}
+                    TransitionComponent={Transition}
+                    scroll='body'
+                  >
+                    <div className={classes.appBar}>
+                      <AppBar position="static" color="default">
+                        <Toolbar className={classes.noShadow}>
+                          <IconButton className={classes.menuButton} color="default" onClick={this.handleClose} aria-label="Close">
+                            <ArrowBack />
+                          </IconButton>
+                          <Typography variant="subtitle1" color="inherit" className={classes.newTitle}>
+                            {this.state.title}
+                          </Typography>
+                        </Toolbar>
+                      </AppBar>
+                    </div>
+                    <div className={classes.demoContent}>
+                      {this.renderContentWrapper()}
+                    </div>
+                  </Dialog>
+                </Hidden>
+                {this.renderContentWrapper()}
               </div>
 						</Grid>
 					</Grid>

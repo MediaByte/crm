@@ -26,11 +26,11 @@ const navStyles = theme => ({
     //   paddingTop: '40px',
     // },
     width: "100%",
-    position: "fixed",
     height: "100%",
     paddingTop: '55px',
     // paddingBottom: '30px',
     [theme.breakpoints.up('sm')]: {
+      position: "fixed",
       // paddingTop: '70px',
     }
   },

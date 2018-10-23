@@ -4,6 +4,7 @@ import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import Hidden from '@material-ui/core/Hidden';
 //material ui components
 import { withStyles } from '@material-ui/core/styles';
 
@@ -14,7 +15,9 @@ class NewUserGroup extends Component {
 		const { classes } = this.props
 		return (
 			<div>
-				<Typography variant="title" noWrap className={classes.title}>New User Group</Typography>
+				<Hidden smDown>
+					<Typography variant="title" noWrap className={classes.title}>New User Group</Typography>
+				</Hidden>
 				<TextField
           id="standard-name"
 					label="Name"
