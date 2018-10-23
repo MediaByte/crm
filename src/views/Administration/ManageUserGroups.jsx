@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 //material ui components
-import { NavLink } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
-import InputAdornment from "@material-ui/core/InputAdornment";
 import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
 //material-ui icons
@@ -14,36 +12,35 @@ import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import ErrorOutlineOutlined from '@material-ui/icons/ErrorOutlineOutlined';
 import FilterList from '@material-ui/icons/FilterList';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 //project components
 import NewUserGroup from './NewUserGroup';
 import PageColumn from 'views/Page/PageColumn.jsx';
-import GridItem from "components/Grid/GridItem.jsx";
-import GridContainer from "components/Grid/GridContainer.jsx";
-import CustomInput from "components/CustomInput/CustomInput.jsx";
-import NewProfile from "components/UserProfile/NewProfile.jsx";
-import EmployeeCard from 'components/UserProfile/EmployeeCard'
-import Card from "components/Card/Card.jsx";
-import TextField from '@material-ui/core/TextField';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import Avatar from '@material-ui/core/Avatar';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import Button from '@material-ui/core/Button';
-import AppBar from '@material-ui/core/AppBar';
-import Dialog from '@material-ui/core/Dialog';
-import Toolbar from '@material-ui/core/Toolbar';
-import CloseIcon from '@material-ui/icons/Close';
-import Slide from '@material-ui/core/Slide';
-import Hidden from '@material-ui/core/Hidden';
-//gundb
+// import GridItem from "components/Grid/GridItem.jsx";
+// import GridContainer from "components/Grid/GridContainer.jsx";
+// import CustomInput from "components/CustomInput/CustomInput.jsx";
+// import NewProfile from "components/UserProfile/NewProfile.jsx";
+// import EmployeeCard from 'components/UserProfile/EmployeeCard'
+// import Card from "components/Card/Card.jsx";
+
+import {
+  AppBar,
+  Dialog,
+  Toolbar,
+  Slide,
+  Hidden,
+  Paper,
+  MenuItem,
+  ExpansionPanelDetails,
+  ExpansionPanelSummary,
+  ExpansionPanel,
+  ListItemText,
+  ListItemSecondaryAction,
+  ListItem,
+  List,
+  TextField } from '@material-ui/core';
+
+  //gundb
 import Gun from 'gun/gun';
 
 const formatData = data => Object.keys(data)
@@ -91,9 +88,9 @@ const styles = theme => ({
 	},
 	gridContainer: {
     flexGrow: 1,
-		display: 'flex',
-    justifyContent: 'center',
-    alignItems: "stretch",
+		// display: 'flex',
+    // justifyContent: 'center',
+    // alignItems: "stretch",
     height: "100%",
 	},
 	renderUsers: {
@@ -178,6 +175,9 @@ const styles = theme => ({
     textAlign: 'center',
     fontSize: '15px',
     textTransform: 'capitalize',
+  },
+  paddingFull: {
+    padding: 20
   }
 })
 
@@ -308,6 +308,40 @@ class ManageUserGroups extends Component {
     if (selected !== false) {
       return (
         <div>
+          <Paper className={classes.root} elevation={1}>
+            <div className={classes.paddingFull}>
+              <Typography variant="h5" component="h4">
+                {user.name}
+              </Typography>
+              <br/>
+              <div>
+                <TextField
+                  id="standard-name"
+                  label="Description"
+                  fullWidth
+                  // className={classes.textField}
+                  value="Users will have administrator level permissions"
+                  // onChange={this.handleChange('name')}
+                />
+                <TextField
+                  id="standard-select-currency"
+                  select
+                  label="Status"
+                  fullWidth
+                  // className={classes.textField}
+                  // value={this.state.currency}
+                  // onChange={this.handleChange('currency')}
+                  margin="normal"
+                >
+                  <MenuItem key={0} value={0}>
+                    Active
+                  </MenuItem>
+                </TextField>
+              </div>
+            </div>
+          </Paper>
+          <br/>
+          <br/>
           <Typography variant="title" noWrap className={classes.title}>Permissions</Typography>
           <ExpansionPanel>
             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
@@ -424,15 +458,10 @@ class ManageUserGroups extends Component {
 				<PageColumn component={'administration'} titleText={'User Groups'}>
 					<Grid
 						container
-						direction="row"
-						justify="center"
-						alignItems="stretch"
-            spacing={24}
             className={classes.gridContainer}
 					>
 						<Grid item xs={12} sm={5} md={3} className={classes.demoLeft}>
 							<div>
-                <Typography variant="title" noWrap className={classes.titlePadding}>Groups</Typography>
                 <div className={classes.toolbar}>
                   <Grid container>
                     <Grid item xs={9} sm={8} md={9}>
