@@ -12,6 +12,9 @@ import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import ErrorOutlineOutlined from '@material-ui/icons/ErrorOutlineOutlined';
 import FilterList from '@material-ui/icons/FilterList';
+import Print from '@material-ui/icons/Print';
+import Search from '@material-ui/icons/Search';
+import SwapVert from '@material-ui/icons/SwapVert';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 //project components
 import NewUserGroup from './NewUserGroup';
@@ -114,7 +117,13 @@ const styles = theme => ({
     overflow: 'scroll'
 	},
 	demoContent: {
-    padding: 20,
+    padding: 10,
+    [theme.breakpoints.up('sm')]: {
+      padding: 0,
+    },
+    [theme.breakpoints.up('md')]: {
+      padding: 20,
+    }
 	},
 	list: {
 		width: "100%"
@@ -130,7 +139,10 @@ const styles = theme => ({
     color: "#999"
   },
   toolbar: {
-    padding: '15px 15px 15px 25px'
+    padding: '0 15px 15px 25px',
+    [theme.breakpoints.up('sm')]: {
+      padding: '15px 15px 15px 25px',
+    }
   },
   heading: {
     fontSize: theme.typography.pxToRem(15),
@@ -147,11 +159,14 @@ const styles = theme => ({
     paddingLeft: 25,
   },
   icons: {
-    cursor: 'pointer'
+    cursor: 'pointer',
+    '&:hover': {
+      color: '#0dacc4',
+    }
   },
   filterButton: {
     cursor: 'pointer',
-    float: 'right'
+    // float: 'right'
   },
   padding: {
     paddingLeft: 25
@@ -177,7 +192,22 @@ const styles = theme => ({
     textTransform: 'capitalize',
   },
   paddingFull: {
-    padding: 20
+    padding: 15,
+    [theme.breakpoints.up('md')]: {
+      padding: 20,
+    }
+  },
+  filters: {
+    display: 'flex',
+    justifyContent: 'space-between',
+		alignItems: 'center',
+  },
+  records: {
+    textAlign: 'center',
+    paddingTop: 0,
+    [theme.breakpoints.up('sm')]: {
+      paddingTop: 10,
+    }
   }
 })
 
@@ -268,11 +298,13 @@ class ManageUserGroups extends Component {
                     primary={item.name}
                     secondary={item.status}
                   />
-                  <ListItemSecondaryAction>
-                    <IconButton>
-                      <KeyboardArrowRight />
-                    </IconButton>
-                  </ListItemSecondaryAction>
+                  <Hidden smUp>
+                    <ListItemSecondaryAction>
+                      <IconButton>
+                        <KeyboardArrowRight />
+                      </IconButton>
+                    </ListItemSecondaryAction>
+                  </Hidden>
                 </ListItem>
               ))}
             {/* parsedData
@@ -463,15 +495,16 @@ class ManageUserGroups extends Component {
 						<Grid item xs={12} sm={5} md={3} className={classes.demoLeft}>
 							<div>
                 <div className={classes.toolbar}>
-                  <Grid container>
-                    <Grid item xs={9} sm={8} md={9}>
-                      <span>{users.length} records</span>
-                    </Grid>
-                    <Grid item xs={3} sm={4} sm={3}>
-                      <Add className={classes.icons} onClick={()=>this.addNewGroup()} />
-                      <FilterList className={classes.filterButton} onClick={()=>this.showSearch()} />
-                    </Grid>
-                  </Grid>
+                  <div className={classes.filters}>
+                    <IconButton className={classes.icons}><Add onClick={()=>this.addNewGroup()} /></IconButton>
+                    <IconButton className={classes.icons}><SwapVert /></IconButton>
+                    <IconButton className={classes.icons}><Search /></IconButton>
+                    <IconButton className={classes.icons}><Print /></IconButton>
+                    <IconButton className={classes.icons}><FilterList onClick={()=>this.showSearch()} /></IconButton>
+                  </div>
+                  <div className={classes.records}>
+                    {users.length} records
+                  </div>
                   {this.state.filterActive && (
                     <div>
                       <TextField

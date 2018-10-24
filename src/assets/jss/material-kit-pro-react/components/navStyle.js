@@ -6,9 +6,12 @@ const navStyles = theme => ({
   title: {
     flexGrow: 1,
     // visibility: 'hidden',
+    textAlign: 'center',
+    [theme.breakpoints.up('sm')]: {
+      textAlign: 'left',
+    },
     [theme.breakpoints.down('sm')]: {
       fontWeight: '900',
-      textAlign: 'center',
       fontSize: '15px',
     },
   },
