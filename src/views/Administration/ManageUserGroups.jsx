@@ -16,6 +16,11 @@ import Print from '@material-ui/icons/Print';
 import Search from '@material-ui/icons/Search';
 import SwapVert from '@material-ui/icons/SwapVert';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Laptop from '@material-ui/icons/Laptop';
+import People from '@material-ui/icons/People';
+import Event from '@material-ui/icons/Event';
+import CreditCard from '@material-ui/icons/CreditCard';
+import AccountBalance from '@material-ui/icons/AccountBalance';
 //project components
 import NewUserGroup from './NewUserGroup';
 import PageColumn from 'views/Page/PageColumn.jsx';
@@ -126,7 +131,8 @@ const styles = theme => ({
     }
 	},
 	list: {
-		width: "100%"
+    width: "100%",
+    borderRadius: 0,
   },
   noGroups: {
     textAlign: 'center',
@@ -152,7 +158,10 @@ const styles = theme => ({
     backgroundColor: "#f00"
   },
   title: {
-    marginBottom: 10
+    marginBottom: 10,
+    color: "#626262",
+    fontSize: '1.1rem',
+    marginLeft: 15,
   },
   titlePadding: {
     marginBottom: 10,
@@ -162,7 +171,13 @@ const styles = theme => ({
     cursor: 'pointer',
     '&:hover': {
       color: '#0dacc4',
-    }
+    },
+    [theme.breakpoints.down('md')]: {
+      padding: 5,
+    },
+    [theme.breakpoints.down('sm')]: {
+      padding: 12,
+    },
   },
   filterButton: {
     cursor: 'pointer',
@@ -377,7 +392,7 @@ class ManageUserGroups extends Component {
           <Typography variant="title" noWrap className={classes.title}>Permissions</Typography>
           <ExpansionPanel>
             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography className={classes.heading}>Administration</Typography>
+              <Laptop />&nbsp;&nbsp;<Typography className={classes.heading}>Administration</Typography>
             </ExpansionPanelSummary>
             <ExpansionPanelDetails>
               <Typography>
@@ -388,7 +403,7 @@ class ManageUserGroups extends Component {
           </ExpansionPanel>
           <ExpansionPanel>
             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography className={classes.heading}>Tasks</Typography>
+            <i style={{fontSize: '23px'}} className="fas fa-tasks"></i>&nbsp;&nbsp;<Typography className={classes.heading}>Tasks</Typography>
             </ExpansionPanelSummary>
             <ExpansionPanelDetails>
               <Typography>
@@ -399,27 +414,27 @@ class ManageUserGroups extends Component {
           </ExpansionPanel>
           <ExpansionPanel>
             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography className={classes.heading}>People</Typography>
+              <People/>&nbsp;&nbsp;<Typography className={classes.heading}>People</Typography>
             </ExpansionPanelSummary>
           </ExpansionPanel>
           <ExpansionPanel>
             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography className={classes.heading}>Agencies</Typography>
+            <AccountBalance/>&nbsp;&nbsp;<Typography className={classes.heading}>Agencies</Typography>
             </ExpansionPanelSummary>
           </ExpansionPanel>
           <ExpansionPanel>
             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography className={classes.heading}>Events</Typography>
+              <Event/>&nbsp;&nbsp;<Typography className={classes.heading}>Events</Typography>
             </ExpansionPanelSummary>
           </ExpansionPanel>
           <ExpansionPanel>
             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography className={classes.heading}>Expenses</Typography>
+              <CreditCard />&nbsp;&nbsp;<Typography className={classes.heading}>Expenses</Typography>
             </ExpansionPanelSummary>
           </ExpansionPanel>
           <ExpansionPanel>
             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography className={classes.heading}>Mass Emails</Typography>
+              <CreditCard />&nbsp;&nbsp;<Typography className={classes.heading}>Mass Emails</Typography>
             </ExpansionPanelSummary>
           </ExpansionPanel>
         </div>
