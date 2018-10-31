@@ -6,8 +6,11 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
+import Menu from '@material-ui/core/Menu';
 //material-ui icons
 import Add from '@material-ui/icons/Add';
+import Edit from '@material-ui/icons/Edit';
+import MoreHoriz from '@material-ui/icons/MoreHoriz';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import ErrorOutlineOutlined from '@material-ui/icons/ErrorOutlineOutlined';
@@ -56,6 +59,16 @@ const formatData = data => Object.keys(data)
 	.filter(m => m.key !== '_')
 
 const styles = theme => ({
+  iconsRight: {
+    float: 'right',
+  },
+  paper: {
+    boxShadow: 'none'
+  },
+  root: {
+    borderRadius: 0,
+    boxShadow: 'none',
+  },
 	input: {
 		marginBottom: -10,
 		width: 215,
@@ -260,11 +273,21 @@ class ManageUserGroups extends Component {
 				first: '',
 				last: '',
 				group: '',
-				email: '',
+        email: '',
+        anchorEl: null,
 			}
 		this.toggleViews = this.toggleViews.bind(this)
 		this.showUser = this.showUser.bind(this)
-	}
+  }
+  
+  handleClick = event => {
+    this.setState({ anchorEl: event.currentTarget });
+  }
+
+  handleCloseMenu = () => {
+    this.setState({ anchorEl: null });
+  }
+
 	componentDidMount() {
 		let users = []
 		this.gun.get('testRost').get('users').map().on((user, key) => {
@@ -350,13 +373,26 @@ class ManageUserGroups extends Component {
 
   renderContent() {
 		const { classes } = this.props
-    const { users, selected } = this.state
+    const { users, selected, anchorEl } = this.state
     const user = users[selected]
     if (selected !== false) {
       return (
         <div>
           <Paper className={classes.root} elevation={1}>
             <div className={classes.paddingFull}>
+              <div className={classes.iconsRight}>
+                <IconButton className={classes.icons}><Edit /></IconButton>
+                <IconButton className={classes.icons}><MoreHoriz onClick={this.handleClick} /></IconButton>
+                <Menu
+                  id="simple-menu"
+                  anchorEl={anchorEl}
+                  open={Boolean(anchorEl)}
+                  onClose={this.handleCloseMenu}
+                >
+                  <MenuItem onClick={this.handleCloseMenu}>Option 1</MenuItem>
+                  <MenuItem onClick={this.handleCloseMenu}>Option 2</MenuItem>
+                </Menu>
+              </div>
               <Typography variant="h5" component="h4">
                 {user.name}
               </Typography>
@@ -390,7 +426,7 @@ class ManageUserGroups extends Component {
           <br/>
           <br/>
           <Typography variant="title" noWrap className={classes.title}>Permissions</Typography>
-          <ExpansionPanel>
+          <ExpansionPanel className={classes.paper}>
             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
               <Laptop />&nbsp;&nbsp;<Typography className={classes.heading}>Administration</Typography>
             </ExpansionPanelSummary>
@@ -401,7 +437,7 @@ class ManageUserGroups extends Component {
               </Typography>
             </ExpansionPanelDetails>
           </ExpansionPanel>
-          <ExpansionPanel>
+          <ExpansionPanel className={classes.paper}>
             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
             <i style={{fontSize: '23px'}} className="fas fa-tasks"></i>&nbsp;&nbsp;<Typography className={classes.heading}>Tasks</Typography>
             </ExpansionPanelSummary>
@@ -412,27 +448,27 @@ class ManageUserGroups extends Component {
               </Typography>
             </ExpansionPanelDetails>
           </ExpansionPanel>
-          <ExpansionPanel>
+          <ExpansionPanel className={classes.paper}>
             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
               <People/>&nbsp;&nbsp;<Typography className={classes.heading}>People</Typography>
             </ExpansionPanelSummary>
           </ExpansionPanel>
-          <ExpansionPanel>
+          <ExpansionPanel className={classes.paper}>
             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
             <AccountBalance/>&nbsp;&nbsp;<Typography className={classes.heading}>Agencies</Typography>
             </ExpansionPanelSummary>
           </ExpansionPanel>
-          <ExpansionPanel>
+          <ExpansionPanel className={classes.paper}>
             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
               <Event/>&nbsp;&nbsp;<Typography className={classes.heading}>Events</Typography>
             </ExpansionPanelSummary>
           </ExpansionPanel>
-          <ExpansionPanel>
+          <ExpansionPanel className={classes.paper}>
             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
               <CreditCard />&nbsp;&nbsp;<Typography className={classes.heading}>Expenses</Typography>
             </ExpansionPanelSummary>
           </ExpansionPanel>
-          <ExpansionPanel>
+          <ExpansionPanel className={classes.paper}>
             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
               <CreditCard />&nbsp;&nbsp;<Typography className={classes.heading}>Mass Emails</Typography>
             </ExpansionPanelSummary>
@@ -510,16 +546,6 @@ class ManageUserGroups extends Component {
 						<Grid item xs={12} sm={5} md={3} className={classes.demoLeft}>
 							<div>
                 <div className={classes.toolbar}>
-                  <div className={classes.filters}>
-                    <IconButton className={classes.icons}><Add onClick={()=>this.addNewGroup()} /></IconButton>
-                    <IconButton className={classes.icons}><SwapVert /></IconButton>
-                    <IconButton className={classes.icons}><Search /></IconButton>
-                    <IconButton className={classes.icons}><Print /></IconButton>
-                    <IconButton className={classes.icons}><FilterList onClick={()=>this.showSearch()} /></IconButton>
-                  </div>
-                  <div className={classes.records}>
-                    {users.length} records
-                  </div>
                   {this.state.filterActive && (
                     <div>
                       <TextField
@@ -531,6 +557,16 @@ class ManageUserGroups extends Component {
                       />
                     </div>
                   )}
+                  <div className={classes.filters}>
+                    <IconButton className={classes.icons}><Add onClick={()=>this.addNewGroup()} /></IconButton>
+                    <IconButton className={classes.icons}><SwapVert /></IconButton>
+                    <IconButton className={classes.icons}><Search /></IconButton>
+                    <IconButton className={classes.icons}><Print /></IconButton>
+                    <IconButton className={classes.icons}><FilterList onClick={()=>this.showSearch()} /></IconButton>
+                  </div>
+                  <div className={classes.records}>
+                    {users.length} records
+                  </div>
                 </div>
                 <Divider />
 								{/* <br/>
