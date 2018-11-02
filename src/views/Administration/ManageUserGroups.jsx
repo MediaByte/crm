@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import BlockUi from 'react-block-ui';
+import 'react-block-ui/style.css';
 //material ui components
 import { withStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import Grid from '@material-ui/core/Grid';
@@ -236,6 +239,9 @@ const styles = theme => ({
     [theme.breakpoints.up('sm')]: {
       paddingTop: 10,
     }
+  },
+  filterBox: {
+    padding: 15
   }
 })
 
@@ -268,16 +274,23 @@ class ManageUserGroups extends Component {
 				users: users,
         usersCopy: users,
         selected: false,
-        filterActive: false,
+        searchActive: false,
+        anchorEl2: false,
         title: '',
 				first: '',
 				last: '',
 				group: '',
         email: '',
         anchorEl: null,
+        blocking: true,
 			}
 		this.toggleViews = this.toggleViews.bind(this)
-		this.showUser = this.showUser.bind(this)
+    this.showUser = this.showUser.bind(this)
+    this.toggleBlocking = this.toggleBlocking.bind(this);
+  }
+
+  toggleBlocking() {
+    this.setState({blocking: !this.state.blocking});
   }
   
   handleClick = event => {
@@ -373,7 +386,7 @@ class ManageUserGroups extends Component {
 
   renderContent() {
 		const { classes } = this.props
-    const { users, selected, anchorEl } = this.state
+    const { users, selected, anchorEl, anchorEl2 } = this.state
     const user = users[selected]
     if (selected !== false) {
       return (
@@ -381,7 +394,7 @@ class ManageUserGroups extends Component {
           <Paper className={classes.root} elevation={1}>
             <div className={classes.paddingFull}>
               <div className={classes.iconsRight}>
-                <IconButton className={classes.icons}><Edit /></IconButton>
+                <IconButton className={classes.icons}><Edit onClick={this.toggleBlocking} /></IconButton>
                 <IconButton className={classes.icons}><MoreHoriz onClick={this.handleClick} /></IconButton>
                 <Menu
                   id="simple-menu"
@@ -397,7 +410,7 @@ class ManageUserGroups extends Component {
                 {user.name}
               </Typography>
               <br/>
-              <div>
+              <BlockUi tag="div" blocking={this.state.blocking} message="" loader={<div/>}>
                 <TextField
                   id="standard-name"
                   label="Description"
@@ -420,7 +433,7 @@ class ManageUserGroups extends Component {
                     Active
                   </MenuItem>
                 </TextField>
-              </div>
+              </BlockUi>
             </div>
           </Paper>
           <br/>
@@ -499,7 +512,15 @@ class ManageUserGroups extends Component {
   }
 
   showSearch () {
-    this.setState({filterActive: !this.state.filterActive})
+    this.setState({searchActive: !this.state.searchActive})
+  }
+
+  showFilter = event => {
+    this.setState({ anchorEl2: event.currentTarget });
+  }
+
+  closeFilter = () => {
+    this.setState({ anchorEl2: null });
   }
 
   onChangeFilter (e) {
@@ -533,7 +554,7 @@ class ManageUserGroups extends Component {
 
 	render() {
 		const { classes } = this.props
-		const { addUser, users } = this.state
+		const { addUser, users, anchorEl2 } = this.state
     let parsedData = formatData(this.state.users)
     
 		return (
@@ -546,7 +567,7 @@ class ManageUserGroups extends Component {
 						<Grid item xs={12} sm={5} md={3} className={classes.demoLeft}>
 							<div>
                 <div className={classes.toolbar}>
-                  {this.state.filterActive && (
+                  {this.state.searchActive && (
                     <div>
                       <TextField
                         type="search"
@@ -560,10 +581,44 @@ class ManageUserGroups extends Component {
                   <div className={classes.filters}>
                     <IconButton className={classes.icons}><Add onClick={()=>this.addNewGroup()} /></IconButton>
                     <IconButton className={classes.icons}><SwapVert /></IconButton>
-                    <IconButton className={classes.icons}><Search /></IconButton>
+                    <IconButton className={classes.icons}><Search onClick={()=>this.showSearch()} /></IconButton>
                     <IconButton className={classes.icons}><Print /></IconButton>
-                    <IconButton className={classes.icons}><FilterList onClick={()=>this.showSearch()} /></IconButton>
+                    <IconButton className={classes.icons}>
+                      <FilterList onClick={this.showFilter} />
+                    </IconButton>
                   </div>
+                      <Menu
+                        id="simple-menu2"
+                        anchorEl={anchorEl2}
+                        open={Boolean(anchorEl2)}
+                        onClose={this.closeFilter}
+                      >
+                        <div className={classes.filterBox}>
+                          <div style={{float: 'right'}}>
+                            <Button component="span">RESET</Button>
+                          </div>
+                          <Typography variant="button" color="inherit">FILTERS</Typography>
+                          <Grid container spacing={24}>
+                            <Grid item xs={6}>
+                              <TextField
+                                id="standard-name"
+                                label="Field 1"
+                                margin="normal"
+                                value=" "
+                              />
+                            </Grid>
+                            <Grid item xs={6}>
+                              <TextField
+                                id="standard-name"
+                                label="Field 2"
+                                margin="normal"
+                                value=" "
+                              />
+                            </Grid>
+                          </Grid>
+                          {/* <MenuItem onClick={this.closeFilter}>Option 1</MenuItem> */}
+                        </div>
+                      </Menu>
                   <div className={classes.records}>
                     {users.length} records
                   </div>
