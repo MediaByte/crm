@@ -10,6 +10,9 @@ import IconButton from '@material-ui/core/IconButton';
 import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
 import Menu from '@material-ui/core/Menu';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+import Select from '@material-ui/core/Select';
 //material-ui icons
 import Add from '@material-ui/icons/Add';
 import Edit from '@material-ui/icons/Edit';
@@ -242,7 +245,18 @@ const styles = theme => ({
   },
   filterBox: {
     padding: 15
-  }
+  },
+  filterButton: {
+    fontWeight: 'bold',
+  },
+  resetButton: {
+    color: '#0dacc4',
+    marginTop: '-10px'
+  },
+  formControl: {
+    margin: theme.spacing.unit,
+    minWidth: 120,
+  },
 })
 
 function Transition(props) {
@@ -595,25 +609,31 @@ class ManageUserGroups extends Component {
                       >
                         <div className={classes.filterBox}>
                           <div style={{float: 'right'}}>
-                            <Button component="span">RESET</Button>
+                            <Button component="span" className={classes.resetButton}>RESET</Button>
                           </div>
-                          <Typography variant="button" color="inherit">FILTERS</Typography>
+                          <Typography variant="button" color="inherit" className={classes.filterButton}>FILTERS</Typography>
                           <Grid container spacing={24}>
-                            <Grid item xs={6}>
-                              <TextField
-                                id="standard-name"
-                                label="Field 1"
-                                margin="normal"
-                                value=" "
-                              />
+                            <Grid item xs={9}>
+                            <FormControl className={classes.formControl}>
+                              <InputLabel htmlFor="age-simple">Status</InputLabel>
+                              <Select
+                                autoWidth
+                                value={10}
+                                // onChange={this.handleChange}
+                                // inputProps={{
+                                //   name: 'age',
+                                //   id: 'age-simple',
+                                // }}
+                              >
+                                <MenuItem value="">
+                                  <em>All</em>
+                                </MenuItem>
+                                <MenuItem value={10}>Active</MenuItem>
+                                <MenuItem value={20}>Inactive</MenuItem>
+                              </Select>
+                            </FormControl>
                             </Grid>
-                            <Grid item xs={6}>
-                              <TextField
-                                id="standard-name"
-                                label="Field 2"
-                                margin="normal"
-                                value=" "
-                              />
+                            <Grid item xs={3}>
                             </Grid>
                           </Grid>
                           {/* <MenuItem onClick={this.closeFilter}>Option 1</MenuItem> */}
