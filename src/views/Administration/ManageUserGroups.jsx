@@ -269,7 +269,7 @@ const users = [
   { id: 3, name: "User 3", status: "Inactive"},
   { id: 4, name: "User 4", status: "Inactive"},
   { id: 5, name: "User 5", status: "Inactive"},
-  { id: 6, name: "User 6", status: "Inactive"},
+  { id: 6, name: "User 6", status: "Active"},
   { id: 7, name: "User 7", status: "Inactive"},
   { id: 8, name: "User 8", status: "Inactive"},
   { id: 9, name: "User 9", status: "Inactive"},
@@ -297,6 +297,7 @@ class ManageUserGroups extends Component {
         email: '',
         anchorEl: null,
         blocking: true,
+        filterStatus: 'all'
 			}
 		this.toggleViews = this.toggleViews.bind(this)
     this.showUser = this.showUser.bind(this)
@@ -543,9 +544,24 @@ class ManageUserGroups extends Component {
     if (value === '') {
       users = this.state.usersCopy
     } else {
-      users = this.state.users.filter((item) => item.name.toLowerCase().includes(value))
+      users = this.state.usersCopy.filter((item) => item.name.toLowerCase().includes(value))
     }
     this.setState({ users })
+  }
+
+  handleChange = event => {
+    const value = event.target.value.toLowerCase()
+    let users
+    if (value === '' || value === 'all') {
+      users = this.state.usersCopy
+    } else {
+      users = this.state.usersCopy.filter((item) => item.status.toLowerCase() === value)
+    }
+    this.setState({ users, filterStatus: value })
+  }
+
+  resetFilter = event => {
+    this.setState({ users: this.state.usersCopy, filterStatus: 'all' })
   }
 
   handleClickOpen = () => {
@@ -609,7 +625,7 @@ class ManageUserGroups extends Component {
                       >
                         <div className={classes.filterBox}>
                           <div style={{float: 'right'}}>
-                            <Button component="span" className={classes.resetButton}>RESET</Button>
+                            <Button component="span" className={classes.resetButton} onClick={this.resetFilter}>RESET</Button>
                           </div>
                           <Typography variant="button" color="inherit" className={classes.filterButton}>FILTERS</Typography>
                           <Grid container spacing={24}>
@@ -618,18 +634,18 @@ class ManageUserGroups extends Component {
                               <InputLabel htmlFor="age-simple">Status</InputLabel>
                               <Select
                                 autoWidth
-                                value={10}
-                                // onChange={this.handleChange}
+                                value={this.state.filterStatus}
+                                onChange={this.handleChange}
                                 // inputProps={{
                                 //   name: 'age',
                                 //   id: 'age-simple',
                                 // }}
                               >
-                                <MenuItem value="">
+                                <MenuItem value="all">
                                   <em>All</em>
                                 </MenuItem>
-                                <MenuItem value={10}>Active</MenuItem>
-                                <MenuItem value={20}>Inactive</MenuItem>
+                                <MenuItem value='active'>Active</MenuItem>
+                                <MenuItem value='inactive'>Inactive</MenuItem>
                               </Select>
                             </FormControl>
                             </Grid>
