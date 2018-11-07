@@ -285,7 +285,7 @@ class ManageUserGroups extends Component {
 			this.state = {
         addUser: false,
         open: false, 
-				users: users,
+				users: users.filter(user => user.status === 'Active'),
         usersCopy: users,
         selected: false,
         searchActive: false,
@@ -297,7 +297,7 @@ class ManageUserGroups extends Component {
         email: '',
         anchorEl: null,
         blocking: true,
-        filterStatus: 'all'
+        filterStatus: 'active'
 			}
 		this.toggleViews = this.toggleViews.bind(this)
     this.showUser = this.showUser.bind(this)
