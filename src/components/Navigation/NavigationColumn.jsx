@@ -254,7 +254,7 @@ class NavigationColumn extends React.Component {
           {/* </Hidden> */}
             
             <main className={classes.children}>
-              <div style={{height: "100%"}}>
+              <div style={{height: "100%", backgroundColor: '#fff'}}>
                 {children}
               </div>
             </main>

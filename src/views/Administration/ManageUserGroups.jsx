@@ -11,8 +11,11 @@ import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
 import Menu from '@material-ui/core/Menu';
 import FormControl from '@material-ui/core/FormControl';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
+import Checkbox from '@material-ui/core/Checkbox';
+import cyan from '@material-ui/core/colors/cyan';
 //material-ui icons
 import Add from '@material-ui/icons/Add';
 import Edit from '@material-ui/icons/Edit';
@@ -176,6 +179,9 @@ const styles = theme => ({
   selected: {
     backgroundColor: "#f00"
   },
+  subtitle: {
+    fontSize: '0.9rem',
+  },
   title: {
     marginBottom: 10,
     color: "#626262",
@@ -257,6 +263,13 @@ const styles = theme => ({
     margin: theme.spacing.unit,
     minWidth: 120,
   },
+  root2: {
+    color: cyan[600],
+    '&$checked': {
+      color: cyan[500],
+    },
+  },
+  checked: {},
 })
 
 function Transition(props) {
@@ -297,7 +310,15 @@ class ManageUserGroups extends Component {
         email: '',
         anchorEl: null,
         blocking: true,
-        filterStatus: 'active'
+        filterStatus: 'active',
+        checkedA: true,
+        checkedB: true,
+        checkedC: true,
+        checkedD: true,
+        checkedE: true,
+        checkedF: true,
+        checkedG: true,
+        checkedH: true,
 			}
 		this.toggleViews = this.toggleViews.bind(this)
     this.showUser = this.showUser.bind(this)
@@ -399,6 +420,10 @@ class ManageUserGroups extends Component {
     }
   }
 
+  handleChangeCheckbox = name => event => {
+    this.setState({ [name]: event.target.checked });
+  };
+
   renderContent() {
 		const { classes } = this.props
     const { users, selected, anchorEl, anchorEl2 } = this.state
@@ -453,54 +478,135 @@ class ManageUserGroups extends Component {
           </Paper>
           <br/>
           <br/>
+
+
+
           <Typography variant="title" noWrap className={classes.title}>Permissions</Typography>
-          <ExpansionPanel className={classes.paper}>
-            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-              <Laptop />&nbsp;&nbsp;<Typography className={classes.heading}>Administration</Typography>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails>
-              <Typography>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
-                sit amet blandit leo lobortis eget.
-              </Typography>
-            </ExpansionPanelDetails>
-          </ExpansionPanel>
-          <ExpansionPanel className={classes.paper}>
-            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-            <i style={{fontSize: '23px'}} className="fas fa-tasks"></i>&nbsp;&nbsp;<Typography className={classes.heading}>Tasks</Typography>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails>
-              <Typography>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
-                sit amet blandit leo lobortis eget.
-              </Typography>
-            </ExpansionPanelDetails>
-          </ExpansionPanel>
-          <ExpansionPanel className={classes.paper}>
-            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-              <People/>&nbsp;&nbsp;<Typography className={classes.heading}>People</Typography>
-            </ExpansionPanelSummary>
-          </ExpansionPanel>
-          <ExpansionPanel className={classes.paper}>
-            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-            <AccountBalance/>&nbsp;&nbsp;<Typography className={classes.heading}>Agencies</Typography>
-            </ExpansionPanelSummary>
-          </ExpansionPanel>
-          <ExpansionPanel className={classes.paper}>
-            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-              <Event/>&nbsp;&nbsp;<Typography className={classes.heading}>Events</Typography>
-            </ExpansionPanelSummary>
-          </ExpansionPanel>
-          <ExpansionPanel className={classes.paper}>
-            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-              <CreditCard />&nbsp;&nbsp;<Typography className={classes.heading}>Expenses</Typography>
-            </ExpansionPanelSummary>
-          </ExpansionPanel>
-          <ExpansionPanel className={classes.paper}>
-            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-              <CreditCard />&nbsp;&nbsp;<Typography className={classes.heading}>Mass Emails</Typography>
-            </ExpansionPanelSummary>
-          </ExpansionPanel>
+          <Paper className={classes.root} elevation={1}>
+            <div className={classes.paddingFull}>
+              <BlockUi tag="div" blocking={this.state.blocking} message="" loader={<div/>}>
+              <Typography variant="title" noWrap className={classes.subtitle}>Agency Details</Typography>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={this.state.checkedA}
+                    onChange={this.handleChangeCheckbox('checkedA')}
+                    value="checkedA"
+                    classes={{
+                      root: classes.root2,
+                      checked: classes.checked,
+                    }}
+                  />
+                }
+                label="View"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={this.state.checkedB}
+                    onChange={this.handleChangeCheckbox('checkedB')}
+                    value="checkedB"
+                    classes={{
+                      root: classes.root2,
+                      checked: classes.checked,
+                    }}
+                  />
+                }
+                label="Create"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={this.state.checkedC}
+                    onChange={this.handleChangeCheckbox('checkedC')}
+                    value="checkedC"
+                    classes={{
+                      root: classes.root2,
+                      checked: classes.checked,
+                    }}
+                  />
+                }
+                label="Edit"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={this.state.checkedD}
+                    onChange={this.handleChangeCheckbox('checkedD')}
+                    value="checkedD"
+                    classes={{
+                      root: classes.root2,
+                      checked: classes.checked,
+                    }}
+                  />
+                }
+                label="Delete"
+              />
+              <br />
+              <br />
+              <Typography variant="title" noWrap className={classes.subtitle}>Employees</Typography>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={this.state.checkedE}
+                    onChange={this.handleChangeCheckbox('checkedE')}
+                    value="checkedE"
+                    classes={{
+                      root: classes.root2,
+                      checked: classes.checked,
+                    }}
+                  />
+                }
+                label="View"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={this.state.checkedF}
+                    onChange={this.handleChangeCheckbox('checkedF')}
+                    value="checkedF"
+                    classes={{
+                      root: classes.root2,
+                      checked: classes.checked,
+                    }}
+                  />
+                }
+                label="Create"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={this.state.checkedG}
+                    onChange={this.handleChangeCheckbox('checkedG')}
+                    value="checkedG"
+                    classes={{
+                      root: classes.root2,
+                      checked: classes.checked,
+                    }}
+                  />
+                }
+                label="Edit"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={this.state.checkedH}
+                    onChange={this.handleChangeCheckbox('checkedH')}
+                    value="checkedH"
+                    classes={{
+                      root: classes.root2,
+                      checked: classes.checked,
+                    }}
+                  />
+                }
+                label="Delete"
+              />
+              <br />
+              <br />
+              </BlockUi>
+            </div>
+          </Paper>
+
         </div>
       )
     } else {
@@ -594,7 +700,7 @@ class ManageUserGroups extends Component {
 						container
             className={classes.gridContainer}
 					>
-						<Grid item xs={12} sm={5} md={3} className={classes.demoLeft}>
+						<Grid item xs={12} sm={5} md={4} lg={3} className={classes.demoLeft}>
 							<div>
                 <div className={classes.toolbar}>
                   {this.state.searchActive && (
@@ -681,7 +787,7 @@ class ManageUserGroups extends Component {
 								{this.renderUserGroups()}
 							</div>
 						</Grid>
-						<Grid item xs={12} sm={7} md={9} className={classes.demo}>
+						<Grid item xs={12} sm={7} md={8} lg={9} className={classes.demo}>
               <div className={classes.demoContent}>
                 <Hidden smUp>
                   <Dialog
@@ -697,9 +803,9 @@ class ManageUserGroups extends Component {
                           <IconButton className={classes.menuButton} color="default" onClick={this.handleClose} aria-label="Close">
                             <ArrowBack />
                           </IconButton>
-                          <Typography variant="subtitle1" color="inherit" className={classes.newTitle}>
+                          {/* <Typography variant="subtitle1" color="inherit" className={classes.newTitle}>
                             {this.state.title}
-                          </Typography>
+                          </Typography> */}
                         </Toolbar>
                       </AppBar>
                     </div>
