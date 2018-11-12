@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
+import _ from 'lodash';
 //material ui components
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
@@ -144,12 +145,13 @@ const styles = theme => ({
     overflow: 'scroll'
 	},
 	demoContent: {
+    // backgroundColor: '#fff',
     padding: 10,
     [theme.breakpoints.up('sm')]: {
       padding: 0,
     },
     [theme.breakpoints.up('md')]: {
-      padding: 20,
+      padding: 0,
     }
 	},
 	list: {
@@ -184,9 +186,15 @@ const styles = theme => ({
   },
   title: {
     marginBottom: 10,
-    color: "#626262",
-    fontSize: '1.1rem',
+    color: "#aaa",
+    fontSize: '0.85rem',
     marginLeft: 15,
+    [theme.breakpoints.up('lg')]: {
+      marginLeft: 30,
+    }
+  },
+  titleBold: {
+    fontWeight: 'bold',
   },
   titlePadding: {
     marginBottom: 10,
@@ -234,7 +242,7 @@ const styles = theme => ({
   paddingFull: {
     padding: 15,
     [theme.breakpoints.up('md')]: {
-      padding: 20,
+      padding: '20px 30px',
     }
   },
   filters: {
@@ -380,7 +388,7 @@ class ManageUserGroups extends Component {
         <div style={{width: "100%"}}>
             <List component="nav" className={classes.list}>
               {this.state.users.map((item, index) => (
-                <ListItem selected={this.state.selected === item.id-1} className={classes.list} key={index} onClick={()=> this.selectUser(item.id)}>
+                <ListItem selected={this.state.selected === item.id} className={classes.list} key={index} onClick={()=> this.selectUser(item.id)}>
                   <ListItemText
                     primary={item.name}
                     secondary={item.status}
@@ -427,7 +435,8 @@ class ManageUserGroups extends Component {
   renderContent() {
 		const { classes } = this.props
     const { users, selected, anchorEl, anchorEl2 } = this.state
-    const user = users[selected]
+    const user = _.find(users, {id: selected})
+    
     if (selected !== false) {
       return (
         <div>
@@ -446,7 +455,7 @@ class ManageUserGroups extends Component {
                   <MenuItem onClick={this.handleCloseMenu}>Option 2</MenuItem>
                 </Menu>
               </div>
-              <Typography variant="h5" component="h4">
+              <Typography variant="h5" component="h4" className={classes.titleBold}>
                 {user.name}
               </Typography>
               <br/>
@@ -543,6 +552,7 @@ class ManageUserGroups extends Component {
                 label="Delete"
               />
               <br />
+              <Divider/>
               <br />
               <Typography variant="title" noWrap className={classes.subtitle}>Employees</Typography>
               <FormControlLabel
@@ -623,8 +633,8 @@ class ManageUserGroups extends Component {
 
   selectUser (id) {
     const openModal = window.innerWidth < 750
-    const user = this.state.users[id-1]
-    this.setState({selected: id-1, addUser: false, open: openModal, title: user.name})
+    const user = _.find(this.state.users, {id: id})
+    this.setState({selected: user.id, addUser: false, open: openModal, title: user.name})
   }
 
   addNewGroup () {
@@ -679,7 +689,6 @@ class ManageUserGroups extends Component {
   };
 
   renderContentWrapper() {
-    console.log('renderContentWrapper', this.state);
     // this.openInModal();
     if (this.state.addUser) {
       return <NewUserGroup />
