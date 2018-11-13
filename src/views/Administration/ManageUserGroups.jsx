@@ -874,7 +874,6 @@ class ManageUserGroups extends Component {
                     <IconButton className={classes.icons}><Add onClick={()=>this.addNewGroup()} /></IconButton>
                     <IconButton className={classes.icons}><SwapVert /></IconButton>
                     <IconButton className={classes.icons}><Search onClick={()=>this.showSearch()} /></IconButton>
-                    <IconButton className={classes.icons}><Print /></IconButton>
                     <IconButton className={classes.icons}>
                       <FilterList onClick={this.showFilter} />
                     </IconButton>
