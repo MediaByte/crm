@@ -78,7 +78,13 @@ const styles = theme => ({
   root: {
     borderRadius: 0,
     boxShadow: 'none',
-borderBottom: "1px solid #d8d8d8"
+    borderTop: "1px solid #ddd",	
+    borderBottom: "1px solid #ddd",
+  },
+root3: {
+    borderRadius: 0,
+    boxShadow: 'none',
+    borderBottom: "1px solid #ddd",
   },
 	input: {
 		marginBottom: -10,
@@ -454,7 +460,7 @@ class ManageUserGroups extends Component {
     if (selected !== false) {
       return (
         <div>
-          <Paper className={classes.root} elevation={1}>
+          <Paper className={classes.root3} elevation={1}>
             <div className={classes.paddingFull}>
               <div className={classes.iconsRight}>
                 <IconButton className={classes.icons} style={{transform: 'scale(0.8)'}}><Edit onClick={this.toggleBlocking} /></IconButton>
