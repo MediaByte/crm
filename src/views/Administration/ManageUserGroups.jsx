@@ -78,7 +78,7 @@ const styles = theme => ({
   root: {
     borderRadius: 0,
     boxShadow: 'none',
-borderBottom: "1px solid #eee"
+borderBottom: "1px solid #d8d8d8"
   },
 	input: {
 		marginBottom: -10,
