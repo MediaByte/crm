@@ -32,8 +32,8 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Laptop from '@material-ui/icons/Laptop';
 import People from '@material-ui/icons/People';
 import Event from '@material-ui/icons/Event';
-import CreditCard from '@material-ui/icons/CreditCard';
-import AccountBalance from '@material-ui/icons/AccountBalance';
+import Brightness1 from '@material-ui/icons/Brightness1';
+import Description from '@material-ui/icons/Description';
 //project components
 import NewUserGroup from './NewUserGroup';
 import PageColumn from 'views/Page/PageColumn.jsx';
@@ -183,6 +183,7 @@ const styles = theme => ({
   },
   subtitle: {
     fontSize: '0.9rem',
+    fontWeight: 'bold',
   },
   title: {
     marginBottom: 10,
@@ -272,12 +273,24 @@ const styles = theme => ({
     minWidth: 120,
   },
   root2: {
-    color: cyan[600],
+    color: '#2db8b8',
     '&$checked': {
-      color: cyan[500],
+      color: '#2db8b8',
+      backgroundColor: '#fff',
     },
   },
   checked: {},
+  inputGrid: {
+    flexGrow: 1,
+  },
+  textField: {
+    [theme.breakpoints.up('md')]: {
+      marginLeft: '-20px'
+    },
+    [theme.breakpoints.up('lg')]: {
+      marginLeft: '-40px'
+    }
+  }
 })
 
 function Transition(props) {
@@ -443,8 +456,8 @@ class ManageUserGroups extends Component {
           <Paper className={classes.root} elevation={1}>
             <div className={classes.paddingFull}>
               <div className={classes.iconsRight}>
-                <IconButton className={classes.icons}><Edit onClick={this.toggleBlocking} /></IconButton>
-                <IconButton className={classes.icons}><MoreHoriz onClick={this.handleClick} /></IconButton>
+                <IconButton className={classes.icons} style={{transform: 'scale(0.8)'}}><Edit onClick={this.toggleBlocking} /></IconButton>
+                <IconButton className={classes.icons} style={{transform: 'scale(0.8)'}}><MoreHoriz onClick={this.handleClick} /></IconButton>
                 <Menu
                   id="simple-menu"
                   anchorEl={anchorEl}
@@ -456,32 +469,46 @@ class ManageUserGroups extends Component {
                 </Menu>
               </div>
               <Typography variant="h5" component="h4" className={classes.titleBold}>
-                {user.name}
+                <i class="fas fa-user-plus"></i> {user.name}
               </Typography>
               <br/>
               <BlockUi tag="div" blocking={this.state.blocking} message="" loader={<div/>}>
-                <TextField
-                  id="standard-name"
-                  label="Description"
-                  fullWidth
-                  // className={classes.textField}
-                  value="Users will have administrator level permissions"
-                  // onChange={this.handleChange('name')}
-                />
-                <TextField
-                  id="standard-select-currency"
-                  select
-                  label="Status"
-                  fullWidth
-                  // className={classes.textField}
-                  // value={this.state.currency}
-                  // onChange={this.handleChange('currency')}
-                  margin="normal"
-                >
-                  <MenuItem key={0} value={0}>
-                    Active
-                  </MenuItem>
-                </TextField>
+              <Grid container spacing={8} alignItems="flex-end" className={classes.inputGrid}>
+                <Grid item xs={2} sm={1}>
+                  <Description />
+                </Grid>
+                <Grid item xs={10} sm={11}>
+                  <TextField
+                    id="standard-name"
+                    label="Description"
+                    fullWidth
+                    className={classes.textField}
+                    value="Users will have administrator level permissions"
+                    // onChange={this.handleChange('name')}
+                  />
+                </Grid>
+              </Grid>
+              <Grid container spacing={8} alignItems="flex-end" className={classes.inputGrid}>
+                <Grid item xs={2} sm={1}>
+                  <Brightness1 />
+                </Grid>
+                <Grid item xs={10} sm={11}>
+                  <TextField
+                    id="standard-select-currency"
+                    select
+                    label="Status"
+                    fullWidth
+                    className={classes.textField}
+                    // value={this.state.currency}
+                    // onChange={this.handleChange('currency')}
+                    margin="normal"
+                  >
+                    <MenuItem key={0} value={0}>
+                      Active
+                    </MenuItem>
+                  </TextField>
+                  </Grid>
+                </Grid>
               </BlockUi>
             </div>
           </Paper>
@@ -555,6 +582,126 @@ class ManageUserGroups extends Component {
               <Divider/>
               <br />
               <Typography variant="title" noWrap className={classes.subtitle}>Employees</Typography>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={this.state.checkedE}
+                    onChange={this.handleChangeCheckbox('checkedE')}
+                    value="checkedE"
+                    classes={{
+                      root: classes.root2,
+                      checked: classes.checked,
+                    }}
+                  />
+                }
+                label="View"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={this.state.checkedF}
+                    onChange={this.handleChangeCheckbox('checkedF')}
+                    value="checkedF"
+                    classes={{
+                      root: classes.root2,
+                      checked: classes.checked,
+                    }}
+                  />
+                }
+                label="Create"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={this.state.checkedG}
+                    onChange={this.handleChangeCheckbox('checkedG')}
+                    value="checkedG"
+                    classes={{
+                      root: classes.root2,
+                      checked: classes.checked,
+                    }}
+                  />
+                }
+                label="Edit"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={this.state.checkedH}
+                    onChange={this.handleChangeCheckbox('checkedH')}
+                    value="checkedH"
+                    classes={{
+                      root: classes.root2,
+                      checked: classes.checked,
+                    }}
+                  />
+                }
+                label="Delete"
+              />
+              <br />
+              <Divider/>
+              <br />
+              <Typography variant="title" noWrap className={classes.subtitle}>Filters</Typography>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={this.state.checkedE}
+                    onChange={this.handleChangeCheckbox('checkedE')}
+                    value="checkedE"
+                    classes={{
+                      root: classes.root2,
+                      checked: classes.checked,
+                    }}
+                  />
+                }
+                label="View"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={this.state.checkedF}
+                    onChange={this.handleChangeCheckbox('checkedF')}
+                    value="checkedF"
+                    classes={{
+                      root: classes.root2,
+                      checked: classes.checked,
+                    }}
+                  />
+                }
+                label="Create"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={this.state.checkedG}
+                    onChange={this.handleChangeCheckbox('checkedG')}
+                    value="checkedG"
+                    classes={{
+                      root: classes.root2,
+                      checked: classes.checked,
+                    }}
+                  />
+                }
+                label="Edit"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={this.state.checkedH}
+                    onChange={this.handleChangeCheckbox('checkedH')}
+                    value="checkedH"
+                    classes={{
+                      root: classes.root2,
+                      checked: classes.checked,
+                    }}
+                  />
+                }
+                label="Delete"
+              />
+              <br />
+              <Divider/>
+              <br />
+              <Typography variant="title" noWrap className={classes.subtitle}>User Groups</Typography>
               <FormControlLabel
                 control={
                   <Checkbox
