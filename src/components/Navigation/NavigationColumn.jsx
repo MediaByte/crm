@@ -5,7 +5,6 @@ import classNames from 'classnames';
 //react router
 import { NavLink, Link, Redirect } from 'react-router-dom'
 //Material-ui components
-import Hidden from '@material-ui/core/Hidden';
 import IconButton from '@material-ui/core/IconButton';
 import Divider from '@material-ui/core/Divider';
 import Dashboard from '@material-ui/icons/Dashboard';
@@ -18,18 +17,12 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InputBase from '@material-ui/core/InputBase';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
-import RestoreIcon from '@material-ui/icons/Restore';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import LocationOnIcon from '@material-ui/icons/LocationOn';
 
 //material ui icons
 import SearchIcon from '@material-ui/icons/Search';
 import MenuIcon from '@material-ui/icons/Menu';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import Laptop from '@material-ui/icons/Laptop';
 import People from '@material-ui/icons/People';
 import Event from '@material-ui/icons/Event';
@@ -39,7 +32,6 @@ import MailOutline from '@material-ui/icons/MailOutline';
 
 
 //projects components
-import SearchField from 'components/Navigation/SearchField.jsx'
 import NotificationsCenter from "components/NotificationCenter/NotificationsCenter.js";
 import Logo from 'assets/img/crmLogo.png'
 //styles
@@ -59,15 +51,6 @@ const mapDispatchToProps = (dispatch) => {
     toggleDrawer: (event) => dispatch(drawerState(event)),
   }
 }
-
-const styles = {
-  root: {
-    width: '100%',
-    position: 'fixed',
-		bottom: 0,
-		zIndex: 1
-  },
-};
 
 class NavigationColumn extends React.Component {
   state = {
@@ -95,8 +78,10 @@ class NavigationColumn extends React.Component {
     switch (value) {
       case 0:
         page = '/pinecone/dashboard/test@gmail.com'
+        break
       case 1:
         page = '/admin/test@gmail.com'
+        break
       default:
         page = '/admin/test@gmail.com'
         break

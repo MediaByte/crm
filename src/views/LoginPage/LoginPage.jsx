@@ -5,7 +5,6 @@ import Gun from 'gun/gun'
 import { Redirect } from 'react-router-dom'
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
-import InputAdornment from "@material-ui/core/InputAdornment";
 import FormHelperText from '@material-ui/core/FormHelperText';
 // @material-ui/icons
 import EmailOutlined from "@material-ui/icons/EmailOutlined";
@@ -19,7 +18,6 @@ import CardBody from "components/Card/CardBody.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
 import CustomInput from "components/CustomInput/CustomInput.jsx";
 import Grid from "@material-ui/core/Grid";
-import TextField from "@material-ui/core/TextField";
 
 //Styles
 import loginPageStyle from "assets/jss/material-kit-pro-react/views/loginPageStyle.jsx";

@@ -12,11 +12,8 @@ import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
 import Menu from '@material-ui/core/Menu';
 import FormControl from '@material-ui/core/FormControl';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
-import Checkbox from '@material-ui/core/Checkbox';
-import cyan from '@material-ui/core/colors/cyan';
 //material-ui icons
 import Add from '@material-ui/icons/Add';
 import Edit from '@material-ui/icons/Edit';
@@ -25,15 +22,8 @@ import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import ErrorOutlineOutlined from '@material-ui/icons/ErrorOutlineOutlined';
 import FilterList from '@material-ui/icons/FilterList';
-import Print from '@material-ui/icons/Print';
 import Search from '@material-ui/icons/Search';
 import SwapVert from '@material-ui/icons/SwapVert';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import Laptop from '@material-ui/icons/Laptop';
-import People from '@material-ui/icons/People';
-import Event from '@material-ui/icons/Event';
-import Brightness1 from '@material-ui/icons/Brightness1';
-import Description from '@material-ui/icons/Description';
 //project components
 import NewUserGroup from './NewUserGroup';
 import PageColumn from 'views/Page/PageColumn.jsx';
@@ -52,9 +42,6 @@ import {
   Hidden,
   Paper,
   MenuItem,
-  ExpansionPanelDetails,
-  ExpansionPanelSummary,
-  ExpansionPanel,
   ListItemText,
   ListItemSecondaryAction,
   ListItem,
@@ -64,9 +51,9 @@ import {
   //gundb
 import Gun from 'gun/gun';
 
-const formatData = data => Object.keys(data)
-	.map(key => ({ key, ...data[key]  }))
-	.filter(m => m.key !== '_')
+// const formatData = data => Object.keys(data)
+// 	.map(key => ({ key, ...data[key]  }))
+// 	.filter(m => m.key !== '_')
 
 const styles = theme => ({
   overlay: {
@@ -223,10 +210,6 @@ root3: {
       padding: 12,
     },
   },
-  filterButton: {
-    cursor: 'pointer',
-    // float: 'right'
-  },
   padding: {
     paddingLeft: 25
   },
@@ -273,6 +256,7 @@ root3: {
   },
   filterButton: {
     fontWeight: 'bold',
+    cursor: 'pointer',
   },
   resetButton: {
     color: '#0dacc4',
@@ -326,31 +310,32 @@ class ManageUserGroups extends Component {
 	constructor(props) {
 		super(props);
 		this.gun = Gun('https://pineconeserver.herokuapp.com/gun');
-			this.state = {
-        addUser: false,
-        open: false, 
-				users: users.filter(user => user.status === 'Active'),
-        usersCopy: users,
-        selected: false,
-        searchActive: false,
-        anchorEl2: false,
-        title: '',
-				first: '',
-				last: '',
-				group: '',
-        email: '',
-        anchorEl: null,
-        blocking: true,
-        filterStatus: 'active',
-        checkedA: true,
-        checkedB: true,
-        checkedC: true,
-        checkedD: true,
-        checkedE: true,
-        checkedF: true,
-        checkedG: true,
-        checkedH: true,
-			}
+    this.state = {
+      addUser: false,
+      open: false, 
+      users: users.filter(user => user.status === 'Active'),
+      usersCopy: users,
+      selected: false,
+      searchActive: false,
+      anchorEl2: null,
+      title: '',
+      first: '',
+      last: '',
+      group: '',
+      email: '',
+      anchorEl: null,
+      blocking: true,
+      filterStatus: 'active',
+      checkedA: true,
+      checkedB: true,
+      checkedC: true,
+      checkedD: true,
+      checkedE: true,
+      checkedF: true,
+      checkedG: true,
+      checkedH: true,
+      status: ''
+    }
 		this.toggleViews = this.toggleViews.bind(this)
     this.showUser = this.showUser.bind(this)
     this.toggleBlocking = this.toggleBlocking.bind(this);
@@ -394,7 +379,6 @@ class ManageUserGroups extends Component {
 			email: user.email,
 			group: user.groups
 		})
-		console.log(user)
     }
     
   renderUserGroups() {
@@ -457,7 +441,7 @@ class ManageUserGroups extends Component {
 
   renderContent() {
 		const { classes } = this.props
-    const { users, selected, anchorEl, anchorEl2 } = this.state
+    const { users, selected, anchorEl } = this.state
     const user = _.find(users, {id: selected})
     
     if (selected !== false) {
@@ -479,7 +463,7 @@ class ManageUserGroups extends Component {
                 </Menu>
               </div>
               <Typography variant="h5" component="h4" className={classes.titleBold}>
-                <i class="fas fa-user-plus"></i> {user.name}
+                <i className="fas fa-user-plus"></i> {user.name}
               </Typography>
             </div>
             <BlockUi tag="div" blocking={this.state.blocking} message="" loader={<div/>}>
@@ -512,8 +496,6 @@ class ManageUserGroups extends Component {
   addNewGroup () {
     // const openModal = window.innerWidth < 750
     this.setState({ addUser: true, selected: false, open: true, title: 'New User Group' }, function(){
-      console.log(',,,', this.state);
-
     })
     
   }
@@ -575,8 +557,8 @@ class ManageUserGroups extends Component {
 
 	render() {
 		const { classes } = this.props
-		const { addUser, users, anchorEl2 } = this.state
-    let parsedData = formatData(this.state.users)
+    const { users, anchorEl2 } = this.state
+    // let parsedData = formatData(this.state.users)
     
 		return (
 			<div>

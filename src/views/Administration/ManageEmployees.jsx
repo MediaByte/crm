@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 //material ui components
 import { NavLink } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Grid from '@material-ui/core/Grid';
@@ -17,20 +16,18 @@ import GridContainer from "components/Grid/GridContainer.jsx";
 import CustomInput from "components/CustomInput/CustomInput.jsx";
 import NewProfile from "components/UserProfile/NewProfile.jsx";
 import EmployeeCard from 'components/UserProfile/EmployeeCard'
-import Card from "components/Card/Card.jsx";
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
 //gundb
 import Gun from 'gun/gun';
 
-const formatData = data => Object.keys(data)
-	.map(key => ({ key, ...data[key]  }))
-	.filter(m => m.key !== '_')
+// const formatData = data => Object.keys(data)
+// 	.map(key => ({ key, ...data[key]  }))
+// 	.filter(m => m.key !== '_')
 
 const styles = theme => ({
 	input: {
@@ -147,7 +144,7 @@ class ManageEmployees extends Component {
 			{ name: "Osny Neto", role: "Administrator"},
 			{ name: "Abdul Aziz", role: "Administrator"},
 		]
-		let parsedData = formatData(this.state.users)
+		// let parsedData = formatData(this.state.users)
 
 		const leftMenu = (
 			<div style={{width: "100%"}}>

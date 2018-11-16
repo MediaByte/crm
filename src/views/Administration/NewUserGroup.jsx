@@ -112,7 +112,7 @@ class NewUserGroup extends Component {
 								label="Status"
 								fullWidth
 								className={classes.textField}
-								// value={user.currency}
+								value={user.status}
 								// onChange={this.handleChange('currency')}
 								margin="normal"
 							>
@@ -133,7 +133,7 @@ class NewUserGroup extends Component {
 						<FormControlLabel
 							control={
 								<Checkbox
-									checked={user && user.checkedA || false}
+									checked={(user && user.checkedA) || false}
 									onChange={handleChangeCheckbox('checkedA')}
 									value="checkedA"
 									classes={{
@@ -147,7 +147,7 @@ class NewUserGroup extends Component {
 						<FormControlLabel
 							control={
 								<Checkbox
-									checked={user && user.checkedB || false}
+									checked={(user && user.checkedB) || false}
 									onChange={handleChangeCheckbox('checkedB')}
 									value="checkedB"
 									classes={{
@@ -161,7 +161,7 @@ class NewUserGroup extends Component {
 						<FormControlLabel
 							control={
 								<Checkbox
-									checked={user && user.checkedC || false}
+									checked={(user && user.checkedC) || false}
 									onChange={handleChangeCheckbox('checkedC')}
 									value="checkedC"
 									classes={{
@@ -175,7 +175,7 @@ class NewUserGroup extends Component {
 						<FormControlLabel
 							control={
 								<Checkbox
-									checked={user && user.checkedD || false}
+									checked={(user && user.checkedD) || false}
 									onChange={handleChangeCheckbox('checkedD')}
 									value="checkedD"
 									classes={{
@@ -193,7 +193,7 @@ class NewUserGroup extends Component {
 						<FormControlLabel
 							control={
 								<Checkbox
-									checked={user && user.checkedE || false}
+									checked={(user && user.checkedE) || false}
 									onChange={handleChangeCheckbox('checkedE')}
 									value="checkedE"
 									classes={{
@@ -207,7 +207,7 @@ class NewUserGroup extends Component {
 						<FormControlLabel
 							control={
 								<Checkbox
-									checked={user && user.checkedF || false}
+									checked={(user && user.checkedF) || false}
 									onChange={handleChangeCheckbox('checkedF')}
 									value="checkedF"
 									classes={{
@@ -221,7 +221,7 @@ class NewUserGroup extends Component {
 						<FormControlLabel
 							control={
 								<Checkbox
-									checked={user && user.checkedG || false}
+									checked={(user && user.checkedG) || false}
 									onChange={handleChangeCheckbox('checkedG')}
 									value="checkedG"
 									classes={{
@@ -235,7 +235,7 @@ class NewUserGroup extends Component {
 						<FormControlLabel
 							control={
 								<Checkbox
-									checked={user && user.checkedH || false}
+									checked={(user && user.checkedH) || false}
 									onChange={handleChangeCheckbox('checkedH')}
 									value="checkedH"
 									classes={{
@@ -253,7 +253,7 @@ class NewUserGroup extends Component {
 						<FormControlLabel
 							control={
 								<Checkbox
-									checked={user && user.checkedE || false}
+									checked={(user && user.checkedE) || false}
 									onChange={handleChangeCheckbox('checkedE')}
 									value="checkedE"
 									classes={{
@@ -267,7 +267,7 @@ class NewUserGroup extends Component {
 						<FormControlLabel
 							control={
 								<Checkbox
-									checked={user && user.checkedF || false}
+									checked={(user && user.checkedF) || false}
 									onChange={handleChangeCheckbox('checkedF')}
 									value="checkedF"
 									classes={{
@@ -281,7 +281,7 @@ class NewUserGroup extends Component {
 						<FormControlLabel
 							control={
 								<Checkbox
-									checked={user && user.checkedG || false}
+									checked={(user && user.checkedG) || false}
 									onChange={handleChangeCheckbox('checkedG')}
 									value="checkedG"
 									classes={{
@@ -295,7 +295,7 @@ class NewUserGroup extends Component {
 						<FormControlLabel
 							control={
 								<Checkbox
-									checked={user && user.checkedH || false}
+									checked={(user && user.checkedH) || false}
 									onChange={handleChangeCheckbox('checkedH')}
 									value="checkedH"
 									classes={{
@@ -313,7 +313,7 @@ class NewUserGroup extends Component {
 						<FormControlLabel
 							control={
 								<Checkbox
-									checked={user && user.checkedE || false}
+									checked={(user && user.checkedE) || false}
 									onChange={handleChangeCheckbox('checkedE')}
 									value="checkedE"
 									classes={{
@@ -327,7 +327,7 @@ class NewUserGroup extends Component {
 						<FormControlLabel
 							control={
 								<Checkbox
-									checked={user && user.checkedF || false}
+									checked={(user && user.checkedF) || false}
 									onChange={handleChangeCheckbox('checkedF')}
 									value="checkedF"
 									classes={{
@@ -341,7 +341,7 @@ class NewUserGroup extends Component {
 						<FormControlLabel
 							control={
 								<Checkbox
-									checked={user && user.checkedG || false}
+									checked={(user && user.checkedG) || false}
 									onChange={handleChangeCheckbox('checkedG')}
 									value="checkedG"
 									classes={{
@@ -355,7 +355,7 @@ class NewUserGroup extends Component {
 						<FormControlLabel
 							control={
 								<Checkbox
-									checked={user && user.checkedH || false}
+									checked={(user && user.checkedH) || false}
 									onChange={handleChangeCheckbox('checkedH')}
 									value="checkedH"
 									classes={{

@@ -1,10 +1,10 @@
 
-import {
-  infoColor,
-  dangerColor,
-  successColor,
-  defaultFont
-} from "assets/jss/material-kit-pro-react.jsx";
+// import {
+//   infoColor,
+//   dangerColor,
+//   successColor,
+//   defaultFont
+// } from "assets/jss/material-kit-pro-react.jsx";
 
 const customInputStyle = {
   // disabled: {
