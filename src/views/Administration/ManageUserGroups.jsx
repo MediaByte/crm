@@ -69,6 +69,9 @@ const formatData = data => Object.keys(data)
 	.filter(m => m.key !== '_')
 
 const styles = theme => ({
+  overlay: {
+    background: 'rgba(255,255,255,0.5)',
+  },
   iconsRight: {
     float: 'right',
   },
@@ -478,299 +481,14 @@ class ManageUserGroups extends Component {
               <Typography variant="h5" component="h4" className={classes.titleBold}>
                 <i class="fas fa-user-plus"></i> {user.name}
               </Typography>
-              <br/>
-              <BlockUi tag="div" blocking={this.state.blocking} message="" loader={<div/>}>
-              <Grid container spacing={8} alignItems="flex-end" className={classes.inputGrid}>
-                <Grid item xs={2} sm={1}>
-                  <Description />
-                </Grid>
-                <Grid item xs={10} sm={11}>
-                  <TextField
-                    id="standard-name"
-                    label="Description"
-                    fullWidth
-                    className={classes.textField}
-                    value="Users will have administrator level permissions"
-                    // onChange={this.handleChange('name')}
-                  />
-                </Grid>
-              </Grid>
-              <Grid container spacing={8} alignItems="flex-end" className={classes.inputGrid}>
-                <Grid item xs={2} sm={1}>
-                  <Brightness1 />
-                </Grid>
-                <Grid item xs={10} sm={11}>
-                  <TextField
-                    id="standard-select-currency"
-                    select
-                    label="Status"
-                    fullWidth
-                    className={classes.textField}
-                    // value={this.state.currency}
-                    // onChange={this.handleChange('currency')}
-                    margin="normal"
-                  >
-                    <MenuItem key={0} value={0}>
-                      Active
-                    </MenuItem>
-                  </TextField>
-                  </Grid>
-                </Grid>
-              </BlockUi>
             </div>
+            <BlockUi tag="div" blocking={this.state.blocking} message="" loader={<div/>}>
+              <div  className={classes.demo}>
+                <NewUserGroup user={this.state} handleChangeCheckbox={this.handleChangeCheckbox} />
+              </div>
+            </BlockUi>
           </Paper>
           <br/>
-          <br/>
-
-
-
-          <Typography variant="title" noWrap className={classes.title}>Permissions</Typography>
-          <Paper className={classes.root} elevation={1}>
-            <div className={classes.paddingFull}>
-              <BlockUi tag="div" blocking={this.state.blocking} message="" loader={<div/>}>
-              <Typography variant="title" noWrap className={classes.subtitle}>Agency Details</Typography>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={this.state.checkedA}
-                    onChange={this.handleChangeCheckbox('checkedA')}
-                    value="checkedA"
-                    classes={{
-                      root: classes.root2,
-                      checked: classes.checked,
-                    }}
-                  />
-                }
-                label="View"
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={this.state.checkedB}
-                    onChange={this.handleChangeCheckbox('checkedB')}
-                    value="checkedB"
-                    classes={{
-                      root: classes.root2,
-                      checked: classes.checked,
-                    }}
-                  />
-                }
-                label="Create"
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={this.state.checkedC}
-                    onChange={this.handleChangeCheckbox('checkedC')}
-                    value="checkedC"
-                    classes={{
-                      root: classes.root2,
-                      checked: classes.checked,
-                    }}
-                  />
-                }
-                label="Edit"
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={this.state.checkedD}
-                    onChange={this.handleChangeCheckbox('checkedD')}
-                    value="checkedD"
-                    classes={{
-                      root: classes.root2,
-                      checked: classes.checked,
-                    }}
-                  />
-                }
-                label="Delete"
-              />
-              <br />
-              <Divider/>
-              <br />
-              <Typography variant="title" noWrap className={classes.subtitle}>Employees</Typography>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={this.state.checkedE}
-                    onChange={this.handleChangeCheckbox('checkedE')}
-                    value="checkedE"
-                    classes={{
-                      root: classes.root2,
-                      checked: classes.checked,
-                    }}
-                  />
-                }
-                label="View"
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={this.state.checkedF}
-                    onChange={this.handleChangeCheckbox('checkedF')}
-                    value="checkedF"
-                    classes={{
-                      root: classes.root2,
-                      checked: classes.checked,
-                    }}
-                  />
-                }
-                label="Create"
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={this.state.checkedG}
-                    onChange={this.handleChangeCheckbox('checkedG')}
-                    value="checkedG"
-                    classes={{
-                      root: classes.root2,
-                      checked: classes.checked,
-                    }}
-                  />
-                }
-                label="Edit"
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={this.state.checkedH}
-                    onChange={this.handleChangeCheckbox('checkedH')}
-                    value="checkedH"
-                    classes={{
-                      root: classes.root2,
-                      checked: classes.checked,
-                    }}
-                  />
-                }
-                label="Delete"
-              />
-              <br />
-              <Divider/>
-              <br />
-              <Typography variant="title" noWrap className={classes.subtitle}>Filters</Typography>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={this.state.checkedE}
-                    onChange={this.handleChangeCheckbox('checkedE')}
-                    value="checkedE"
-                    classes={{
-                      root: classes.root2,
-                      checked: classes.checked,
-                    }}
-                  />
-                }
-                label="View"
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={this.state.checkedF}
-                    onChange={this.handleChangeCheckbox('checkedF')}
-                    value="checkedF"
-                    classes={{
-                      root: classes.root2,
-                      checked: classes.checked,
-                    }}
-                  />
-                }
-                label="Create"
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={this.state.checkedG}
-                    onChange={this.handleChangeCheckbox('checkedG')}
-                    value="checkedG"
-                    classes={{
-                      root: classes.root2,
-                      checked: classes.checked,
-                    }}
-                  />
-                }
-                label="Edit"
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={this.state.checkedH}
-                    onChange={this.handleChangeCheckbox('checkedH')}
-                    value="checkedH"
-                    classes={{
-                      root: classes.root2,
-                      checked: classes.checked,
-                    }}
-                  />
-                }
-                label="Delete"
-              />
-              <br />
-              <Divider/>
-              <br />
-              <Typography variant="title" noWrap className={classes.subtitle}>User Groups</Typography>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={this.state.checkedE}
-                    onChange={this.handleChangeCheckbox('checkedE')}
-                    value="checkedE"
-                    classes={{
-                      root: classes.root2,
-                      checked: classes.checked,
-                    }}
-                  />
-                }
-                label="View"
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={this.state.checkedF}
-                    onChange={this.handleChangeCheckbox('checkedF')}
-                    value="checkedF"
-                    classes={{
-                      root: classes.root2,
-                      checked: classes.checked,
-                    }}
-                  />
-                }
-                label="Create"
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={this.state.checkedG}
-                    onChange={this.handleChangeCheckbox('checkedG')}
-                    value="checkedG"
-                    classes={{
-                      root: classes.root2,
-                      checked: classes.checked,
-                    }}
-                  />
-                }
-                label="Edit"
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={this.state.checkedH}
-                    onChange={this.handleChangeCheckbox('checkedH')}
-                    value="checkedH"
-                    classes={{
-                      root: classes.root2,
-                      checked: classes.checked,
-                    }}
-                  />
-                }
-                label="Delete"
-              />
-              <br />
-              <br />
-              </BlockUi>
-            </div>
-          </Paper>
-
         </div>
       )
     } else {
@@ -792,8 +510,12 @@ class ManageUserGroups extends Component {
   }
 
   addNewGroup () {
-    const openModal = window.innerWidth < 750
-    this.setState({ addUser: true, selected: false, open: openModal, title: 'New User Group' })
+    // const openModal = window.innerWidth < 750
+    this.setState({ addUser: true, selected: false, open: true, title: 'New User Group' }, function(){
+      console.log(',,,', this.state);
+
+    })
+    
   }
 
   showSearch () {
@@ -844,8 +566,8 @@ class ManageUserGroups extends Component {
 
   renderContentWrapper() {
     // this.openInModal();
-    if (this.state.addUser) {
-      return <NewUserGroup />
+    if (this.state.addUser && this.state.open) {
+      return <NewUserGroup user={this.state} handleChangeCheckbox={this.handleChangeCheckbox} />
     } else {
       return this.renderContent()
     }
@@ -951,31 +673,29 @@ class ManageUserGroups extends Component {
 						</Grid>
 						<Grid item xs={12} sm={7} md={8} lg={9} className={classes.demo}>
               <div className={classes.demoContent}>
-                <Hidden smUp>
-                  <Dialog
-                    fullScreen
-                    open={this.state.open}
-                    onClose={this.handleClose}
-                    TransitionComponent={Transition}
-                    scroll='body'
-                  >
-                    <div className={classes.appBar}>
-                      <AppBar position="static" color="default">
-                        <Toolbar className={classes.noShadow}>
-                          <IconButton className={classes.menuButton} color="default" onClick={this.handleClose} aria-label="Close">
-                            <ArrowBack />
-                          </IconButton>
-                          {/* <Typography variant="subtitle1" color="inherit" className={classes.newTitle}>
-                            {this.state.title}
-                          </Typography> */}
-                        </Toolbar>
-                      </AppBar>
-                    </div>
-                    <div className={classes.demoContent}>
-                      {this.renderContentWrapper()}
-                    </div>
-                  </Dialog>
-                </Hidden>
+                <Dialog
+                  fullScreen={window.innerWidth < 750}
+                  open={this.state.open}
+                  onClose={this.handleClose}
+                  TransitionComponent={Transition}
+                  scroll='body'
+                >
+                  <div className={classes.appBar}>
+                    <AppBar position="static" color="default">
+                      <Toolbar className={classes.noShadow}>
+                        <IconButton className={classes.menuButton} color="default" onClick={this.handleClose} aria-label="Close">
+                          <ArrowBack />
+                        </IconButton>
+                        {/* <Typography variant="subtitle1" color="inherit" className={classes.newTitle}>
+                          {this.state.title}
+                        </Typography> */}
+                      </Toolbar>
+                    </AppBar>
+                  </div>
+                  <div className={classes.demoContent}>
+                    {this.renderContentWrapper()}
+                  </div>
+                </Dialog>
                 {this.renderContentWrapper()}
               </div>
 						</Grid>
