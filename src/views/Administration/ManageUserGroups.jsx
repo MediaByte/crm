@@ -25,7 +25,7 @@ import FilterList from '@material-ui/icons/FilterList';
 import Search from '@material-ui/icons/Search';
 import SwapVert from '@material-ui/icons/SwapVert';
 //project components
-import NewUserGroup from './NewUserGroup';
+import UserGroupForm from './UserGroupForm';
 import PageColumn from 'views/Page/PageColumn.jsx';
 // import GridItem from "components/Grid/GridItem.jsx";
 // import GridContainer from "components/Grid/GridContainer.jsx";
@@ -468,7 +468,7 @@ class ManageUserGroups extends Component {
             </div>
             <BlockUi tag="div" blocking={this.state.blocking} message="" loader={<div/>}>
               <div  className={classes.demo}>
-                <NewUserGroup user={this.state} handleChangeCheckbox={this.handleChangeCheckbox} />
+                <UserGroupForm user={this.state} handleChangeCheckbox={this.handleChangeCheckbox} />
               </div>
             </BlockUi>
           </Paper>
@@ -549,7 +549,7 @@ class ManageUserGroups extends Component {
   renderContentWrapper() {
     // this.openInModal();
     if (this.state.addUser && this.state.open) {
-      return <NewUserGroup user={this.state} handleChangeCheckbox={this.handleChangeCheckbox} />
+      return <UserGroupForm user={this.state} handleChangeCheckbox={this.handleChangeCheckbox} />
     } else {
       return this.renderContent()
     }
@@ -668,9 +668,12 @@ class ManageUserGroups extends Component {
                         <IconButton className={classes.menuButton} color="default" onClick={this.handleClose} aria-label="Close">
                           <ArrowBack />
                         </IconButton>
-                        {/* <Typography variant="subtitle1" color="inherit" className={classes.newTitle}>
-                          {this.state.title}
-                        </Typography> */}
+                        <Typography variant="subtitle1" color="inherit" className={classes.newTitle}>
+                          {!this.state.selected ? this.state.title : ''}
+                        </Typography>
+                        <Button color="inherit" style={{position: 'absolute', right: 0}}>
+                          save
+                        </Button>
                       </Toolbar>
                     </AppBar>
                   </div>

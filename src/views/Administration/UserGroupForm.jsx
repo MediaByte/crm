@@ -10,6 +10,7 @@ import {
   FormControlLabel,
   Checkbox,
   Divider,
+  Button,
   TextField } from '@material-ui/core';
 //material ui components
 import { withStyles } from '@material-ui/core/styles';
@@ -75,7 +76,7 @@ const styles = theme => ({
     }
   },
 })
-class NewUserGroup extends Component {
+class UserGroupForm extends Component {
 	render() {
 		const { classes, user, handleChangeCheckbox } = this.props
 		
@@ -367,13 +368,22 @@ class NewUserGroup extends Component {
 							label="Delete"
 						/>
 						<br />
+						{this.props.user && this.props.user.addUser && (
+						<div>
+							<br />
+							<br />
+							<Button variant="contained" color="primary">
+								Save
+							</Button>
+						</div>
+					)}
 					</div>
 				</Paper>
 			</div>
 		)
 	}
 }
-NewUserGroup.propTypes = {
+UserGroupForm.propTypes = {
   classes: PropTypes.object.isRequired,
 };
-export default withStyles(styles)(NewUserGroup);	
+export default withStyles(styles)(UserGroupForm);	
