@@ -496,7 +496,7 @@ class ManageUserGroups extends Component {
 
   addNewGroup () {
     // const openModal = window.innerWidth < 750
-    this.setState({ addUser: true, selected: false, open: true, textAlign: "center", title: 'New User Group' }, function(){
+    this.setState({ addUser: true, selected: false, open: true, title: 'New User Group' }, function(){
     })
     
   }
