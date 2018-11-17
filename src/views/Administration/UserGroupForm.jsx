@@ -128,7 +128,7 @@ class UserGroupForm extends Component {
 				</Paper>
 				<br />
 				<br />
-				<Typography variant="title" noWrap className={classes.title}>Permissions</Typography>
+				<Typography noWrap className={classes.title}>Permissions</Typography>
 				<Paper className={classes.root} elevation={1}>
 					<div className={classes.paddingFull}>
 						<Typography variant="title" noWrap className={classes.subtitle}>Agency Details</Typography>
