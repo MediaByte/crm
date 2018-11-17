@@ -57,7 +57,7 @@ const styles = theme => ({
   },
   title: {
     marginBottom: 10,
-    color: "#fff",
+    color: "#aaa",
     fontSize: '0.85rem',
     borderBottom: "1px solid #ddd",
     marginLeft: 15,
