@@ -63,6 +63,18 @@ class PrimaryNav extends Component {
       '/subscribe'
     ]
   };
+componentWillReceiveProps(newProps) {
+    const {pathname} = newProps.location;
+    const {pathMap} = this.state;
+
+    const value = pathMap.indexOf(pathname);
+
+    if (value > -1) {
+      this.setState({
+        value
+      });
+    }
+  }
 
 class NavigationColumn extends React.Component {
   state = {
