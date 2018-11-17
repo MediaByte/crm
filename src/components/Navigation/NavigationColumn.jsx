@@ -52,6 +52,18 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
+class PrimaryNav extends Component {
+  state = {
+    value: 0,
+    pathMap: [
+      '/pinecone/dashboard/test@gmail.com',
+      '/members',
+      '/shop',
+      '/about',
+      '/subscribe'
+    ]
+  };
+
 class NavigationColumn extends React.Component {
   state = {
     disableUnderline: true,
@@ -72,7 +84,7 @@ class NavigationColumn extends React.Component {
     this.setState(state => ({ mobileOpen: !state.mobileOpen }));
   };
 
-  handleChange = (event, value) => {
+/*  handleChange = (event, value) => {
     console.log('handleChange', value);
     let page;
     switch (value) {
@@ -90,11 +102,18 @@ class NavigationColumn extends React.Component {
     
     this.setState({ value });
     return <Redirect to={page} />
+  };*/
+
+handleChange = (event, value) => {
+    this.setState({ value });
   };
+
 
   render() {
     const { classes, children, component } = this.props;
     const { value } = this.state;
+    const {value, pathMap} = this.state;
+
 
     const renderMenu = (
       <div>
@@ -250,9 +269,8 @@ class NavigationColumn extends React.Component {
             showLabels
             className={classes.bottom}
           >
-            <BottomNavigationAction to='/' label="Dashboard" icon={<Dashboard />} />
-            <BottomNavigationAction component={(props) => <button><Link to={`/admin/test@gmail.com`} {...props}/></button>} label="Calendar" icon={<Event/>} />
-            <BottomNavigationAction label="Search" icon={<SearchIcon />} />
+            <BottomNavigationAction label="Dashboard" icon={<Dashboard />} component={Link} to={pathMap[0]} />
+            <BottomNavigationAction label="Calendar" icon={<Calendar/>} />
             <BottomNavigationAction label="Notifications" icon={<NotificationsCenter />} />
           </BottomNavigation>
         </div>
