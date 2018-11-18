@@ -22,7 +22,7 @@ import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 
 //material ui icons
 import SearchIcon from '@material-ui/icons/Search';
-import Calendar from '@material-ui/icons/Calendar';
+import calendar_today from '@material-ui/icons/calendar_today';
 import MenuIcon from '@material-ui/icons/Menu';
 import Laptop from '@material-ui/icons/Laptop';
 import People from '@material-ui/icons/People';
@@ -252,7 +252,7 @@ class Navigation extends React.Component {
             className={classes.bottom}
           >
             <BottomNavigationAction label="Dashboard" icon={<Dashboard />} />
-            <BottomNavigationAction label="Calendar" icon={<Calendar/>} />
+            <BottomNavigationAction label="Calendar" icon={<calendar_today/>} />
             <BottomNavigationAction label="Notifications" icon={<NotificationsCenter />} />
           </BottomNavigation>
         </div>
