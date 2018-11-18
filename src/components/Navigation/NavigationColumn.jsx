@@ -61,7 +61,7 @@ class NavigationColumn extends React.Component {
     mobileOpen: false
   };
 
-class PrimaryNav extends Component {
+class PrimaryNav extends React.Component {
   state = {
     value: 0,
     pathMap: [
