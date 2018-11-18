@@ -277,12 +277,12 @@ handleChange = (event, value) => {
               </div>
             </main>
           </div>
-          <BottomNavigation
+           <BottomNavigation
             value={value}
             onChange={this.handleChange}
             showLabels
-            className={classes.bottom}
-          >
+            className="nav primary"
+           >
             <BottomNavigationAction label="Dashboard" icon={<Dashboard />} component={Link} to={pathMap[0]} />
             <BottomNavigationAction label="Calendar" icon={<Calendar/>} />
             <BottomNavigationAction label="Notifications" icon={<NotificationsCenter />} />
