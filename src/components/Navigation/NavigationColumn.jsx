@@ -63,7 +63,7 @@ class NavigationColumn extends React.Component {
 
   componentDidMount() {
     // const { closed } = this.props;
-  };
+  }
   handleDrawerOpen = () => {
     this.props.toggleDrawer(true);
   };
