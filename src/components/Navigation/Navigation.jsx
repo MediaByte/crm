@@ -22,7 +22,7 @@ import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 
 //material ui icons
 import SearchIcon from '@material-ui/icons/Search';
-import Calendar from '@material-ui/icons/Search';
+import Calendar from '@material-ui/icons/Calendar';
 import MenuIcon from '@material-ui/icons/Menu';
 import Laptop from '@material-ui/icons/Laptop';
 import People from '@material-ui/icons/People';
