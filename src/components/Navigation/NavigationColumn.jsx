@@ -59,11 +59,11 @@ class NavigationColumn extends React.Component {
     disableUnderline: true,
     value: 0,
     mobileOpen: false
-  },
+  };
 
   componentDidMount() {
     // const { closed } = this.props;
-  }
+  };
   handleDrawerOpen = () => {
     this.props.toggleDrawer(true);
   };
