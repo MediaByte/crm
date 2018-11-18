@@ -25,7 +25,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import MenuIcon from '@material-ui/icons/Menu';
 import Laptop from '@material-ui/icons/Laptop';
 import People from '@material-ui/icons/People';
-import Event from '@material-ui/icons/Event';
+import Event from '@material-ui/icons/EventOutlined';
 import CalendarTodayOutlined from '@material-ui/icons/CalendarTodayOutlined';
 import AccountBalance from '@material-ui/icons/AccountBalanceOutlined';
 import CreditCard from '@material-ui/icons/CreditCard';
