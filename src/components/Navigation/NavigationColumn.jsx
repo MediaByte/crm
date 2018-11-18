@@ -259,7 +259,7 @@ handleChange = (event, value) => {
             showLabels
             className="nav primary"
            >
-            <BottomNavigationAction label="Dashboard" icon={<Dashboard />} component={Link} to={pathMap[0]} />
+            <BottomNavigationAction label="Dashboard" icon={<Dashboard />}  />
             <BottomNavigationAction label="Calendar" icon={<Calendar/>} />
             <BottomNavigationAction label="Notifications" icon={<NotificationsCenter />} />
           </BottomNavigation>
