@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 //npm package for concatenating classes
 import classNames from 'classnames';
 //react router
-import { NavLink, Link, Redirect } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 //Material-ui components
 import IconButton from '@material-ui/core/IconButton';
 import Divider from '@material-ui/core/Divider';
@@ -52,7 +52,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     toggleDrawer: (event) => dispatch(drawerState(event)),
   }
-};
+}
 
 class NavigationColumn extends React.Component {
   state = {
@@ -63,7 +63,7 @@ class NavigationColumn extends React.Component {
 
   componentDidMount() {
     // const { closed } = this.props;
-  };
+  }
   handleDrawerOpen = () => {
     this.props.toggleDrawer(true);
   };
@@ -102,7 +102,7 @@ handleChange = (event, value) => {
 
   render() {
     const { classes, children, component } = this.props;
-    const {value, pathMap} = this.state;
+    const {value} = this.state;
 
 
     const renderMenu = (
@@ -257,7 +257,7 @@ handleChange = (event, value) => {
             value={value}
             onChange={this.handleChange}
             showLabels
-            className="nav primary"
+            className="{classes.bottom}"
            >
             <BottomNavigationAction label="Dashboard" icon={<Dashboard />}  />
             <BottomNavigationAction label="Calendar" icon={<Calendar/>} />
