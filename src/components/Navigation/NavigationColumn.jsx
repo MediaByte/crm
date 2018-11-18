@@ -52,14 +52,14 @@ const mapDispatchToProps = (dispatch) => {
   return {
     toggleDrawer: (event) => dispatch(drawerState(event)),
   }
-}
+};
 
 class NavigationColumn extends React.Component {
   state = {
     disableUnderline: true,
     value: 0,
     mobileOpen: false
-  }
+  };
 
 class PrimaryNav extends Component {
   state = {
@@ -71,7 +71,7 @@ class PrimaryNav extends Component {
       '/about',
       '/subscribe'
     ]
-  }
+  };
 
 componentWillReceiveProps(newProps) {
     const {pathname} = newProps.location;
@@ -84,10 +84,10 @@ componentWillReceiveProps(newProps) {
         value
       });
     }
-  }
+  };
   componentDidMount() {
     // const { closed } = this.props;
-  }
+  };
   handleDrawerOpen = () => {
     this.props.toggleDrawer(true);
   };
