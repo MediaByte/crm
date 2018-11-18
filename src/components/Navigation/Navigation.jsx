@@ -26,7 +26,7 @@ import CalendarTodayOutlined from '@material-ui/icons/CalendarTodayOutlined';
 import MenuIcon from '@material-ui/icons/Menu';
 import Laptop from '@material-ui/icons/Laptop';
 import People from '@material-ui/icons/People';
-import Event from '@material-ui/icons/Event';
+import Event from '@material-ui/icons/EventOutlined';
 import AccountBalance from '@material-ui/icons/AccountBalanceOutlined';
 import CreditCard from '@material-ui/icons/CreditCard';
 import MailOutline from '@material-ui/icons/MailOutline';
