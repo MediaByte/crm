@@ -59,7 +59,7 @@ class NavigationColumn extends React.Component {
     disableUnderline: true,
     value: 0,
     mobileOpen: false
-  }
+  },
 
 class PrimaryNav extends React.Component {
   state = {
