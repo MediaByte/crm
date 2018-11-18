@@ -71,7 +71,7 @@ class PrimaryNav extends Component {
       '/about',
       '/subscribe'
     ]
-  };
+  }
 
 componentWillReceiveProps(newProps) {
     const {pathname} = newProps.location;
