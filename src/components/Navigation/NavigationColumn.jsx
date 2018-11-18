@@ -40,6 +40,8 @@ import navStyles from 'assets/jss/material-kit-pro-react/components/navStyleColu
 //State
 import { connect } from 'react-redux';
 import { drawerState } from 'state/App/actions.js';
+
+
 const mapStateToProps = (state) => {
   console.log(state)
   return {
@@ -63,6 +65,14 @@ class PrimaryNav extends Component {
       '/subscribe'
     ]
   };
+
+class NavigationColumn extends React.Component {
+  state = {
+    disableUnderline: true,
+    value: 0,
+    mobileOpen: false
+  };
+
 componentWillReceiveProps(newProps) {
     const {pathname} = newProps.location;
     const {pathMap} = this.state;
@@ -75,13 +85,6 @@ componentWillReceiveProps(newProps) {
       });
     }
   }
-
-class NavigationColumn extends React.Component {
-  state = {
-    disableUnderline: true,
-    value: 0,
-    mobileOpen: false
-  };
   componentDidMount() {
     // const { closed } = this.props;
   }
@@ -123,7 +126,6 @@ handleChange = (event, value) => {
 
   render() {
     const { classes, children, component } = this.props;
-    const { value } = this.state;
     const {value, pathMap} = this.state;
 
 
