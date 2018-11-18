@@ -26,7 +26,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Laptop from '@material-ui/icons/Laptop';
 import People from '@material-ui/icons/People';
 import Event from '@material-ui/icons/Event';
-import calendar_today from '@material-ui/icons/calendar_today';
+import CalendarTodayOutlined from '@material-ui/icons/CalendarTodayOutlined';
 import AccountBalance from '@material-ui/icons/AccountBalance';
 import CreditCard from '@material-ui/icons/CreditCard';
 import MailOutline from '@material-ui/icons/MailOutline';
@@ -261,7 +261,7 @@ handleChange = (event, value) => {
             className="{classes.bottom}"
            >
             <BottomNavigationAction label="Dashboard" icon={<Dashboard />}  />
-            <BottomNavigationAction label="Calendar" icon={<calendar_today/>} />
+            <BottomNavigationAction label="Calendar" icon={<CalendarTodayOutlined/>} />
             <BottomNavigationAction label="Notifications" icon={<NotificationsCenter />} />
           </BottomNavigation>
         </div>
