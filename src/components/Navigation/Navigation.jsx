@@ -22,6 +22,7 @@ import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 
 //material ui icons
 import SearchIcon from '@material-ui/icons/Search';
+import Calendar from '@material-ui/icons/Search';
 import MenuIcon from '@material-ui/icons/Menu';
 import Laptop from '@material-ui/icons/Laptop';
 import People from '@material-ui/icons/People';
@@ -250,9 +251,8 @@ class Navigation extends React.Component {
             showLabels
             className={classes.bottom}
           >
-            <BottomNavigationAction to='/' label="Dashboard" icon={<Dashboard />} />
-            <BottomNavigationAction component={(props) => <button><Link to={`/admin/test@gmail.com`} {...props}/></button>} label="Calendar" icon={<Event/>} />
-            <BottomNavigationAction label="Search" icon={<SearchIcon />} />
+            <BottomNavigationAction label="Dashboard" icon={<Dashboard />} />
+            <BottomNavigationAction label="Calendar" icon={<Calendar/>} />
             <BottomNavigationAction label="Notifications" icon={<NotificationsCenter />} />
           </BottomNavigation>
         </div>
