@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 //npm package for concatenating classes
 import classNames from 'classnames';
 //react router
-import { Link, Redirect } from 'react-router-dom'
+import { NavLink,Link, Redirect } from 'react-router-dom'
 //Material-ui components
 import IconButton from '@material-ui/core/IconButton';
 import Divider from '@material-ui/core/Divider';
@@ -15,7 +15,7 @@ import Drawer from '@material-ui/core/Drawer';
 import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemIcon from '@mNavLink,aterial-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
@@ -26,6 +26,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Laptop from '@material-ui/icons/Laptop';
 import People from '@material-ui/icons/People';
 import Event from '@material-ui/icons/Event';
+import Calendar from '@material-ui/icons/Event';
 import AccountBalance from '@material-ui/icons/AccountBalance';
 import CreditCard from '@material-ui/icons/CreditCard';
 import MailOutline from '@material-ui/icons/MailOutline';
