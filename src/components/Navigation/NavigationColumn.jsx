@@ -54,6 +54,13 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
+class NavigationColumn extends React.Component {
+  state = {
+    disableUnderline: true,
+    value: 0,
+    mobileOpen: false
+  }
+
 class PrimaryNav extends Component {
   state = {
     value: 0,
@@ -64,13 +71,6 @@ class PrimaryNav extends Component {
       '/about',
       '/subscribe'
     ]
-  };
-
-class NavigationColumn extends React.Component {
-  state = {
-    disableUnderline: true,
-    value: 0,
-    mobileOpen: false
   };
 
 componentWillReceiveProps(newProps) {
