@@ -61,30 +61,6 @@ class NavigationColumn extends React.Component {
     mobileOpen: false
   },
 
-class PrimaryNav extends React.Component {
-  state = {
-    value: 0,
-    pathMap: [
-      '/pinecone/dashboard/test@gmail.com',
-      '/members',
-      '/shop',
-      '/about',
-      '/subscribe'
-    ]
-  };
-
-componentWillReceiveProps(newProps) {
-    const {pathname} = newProps.location;
-    const {pathMap} = this.state;
-
-    const value = pathMap.indexOf(pathname);
-
-    if (value > -1) {
-      this.setState({
-        value
-      });
-    }
-  };
   componentDidMount() {
     // const { closed } = this.props;
   };
@@ -99,7 +75,7 @@ componentWillReceiveProps(newProps) {
     this.setState(state => ({ mobileOpen: !state.mobileOpen }));
   };
 
-/*  handleChange = (event, value) => {
+  handleChange = (event, value) => {
     console.log('handleChange', value);
     let page;
     switch (value) {
@@ -117,7 +93,7 @@ componentWillReceiveProps(newProps) {
     
     this.setState({ value });
     return <Redirect to={page} />
-  };*/
+  };
 
 handleChange = (event, value) => {
     this.setState({ value });
