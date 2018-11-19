@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 //project components
 import NavigationColumn from 'components/Navigation/NavigationColumn.jsx';
 //styles
-import navStyles from 'assets/jss/material-kit-pro-react/components/navStyleColumn.js';
+import navStyles from "components/Navigation/navStyleColumn.js";
 class PageColumn extends React.Component {
 	render() {
 		const { children, classes } = this.props
