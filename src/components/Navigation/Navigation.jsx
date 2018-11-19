@@ -21,7 +21,6 @@ import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 
 //material ui icons
-import SearchIcon from '@material-ui/icons/Search';
 import CalendarTodayOutlined from '@material-ui/icons/CalendarTodayOutlined';
 import MenuIcon from '@material-ui/icons/Menu';
 import Laptop from '@material-ui/icons/Laptop';
@@ -40,11 +39,11 @@ import navStyles from "components/Navigation/navStyle.js";
 
 //State
 import { connect } from 'react-redux';
-import { drawerState } from 'state/App/actions.js';
+import { drawerState } from 'state/userGroups/actions.js';
 const mapStateToProps = (state) => {
   console.log(state)
   return {
-    open: state.sideBar.open
+    open: state.userGroups.open
   }
 }
 const mapDispatchToProps = (dispatch) => {

@@ -21,7 +21,6 @@ import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 
 //material ui icons
-import SearchIcon from '@material-ui/icons/Search';
 import MenuIcon from '@material-ui/icons/Menu';
 import Laptop from '@material-ui/icons/Laptop';
 import People from '@material-ui/icons/People';
@@ -31,7 +30,6 @@ import AccountBalance from '@material-ui/icons/AccountBalanceOutlined';
 import CreditCard from '@material-ui/icons/CreditCard';
 import MailOutline from '@material-ui/icons/MailOutline';
 
-
 //projects components
 import NotificationsCenter from "components/NotificationCenter/NotificationsCenter.js";
 import Logo from 'assets/img/crmLogo.png'
@@ -40,13 +38,13 @@ import navStyles from "components/Navigation/navStyleColumn.js";
 
 //State
 import { connect } from 'react-redux';
-import { drawerState } from 'state/App/actions.js';
+import { drawerState } from 'state/userGroups/actions.js';
 
 
 const mapStateToProps = (state) => {
   console.log(state)
   return {
-    open: state.sideBar.open
+    open: state.userGroups.open
   }
 }
 const mapDispatchToProps = (dispatch) => {

@@ -25,14 +25,9 @@ import FilterList from '@material-ui/icons/FilterList';
 import Search from '@material-ui/icons/Search';
 import SwapVert from '@material-ui/icons/SwapVert';
 //project components
+import styles from "./styles.js";
 import UserGroupForm from './UserGroupForm';
 import PageColumn from 'views/Page/PageColumn.jsx';
-// import GridItem from "components/Grid/GridItem.jsx";
-// import GridContainer from "components/Grid/GridContainer.jsx";
-// import CustomInput from "components/CustomInput/CustomInput.jsx";
-// import NewProfile from "components/UserProfile/NewProfile.jsx";
-// import EmployeeCard from 'components/UserProfile/EmployeeCard'
-// import Card from "components/Card/Card.jsx";
 
 import {
   AppBar,
@@ -51,271 +46,30 @@ import {
   //gundb
 import Gun from 'gun/gun';
 
+//State
+import { connect } from 'react-redux';
+import { loadUser, saveUser, removeUser, duplicateUser, filter } from '../../state/userGroups/actions'
+
+
 // const formatData = data => Object.keys(data)
 // 	.map(key => ({ key, ...data[key]  }))
 // 	.filter(m => m.key !== '_')
-
-const styles = theme => ({
-  overlay: {
-    background: 'rgba(255,255,255,0.5)',
-  },
-  iconsRight: {
-    float: 'right',
-  },
-  paper: {
-    boxShadow: 'none'
-  },
-  root: {
-    borderRadius: 0,
-    boxShadow: 'none',
-    borderTop: "1px solid #ddd",	
-    borderBottom: "1px solid #ddd",
-  },
-root3: {
-    borderRadius: 0,
-    boxShadow: 'none',
-    borderBottom: "1px solid #ddd",
-  },
-	input: {
-		marginBottom: -10,
-		width: 215,
-	},
-	gridMainPanel: {
-		flexGrow: 1,
-		width: '100%',
-	},
-	mainPanel: {
-		flexGrow: 1,
-		paddingTop: 10,
-		// paddingRight: 20,
-		paddingBottom: 20,
-		paddingLeft: 20,
-		marginTop: 0,
-		marginBottom: 0,
-		width: '100%',
-		height: '100%'
-	},
-	item: {
-		border: '1px solid black',
-		padding: 10,
-		marginTop: 0,
-	},
-	itemSubContent: {
-		paddingLeft: '25px'
-	},
-	grid: {
-		display: 'flex',
-		justifyContent: 'center',
-		alignItems: 'center',
-		padding: 5,
-	},
-	userProfileGrid: {
-		display: 'flex',	
-		justifyContent: 'center',
-		alignItems: 'center',
-	},
-	gridContainer: {
-    flexGrow: 1,
-		// display: 'flex',
-    // justifyContent: 'center',
-    // alignItems: "stretch",
-    height: "100%",
-	},
-	renderUsers: {
-    	overflow: 'auto',
-
-    	height: '600px'
-	},
-	content: {
-	},
-	demo: {
-		backgroundColor: "#f6f6f6",
-		// width: "100%",
-		height: "100%",
-    overflow: 'scroll'
-  },
-	demoLeft: {
-		backgroundColor: "#fff",
-		// width: "100%",
-    height: "100%",
-    borderRight: '1px solid #ddd',
-    overflow: 'scroll'
-	},
-	demoContent: {
-    // backgroundColor: '#fff',
-    padding: 10,
-    [theme.breakpoints.up('sm')]: {
-      padding: 0,
-    },
-    [theme.breakpoints.up('md')]: {
-      padding: 0,
-    }
-	},
-	list: {
-    width: "100%",
-    borderRadius: 0,
-  },
-  noGroups: {
-    textAlign: 'center',
-    padding: "40px 0"
-  },
-  icon: {
-    fontSize: "50px",
-    display: 'block',
-    margin: "0 auto",
-    color: "#999"
-  },
-  toolbar: {
-    padding: '0 15px 15px 25px',
-    [theme.breakpoints.up('sm')]: {
-      padding: '15px 15px 15px 25px',
-    }
-  },
-  heading: {
-    fontSize: theme.typography.pxToRem(15),
-    fontWeight: theme.typography.fontWeightRegular,
-  },
-  selected: {
-    backgroundColor: "#f00"
-  },
-  subtitle: {
-    fontSize: '0.9rem',
-    fontWeight: 'bold',
-  },
-  title: {
-    marginBottom: 10,
-    color: "#aaa",
-    fontSize: '0.85rem',
-    marginLeft: 15,
-    [theme.breakpoints.up('lg')]: {
-      marginLeft: 30,
-    }
-  },
-  titleBold: {
-    fontWeight: 'bold',
-  },
-  titlePadding: {
-    marginBottom: 10,
-    paddingLeft: 25,
-  },
-  icons: {
-    cursor: 'pointer',
-    '&:hover': {
-      color: '#0dacc4',
-    },
-    [theme.breakpoints.down('md')]: {
-      padding: 5,
-    },
-    [theme.breakpoints.down('sm')]: {
-      padding: 12,
-    },
-  },
-  padding: {
-    paddingLeft: 25
-  },
-  appBar: {
-    // flexGrow: 1,
-    dropShadow: 'none'
-  },
-  menuButton: {
-    marginLeft: -12,
-    marginRight: 20,
-  },
-  grow: {
-    flexGrow: 1,
-  },
-  noShadow: {
-    dropShadow: 'none'
-  },
-  
-	Title: {
-    fontWeight: '900',
-    textAlign: 'center',
-    fontSize: '15px',
-    textTransform: 'capitalize',
-  },
-  paddingFull: {
-    padding: 15,
-    [theme.breakpoints.up('md')]: {
-      padding: '20px 30px',
-    }
-  },
-  filters: {
-    display: 'flex',
-    justifyContent: 'space-between',
-		alignItems: 'center',
-  },
-  records: {
-    textAlign: 'center',
-    paddingTop: 0,
-    [theme.breakpoints.up('sm')]: {
-      paddingTop: 10,
-    }
-  },
-  filterBox: {
-    padding: 15
-  },
-  filterButton: {
-    fontWeight: 'bold',
-    cursor: 'pointer',
-  },
-  resetButton: {
-    color: '#0dacc4',
-    marginTop: '-10px'
-  },
-  formControl: {
-    margin: theme.spacing.unit,
-    minWidth: 120,
-  },
-  root2: {
-    color: '#2db8b8',
-    '&$checked': {
-      color: '#2db8b8',
-      backgroundColor: '#fff',
-    },
-  },
-  checked: {},
-  inputGrid: {
-    flexGrow: 1,
-  },
-  textField: {
-    [theme.breakpoints.up('md')]: {
-      marginLeft: '-20px'
-    },
-    [theme.breakpoints.up('lg')]: {
-      marginLeft: '-40px'
-    }
-  }
-})
 
 function Transition(props) {
   return <Slide direction="up" {...props} />;
 }
 
-const users = [
-  { id: 1, name: "Administrator", status: "Active"},
-  { id: 2, name: "User", status: "Inactive"},
-  { id: 3, name: "User 3", status: "Inactive"},
-  { id: 4, name: "User 4", status: "Inactive"},
-  { id: 5, name: "User 5", status: "Inactive"},
-  { id: 6, name: "User 6", status: "Active"},
-  { id: 7, name: "User 7", status: "Inactive"},
-  { id: 8, name: "User 8", status: "Inactive"},
-  { id: 9, name: "User 9", status: "Inactive"},
-  { id: 10, name: "User 10", status: "Inactive"},
-  { id: 11, name: "User 11", status: "Inactive"},
-  { id: 12, name: "User 12", status: "Inactive"},
-]
-
 class ManageUserGroups extends Component {
 	constructor(props) {
-		super(props);
+    super(props);
+    console.log('props', props);
+    
 		this.gun = Gun('https://pineconeserver.herokuapp.com/gun');
     this.state = {
       addUser: false,
       open: false, 
-      users: users.filter(user => user.status === 'Active'),
-      usersCopy: users,
+      // users: props.users.filter(user => user.status === 'Active'),
+      usersCopy: props.users,
       selected: false,
       searchActive: false,
       anchorEl2: null,
@@ -335,7 +89,11 @@ class ManageUserGroups extends Component {
       checkedF: true,
       checkedG: true,
       checkedH: true,
-      status: ''
+      status: '',
+      newUser: {
+        name: '',
+        age: 22
+      }
     }
 		this.toggleViews = this.toggleViews.bind(this)
     this.showUser = this.showUser.bind(this)
@@ -384,7 +142,7 @@ class ManageUserGroups extends Component {
     
   renderUserGroups() {
 		const { classes } = this.props
-    if (!this.state.users.length) {
+    if (!this.props.users.length) {
       return (
         <div className={classes.noGroups}>
           <ErrorOutlineOutlined className={classes.icon} />
@@ -395,7 +153,7 @@ class ManageUserGroups extends Component {
       return (
         <div style={{width: "100%"}}>
             <List component="nav" className={classes.list}>
-              {this.state.users.map((item, index) => (
+              {this.props.users.map((item, index) => (
                 <ListItem selected={this.state.selected === item.id} className={classes.list} key={index} onClick={()=> this.selectUser(item.id)}>
                   <ListItemText
                     primary={item.name}
@@ -441,28 +199,30 @@ class ManageUserGroups extends Component {
   };
 
   renderContent() {
-		const { classes } = this.props
-    const { users, selected, anchorEl } = this.state
+		const { classes, users } = this.props
+    const { selected, anchorEl } = this.state
     const user = _.find(users, {id: selected})
     
-    if (selected !== false) {
+    if (selected !== false && _.find(users, { id: selected })) {
       return (
         <div>
           <Paper className={classes.root3} elevation={1}>
             <div className={classes.paddingFull}>
-              <div className={classes.iconsRight}>
-                <IconButton className={classes.icons} style={{transform: 'scale(0.8)'}}><Edit onClick={this.toggleBlocking} /></IconButton>
-                <IconButton className={classes.icons} style={{transform: 'scale(0.8)'}}><MoreHoriz onClick={this.handleClick} /></IconButton>
-                <Menu
-                  id="simple-menu"
-                  anchorEl={anchorEl}
-                  open={Boolean(anchorEl)}
-                  onClose={this.handleCloseMenu}
-                >
-                  <MenuItem onClick={this.handleCloseMenu}>Option 1</MenuItem>
-                  <MenuItem onClick={this.handleCloseMenu}>Option 2</MenuItem>
-                </Menu>
-              </div>
+              {selected && (
+                <div className={classes.iconsRight}>
+                  <IconButton className={classes.icons} style={{transform: 'scale(0.8)'}}><Edit onClick={this.toggleBlocking} /></IconButton>
+                  <IconButton className={classes.icons} style={{transform: 'scale(0.8)'}}><MoreHoriz onClick={this.handleClick} /></IconButton>
+                  <Menu
+                    id="simple-menu"
+                    anchorEl={anchorEl}
+                    open={Boolean(anchorEl)}
+                    onClose={this.handleCloseMenu}
+                  >
+                    <MenuItem onClick={() => this.props.removeUser(this.state.selected)}>Delete</MenuItem>
+                    <MenuItem onClick={() => this.props.duplicateUser(user)}>Duplicate</MenuItem>
+                  </Menu>
+                </div>
+              )}
               <Typography variant="h5" component="h4" className={classes.titleBold}>
                 <i className="fas fa-user-plus"></i> {user.name}
               </Typography>
@@ -490,7 +250,8 @@ class ManageUserGroups extends Component {
 
   selectUser (id) {
     const openModal = window.innerWidth < 750
-    const user = _.find(this.state.users, {id: id})
+    const user = _.find(this.props.users, {id: id})
+    this.props.loadUser(id)
     this.setState({selected: user.id, addUser: false, open: openModal, title: user.name})
   }
 
@@ -526,17 +287,19 @@ class ManageUserGroups extends Component {
 
   handleChange = event => {
     const value = event.target.value.toLowerCase()
-    let users
-    if (value === '' || value === 'all') {
-      users = this.state.usersCopy
-    } else {
-      users = this.state.usersCopy.filter((item) => item.status.toLowerCase() === value)
-    }
-    this.setState({ users, filterStatus: value })
+    // let users
+    // if (value === '' || value === 'all') {
+    //   users = this.state.usersCopy
+    // } else {
+    //   users = this.state.usersCopy.filter((item) => item.status.toLowerCase() === value)
+    // }
+    // this.setState({ users, filterStatus: value })
+    this.props.filter(value)
   }
 
-  resetFilter = event => {
-    this.setState({ users: this.state.usersCopy, filterStatus: 'all' })
+  resetFilter () {
+    // this.setState({ users: this.state.usersCopy, filterStatus: 'all' })
+    this.props.filter('all')
   }
 
   handleClickOpen = () => {
@@ -557,8 +320,8 @@ class ManageUserGroups extends Component {
   }
 
 	render() {
-		const { classes } = this.props
-    const { users, anchorEl2 } = this.state
+		const { classes, users } = this.props
+    const { anchorEl2 } = this.state
     // let parsedData = formatData(this.state.users)
     
 		return (
@@ -598,7 +361,7 @@ class ManageUserGroups extends Component {
                       >
                         <div className={classes.filterBox}>
                           <div style={{float: 'right'}}>
-                            <Button component="span" className={classes.resetButton} onClick={this.resetFilter}>RESET</Button>
+                            <Button component="span" className={classes.resetButton} onClick={() => this.resetFilter()}>RESET</Button>
                           </div>
                           <Typography variant="button" color="inherit" className={classes.filterButton}>FILTERS</Typography>
                           <Grid container spacing={24}>
@@ -607,7 +370,7 @@ class ManageUserGroups extends Component {
                               <InputLabel htmlFor="age-simple">Status</InputLabel>
                               <Select
                                 autoWidth
-                                value={this.state.filterStatus}
+                                value={this.props.filterText}
                                 onChange={this.handleChange}
                                 // inputProps={{
                                 //   name: 'age',
@@ -672,7 +435,7 @@ class ManageUserGroups extends Component {
                         <Typography variant="subtitle1" color="inherit" className={classes.newTitle}>
                           {!this.state.selected ? this.state.title : ''}
                         </Typography>
-                        <Button color="inherit" style={{position: 'absolute', right: 0}}>
+                        <Button color="inherit" style={{position: 'absolute', right: 0}} onClick={()=> this.props.saveUser(this.state.newUser)}>
                           save
                         </Button>
                       </Toolbar>
@@ -692,7 +455,29 @@ class ManageUserGroups extends Component {
 		)
 	}
 }
+
+const mapStateToProps = (state) => {
+  return {
+    users: state.userGroups.users,
+    selected: state.userGroups.selected,
+    filterText: state.userGroups.filter,
+  }
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    filter: (status) => dispatch(filter(status)),
+    duplicateUser: (user) => dispatch(duplicateUser(user)),
+    loadUser: (userId) => dispatch(loadUser(userId)),
+    saveUser: (user) => dispatch(saveUser(user)),
+    removeUser: (userId) => {
+      dispatch(removeUser(userId))
+      // this.setState({ anchorEl: null });
+    }
+  }
+};
+
 ManageUserGroups.propTypes = {
   classes: PropTypes.object.isRequired,
 };
-export default withStyles(styles)(ManageUserGroups);	
+export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(ManageUserGroups));	
