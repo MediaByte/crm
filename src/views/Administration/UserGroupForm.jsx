@@ -59,7 +59,7 @@ const styles = theme => ({
     marginBottom: 10,
     color: "#aaa",
     fontSize: '0.85rem',
-    borderBottom: "1px solid #ddd",
+    //borderBottom: "1px solid #ddd",
     marginLeft: 15,
     [theme.breakpoints.up('lg')]: {
       marginLeft: 30,
