@@ -36,7 +36,7 @@ import MailOutline from '@material-ui/icons/MailOutline';
 import NotificationsCenter from "components/NotificationCenter/NotificationsCenter.js";
 import Logo from 'assets/img/crmLogo.png'
 //styles
-import navStyles from 'assets/jss/material-kit-pro-react/components/navStyle.js';
+import navStyles from 'src/components/Navigation/navStyle.js';
 
 //State
 import { connect } from 'react-redux';
