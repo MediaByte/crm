@@ -20,6 +20,7 @@ const styles = theme => ({
 			marginLeft: -20,
 		}
 	},
+	
 	content: {
 		width: '100%',
 		display: 'flex',
