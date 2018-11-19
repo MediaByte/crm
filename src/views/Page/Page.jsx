@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 //project components
 import Navigation from 'components/Navigation/Navigation.jsx';
 //styles
-import navStyles from 'assets/jss/material-kit-pro-react/components/navStyle.js';
+import navStyles from "components/Navigation/navStyle.js";
 class Page extends React.Component {
 	render() {
 		const { children, classes, ...navProps } = this.props
