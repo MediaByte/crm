@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
-import _ from 'lodash';
+// import _ from 'lodash';
 //material ui components
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
@@ -49,6 +49,7 @@ import Gun from 'gun/gun';
 //State
 import { connect } from 'react-redux';
 import { loadUser, saveUser, removeUser, duplicateUser, filter } from '../../state/userGroups/actions'
+import { user } from '../../state/userGroups/user_data.js'
 
 
 // const formatData = data => Object.keys(data)
@@ -81,19 +82,8 @@ class ManageUserGroups extends Component {
       anchorEl: null,
       blocking: true,
       filterStatus: 'active',
-      checkedA: true,
-      checkedB: true,
-      checkedC: true,
-      checkedD: true,
-      checkedE: true,
-      checkedF: true,
-      checkedG: true,
-      checkedH: true,
       status: '',
-      newUser: {
-        name: '',
-        age: 22
-      }
+      newUser: user
     }
 		this.toggleViews = this.toggleViews.bind(this)
     this.showUser = this.showUser.bind(this)
@@ -141,8 +131,8 @@ class ManageUserGroups extends Component {
     }
     
   renderUserGroups() {
-		const { classes } = this.props
-    if (!this.props.users.length) {
+		const { classes, selected, users } = this.props
+    if (!users.length) {
       return (
         <div className={classes.noGroups}>
           <ErrorOutlineOutlined className={classes.icon} />
@@ -153,8 +143,8 @@ class ManageUserGroups extends Component {
       return (
         <div style={{width: "100%"}}>
             <List component="nav" className={classes.list}>
-              {this.props.users.map((item, index) => (
-                <ListItem selected={this.state.selected === item.id} className={classes.list} key={index} onClick={()=> this.selectUser(item.id)}>
+              {users.map((item, index) => (
+                <ListItem selected={selected && selected.id === item.id} className={classes.list} key={index} onClick={()=> this.selectUser(item)}>
                   <ListItemText
                     primary={item.name}
                     secondary={item.status}
@@ -199,11 +189,11 @@ class ManageUserGroups extends Component {
   };
 
   renderContent() {
-		const { classes, users } = this.props
-    const { selected, anchorEl } = this.state
-    const user = _.find(users, {id: selected})
+		const { classes, selected } = this.props
+    const { anchorEl } = this.state
+    const user = selected
     
-    if (selected !== false && _.find(users, { id: selected })) {
+    if (selected !== false && selected.id) {
       return (
         <div>
           <Paper className={classes.root3} elevation={1}>
@@ -218,7 +208,7 @@ class ManageUserGroups extends Component {
                     open={Boolean(anchorEl)}
                     onClose={this.handleCloseMenu}
                   >
-                    <MenuItem onClick={() => this.props.removeUser(this.state.selected)}>Delete</MenuItem>
+                    <MenuItem onClick={() => this.props.removeUser(selected.id)}>Delete</MenuItem>
                     <MenuItem onClick={() => this.props.duplicateUser(user)}>Duplicate</MenuItem>
                   </Menu>
                 </div>
@@ -229,7 +219,7 @@ class ManageUserGroups extends Component {
             </div>
             <BlockUi tag="div" blocking={this.state.blocking} message="" loader={<div/>}>
               <div  className={classes.demo}>
-                <UserGroupForm user={this.state} handleChangeCheckbox={this.handleChangeCheckbox} />
+                <UserGroupForm user={this.props.selected} handleClose={this.handleClose} />
               </div>
             </BlockUi>
           </Paper>
@@ -248,18 +238,19 @@ class ManageUserGroups extends Component {
     }
   }
 
-  selectUser (id) {
+  selectUser (user) {
     const openModal = window.innerWidth < 750
-    const user = _.find(this.props.users, {id: id})
-    this.props.loadUser(id)
-    this.setState({selected: user.id, addUser: false, open: openModal, title: user.name})
+    // const user = _.find(this.props.users, {id: id})
+    this.props.loadUser(user)
+    // this.setState({selected: user.id, addUser: false, open: openModal, title: user.name})
+    this.setState({addUser: false, open: openModal, title: user.name})
   }
 
   addNewGroup () {
+    this.props.loadUser(false)
     // const openModal = window.innerWidth < 750
     this.setState({ addUser: true, selected: false, open: true, title: 'New User Group' }, function(){
     })
-    
   }
 
   showSearch () {
@@ -313,7 +304,7 @@ class ManageUserGroups extends Component {
   renderContentWrapper() {
     // this.openInModal();
     if (this.state.addUser && this.state.open) {
-      return <UserGroupForm user={this.state} handleChangeCheckbox={this.handleChangeCheckbox} />
+      return <UserGroupForm user={user} handleClose={this.handleClose} />
     } else {
       return this.renderContent()
     }
@@ -435,9 +426,9 @@ class ManageUserGroups extends Component {
                         <Typography variant="subtitle1" color="inherit" className={classes.newTitle}>
                           {!this.state.selected ? this.state.title : ''}
                         </Typography>
-                        <Button color="inherit" style={{position: 'absolute', right: 0}} onClick={()=> this.props.saveUser(this.state.newUser)}>
+                        {/* <Button color="inherit" style={{position: 'absolute', right: 0}} onClick={()=> this.props.saveUser(this.state.newUser)}>
                           save
-                        </Button>
+                        </Button> */}
                       </Toolbar>
                     </AppBar>
                   </div>
