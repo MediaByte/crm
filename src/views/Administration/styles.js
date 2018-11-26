@@ -85,7 +85,6 @@ root3: {
     overflow: 'scroll'
 	},
 	demoContent: {
-    // backgroundColor: '#fff',
     padding: 10,
     [theme.breakpoints.up('sm')]: {
       padding: 0,
@@ -168,7 +167,18 @@ root3: {
     flexGrow: 1,
   },
   noShadow: {
-    dropShadow: 'none'
+    dropShadow: 'none',
+    backgroundColor: '#fff',
+    borderBottom: '1px solid #ddd'
+  },
+  newTitle: {
+    [theme.breakpoints.up('md')]: {
+      margin: '0 auto',
+      left: '70px',
+      position: 'absolute',
+      width: '75%',
+      textAlign: 'center'
+    }
   },
   
 	Title: {

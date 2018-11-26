@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Formik } from 'formik';
 import Brightness1 from '@material-ui/icons/Brightness1';
 import Description from '@material-ui/icons/Description';
+import Close from '@material-ui/icons/Close';
 import {
 	Paper,
 	Grid,
@@ -12,7 +13,11 @@ import {
   FormControlLabel,
   Checkbox,
   Divider,
-  Button,
+	Button,
+	AppBar,
+	Toolbar,
+	Hidden,
+	IconButton,
 	TextField } from '@material-ui/core';
 import { saveUser, addUser } from '../../state/userGroups/actions'
 
@@ -58,7 +63,10 @@ const styles = theme => ({
   subtitle: {
     fontSize: '0.9rem',
     fontWeight: 'bold',
-  },
+	},
+	demoContent: {
+    backgroundColor: '#f6f6f6',
+	},
   title: {
     marginBottom: 10,
     color: "#aaa",
@@ -78,9 +86,30 @@ const styles = theme => ({
     [theme.breakpoints.up('md')]: {
       padding: '20px 30px',
     }
-  },
+	},
+	appBar: {
+    dropShadow: 'none'
+	},
+	newTitle: {
+    [theme.breakpoints.up('md')]: {
+      margin: '0 auto',
+      left: '70px',
+      position: 'absolute',
+      width: '75%',
+      textAlign: 'center'
+    }
+	},
+	noShadow: {
+    dropShadow: 'none',
+    backgroundColor: '#fff',
+    borderBottom: '1px solid #ddd'
+	},
+	noStyle: {
+    [theme.breakpoints.down('md')]: {
+			boxShadow: 'none'
+		}
+	}
 })
-
 
 class UserGroupForm extends Component {
 	render() {
@@ -117,9 +146,26 @@ class UserGroupForm extends Component {
 						isSubmitting,
 						/* and other goodies */
 					}) => {
-						console.log('...', values);
 						return (
-						<form onSubmit={handleSubmit}>
+						<form onSubmit={handleSubmit} className={classes.demoContent}>
+							{isAdd && (
+								<div className={classes.appBar}>
+									<AppBar position="static" color="default" className={classes.noStyle}>
+										<Toolbar className={classes.noShadow}>
+											<IconButton className={classes.menuButton} color="default" onClick={this.props.handleClose} aria-label="Close">
+												<Close />
+											</IconButton>
+											<Typography variant="subtitle1" color="inherit" className={classes.newTitle}>
+												{this.props.title}
+											</Typography>
+											<Button color="inherit" style={{position: 'absolute', right: 0}} type="submit">
+												save
+											</Button>
+										</Toolbar>
+									</AppBar>
+								</div>
+							)}
+
 							<Paper className={classes.root3} elevation={1}>
 							<div className={classes.paddingFull}>
 								{/* <Hidden smDown>
@@ -165,7 +211,6 @@ class UserGroupForm extends Component {
 									<Grid item xs={10} sm={isAdd ? 10 : 11}>
 										<TextField
 											name="status"
-											select
 											label="Status"
 											fullWidth
 											className={classes.textField}
@@ -174,9 +219,9 @@ class UserGroupForm extends Component {
 											onBlur={handleBlur}
 											margin="normal"
 										>
-											<MenuItem key={0} value={0}>
-												Active
-											</MenuItem>
+											<MenuItem value=''>Select</MenuItem>
+											<MenuItem value='active'>Active</MenuItem>
+											<MenuItem value='inactive'>Inactive</MenuItem>
 										</TextField>
 										</Grid>
 									</Grid>

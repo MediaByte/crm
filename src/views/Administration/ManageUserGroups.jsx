@@ -19,7 +19,7 @@ import Add from '@material-ui/icons/Add';
 import Edit from '@material-ui/icons/Edit';
 import MoreHoriz from '@material-ui/icons/MoreHoriz';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
-import ArrowBack from '@material-ui/icons/ArrowBack';
+import Close from '@material-ui/icons/Close';
 import ErrorOutlineOutlined from '@material-ui/icons/ErrorOutlineOutlined';
 import FilterList from '@material-ui/icons/FilterList';
 import Search from '@material-ui/icons/Search';
@@ -304,7 +304,7 @@ class ManageUserGroups extends Component {
   renderContentWrapper() {
     // this.openInModal();
     if (this.state.addUser && this.state.open) {
-      return <UserGroupForm user={user} handleClose={this.handleClose} />
+      return <UserGroupForm user={user} handleClose={this.handleClose} title={this.state.title} />
     } else {
       return this.renderContent()
     }
@@ -417,21 +417,22 @@ class ManageUserGroups extends Component {
                   TransitionComponent={Transition}
                   scroll='body'
                 >
-                  <div className={classes.appBar}>
-                    <AppBar position="static" color="default">
-                      <Toolbar className={classes.noShadow}>
-                        <IconButton className={classes.menuButton} color="default" onClick={this.handleClose} aria-label="Close">
-                          <ArrowBack />
-                        </IconButton>
-                        <Typography variant="subtitle1" color="inherit" className={classes.newTitle}>
-                          {!this.state.selected ? this.state.title : ''}
-                        </Typography>
-                        {/* <Button color="inherit" style={{position: 'absolute', right: 0}} onClick={()=> this.props.saveUser(this.state.newUser)}>
-                          save
-                        </Button> */}
-                      </Toolbar>
-                    </AppBar>
-                  </div>
+                  <Hidden smUp>
+                    {this.props.selected && (
+                      <div className={classes.appBar}>
+                        <AppBar position="static" color="default">
+                          <Toolbar className={classes.noShadow}>
+                            <IconButton className={classes.menuButton} color="default" onClick={this.handleClose} aria-label="Close">
+                              <Close />
+                            </IconButton>
+                            <Typography variant="subtitle1" color="inherit" className={classes.newTitle}>
+                              {!this.state.selected ? this.state.title : ''}
+                            </Typography>
+                          </Toolbar>
+                        </AppBar>
+                      </div>
+                    )}
+                  </Hidden>
                   <div className={classes.demoContent}>
                     {this.renderContentWrapper()}
                   </div>
