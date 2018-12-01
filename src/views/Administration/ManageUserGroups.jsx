@@ -412,15 +412,16 @@ class ManageUserGroups extends Component {
               <div className={classes.demoContent}>
                 <Dialog
                   fullScreen={window.innerWidth < 750}
+                  fullWidth='80%'
                   open={this.state.open}
                   onClose={this.handleClose}
                   TransitionComponent={Transition}
-                  scroll='body'
+                  scroll='paper'
                 >
                   <Hidden smUp>
                     {this.props.selected && (
                       <div className={classes.appBar}>
-                        <AppBar position="static" color="default">
+                        <AppBar position="fixed" color="default">
                           <Toolbar className={classes.noShadow}>
                             <IconButton className={classes.menuButton} color="default" onClick={this.handleClose} aria-label="Close">
                               <Close />
