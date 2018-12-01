@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Formik } from 'formik';
 import Brightness1 from '@material-ui/icons/Brightness1';
-import Description from '@material-ui/icons/Description';
+import Description from '@material-ui/icons/DescriptionOutlined';
+
 import Close from '@material-ui/icons/Close';
 import {
 	Paper,
@@ -72,14 +73,18 @@ const styles = theme => ({
     color: "#aaa",
     fontSize: '0.85rem',
     //borderBottom: "1px solid #ddd",
-    marginLeft: 15,
+	marginLeft: 15,
+	fontWeight: 'bold',
     [theme.breakpoints.up('lg')]: {
       marginLeft: 30,
     }
 	},
 	root3: {
     borderRadius: 0,
-    boxShadow: 'none',
+	boxShadow: 'none',
+	borderBottom: "1px solid #ddd",
+	borderTop: "1px solid #ddd"
+
 	},
 	paddingFull: {
     padding: 15,
@@ -88,16 +93,22 @@ const styles = theme => ({
     }
 	},
 	appBar: {
-    dropShadow: 'none'
+	dropShadow: 'none',
+    position: "sticky",
+    top: 0,
+	zIndex: 10,
+	minHeight: 56
 	},
 	newTitle: {
-    [theme.breakpoints.up('md')]: {
+	//[theme.breakpoints.up('md')]: {
       margin: '0 auto',
       left: '70px',
       position: 'absolute',
-      width: '75%',
-      textAlign: 'center'
-    }
+	  width: '75%',
+	  fontWeight: 'bold',
+	  textAlign: 'center',
+	  color: '#0dacc4'
+    //}
 	},
 	noShadow: {
     dropShadow: 'none',
@@ -150,22 +161,23 @@ class UserGroupForm extends Component {
 						<form onSubmit={handleSubmit} className={classes.demoContent}>
 							{isAdd && (
 								<div className={classes.appBar}>
-									<AppBar position="static" color="default" className={classes.noStyle}>
+									<AppBar position="sticky" color="default" className={classes.noStyle}
+									>
 										<Toolbar className={classes.noShadow}>
-											<IconButton className={classes.menuButton} color="default" onClick={this.props.handleClose} aria-label="Close">
+											<IconButton className={classes.menuButton} color="grey" onClick={this.props.handleClose} aria-label="Close">
 												<Close />
 											</IconButton>
 											<Typography variant="subtitle1" color="inherit" className={classes.newTitle}>
 												{this.props.title}
 											</Typography>
-											<Button color="inherit" style={{position: 'absolute', right: 0}} type="submit">
+											<Button color="inherit" style={{position: 'absolute', right: -1}} type="submit">
 												save
 											</Button>
 										</Toolbar>
 									</AppBar>
 								</div>
 							)}
-
+<br />
 							<Paper className={classes.root3} elevation={1}>
 							<div className={classes.paddingFull}>
 								{/* <Hidden smDown>
@@ -300,30 +312,23 @@ class UserGroupForm extends Component {
 												}
 												label="Delete"
 											/>
-											<br />
-											<Divider/>
-											<br />
+										<br />
+
 										</div>
 									))}
-								
-									<br />
 									{/* {this.props.user && this.props.user.id && ( */}
-										<div>
-											<br />
-											<br />
-											<Button variant="contained" color="primary" type="submit" disabled={isSubmitting}>
-												Save
-											</Button>
-										</div>
+										
 									{/* )} */}
 								</div>
 							</Paper>
+							<br />
 						</form>
-						)}
+					)}
 					}
-				</Formik>
-			</div>
-		)
+					</Formik>
+			</div>	
+			
+			)		
 	}
 }
 
