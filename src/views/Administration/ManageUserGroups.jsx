@@ -51,7 +51,7 @@ import Gun from 'gun/gun';
 
 //State
 import { connect } from 'react-redux';
-import { loadUser, saveUser, removeUser, duplicateUser, filter } from '../../../state/userGroups/actions'
+import { loadUser, saveUser, removeUser, duplicateUser, filter } from '../../src/state/userGroups/actions'
 import { user } from '../../../state/userGroups/user_data.js'
 
 
