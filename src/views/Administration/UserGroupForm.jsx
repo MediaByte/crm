@@ -23,7 +23,7 @@ import {
 	IconButton,
 	TextField } from '@material-ui/core';
 
-import { saveUser, addUser } from '../../../state/userGroups/actions'
+import { saveUser, addUser } from '../../state/userGroups/actions'
 
 //material ui components
 import { withStyles } from '@material-ui/core/styles';
