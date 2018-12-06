@@ -14,20 +14,23 @@ import Menu from '@material-ui/core/Menu';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
+import InputAdornment from '@material-ui/core/InputAdornment';
 //material-ui icons
 import Add from '@material-ui/icons/Add';
 import Edit from '@material-ui/icons/Edit';
 import MoreHoriz from '@material-ui/icons/MoreHoriz';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
-import Close from '@material-ui/icons/Close';
 import ErrorOutlineOutlined from '@material-ui/icons/ErrorOutlineOutlined';
 import FilterList from '@material-ui/icons/FilterList';
 import Search from '@material-ui/icons/Search';
-import SwapVert from '@material-ui/icons/SwapVert';
+import Cloud from '@material-ui/icons/CloudDownloadOutlined';
+import BackArrow from '@material-ui/icons/ArrowBackIosOutlined';
 //project components
-import styles from "./styles.js";
-import UserGroupForm from './UserGroupForm';
+import styles from "../styles.js";
+import UserGroupForm from './AddUserGroup';
 import PageColumn from 'views/Page/PageColumn.jsx';
+
+
 
 import {
   AppBar,
@@ -48,8 +51,8 @@ import Gun from 'gun/gun';
 
 //State
 import { connect } from 'react-redux';
-import { loadUser, saveUser, removeUser, duplicateUser, filter } from '../../state/userGroups/actions'
-import { user } from '../../state/userGroups/user_data.js'
+import { loadUser, saveUser, removeUser, duplicateUser, filter } from '../../../state/userGroups/actions'
+import { user } from '../../../state/userGroups/user_data.js'
 
 
 // const formatData = data => Object.keys(data)
@@ -57,7 +60,7 @@ import { user } from '../../state/userGroups/user_data.js'
 // 	.filter(m => m.key !== '_')
 
 function Transition(props) {
-  return <Slide direction="up" {...props} />;
+  return <Slide direction="up" {...props} />;  
 }
 
 class ManageUserGroups extends Component {
@@ -134,10 +137,12 @@ class ManageUserGroups extends Component {
 		const { classes, selected, users } = this.props
     if (!users.length) {
       return (
+        <Hidden only={['xs']}>
         <div className={classes.noGroups}>
-          <ErrorOutlineOutlined className={classes.icon} />
-          No User Groups found
+          <ErrorOutlineOutlined className={classes.icon} /> 
+          No User Group Selected
         </div>
+        </Hidden>
       )
     } else {
       return (
@@ -196,8 +201,9 @@ class ManageUserGroups extends Component {
     if (selected !== false && selected.id) {
       return (
         <div>
+          <Hidden only={['xs']}>
           <Paper className={classes.root3} elevation={1}>
-            <div className={classes.paddingFull}>
+            <div className={classes.paddingFull}>              
               {selected && (
                 <div className={classes.iconsRight}>
                   <IconButton className={classes.icons} style={{transform: 'scale(0.8)'}}><Edit onClick={this.toggleBlocking} /></IconButton>
@@ -223,17 +229,20 @@ class ManageUserGroups extends Component {
               </div>
             </BlockUi>
           </Paper>
-          <br/>
-        </div>
+        </Hidden>
+      </div>
       )
     } else {
-      return (
-        <div>
+      return ( 
+        <Hidden only={['xs']}>
+      <div>
           <div className={classes.noGroups}>
-            <ErrorOutlineOutlined className={classes.icon} />
-            No User Group selected
-          </div>
+          <ErrorOutlineOutlined className={classes.icon} /> 
+          No User Groups Selected  
         </div>
+        </div>
+        </Hidden>
+    
       )
     }
   }
@@ -249,7 +258,7 @@ class ManageUserGroups extends Component {
   addNewGroup () {
     this.props.loadUser(false)
     // const openModal = window.innerWidth < 750
-    this.setState({ addUser: true, selected: false, open: true, title: 'New User Group' }, function(){
+    this.setState({ addUser: true, selected: false, open: true, dropShadow: false, title: 'New User Group' }, function(){
     })
   }
 
@@ -327,18 +336,26 @@ class ManageUserGroups extends Component {
                 <div className={classes.toolbar}>
                   {this.state.searchActive && (
                     <div>
-                      <TextField
+                      <TextField style={{ backgroundColor: "#F9F9F9", color: "white" }}
                         type="search"
-                        margin="normal"
+                        margin="dense"
+                        variant="outlined"
                         fullWidth
                         placeholder="Search Groups"
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment style={{position:"start"}}>
+                              <Search style={{color:"bdbdbd"}}/>
+                            </InputAdornment>
+                          ),
+                        }}
                         onChange={(e)=> this.onChangeFilter(e)}
                       />
                     </div>
                   )}
                   <div className={classes.filters}>
                     <IconButton className={classes.icons}><Add onClick={()=>this.addNewGroup()} /></IconButton>
-                    <IconButton className={classes.icons}><SwapVert /></IconButton>
+                    <IconButton className={classes.icons}><Cloud /></IconButton>
                     <IconButton className={classes.icons}><Search onClick={()=>this.showSearch()} /></IconButton>
                     <IconButton className={classes.icons}>
                       <FilterList onClick={this.showFilter} />
@@ -412,21 +429,22 @@ class ManageUserGroups extends Component {
               <div className={classes.demoContent}>
                 <Dialog
                   fullScreen={window.innerWidth < 750}
-                  fullWidth='80%'
+                  fullWidth
                   open={this.state.open}
                   onClose={this.handleClose}
                   TransitionComponent={Transition}
                   scroll='paper'
                 >
                   <Hidden smUp>
+  
                     {this.props.selected && (
                       <div className={classes.appBar}>
-                        <AppBar position="fixed" color="default">
+                        <AppBar position="fixed" dropShadow="none" color="default">
                           <Toolbar className={classes.noShadow}>
                             <IconButton className={classes.menuButton} color="default" onClick={this.handleClose} aria-label="Close">
-                              <Close />
+                              <BackArrow />
                             </IconButton>
-                            <Typography variant="subtitle1" color="inherit" className={classes.newTitle}>
+                            <Typography variant="subtitle1" textAlign="center" color="inherit" className={classes.newTitle}>
                               {!this.state.selected ? this.state.title : ''}
                             </Typography>
                           </Toolbar>
