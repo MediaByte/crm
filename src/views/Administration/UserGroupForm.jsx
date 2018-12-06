@@ -2,25 +2,28 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Formik } from 'formik';
-import Brightness1 from '@material-ui/icons/Brightness1';
+import Brightness1 from '@material-ui/icons/Brightness1Outlined';
 import Description from '@material-ui/icons/DescriptionOutlined';
+import Group from '@material-ui/icons/GroupAddOutlined';
+
 
 import Close from '@material-ui/icons/Close';
 import {
 	Paper,
 	Grid,
-  MenuItem,
-  Typography,
-  FormControlLabel,
-  Checkbox,
-  Divider,
+  	MenuItem,
+  	Typography,
+  	FormControlLabel,
+  	Checkbox,
+  	Divider,
 	Button,
 	AppBar,
 	Toolbar,
 	Hidden,
 	IconButton,
 	TextField } from '@material-ui/core';
-import { saveUser, addUser } from '../../state/userGroups/actions'
+
+import { saveUser, addUser } from '../../../state/userGroups/actions'
 
 //material ui components
 import { withStyles } from '@material-ui/core/styles';
@@ -48,14 +51,17 @@ const styles = theme => ({
   },
   checked: {},
   inputGrid: {
-    flexGrow: 1,
+	flexGrow: 1,
+	textindent: '10px',
   },
   textField: {
     [theme.breakpoints.up('md')]: {
-      marginLeft: '-20px'
-    },
+	  marginLeft: '-20px',
+	  justifyContent: 'space-between'
+	},
     [theme.breakpoints.up('lg')]: {
-      marginLeft: '-40px'
+	  marginLeft: '-40px',
+	  justifyContent: 'space-between'
     }
 	},
 	selected: {
@@ -65,16 +71,26 @@ const styles = theme => ({
     fontSize: '0.9rem',
     fontWeight: 'bold',
 	},
+	//demoContent: {
+    //backgroundColor: '#f6f6f6',
+	//},
 	demoContent: {
-    backgroundColor: '#f6f6f6',
-	},
+		padding: 10,
+		[theme.breakpoints.up('sm')]: {
+		  padding: 0,
+		},
+		[theme.breakpoints.up('md')]: {
+		  padding: 0,
+		},
+		backgroundColor: '#f6f6f6',
+		},
   title: {
     marginBottom: 10,
-    color: "#aaa",
+    color: "#616161",
     fontSize: '0.85rem',
     //borderBottom: "1px solid #ddd",
 	marginLeft: 15,
-	fontWeight: 'bold',
+	//fontWeight: 'bold',
     [theme.breakpoints.up('lg')]: {
       marginLeft: 30,
     }
@@ -83,7 +99,7 @@ const styles = theme => ({
     borderRadius: 0,
 	boxShadow: 'none',
 	borderBottom: "1px solid #ddd",
-	borderTop: "1px solid #ddd"
+	//borderTop: "1px solid #ddd"
 
 	},
 	paddingFull: {
@@ -94,10 +110,10 @@ const styles = theme => ({
 	},
 	appBar: {
 	dropShadow: 'none',
-    position: "sticky",
+	position: "sticky",
+	flex:1,
     top: 0,
 	zIndex: 10,
-	minHeight: 56
 	},
 	newTitle: {
 	//[theme.breakpoints.up('md')]: {
@@ -117,7 +133,8 @@ const styles = theme => ({
 	},
 	noStyle: {
     [theme.breakpoints.down('md')]: {
-			boxShadow: 'none'
+			boxShadow: 'none',
+			dropShadow: 'none'
 		}
 	}
 })
@@ -161,23 +178,22 @@ class UserGroupForm extends Component {
 						<form onSubmit={handleSubmit} className={classes.demoContent}>
 							{isAdd && (
 								<div className={classes.appBar}>
-									<AppBar position="sticky" color="default" className={classes.noStyle}
+									<AppBar position="sticky" color="default" height="20"className={classes.noStyle}
 									>
 										<Toolbar className={classes.noShadow}>
-											<IconButton className={classes.menuButton} color="grey" onClick={this.props.handleClose} aria-label="Close">
+											<IconButton className={classes.menuButton} color="grey" style={{position: 'absolute', left: -1}} onClick={this.props.handleClose} aria-label="Close">
 												<Close />
 											</IconButton>
-											<Typography variant="subtitle1" color="inherit" className={classes.newTitle}>
+											<Typography variant="subtitle1" color="inherit" textAlign='center' className={classes.newTitle}>
 												{this.props.title}
 											</Typography>
-											<Button color="inherit" style={{position: 'absolute', right: -1}} type="submit">
+											<Button color="inherit" style={{position: 'absolute', right: 1}} type="submit">
 												save
 											</Button>
 										</Toolbar>
 									</AppBar>
 								</div>
 							)}
-<br />
 							<Paper className={classes.root3} elevation={1}>
 							<div className={classes.paddingFull}>
 								{/* <Hidden smDown>
@@ -185,7 +201,7 @@ class UserGroupForm extends Component {
 								</Hidden> */}
 								<Grid container spacing={8} alignItems="flex-end" className={classes.inputGrid}>
 									<Grid item xs={2} sm={isAdd ? 2 : 1}>
-										<Description />
+										<Group />
 									</Grid>
 									<Grid item xs={10} sm={isAdd ? 10 : 11}>
 										<TextField
