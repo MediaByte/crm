@@ -26,8 +26,8 @@ import Search from '@material-ui/icons/Search';
 import Cloud from '@material-ui/icons/CloudDownloadOutlined';
 import BackArrow from '@material-ui/icons/ArrowBackIosOutlined';
 //project components
-import styles from "../styles.js";
-import UserGroupForm from './AddUserGroup';
+import styles from "./styles.js";
+import UserGroupForm from './UserGroupForm';
 import PageColumn from 'views/Page/PageColumn.jsx';
 
 
