@@ -51,8 +51,8 @@ import Gun from 'gun/gun';
 
 //State
 import { connect } from 'react-redux';
-import { loadUser, saveUser, removeUser, duplicateUser, filter } from '../../../state/userGroups/actions'
-import { user } from '../../../state/userGroups/user_data.js'
+import { loadUser, saveUser, removeUser, duplicateUser, filter } from '../../state/userGroups/actions'
+import { user } from '../../state/userGroups/user_data.js'
 
 
 // const formatData = data => Object.keys(data)
