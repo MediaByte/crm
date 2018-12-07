@@ -9,11 +9,10 @@ import indexRoutes from 'routes/index.jsx';
 
 //State Management
 import { Provider } from 'react-redux';
-import { createStore, applyMiddleware, combineReducers } from 'redux';
+import { createStore, combineReducers } from 'redux';
 import { newUser } from 'state/newUser/reducers.js';
 import { isUserAuthorized } from 'state/authentication/reducers.js';
 import { userGroups } from 'state/userGroups/reducers.js';
-import { createLogger } from 'redux-logger';
 
 //Styles
 import 'assets/scss/material-kit-pro-react.css';
@@ -36,9 +35,6 @@ const theme = createMuiTheme({
 
 //Reducers
 const rootReducers = combineReducers({ newUser, isUserAuthorized, userGroups });
-
-//Redux Middleware for debugging components
-const logger = createLogger();
 
 //Initialize Redux Store
 const store = createStore(
