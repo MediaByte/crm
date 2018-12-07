@@ -26,11 +26,9 @@ import Search from '@material-ui/icons/Search';
 import Cloud from '@material-ui/icons/CloudDownloadOutlined';
 import BackArrow from '@material-ui/icons/ArrowBackIosOutlined';
 //project components
-import styles from "./styles.js";
+import styles from './styles.js';
 import UserGroupForm from './UserGroupForm';
 import PageColumn from 'views/Page/PageColumn.jsx';
-
-
 
 import {
   AppBar,
@@ -44,34 +42,40 @@ import {
   ListItemSecondaryAction,
   ListItem,
   List,
-  TextField } from '@material-ui/core';
+  TextField,
+} from '@material-ui/core';
 
-  //gundb
+//gundb
 import Gun from 'gun/gun';
 
 //State
 import { connect } from 'react-redux';
-import { loadUser, saveUser, removeUser, duplicateUser, filter } from '../../state/userGroups/actions'
-import { user } from '../../state/userGroups/user_data.js'
-
+import {
+  loadUser,
+  saveUser,
+  removeUser,
+  duplicateUser,
+  filter,
+} from '../../state/userGroups/actions';
+import { user } from '../../state/userGroups/user_data.js';
 
 // const formatData = data => Object.keys(data)
 // 	.map(key => ({ key, ...data[key]  }))
 // 	.filter(m => m.key !== '_')
 
 function Transition(props) {
-  return <Slide direction="up" {...props} />;  
+  return <Slide direction="up" {...props} />;
 }
 
 class ManageUserGroups extends Component {
-	constructor(props) {
+  constructor(props) {
     super(props);
     console.log('props', props);
-    
-		this.gun = Gun('https://pineconeserver.herokuapp.com/gun');
+
+    this.gun = Gun('https://pineconeserver.herokuapp.com/gun');
     this.state = {
       addUser: false,
-      open: false, 
+      open: false,
       // users: props.users.filter(user => user.status === 'Active'),
       usersCopy: props.users,
       selected: false,
@@ -86,83 +90,93 @@ class ManageUserGroups extends Component {
       blocking: true,
       filterStatus: 'active',
       status: '',
-      newUser: user
-    }
-		this.toggleViews = this.toggleViews.bind(this)
-    this.showUser = this.showUser.bind(this)
+      newUser: user,
+    };
+    this.toggleViews = this.toggleViews.bind(this);
+    this.showUser = this.showUser.bind(this);
     this.toggleBlocking = this.toggleBlocking.bind(this);
   }
 
   toggleBlocking() {
-    this.setState({blocking: !this.state.blocking});
+    this.setState({ blocking: !this.state.blocking });
   }
-  
+
   handleClick = event => {
     this.setState({ anchorEl: event.currentTarget });
-  }
+  };
 
   handleCloseMenu = () => {
     this.setState({ anchorEl: null });
+  };
+
+  componentDidMount() {
+    let users = [];
+    this.gun
+      .get('testRost')
+      .get('users')
+      .map()
+      .on((user, key) => {
+        users[key] = user;
+        this.setState({ users: Object.assign({}, this.state.users, users) });
+      });
+    window.scrollTo(0, 0);
+    document.body.scrollTop = 0;
+  }
+  componentWillMount() {
+    let users = [];
+    this.gun
+      .get('testRost')
+      .get('users')
+      .map()
+      .on((user, key) => {
+        users[key] = user;
+        this.setState({ users: Object.assign({}, this.state.users, users) });
+      });
+  }
+  toggleViews() {
+    this.setState({ addUser: !this.state.addUser });
+  }
+  showUser(user) {
+    this.setState({
+      first: user.first,
+      last: user.last,
+      email: user.email,
+      group: user.groups,
+    });
   }
 
-	componentDidMount() {
-		let users = []
-		this.gun.get('testRost').get('users').map().on((user, key) => {
-			users[key] = user
-			this.setState({ users: Object.assign({}, this.state.users, users) })
-		})
-	    window.scrollTo(0, 0);
-	    document.body.scrollTop = 0;
-	}
-	componentWillMount() {
-		let users = []
-		this.gun.get('testRost').get('users').map().on((user, key) => {
-			users[key] = user
-			this.setState({ users: Object.assign({}, this.state.users, users) })
-		})
-	}
-	toggleViews() {
-    	this.setState({ addUser: !this.state.addUser })
-  	}
-  	showUser(user) {
-		this.setState({ 
-			first: user.first,
-			last: user.last,
-			email: user.email,
-			group: user.groups
-		})
-    }
-    
   renderUserGroups() {
-		const { classes, selected, users } = this.props
+    const { classes, selected, users } = this.props;
     if (!users.length) {
       return (
         <Hidden only={['xs']}>
-        <div className={classes.noGroups}>
-          <ErrorOutlineOutlined className={classes.icon} /> 
-          No User Group Selected
-        </div>
+          <div className={classes.noGroups}>
+            <ErrorOutlineOutlined className={classes.icon} />
+            No User Group Selected
+          </div>
         </Hidden>
-      )
+      );
     } else {
       return (
-        <div style={{width: "100%"}}>
-            <List component="nav" className={classes.list}>
-              {users.map((item, index) => (
-                <ListItem selected={selected && selected.id === item.id} className={classes.list} key={index} onClick={()=> this.selectUser(item)}>
-                  <ListItemText
-                    primary={item.name}
-                    secondary={item.status}
-                  />
-                  <Hidden smUp>
-                    <ListItemSecondaryAction>
-                      <IconButton>
-                        <KeyboardArrowRight />
-                      </IconButton>
-                    </ListItemSecondaryAction>
-                  </Hidden>
-                </ListItem>
-              ))}
+        <div style={{ width: '100%' }}>
+          <List component="nav" className={classes.list}>
+            {users.map((item, index) => (
+              <ListItem
+                selected={selected && selected.id === item.id}
+                className={classes.list}
+                key={index}
+                onClick={() => this.selectUser(item)}
+              >
+                <ListItemText primary={item.name} secondary={item.status} />
+                <Hidden smUp>
+                  <ListItemSecondaryAction>
+                    <IconButton>
+                      <KeyboardArrowRight />
+                    </IconButton>
+                  </ListItemSecondaryAction>
+                </Hidden>
+              </ListItem>
+            ))}
             {/* parsedData
               .map((user, i) => {
                 if ( user.hasOwnProperty('first')) {
@@ -185,7 +199,7 @@ class ManageUserGroups extends Component {
               .reverse() */}
           </List>
         </div>
-      )
+      );
     }
   }
 
@@ -194,99 +208,136 @@ class ManageUserGroups extends Component {
   };
 
   renderContent() {
-		const { classes, selected } = this.props
-    const { anchorEl } = this.state
-    const user = selected
-    
+    const { classes, selected } = this.props;
+    const { anchorEl } = this.state;
+    const user = selected;
+
     if (selected !== false && selected.id) {
       return (
         <div>
           <Hidden only={['xs']}>
-          <Paper className={classes.root3} elevation={1}>
-            <div className={classes.paddingFull}>              
-              {selected && (
-                <div className={classes.iconsRight}>
-                  <IconButton className={classes.icons} style={{transform: 'scale(0.8)'}}><Edit onClick={this.toggleBlocking} /></IconButton>
-                  <IconButton className={classes.icons} style={{transform: 'scale(0.8)'}}><MoreHoriz onClick={this.handleClick} /></IconButton>
-                  <Menu
-                    id="simple-menu"
-                    anchorEl={anchorEl}
-                    open={Boolean(anchorEl)}
-                    onClose={this.handleCloseMenu}
-                  >
-                    <MenuItem onClick={() => this.props.removeUser(selected.id)}>Delete</MenuItem>
-                    <MenuItem onClick={() => this.props.duplicateUser(user)}>Duplicate</MenuItem>
-                  </Menu>
-                </div>
-              )}
-              <Typography variant="h5" component="h4" className={classes.titleBold}>
-                <i className="fas fa-user-plus"></i> {user.name}
-              </Typography>
-            </div>
-            <BlockUi tag="div" blocking={this.state.blocking} message="" loader={<div/>}>
-              <div  className={classes.demo}>
-                <UserGroupForm user={this.props.selected} handleClose={this.handleClose} />
+            <Paper className={classes.root3} elevation={1}>
+              <div className={classes.paddingFull}>
+                {selected && (
+                  <div className={classes.iconsRight}>
+                    <IconButton
+                      className={classes.icons}
+                      style={{ transform: 'scale(0.8)' }}
+                    >
+                      <Edit onClick={this.toggleBlocking} />
+                    </IconButton>
+                    <IconButton
+                      className={classes.icons}
+                      style={{ transform: 'scale(0.8)' }}
+                    >
+                      <MoreHoriz onClick={this.handleClick} />
+                    </IconButton>
+                    <Menu
+                      id="simple-menu"
+                      anchorEl={anchorEl}
+                      open={Boolean(anchorEl)}
+                      onClose={this.handleCloseMenu}
+                    >
+                      <MenuItem
+                        onClick={() => this.props.removeUser(selected.id)}
+                      >
+                        Delete
+                      </MenuItem>
+                      <MenuItem onClick={() => this.props.duplicateUser(user)}>
+                        Duplicate
+                      </MenuItem>
+                    </Menu>
+                  </div>
+                )}
+                <Typography
+                  variant="h5"
+                  component="h4"
+                  className={classes.titleBold}
+                >
+                  <i className="fas fa-user-plus" /> {user.name}
+                </Typography>
               </div>
-            </BlockUi>
-          </Paper>
-        </Hidden>
-      </div>
-      )
+              <BlockUi
+                tag="div"
+                blocking={this.state.blocking}
+                message=""
+                loader={<div />}
+              >
+                <div className={classes.demo}>
+                  <UserGroupForm
+                    user={this.props.selected}
+                    handleClose={this.handleClose}
+                  />
+                </div>
+              </BlockUi>
+            </Paper>
+          </Hidden>
+        </div>
+      );
     } else {
-      return ( 
+      return (
         <Hidden only={['xs']}>
-      <div>
-          <div className={classes.noGroups}>
-          <ErrorOutlineOutlined className={classes.icon} /> 
-          No User Groups Selected  
-        </div>
-        </div>
+          <div>
+            <div className={classes.noGroups}>
+              <ErrorOutlineOutlined className={classes.icon} />
+              No User Groups Selected
+            </div>
+          </div>
         </Hidden>
-    
-      )
+      );
     }
   }
 
-  selectUser (user) {
-    const openModal = window.innerWidth < 750
+  selectUser(user) {
+    const openModal = window.innerWidth < 750;
     // const user = _.find(this.props.users, {id: id})
-    this.props.loadUser(user)
+    this.props.loadUser(user);
     // this.setState({selected: user.id, addUser: false, open: openModal, title: user.name})
-    this.setState({addUser: false, open: openModal, title: user.name})
+    this.setState({ addUser: false, open: openModal, title: user.name });
   }
 
-  addNewGroup () {
-    this.props.loadUser(false)
+  addNewGroup() {
+    this.props.loadUser(false);
     // const openModal = window.innerWidth < 750
-    this.setState({ addUser: true, selected: false, open: true, dropShadow: false, title: 'New User Group' }, function(){
-    })
+    this.setState(
+      {
+        addUser: true,
+        selected: false,
+        open: true,
+        dropShadow: false,
+        title: 'New User Group',
+      },
+      function() {},
+    );
   }
 
-  showSearch () {
-    this.setState({searchActive: !this.state.searchActive})
+  showSearch() {
+    this.setState({ searchActive: !this.state.searchActive });
   }
 
   showFilter = event => {
     this.setState({ anchorEl2: event.currentTarget });
-  }
+  };
 
   closeFilter = () => {
     this.setState({ anchorEl2: null });
-  }
+  };
 
-  onChangeFilter (e) {
-    const value = e.target.value.toLowerCase()
-    let users
+  onChangeFilter(e) {
+    const value = e.target.value.toLowerCase();
+    let users;
     if (value === '') {
-      users = this.state.usersCopy
+      users = this.state.usersCopy;
     } else {
-      users = this.state.usersCopy.filter((item) => item.name.toLowerCase().includes(value))
+      users = this.state.usersCopy.filter(item =>
+        item.name.toLowerCase().includes(value),
+      );
     }
-    this.setState({ users })
+    this.setState({ users });
   }
 
   handleChange = event => {
-    const value = event.target.value.toLowerCase()
+    const value = event.target.value.toLowerCase();
     // let users
     // if (value === '' || value === 'all') {
     //   users = this.state.usersCopy
@@ -294,12 +345,12 @@ class ManageUserGroups extends Component {
     //   users = this.state.usersCopy.filter((item) => item.status.toLowerCase() === value)
     // }
     // this.setState({ users, filterStatus: value })
-    this.props.filter(value)
-  }
+    this.props.filter(value);
+  };
 
-  resetFilter () {
+  resetFilter() {
     // this.setState({ users: this.state.usersCopy, filterStatus: 'all' })
-    this.props.filter('all')
+    this.props.filter('all');
   }
 
   handleClickOpen = () => {
@@ -313,30 +364,41 @@ class ManageUserGroups extends Component {
   renderContentWrapper() {
     // this.openInModal();
     if (this.state.addUser && this.state.open) {
-      return <UserGroupForm user={user} handleClose={this.handleClose} title={this.state.title} />
+      return (
+        <UserGroupForm
+          user={user}
+          handleClose={this.handleClose}
+          title={this.state.title}
+        />
+      );
     } else {
-      return this.renderContent()
+      return this.renderContent();
     }
   }
 
-	render() {
-		const { classes, users } = this.props
-    const { anchorEl2 } = this.state
+  render() {
+    const { classes, users } = this.props;
+    const { anchorEl2 } = this.state;
     // let parsedData = formatData(this.state.users)
-    
-		return (
-			<div>
-				<PageColumn component={'administration'} titleText={'User Groups'}>
-					<Grid
-						container
-            className={classes.gridContainer}
-					>
-						<Grid item xs={12} sm={5} md={4} lg={3} className={classes.demoLeft}>
-							<div>
+
+    return (
+      <div>
+        <PageColumn component={'administration'} titleText={'User Groups'}>
+          <Grid container className={classes.gridContainer}>
+            <Grid
+              item
+              xs={12}
+              sm={5}
+              md={4}
+              lg={3}
+              className={classes.demoLeft}
+            >
+              <div>
                 <div className={classes.toolbar}>
                   {this.state.searchActive && (
                     <div>
-                      <TextField style={{ backgroundColor: "#F9F9F9", color: "white" }}
+                      <TextField
+                        style={{ backgroundColor: '#F9F9F9', color: 'white' }}
                         type="search"
                         margin="dense"
                         variant="outlined"
@@ -344,67 +406,82 @@ class ManageUserGroups extends Component {
                         placeholder="Search Groups"
                         InputProps={{
                           startAdornment: (
-                            <InputAdornment style={{position:"start"}}>
-                              <Search style={{color:"bdbdbd"}}/>
+                            <InputAdornment style={{ position: 'start' }}>
+                              <Search style={{ color: 'bdbdbd' }} />
                             </InputAdornment>
                           ),
                         }}
-                        onChange={(e)=> this.onChangeFilter(e)}
+                        onChange={e => this.onChangeFilter(e)}
                       />
                     </div>
                   )}
                   <div className={classes.filters}>
-                    <IconButton className={classes.icons}><Add onClick={()=>this.addNewGroup()} /></IconButton>
-                    <IconButton className={classes.icons}><Cloud /></IconButton>
-                    <IconButton className={classes.icons}><Search onClick={()=>this.showSearch()} /></IconButton>
+                    <IconButton className={classes.icons}>
+                      <Add onClick={() => this.addNewGroup()} />
+                    </IconButton>
+                    <IconButton className={classes.icons}>
+                      <Cloud />
+                    </IconButton>
+                    <IconButton className={classes.icons}>
+                      <Search onClick={() => this.showSearch()} />
+                    </IconButton>
                     <IconButton className={classes.icons}>
                       <FilterList onClick={this.showFilter} />
                     </IconButton>
                   </div>
-                      <Menu
-                        id="simple-menu2"
-                        anchorEl={anchorEl2}
-                        open={Boolean(anchorEl2)}
-                        onClose={this.closeFilter}
+                  <Menu
+                    id="simple-menu2"
+                    anchorEl={anchorEl2}
+                    open={Boolean(anchorEl2)}
+                    onClose={this.closeFilter}
+                  >
+                    <div className={classes.filterBox}>
+                      <div style={{ float: 'right' }}>
+                        <Button
+                          component="span"
+                          className={classes.resetButton}
+                          onClick={() => this.resetFilter()}
+                        >
+                          RESET
+                        </Button>
+                      </div>
+                      <Typography
+                        variant="button"
+                        color="inherit"
+                        className={classes.filterButton}
                       >
-                        <div className={classes.filterBox}>
-                          <div style={{float: 'right'}}>
-                            <Button component="span" className={classes.resetButton} onClick={() => this.resetFilter()}>RESET</Button>
-                          </div>
-                          <Typography variant="button" color="inherit" className={classes.filterButton}>FILTERS</Typography>
-                          <Grid container spacing={24}>
-                            <Grid item xs={9}>
-                            <FormControl className={classes.formControl}>
-                              <InputLabel htmlFor="age-simple">Status</InputLabel>
-                              <Select
-                                autoWidth
-                                value={this.props.filterText}
-                                onChange={this.handleChange}
-                                // inputProps={{
-                                //   name: 'age',
-                                //   id: 'age-simple',
-                                // }}
-                              >
-                                <MenuItem value="all">
-                                  <em>All</em>
-                                </MenuItem>
-                                <MenuItem value='active'>Active</MenuItem>
-                                <MenuItem value='inactive'>Inactive</MenuItem>
-                              </Select>
-                            </FormControl>
-                            </Grid>
-                            <Grid item xs={3}>
-                            </Grid>
-                          </Grid>
-                          {/* <MenuItem onClick={this.closeFilter}>Option 1</MenuItem> */}
-                        </div>
-                      </Menu>
-                  <div className={classes.records}>
-                    {users.length} records
-                  </div>
+                        FILTERS
+                      </Typography>
+                      <Grid container spacing={24}>
+                        <Grid item xs={9}>
+                          <FormControl className={classes.formControl}>
+                            <InputLabel htmlFor="age-simple">Status</InputLabel>
+                            <Select
+                              autoWidth
+                              value={this.props.filterText}
+                              onChange={this.handleChange}
+                              // inputProps={{
+                              //   name: 'age',
+                              //   id: 'age-simple',
+                              // }}
+                            >
+                              <MenuItem value="all">
+                                <em>All</em>
+                              </MenuItem>
+                              <MenuItem value="active">Active</MenuItem>
+                              <MenuItem value="inactive">Inactive</MenuItem>
+                            </Select>
+                          </FormControl>
+                        </Grid>
+                        <Grid item xs={3} />
+                      </Grid>
+                      {/* <MenuItem onClick={this.closeFilter}>Option 1</MenuItem> */}
+                    </div>
+                  </Menu>
+                  <div className={classes.records}>{users.length} records</div>
                 </div>
                 <Divider />
-								{/* <br/>
+                {/* <br/>
 								<CustomInput
 									id="search"
 									// fullwidth={true}
@@ -422,10 +499,10 @@ class ManageUserGroups extends Component {
 										)
 									}}
 								/> */}
-								{this.renderUserGroups()}
-							</div>
-						</Grid>
-						<Grid item xs={12} sm={7} md={8} lg={9} className={classes.demo}>
+                {this.renderUserGroups()}
+              </div>
+            </Grid>
+            <Grid item xs={12} sm={7} md={8} lg={9} className={classes.demo}>
               <div className={classes.demoContent}>
                 <Dialog
                   fullScreen={window.innerWidth < 750}
@@ -433,18 +510,31 @@ class ManageUserGroups extends Component {
                   open={this.state.open}
                   onClose={this.handleClose}
                   TransitionComponent={Transition}
-                  scroll='paper'
+                  scroll="paper"
                 >
                   <Hidden smUp>
-  
                     {this.props.selected && (
                       <div className={classes.appBar}>
-                        <AppBar position="fixed" dropShadow="none" color="default">
+                        <AppBar
+                          position="fixed"
+                          dropShadow="none"
+                          color="default"
+                        >
                           <Toolbar className={classes.noShadow}>
-                            <IconButton className={classes.menuButton} color="default" onClick={this.handleClose} aria-label="Close">
+                            <IconButton
+                              className={classes.menuButton}
+                              color="default"
+                              onClick={this.handleClose}
+                              aria-label="Close"
+                            >
                               <BackArrow />
                             </IconButton>
-                            <Typography variant="subtitle1" textAlign="center" color="inherit" className={classes.newTitle}>
+                            <Typography
+                              variant="subtitle1"
+                              textAlign="center"
+                              color="inherit"
+                              className={classes.newTitle}
+                            >
                               {!this.state.selected ? this.state.title : ''}
                             </Typography>
                           </Toolbar>
@@ -458,37 +548,41 @@ class ManageUserGroups extends Component {
                 </Dialog>
                 {this.renderContentWrapper()}
               </div>
-						</Grid>
-					</Grid>
-				</PageColumn>
-			</div>
-
-		)
-	}
+            </Grid>
+          </Grid>
+        </PageColumn>
+      </div>
+    );
+  }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     users: state.userGroups.users,
     selected: state.userGroups.selected,
     filterText: state.userGroups.filter,
-  }
+  };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
-    filter: (status) => dispatch(filter(status)),
-    duplicateUser: (user) => dispatch(duplicateUser(user)),
-    loadUser: (userId) => dispatch(loadUser(userId)),
-    saveUser: (user) => dispatch(saveUser(user)),
-    removeUser: (userId) => {
-      dispatch(removeUser(userId))
+    filter: status => dispatch(filter(status)),
+    duplicateUser: user => dispatch(duplicateUser(user)),
+    loadUser: userId => dispatch(loadUser(userId)),
+    saveUser: user => dispatch(saveUser(user)),
+    removeUser: userId => {
+      dispatch(removeUser(userId));
       // this.setState({ anchorEl: null });
-    }
-  }
+    },
+  };
 };
 
 ManageUserGroups.propTypes = {
   classes: PropTypes.object.isRequired,
 };
-export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(ManageUserGroups));	
+export default withStyles(styles)(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  )(ManageUserGroups),
+);

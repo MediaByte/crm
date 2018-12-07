@@ -1,8 +1,8 @@
 import {
   mrAuto,
   mlAuto,
-  cardTitle
-} from "assets/jss/material-kit-pro-react.jsx";
+  cardTitle,
+} from 'assets/jss/material-kit-pro-react.jsx';
 
 const pricingStyle = {
   mrAuto,
@@ -10,20 +10,20 @@ const pricingStyle = {
   cardTitle,
   cardTitleWhite: {
     ...cardTitle,
-    color: "#fff!important",
-    "& small": {
-      color: "rgba(255,255,255,0.8)!important"
-    }
+    color: '#fff!important',
+    '& small': {
+      color: 'rgba(255,255,255,0.8)!important',
+    },
   },
   textCenter: {
-    textAlign: "center"
+    textAlign: 'center',
   },
   pricingSection: {
-    padding: "80px 0px"
+    padding: '80px 0px',
   },
   textInfo: {
-    color: "#00bcd4!important"
-  }
+    color: '#00bcd4!important',
+  },
 };
 
 export default pricingStyle;

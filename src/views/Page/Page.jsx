@@ -6,19 +6,19 @@ import Typography from '@material-ui/core/Typography';
 //project components
 import Navigation from 'components/Navigation/Navigation.jsx';
 //styles
-import navStyles from "components/Navigation/navStyle.js";
+import navStyles from 'components/Navigation/navStyle.js';
 class Page extends React.Component {
-	render() {
-		const { children, classes, ...navProps } = this.props
-			return (
-				<Navigation title={this.props.titleText} classes{...navProps}>
-					<Typography variant="title" noWrap className={classes.title}>{this.props.titleText}</Typography>
-						<div className={classes.titleStyle}>
-								{children}					
-						</div>
-				</Navigation>
-			)
-	}
+  render() {
+    const { children, classes, ...navProps } = this.props;
+    return (
+      <Navigation title={this.props.titleText} classes {...navProps}>
+        <Typography variant="title" noWrap className={classes.title}>
+          {this.props.titleText}
+        </Typography>
+        <div className={classes.titleStyle}>{children}</div>
+      </Navigation>
+    );
+  }
 }
 Navigation.propTypes = {
   classes: PropTypes.object.isRequired,

@@ -1,44 +1,42 @@
 const styles = theme => ({
-  buttonOption:{
-	marginLeft: -10
+  buttonOption: {
+    marginLeft: -10,
   },
-  container:{
-    
-  },
-  button:{
-	minWidth: '20%'
+  container: {},
+  button: {
+    minWidth: '20%',
   },
   avatar: {
-	marginTop: 80,
+    marginTop: 80,
   },
-  cardFooter:{
-	display: 'flex',
-	justifyContent: 'flex-end',
+  cardFooter: {
+    display: 'flex',
+    justifyContent: 'flex-end',
   },
   description: {
-  	display: 'flex',
-  	justifyContent: 'center',
-  	marginTop: '5px',
-  	cursor: 'pointer',
+    display: 'flex',
+    justifyContent: 'center',
+    marginTop: '5px',
+    cursor: 'pointer',
   },
   cardCategoryWhite: {
-    color: "rgba(255,255,255,.62)",
-    margin: "0",
-    fontSize: "14px",
-    marginTop: "0",
-    marginBottom: "0"
+    color: 'rgba(255,255,255,.62)',
+    margin: '0',
+    fontSize: '14px',
+    marginTop: '0',
+    marginBottom: '0',
   },
   cardTitleWhite: {
-    color: "#FFFFFF",
-    marginTop: "0px",
-    minHeight: "auto",
-    fontWeight: "300",
+    color: '#FFFFFF',
+    marginTop: '0px',
+    minHeight: 'auto',
+    fontWeight: '300',
     fontFamily: "'Montserrat', sans-serif",
-    marginBottom: "3px",
-    textDecoration: "none"
+    marginBottom: '3px',
+    textDecoration: 'none',
   },
   phoneField: {
-    marginTop: theme.spacing.unit * 3
+    marginTop: theme.spacing.unit * 3,
   },
   phoneFlex: {
     display: 'flex',
@@ -47,7 +45,7 @@ const styles = theme => ({
   addPhone: {
     marginTop: theme.spacing.unit * 2,
     display: 'flex',
-    flexWrap: 'wrap'
+    flexWrap: 'wrap',
   },
   addressFlex: {
     display: 'flex',
@@ -66,7 +64,7 @@ const styles = theme => ({
     width: '100%',
     [theme.breakpoints.down('sm')]: {
       height: '400px',
-    }
+    },
   },
 });
 

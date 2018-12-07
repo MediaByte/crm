@@ -35,7 +35,7 @@ const styles = theme => ({
   },
   clock: {
     fontFamily: '"Montserrat", sans-serif',
-    fontSize: "33px",
+    fontSize: '33px',
   },
   date: {
     [theme.breakpoints.up('sm')]: {
@@ -43,7 +43,7 @@ const styles = theme => ({
     },
     margin: 'auto',
     fontFamily: '"Montserrat", sans-serif',
-    fontSize: "17px",
+    fontSize: '17px',
   },
   signOut: {
     margin: 'auto',
@@ -76,18 +76,20 @@ class NotificationsCenter extends React.Component {
 
     const header = (
       <div className={classes.list}>
-      <GridContainer className={classes.header}>
-        <GridItem xs={12} sm={3}>
-          <Typography className={classes.clock}>
-            3:03
-          </Typography>
-        </GridItem>       
-        <GridItem xs ={12} sm={9} className={classes.date}>
-          <Typography style={{ color: 'gray' }} className={classes.date} variant={'body1'}>
-            Thursday, September 13
-          </Typography>
-        </GridItem>
-      </GridContainer>
+        <GridContainer className={classes.header}>
+          <GridItem xs={12} sm={3}>
+            <Typography className={classes.clock}>3:03</Typography>
+          </GridItem>
+          <GridItem xs={12} sm={9} className={classes.date}>
+            <Typography
+              style={{ color: 'gray' }}
+              className={classes.date}
+              variant={'body1'}
+            >
+              Thursday, September 13
+            </Typography>
+          </GridItem>
+        </GridContainer>
         <Divider />
       </div>
     );
@@ -100,7 +102,11 @@ class NotificationsCenter extends React.Component {
             <Icon className={classes.userIcon}>perm_identity</Icon>
           </GridItem>
           <GridItem xs={6} className={classes.signOut}>
-            <Typography className={classes.signOut} color='primary' variant={'button'}>
+            <Typography
+              className={classes.signOut}
+              color="primary"
+              variant={'button'}
+            >
               SIGN OUT
             </Typography>
           </GridItem>
@@ -111,21 +117,21 @@ class NotificationsCenter extends React.Component {
     return (
       <div>
         {/* <IconButton onClick={this.toggleDrawer('right', true)}> */}
-          <Icon onClick={this.toggleDrawer('right', true)}>
-            <NotificationsOutlined />
-          </Icon>
+        <Icon onClick={this.toggleDrawer('right', true)}>
+          <NotificationsOutlined />
+        </Icon>
         {/* </IconButton> */}
-        <Drawer 
-          anchor="right" 
-          open={this.state.right} 
-          onClose={this.toggleDrawer('right', false)} 
+        <Drawer
+          anchor="right"
+          open={this.state.right}
+          onClose={this.toggleDrawer('right', false)}
           classes={{
-            paper: classes.drawerPaper
+            paper: classes.drawerPaper,
           }}
         >
           <div>
             {header}
-            <List></List>
+            <List />
             {footer}
           </div>
         </Drawer>
