@@ -37,15 +37,18 @@ class LoginPage extends React.Component {
     };
     this.handleAuthentication = this.handleAuthentication.bind(this);
   }
+
   componentDidMount() {
     window.scrollTo(0, 0);
     document.body.scrollTop = 0;
   }
+
   keyPress(e) {
     if (e.keyCode === 13) {
       this.handleAuthentication();
     }
   }
+
   handleEmail(event) {
     gun
       .get('users')
@@ -57,9 +60,11 @@ class LoginPage extends React.Component {
       });
     this.setState({ username: event.target.value.toLowerCase() });
   }
+
   handlePassword(event) {
     this.setState({ password: event.target.value });
   }
+
   handleAuthentication() {
     const { username, password } = this.state;
     const ref = gun
@@ -76,9 +81,11 @@ class LoginPage extends React.Component {
           });
     });
   }
+
   render() {
     const { classes } = this.props;
     const { authenticated, correctEmail, username } = this.state;
+
     return !authenticated ? (
       <div>
         <div className={classes.container}>

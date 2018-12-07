@@ -14,11 +14,9 @@ import {
   Typography,
   FormControlLabel,
   Checkbox,
-  Divider,
   Button,
   AppBar,
   Toolbar,
-  Hidden,
   IconButton,
   TextField,
 } from '@material-ui/core';
@@ -140,9 +138,10 @@ const styles = theme => ({
 
 class UserGroupForm extends Component {
   render() {
-    const { classes, user, handleChangeCheckbox } = this.props;
+    const { classes, user } = this.props;
+
     const isAdd = user && !user.id;
-    console.log('props', user, isAdd);
+
     return (
       <div>
         <Formik

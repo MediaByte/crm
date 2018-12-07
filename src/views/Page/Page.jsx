@@ -7,6 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import Navigation from 'components/Navigation/Navigation.jsx';
 //styles
 import navStyles from 'components/Navigation/navStyle.js';
+
 class Page extends React.Component {
   render() {
     const { children, classes, ...navProps } = this.props;
@@ -20,7 +21,9 @@ class Page extends React.Component {
     );
   }
 }
+
 Navigation.propTypes = {
   classes: PropTypes.object.isRequired,
 };
+
 export default withStyles(navStyles)(Page);

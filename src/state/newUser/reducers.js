@@ -26,6 +26,7 @@ import {
   NEW_USER_GROUPS,
   NEW_USER_PHONE,
 } from './constants.js';
+
 const initialState = {
   first: '',
   last: '',
@@ -54,6 +55,7 @@ const initialState = {
   workAddressCountry: '',
   groups: [],
 };
+
 export const newUser = (state = initialState, action = {}) => {
   switch (action.type) {
     case NEW_USER_FIRST_NAME:

@@ -13,6 +13,7 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 //project files
 import Page from 'views/Page/Page';
+
 const styles = theme => ({
   demo: {
     [theme.breakpoints.down('sm')]: {
@@ -20,7 +21,6 @@ const styles = theme => ({
       marginLeft: -20,
     },
   },
-
   content: {
     width: '100%',
     display: 'flex',
@@ -56,6 +56,7 @@ const styles = theme => ({
     },
   },
 });
+
 class AdminPanel extends React.Component {
   componentDidMount() {
     window.scrollTo(0, 0);
@@ -339,4 +340,5 @@ class AdminPanel extends React.Component {
     );
   }
 }
+
 export default withStyles(styles)(AdminPanel);

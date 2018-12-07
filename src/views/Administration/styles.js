@@ -179,7 +179,6 @@ const styles = theme => ({
       textAlign: 'center',
     },
   },
-
   Title: {
     fontWeight: '900',
     textAlign: 'center',

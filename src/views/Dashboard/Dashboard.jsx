@@ -9,8 +9,10 @@ import GridContainer from 'components/Grid/GridContainer.jsx';
 import Cards from 'components/Cards/Card.jsx';
 //gundb
 import Gun from 'gun/gun';
+
 const gun = Gun('https://crm-server.herokuapp.com/gun');
 const db = gun.get('users');
+
 const styles = theme => ({
   root: {},
   layout: {
@@ -28,6 +30,7 @@ const styles = theme => ({
     },
   },
 });
+
 class Dashboard extends Component {
   constructor(props) {
     super(props);
@@ -39,7 +42,7 @@ class Dashboard extends Component {
   componentDidMount() {
     const { match } = this.props;
     const profile = match.params.id;
-    console.log(db);
+
     db.get(profile).once(user => {
       this.setState({ user: user });
     });
@@ -47,8 +50,10 @@ class Dashboard extends Component {
     window.scrollTo(0, 0);
     document.body.scrollTop = 0;
   }
+
   render() {
     const { classes } = this.props;
+
     return (
       <div classNames={classes.root}>
         <Page component={'dashboard'} titleText={'Dashboard'}>
@@ -121,7 +126,9 @@ class Dashboard extends Component {
     );
   }
 }
+
 Dashboard.propTypes = {
   classes: PropTypes.object.isRequired,
 };
+
 export default withStyles(styles)(Dashboard);

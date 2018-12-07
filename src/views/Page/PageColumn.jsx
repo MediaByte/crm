@@ -7,6 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import NavigationColumn from 'components/Navigation/NavigationColumn.jsx';
 //styles
 import navStyles from 'components/Navigation/navStyleColumn.js';
+
 class PageColumn extends React.Component {
   render() {
     const { children, classes } = this.props;
@@ -20,7 +21,9 @@ class PageColumn extends React.Component {
     );
   }
 }
+
 PageColumn.propTypes = {
   classes: PropTypes.object.isRequired,
 };
+
 export default withStyles(navStyles)(PageColumn);

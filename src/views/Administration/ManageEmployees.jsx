@@ -86,6 +86,7 @@ const styles = theme => ({
     width: '100%',
   },
 });
+
 class ManageEmployees extends Component {
   constructor(props) {
     super(props);
@@ -101,6 +102,7 @@ class ManageEmployees extends Component {
     this.toggleViews = this.toggleViews.bind(this);
     this.showUser = this.showUser.bind(this);
   }
+
   componentDidMount() {
     let users = [];
     this.gun
@@ -114,6 +116,7 @@ class ManageEmployees extends Component {
     window.scrollTo(0, 0);
     document.body.scrollTop = 0;
   }
+
   componentWillMount() {
     let users = [];
     this.gun
@@ -125,9 +128,11 @@ class ManageEmployees extends Component {
         this.setState({ users: Object.assign({}, this.state.users, users) });
       });
   }
+
   toggleViews() {
     this.setState({ addUser: !this.state.addUser });
   }
+
   showUser(user) {
     this.setState({
       first: user.first,
@@ -137,6 +142,7 @@ class ManageEmployees extends Component {
     });
     console.log(user);
   }
+
   render() {
     const { classes } = this.props;
     const { addUser } = this.state;
@@ -196,6 +202,7 @@ class ManageEmployees extends Component {
         </List>
       </div>
     );
+
     return (
       <div>
         <Page component={'administration'} titleText={'Employees'}>
@@ -268,7 +275,9 @@ class ManageEmployees extends Component {
     );
   }
 }
+
 ManageEmployees.propTypes = {
   classes: PropTypes.object.isRequired,
 };
+
 export default withStyles(styles)(ManageEmployees);

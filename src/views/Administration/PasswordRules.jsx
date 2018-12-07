@@ -56,6 +56,7 @@ class PasswordRules extends Component {
     window.scrollTo(0, 0);
     document.body.scrollTop = 0;
   }
+
   render() {
     const { classes } = this.props;
 

@@ -177,7 +177,6 @@ const navStyles = theme => ({
   imgLogo: {
     margin: '0 auto',
   },
-
   search: {
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
@@ -256,4 +255,5 @@ const navStyles = theme => ({
     color: '#fff',
   },
 });
+
 export default navStyles;

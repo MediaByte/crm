@@ -122,6 +122,7 @@ class ManageUserGroups extends Component {
     window.scrollTo(0, 0);
     document.body.scrollTop = 0;
   }
+
   componentWillMount() {
     let users = [];
     this.gun
@@ -133,9 +134,11 @@ class ManageUserGroups extends Component {
         this.setState({ users: Object.assign({}, this.state.users, users) });
       });
   }
+
   toggleViews() {
     this.setState({ addUser: !this.state.addUser });
   }
+
   showUser(user) {
     this.setState({
       first: user.first,
@@ -580,6 +583,7 @@ const mapDispatchToProps = dispatch => {
 ManageUserGroups.propTypes = {
   classes: PropTypes.object.isRequired,
 };
+
 export default withStyles(styles)(
   connect(
     mapStateToProps,
