@@ -23,6 +23,8 @@ import AddCircle from '@material-ui/icons/AddCircle';
 import RemoveCircle from '@material-ui/icons/RemoveCircle';
 //files
 import avatar from 'assets/img/faces/marc.jpg';
+//constants
+import { MAX_PHONES_PER_COSTUMER } from '../../constants/config';
 //styles
 import styles from 'assets/jss/material-kit-pro-react/components/newProfileStyle.jsx';
 //State
@@ -130,6 +132,7 @@ class NewProfile extends React.Component {
       showAddress1: false,
       showAddress2: false,
       showAddress3: false,
+      phoneNumbers: [],
     };
     this.phoneField = this.phoneField.bind(this);
     this.onChangeValues = this.onChangeValues.bind(this);
@@ -235,25 +238,23 @@ class NewProfile extends React.Component {
       });
     }
   }
+
   phoneField() {
-    if (!this.state.showPhone1) {
-      this.setState({
-        showPhone1: true,
-      });
-    } else if (this.state.showPhone1 && !this.state.showPhone2) {
-      this.setState({
-        showPhone2: true,
-      });
-    } else if (
-      this.state.showPhone1 &&
-      this.state.showPhone2 &&
-      !this.state.showPhone3
-    ) {
-      this.setState({
-        showPhone3: true,
-      });
-    }
+    this.setState(prevState => {
+      // Don't add more phone numbers than allowed
+      if (prevState.phoneNumbers.length === MAX_PHONES_PER_COSTUMER) {
+        return null;
+      }
+      return {
+        ...prevState,
+        phoneNumbers: prevState.phoneNumbers.concat({
+          phoneNumber: '',
+          phoneType: '',
+        }),
+      };
+    });
   }
+
   onChangeValues(event, key, reference = null) {
     //buggy - not worth investing time into now
     const functionString = `onChange${key}${reference}`;
@@ -269,12 +270,10 @@ class NewProfile extends React.Component {
   render() {
     const { classes } = this.props;
     const {
-      showPhone1,
-      showPhone2,
-      showPhone3,
       showAddress1,
       showAddress2,
       showAddress3,
+      phoneNumbers,
     } = this.state;
     return (
       <div>
@@ -330,7 +329,7 @@ class NewProfile extends React.Component {
                 <GridItem xs={12} sm={12} md={12}>
                   <GridContainer>
                     <GridItem xs={12} sm={12} md={12}>
-                      <ToggleDisplay show={showPhone1}>
+                      {/**<ToggleDisplay show={showPhone1}>
                         <div className={classes.phoneFlex}>
                           <div className={classes.phoneField}>
                             <PhoneInput select={'select1'} input={'input1'} />{' '}
@@ -344,37 +343,24 @@ class NewProfile extends React.Component {
                             />
                           </div>
                         </div>
-                      </ToggleDisplay>
-                      <ToggleDisplay show={showPhone2}>
-                        <div className={classes.phoneFlex}>
-                          <div className={classes.phoneField}>
-                            <PhoneInput select={'select2'} input={'input2'} />{' '}
-                            <RemoveCircle
-                              style={{
-                                color: 'red',
-                                fontSize: '25px',
-                                marginBottom: '0px',
-                                cursor: 'pointer',
-                              }}
-                            />
+                            </ToggleDisplay>*/}
+                      {phoneNumbers.map((phone, index) => (
+                        <ToggleDisplay key={index} show={true}>
+                          <div className={classes.phoneFlex}>
+                            <div className={classes.phoneField}>
+                              <PhoneInput select={'select1'} input={'input1'} />{' '}
+                              <RemoveCircle
+                                style={{
+                                  color: 'red',
+                                  fontSize: '25px',
+                                  marginBottom: '0px',
+                                  cursor: 'pointer',
+                                }}
+                              />
+                            </div>
                           </div>
-                        </div>
-                      </ToggleDisplay>
-                      <ToggleDisplay show={showPhone3}>
-                        <div className={classes.phoneFlex}>
-                          <div className={classes.phoneField}>
-                            <PhoneInput select={'select3'} input={'input3'} />{' '}
-                            <RemoveCircle
-                              style={{
-                                color: 'red',
-                                fontSize: '25px',
-                                marginBottom: '0px',
-                                cursor: 'pointer',
-                              }}
-                            />
-                          </div>
-                        </div>
-                      </ToggleDisplay>
+                        </ToggleDisplay>
+                      ))}
                       <div className={classes.addPhone}>
                         <Typography
                           style={{ cursor: 'pointer' }}
@@ -383,7 +369,6 @@ class NewProfile extends React.Component {
                         >
                           <IconButton>
                             <AddCircle
-                              onClick={this.phoneField}
                               style={{ fontSize: 32, color: 'green' }}
                             />
                           </IconButton>
