@@ -134,7 +134,6 @@ class NewProfile extends React.Component {
       showAddress3: false,
       phoneNumbers: [],
     };
-    this.phoneField = this.phoneField.bind(this);
     this.onChangeValues = this.onChangeValues.bind(this);
     this.addressField = this.addressField.bind(this);
     this.saveData = this.saveData.bind(this);
@@ -239,7 +238,7 @@ class NewProfile extends React.Component {
     }
   }
 
-  phoneField() {
+  addPhoneField = () => {
     this.setState(prevState => {
       // Don't add more phone numbers than allowed
       if (prevState.phoneNumbers.length === MAX_PHONES_PER_COSTUMER) {
@@ -253,7 +252,19 @@ class NewProfile extends React.Component {
         }),
       };
     });
-  }
+  };
+
+  removePhoneField = phoneNumberField => {
+    // Removes the current phoneNumberField clicked
+    this.setState(prevState => {
+      return {
+        ...prevState,
+        phoneNumbers: prevState.phoneNumbers.filter((phone, index) => {
+          return index !== phoneNumberField;
+        }),
+      };
+    });
+  };
 
   onChangeValues(event, key, reference = null) {
     //buggy - not worth investing time into now
@@ -343,13 +354,14 @@ class NewProfile extends React.Component {
                             />
                           </div>
                         </div>
-                            </ToggleDisplay>*/}
+                        </ToggleDisplay>*/}
                       {phoneNumbers.map((phone, index) => (
                         <ToggleDisplay key={index} show={true}>
                           <div className={classes.phoneFlex}>
                             <div className={classes.phoneField}>
                               <PhoneInput select={'select1'} input={'input1'} />{' '}
                               <RemoveCircle
+                                onClick={() => this.removePhoneField(index)}
                                 style={{
                                   color: 'red',
                                   fontSize: '25px',
@@ -364,7 +376,7 @@ class NewProfile extends React.Component {
                       <div className={classes.addPhone}>
                         <Typography
                           style={{ cursor: 'pointer' }}
-                          onClick={this.phoneField}
+                          onClick={this.addPhoneField}
                           className={classes.buttonOption}
                         >
                           <IconButton>
