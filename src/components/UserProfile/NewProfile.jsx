@@ -116,6 +116,7 @@ const mapDispatchToProps = dispatch => {
     onChangeMailingCountry: event => dispatch(mailAddressCountry(event)),
   };
 };
+
 class NewProfile extends React.Component {
   constructor(props) {
     super(props);
@@ -135,9 +136,11 @@ class NewProfile extends React.Component {
     this.addressField = this.addressField.bind(this);
     this.saveData = this.saveData.bind(this);
   }
+
   componentDidMount() {
     // db.map()
   }
+
   saveData() {
     const {
       email,
@@ -384,7 +387,7 @@ class NewProfile extends React.Component {
                               style={{ fontSize: 32, color: 'green' }}
                             />
                           </IconButton>
-                          add phone
+                          Add phone
                         </Typography>
                       </div>
                     </GridItem>
