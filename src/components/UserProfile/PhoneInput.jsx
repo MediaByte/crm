@@ -33,7 +33,8 @@ const styles = theme => ({
     display: 'inline-block',
   },
   root: {
-    display: 'inline-block',
+    alignItems: 'flex-end',
+    display: 'inline-flex',
     textAlign: 'center',
   },
   formControl: {
@@ -138,6 +139,7 @@ class PhoneInput extends React.Component {
               onChange={event => this.handleChange(event, 'number')}
               id={input}
               inputComponent={TextMaskCustom}
+              style={{ marginTop: -3 }}
             />
           </FormControl>
         </div>
