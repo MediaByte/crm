@@ -55,12 +55,14 @@ import {
   mailAddressZip,
   mailAddressCountry,
 } from 'state/newUser/actions.js';
+
 const gun = Gun('https://pineconeserver.herokuapp.com/gun');
 const db = gun.get('testRost').get('users');
 const dbRelations = gun
   .get('testRost')
   .get('relation')
   .get('users');
+
 const mapStateToProps = state => {
   return {
     first: state.newUser.first,
@@ -90,6 +92,7 @@ const mapStateToProps = state => {
     groups: state.newUser.groups,
   };
 };
+
 const mapDispatchToProps = dispatch => {
   return {
     onChangeFirstName: event => dispatch(first(event)),
@@ -218,6 +221,7 @@ class NewProfile extends React.Component {
 
     this.props.toggleViews();
   }
+
   addressField() {
     if (!this.state.showAddress1) {
       this.setState({
@@ -278,6 +282,7 @@ class NewProfile extends React.Component {
       ? parsedMethod(event)
       : console.log(parsedMethod);
   }
+
   render() {
     const { classes } = this.props;
     const {
@@ -286,6 +291,7 @@ class NewProfile extends React.Component {
       showAddress3,
       phoneNumbers,
     } = this.state;
+
     return (
       <div>
         <GridContainer className={classes.container}>
@@ -340,21 +346,6 @@ class NewProfile extends React.Component {
                 <GridItem xs={12} sm={12} md={12}>
                   <GridContainer>
                     <GridItem xs={12} sm={12} md={12}>
-                      {/**<ToggleDisplay show={showPhone1}>
-                        <div className={classes.phoneFlex}>
-                          <div className={classes.phoneField}>
-                            <PhoneInput select={'select1'} input={'input1'} />{' '}
-                            <RemoveCircle
-                              style={{
-                                color: 'red',
-                                fontSize: '25px',
-                                marginBottom: '0px',
-                                cursor: 'pointer',
-                              }}
-                            />
-                          </div>
-                        </div>
-                        </ToggleDisplay>*/}
                       {phoneNumbers.map((phone, index) => (
                         <ToggleDisplay key={index} show={true}>
                           <div className={classes.phoneFlex}>
@@ -824,6 +815,7 @@ class NewProfile extends React.Component {
     );
   }
 }
+
 export default withStyles(styles)(
   connect(
     mapStateToProps,
