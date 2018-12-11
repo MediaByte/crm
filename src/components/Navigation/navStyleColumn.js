@@ -19,7 +19,7 @@ const navStyles = theme => ({
     display: 'none',
     visibility: 'visible',
     marginTop: '60px',
-    height: "100%",
+    height: '100%',
     [theme.breakpoints.up('sm')]: {
       visibility: 'hidden',
     },
@@ -29,13 +29,13 @@ const navStyles = theme => ({
     //   paddingTop: '40px',
     // },
     // width: "100%",
-    height: "100%",
+    height: '100%',
     paddingTop: '44px',
     // paddingBottom: '30px',
     [theme.breakpoints.up('sm')]: {
       // position: "fixed",
       // paddingTop: '70px',
-    }
+    },
   },
   headerInput: {
     marginTop: -7,
@@ -62,8 +62,8 @@ const navStyles = theme => ({
     //   backgroundColor: "#0dacc4",
     // },
     // boxShadow: "0 0 10px #eee",
-    backgroundColor: "#fff",
-    borderBottom: "1px solid #eee",
+    backgroundColor: '#fff',
+    borderBottom: '1px solid #eee',
   },
   appBarShift: {
     // marginLeft: drawerWidth,
@@ -74,7 +74,7 @@ const navStyles = theme => ({
     // }),
   },
   menuButton: {
-    color: "#0dacc4",
+    color: '#0dacc4',
     // marginLeft: 12,
     marginRight: 10,
     [theme.breakpoints.up('sm')]: {
@@ -84,7 +84,7 @@ const navStyles = theme => ({
     transition: theme.transitions.create(['margin'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
-    })
+    }),
   },
   menuButtonOpened: {
     transition: theme.transitions.create(['margin'], {
@@ -107,10 +107,9 @@ const navStyles = theme => ({
   },
   drawerPaper: {
     width: drawerWidth,
-    
 
-    color: "#fff !important",
-    backgroundColor: "#0dacc4",
+    color: '#fff !important',
+    backgroundColor: '#0dacc4',
     [theme.breakpoints.up('sm')]: {
       position: 'relative',
       // backgroundColor: "#fff",
@@ -124,7 +123,7 @@ const navStyles = theme => ({
     }),
   },
   drawerPaperClose: {
-    backgroundColor: "#0dacc4",
+    backgroundColor: '#0dacc4',
     overflowX: 'visible',
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
@@ -136,7 +135,7 @@ const navStyles = theme => ({
     },
     [theme.breakpoints.down('xs')]: {
       width: '0px',
-      marginLeft: '-1px'
+      marginLeft: '-1px',
     },
   },
   toolbar: {
@@ -144,7 +143,7 @@ const navStyles = theme => ({
     alignItems: 'center',
     justifyContent: 'flex-end',
     padding: '0 8px',
-    backgroundColor: "transparent",
+    backgroundColor: 'transparent',
     // backgroundColor: "#eee",
     ...theme.mixins.toolbar,
   },
@@ -176,9 +175,8 @@ const navStyles = theme => ({
     // minWidth: 0,
   },
   imgLogo: {
-    margin: "0 auto"
+    margin: '0 auto',
   },
-
   search: {
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
@@ -193,7 +191,7 @@ const navStyles = theme => ({
       marginLeft: theme.spacing.unit,
       width: 'auto',
       display: 'block',
-  },
+    },
   },
   searchIcon: {
     width: theme.spacing.unit * 9,
@@ -223,15 +221,15 @@ const navStyles = theme => ({
     },
   },
   active: {
-    color: '#fff'
+    color: '#fff',
   },
   selected: {
-    backgroundColor: "rgba(255,255,255,0.2) !important",
-    color: "white !important",
-    fontWeight: 600
+    backgroundColor: 'rgba(255,255,255,0.2) !important',
+    color: 'white !important',
+    fontWeight: 600,
   },
   iconMenu: {
-    color: '#fff'
+    color: '#fff',
   },
   bottom: {
     display: 'flex',
@@ -241,8 +239,8 @@ const navStyles = theme => ({
     // [theme.breakpoints.up('sm')]: {
     //   display: 'none',
     // },
-    borderTop: "1px solid #eee",
-    position: "fixed",
+    borderTop: '1px solid #eee',
+    position: 'fixed',
     bottom: '0',
     [theme.breakpoints.up('sm')]: {
       display: 'none',
@@ -250,11 +248,12 @@ const navStyles = theme => ({
   },
   label: {
     ' span': {
-      display: 'none'
-    }
+      display: 'none',
+    },
   },
   white: {
-    color: "#fff"
-  }
+    color: '#fff',
+  },
 });
+
 export default navStyles;

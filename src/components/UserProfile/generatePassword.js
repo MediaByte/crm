@@ -1,8 +1,7 @@
-
 const generatePassword = require('password-generator');
- 
+
 const newPassword = () => {
-	return generatePassword()
-}
+  return generatePassword();
+};
 
 export default newPassword;
