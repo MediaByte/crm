@@ -1,29 +1,24 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 //material ui components
-import { NavLink } from 'react-router-dom';
-import { withStyles } from '@material-ui/core/styles';
-import IconButton from '@material-ui/core/IconButton';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import Grid from '@material-ui/core/Grid';
+import { withStyles } from '@material-ui/core/styles'
+import IconButton from '@material-ui/core/IconButton'
+import InputAdornment from '@material-ui/core/InputAdornment'
+import Grid from '@material-ui/core/Grid'
 //material-ui icons
-import Search from '@material-ui/icons/Search';
-import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
+import Search from '@material-ui/icons/Search'
 //project components
-import Page from 'views/Page/Page.jsx';
-import GridItem from 'components/Grid/GridItem.jsx';
-import GridContainer from 'components/Grid/GridContainer.jsx';
-import CustomInput from 'components/CustomInput/CustomInput.jsx';
-import NewProfile from 'components/UserProfile/NewProfile.jsx';
-import EmployeeCard from 'components/UserProfile/EmployeeCard';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import ListItemText from '@material-ui/core/ListItemText';
-import Avatar from '@material-ui/core/Avatar';
+import Page from 'views/Page/Page.jsx'
+import GridItem from 'components/Grid/GridItem.jsx'
+import GridContainer from 'components/Grid/GridContainer.jsx'
+import CustomInput from 'components/CustomInput/CustomInput.jsx'
+import NewProfile from 'components/UserProfile/NewProfile.jsx'
+import EmployeeCard from 'components/UserProfile/EmployeeCard'
+import List from '@material-ui/core/List'
 //gundb
-import Gun from 'gun/gun';
+import Gun from 'gun/gun'
+
+import UsersListItem from 'components/UsersListItem'
 
 // const formatData = data => Object.keys(data)
 // 	.map(key => ({ key, ...data[key]  }))
@@ -85,12 +80,12 @@ const styles = theme => ({
   list: {
     width: '100%',
   },
-});
+})
 
 class ManageEmployees extends Component {
   constructor(props) {
-    super(props);
-    this.gun = Gun('https://pineconeserver.herokuapp.com/gun');
+    super(props)
+    this.gun = Gun('https://pineconeserver.herokuapp.com/gun')
     this.state = {
       addUser: true,
       users: [],
@@ -98,39 +93,39 @@ class ManageEmployees extends Component {
       last: '',
       group: '',
       email: '',
-    };
-    this.toggleViews = this.toggleViews.bind(this);
-    this.showUser = this.showUser.bind(this);
+    }
+    this.toggleViews = this.toggleViews.bind(this)
+    this.showUser = this.showUser.bind(this)
   }
 
   componentDidMount() {
-    let users = [];
+    let users = []
     this.gun
       .get('testRost')
       .get('users')
       .map()
       .on((user, key) => {
-        users[key] = user;
-        this.setState({ users: Object.assign({}, this.state.users, users) });
-      });
-    window.scrollTo(0, 0);
-    document.body.scrollTop = 0;
+        users[key] = user
+        this.setState({ users: Object.assign({}, this.state.users, users) })
+      })
+    window.scrollTo(0, 0)
+    document.body.scrollTop = 0
   }
 
   componentWillMount() {
-    let users = [];
+    let users = []
     this.gun
       .get('testRost')
       .get('users')
       .map()
       .on((user, key) => {
-        users[key] = user;
-        this.setState({ users: Object.assign({}, this.state.users, users) });
-      });
+        users[key] = user
+        this.setState({ users: Object.assign({}, this.state.users, users) })
+      })
   }
 
   toggleViews() {
-    this.setState({ addUser: !this.state.addUser });
+    this.setState({ addUser: !this.state.addUser })
   }
 
   showUser(user) {
@@ -139,13 +134,13 @@ class ManageEmployees extends Component {
       last: user.last,
       email: user.email,
       group: user.groups,
-    });
-    console.log(user);
+    })
+    console.log(user)
   }
 
   render() {
-    const { classes } = this.props;
-    const { addUser } = this.state;
+    const { classes } = this.props
+    const { addUser } = this.state
     const data = [
       { name: 'Josh Carey', role: 'Administrator' },
       { name: 'Osny Neto', role: 'Administrator' },
@@ -153,30 +148,14 @@ class ManageEmployees extends Component {
       { name: 'Josh Carey', role: 'Administrator' },
       { name: 'Osny Neto', role: 'Administrator' },
       { name: 'Abdul Aziz', role: 'Administrator' },
-    ];
+    ]
     // let parsedData = formatData(this.state.users)
 
     const leftMenu = (
       <div style={{ width: '100%' }}>
         <List component="nav" className={classes.list}>
           {data.map((item, index) => (
-            <ListItem
-              className={classes.list}
-              key={index}
-              component={props => (
-                <NavLink to={'/management/employees'} {...props} />
-              )}
-            >
-              <ListItemAvatar>
-                <Avatar>aa</Avatar>
-              </ListItemAvatar>
-              <ListItemText primary={item.name} secondary={item.role} />
-              <ListItemSecondaryAction>
-                <IconButton>
-                  <KeyboardArrowRight />
-                </IconButton>
-              </ListItemSecondaryAction>
-            </ListItem>
+            <UsersListItem key={index} name={item.name} role={item.role} />
           ))}
 
           {/* parsedData
@@ -201,7 +180,7 @@ class ManageEmployees extends Component {
 						.reverse() */}
         </List>
       </div>
-    );
+    )
 
     return (
       <div>
@@ -272,12 +251,12 @@ class ManageEmployees extends Component {
           </Grid>
         </Page>
       </div>
-    );
+    )
   }
 }
 
 ManageEmployees.propTypes = {
   classes: PropTypes.object.isRequired,
-};
+}
 
-export default withStyles(styles)(ManageEmployees);
+export default withStyles(styles)(ManageEmployees)
