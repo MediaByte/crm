@@ -38,7 +38,7 @@ const ItemNavLink = props => <NavLink to={'/management/employees'} {...props} />
  * @prop {StyleRules<keyof styles>} classes Do not pass this prop, as this is
  * injected by material-ui's withStyles
  * @prop {string} name Name of the user
- * @prop {string} role Role of the user
+ * @prop {string} employeeRole Role of the user
  */
 
 /**
@@ -46,14 +46,14 @@ const ItemNavLink = props => <NavLink to={'/management/employees'} {...props} />
  */
 class UsersListItem extends React.PureComponent {
   render() {
-    const { classes, name, role } = this.props
+    const { classes, employeeRole, name } = this.props
 
     return (
       <ListItem className={classes.root} component={ItemNavLink}>
         <ListItemAvatar>
           <Avatar>{getInitialsFromName(name)}</Avatar>
         </ListItemAvatar>
-        <ListItemText primary={name} secondary={role} />
+        <ListItemText primary={name} secondary={employeeRole} />
         <ListItemSecondaryAction>
           <IconButton>
             <KeyboardArrowRight />

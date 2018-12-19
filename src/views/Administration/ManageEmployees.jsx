@@ -155,7 +155,11 @@ class ManageEmployees extends Component {
       <div style={{ width: '100%' }}>
         <List component="nav" className={classes.list}>
           {data.map((item, index) => (
-            <UsersListItem key={index} name={item.name} role={item.role} />
+            <UsersListItem
+              key={index}
+              name={item.name}
+              employeeRole={item.role}
+            />
           ))}
 
           {/* parsedData
