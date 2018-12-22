@@ -37,8 +37,8 @@ const ItemNavLink = props => <NavLink to={'/management/employees'} {...props} />
  * @typedef {object} UsersListItemProps
  * @prop {StyleRules<keyof styles>} classes Do not pass this prop, as this is
  * injected by material-ui's withStyles
- * @prop {string} name Name of the user
  * @prop {string} employeeRole Role of the user
+ * @prop {string} name Name of the user
  */
 
 /**
