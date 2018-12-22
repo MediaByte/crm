@@ -21,12 +21,6 @@ import { NavLink } from 'react-router-dom'
 
 import getInitialsFromName from './getInitialsFromName'
 
-const styles = {
-  root: {
-    width: '100%',
-  },
-}
-
 /**
  * This will probably get passed an id prop in the future
  * @type {React.SFC<NavLinkProps>}
@@ -62,6 +56,12 @@ class UsersListItem extends React.PureComponent {
       </ListItem>
     )
   }
+}
+
+const styles = {
+  root: {
+    width: '100%',
+  },
 }
 
 /**
