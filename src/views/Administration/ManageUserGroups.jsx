@@ -5,15 +5,11 @@ import 'react-block-ui/style.css'
 // import _ from 'lodash';
 //material ui components
 import { withStyles } from '@material-ui/core/styles'
-import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import IconButton from '@material-ui/core/IconButton'
 import Grid from '@material-ui/core/Grid'
 import Divider from '@material-ui/core/Divider'
 import Menu from '@material-ui/core/Menu'
-import FormControl from '@material-ui/core/FormControl'
-import InputLabel from '@material-ui/core/InputLabel'
-import Select from '@material-ui/core/Select'
 import InputAdornment from '@material-ui/core/InputAdornment'
 //material-ui icons
 import Add from '@material-ui/icons/Add'
@@ -47,6 +43,8 @@ import {
 
 //gundb
 import Gun from 'gun/gun'
+
+import UsersFilter from '../../components/UsersFilter'
 
 //State
 import { connect } from 'react-redux'
@@ -431,55 +429,25 @@ class ManageUserGroups extends Component {
                       <FilterList onClick={this.showFilter} />
                     </IconButton>
                   </div>
-                  <Menu
-                    id="simple-menu2"
+                  <UsersFilter
                     anchorEl={anchorEl2}
-                    open={Boolean(anchorEl2)}
+                    currentStatusValue={this.props.filterText}
                     onClose={this.closeFilter}
-                  >
-                    <div className={classes.filterBox}>
-                      <div style={{ float: 'right' }}>
-                        <Button
-                          component="span"
-                          className={classes.resetButton}
-                          onClick={() => this.resetFilter()}
-                        >
-                          RESET
-                        </Button>
-                      </div>
-                      <Typography
-                        variant="button"
-                        color="inherit"
-                        className={classes.filterButton}
-                      >
-                        FILTERS
-                      </Typography>
-                      <Grid container spacing={24}>
-                        <Grid item xs={9}>
-                          <FormControl className={classes.formControl}>
-                            <InputLabel htmlFor="age-simple">Status</InputLabel>
-                            <Select
-                              autoWidth
-                              value={this.props.filterText}
-                              onChange={this.handleChange}
-                              // inputProps={{
-                              //   name: 'age',
-                              //   id: 'age-simple',
-                              // }}
-                            >
-                              <MenuItem value="all">
-                                <em>All</em>
-                              </MenuItem>
-                              <MenuItem value="active">Active</MenuItem>
-                              <MenuItem value="inactive">Inactive</MenuItem>
-                            </Select>
-                          </FormControl>
-                        </Grid>
-                        <Grid item xs={3} />
-                      </Grid>
-                      {/* <MenuItem onClick={this.closeFilter}>Option 1</MenuItem> */}
-                    </div>
-                  </Menu>
+                    open={!!anchorEl2}
+                    onStatusChange={statusValue =>
+                      this.props.filter(statusValue)
+                    }
+                    possibleStatuses={[
+                      {
+                        displayValue: 'Active',
+                        value: 'active',
+                      },
+                      {
+                        displayValue: 'Inactive',
+                        value: 'inactive',
+                      },
+                    ]}
+                  />
                   <div className={classes.records}>{users.length} records</div>
                 </div>
                 <Divider />
