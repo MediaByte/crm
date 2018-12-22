@@ -6,7 +6,7 @@ import {
   description,
   mlAuto,
   mrAuto,
-} from 'assets/jss/material-kit-pro-react.jsx';
+} from 'assets/jss/material-kit-pro-react.jsx'
 
 const sectionStyle = {
   sectionSections: {
@@ -38,6 +38,6 @@ const sectionStyle = {
   photoGallery: {
     padding: '7.5px',
   },
-};
+}
 
-export default sectionStyle;
+export default sectionStyle

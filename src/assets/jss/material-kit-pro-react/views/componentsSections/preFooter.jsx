@@ -4,7 +4,7 @@ import {
   mlAuto,
   mrAuto,
   description,
-} from 'assets/jss/material-kit-pro-react.jsx';
+} from 'assets/jss/material-kit-pro-react.jsx'
 
 const styles = {
   container,
@@ -101,6 +101,6 @@ const styles = {
   },
   subscribeButton: {},
   border: {},
-};
+}
 
-export default styles;
+export default styles

@@ -11,7 +11,7 @@ import {
   successColor,
   warningColor,
   dangerColor,
-} from 'assets/jss/material-kit-pro-react.jsx';
+} from 'assets/jss/material-kit-pro-react.jsx'
 
 const buttonStyle = {
   button: {
@@ -478,6 +478,6 @@ const buttonStyle = {
   fileButton: {
     // display: "inline-block"
   },
-};
+}
 
-export default buttonStyle;
+export default buttonStyle

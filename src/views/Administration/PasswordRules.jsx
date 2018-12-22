@@ -1,14 +1,14 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 //material-ui components
-import Paper from '@material-ui/core/Paper';
-import { withStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
+import Paper from '@material-ui/core/Paper'
+import { withStyles } from '@material-ui/core/styles'
+import Typography from '@material-ui/core/Typography'
 //project files & components
-import Page from 'views/Page/Page';
-import GridItem from 'components/Grid/GridItem.jsx';
-import GridContainer from 'components/Grid/GridContainer.jsx';
-import CustomInput from 'components/CustomInput/CustomInput.jsx';
-import CustomButton from 'components/CustomButtons/Button.jsx';
+import Page from 'views/Page/Page'
+import GridItem from 'components/Grid/GridItem.jsx'
+import GridContainer from 'components/Grid/GridContainer.jsx'
+import CustomInput from 'components/CustomInput/CustomInput.jsx'
+import CustomButton from 'components/CustomButtons/Button.jsx'
 
 const styles = theme => ({
   content: {
@@ -49,16 +49,16 @@ const styles = theme => ({
     paddingTop: 70,
     paddingBottom: 30,
   },
-});
+})
 
 class PasswordRules extends Component {
   componentDidMount() {
-    window.scrollTo(0, 0);
-    document.body.scrollTop = 0;
+    window.scrollTo(0, 0)
+    document.body.scrollTop = 0
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes } = this.props
 
     return (
       <div>
@@ -134,8 +134,8 @@ class PasswordRules extends Component {
           </GridContainer>
         </Page>
       </div>
-    );
+    )
   }
 }
 
-export default withStyles(styles)(PasswordRules);
+export default withStyles(styles)(PasswordRules)

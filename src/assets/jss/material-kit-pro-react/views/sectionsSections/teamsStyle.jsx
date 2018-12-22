@@ -8,7 +8,7 @@ import {
   section,
   sectionDark,
   coloredShadow,
-} from 'assets/jss/material-kit-pro-react.jsx';
+} from 'assets/jss/material-kit-pro-react.jsx'
 
 const teamsSection = {
   container,
@@ -79,6 +79,6 @@ const teamsSection = {
       color: '#FFFFFF',
     },
   },
-};
+}
 
-export default teamsSection;
+export default teamsSection

@@ -1,4 +1,4 @@
-import { cardTitle } from 'assets/jss/material-kit-pro-react.jsx';
+import { cardTitle } from 'assets/jss/material-kit-pro-react.jsx'
 const sectionBlogInfoStyle = {
   section: {
     paddingTop: '30px',
@@ -28,6 +28,6 @@ const sectionBlogInfoStyle = {
     marginTop: '25px',
     float: 'right',
   },
-};
+}
 
-export default sectionBlogInfoStyle;
+export default sectionBlogInfoStyle

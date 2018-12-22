@@ -41,6 +41,6 @@ const popoverStyles = {
     lineHeight: '1.4',
     color: '#FFFFFF',
   },
-};
+}
 
-export default popoverStyles;
+export default popoverStyles

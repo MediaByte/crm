@@ -9,7 +9,7 @@ import {
   successColor,
   warningColor,
   dangerColor,
-} from 'assets/jss/material-kit-pro-react.jsx';
+} from 'assets/jss/material-kit-pro-react.jsx'
 
 const navPillsStyle = theme => ({
   root: {
@@ -137,6 +137,6 @@ const navPillsStyle = theme => ({
     alignItems: 'center',
     justifyContent: 'center',
   },
-});
+})
 
-export default navPillsStyle;
+export default navPillsStyle

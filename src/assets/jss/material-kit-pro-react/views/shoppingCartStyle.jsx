@@ -6,10 +6,10 @@ import {
   mainRaised,
   mrAuto,
   mlAuto,
-} from 'assets/jss/material-kit-pro-react.jsx';
+} from 'assets/jss/material-kit-pro-react.jsx'
 
-import buttonGroup from 'assets/jss/material-kit-pro-react/buttonGroupStyle.jsx';
-import tooltips from 'assets/jss/material-kit-pro-react/tooltipsStyle.jsx';
+import buttonGroup from 'assets/jss/material-kit-pro-react/buttonGroupStyle.jsx'
+import tooltips from 'assets/jss/material-kit-pro-react/tooltipsStyle.jsx'
 
 const styles = {
   main,
@@ -118,6 +118,6 @@ const styles = {
   textRight: {
     textAlign: 'right',
   },
-};
+}
 
-export default styles;
+export default styles

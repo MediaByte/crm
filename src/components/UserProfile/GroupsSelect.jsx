@@ -1,64 +1,64 @@
 //React v16.3.1
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from 'react'
+import PropTypes from 'prop-types'
 //Material-UI components
-import { withStyles } from '@material-ui/core/styles';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import Chip from '@material-ui/core/Chip';
+import { withStyles } from '@material-ui/core/styles'
+import Input from '@material-ui/core/Input'
+import InputLabel from '@material-ui/core/InputLabel'
+import MenuItem from '@material-ui/core/MenuItem'
+import FormControl from '@material-ui/core/FormControl'
+import Select from '@material-ui/core/Select'
+import Chip from '@material-ui/core/Chip'
 //State Management
-import { connect } from 'react-redux';
-import { groups } from 'state/newUser/actions.js';
+import { connect } from 'react-redux'
+import { groups } from 'state/newUser/actions.js'
 
 //Styles
-import styles from 'assets/jss/material-kit-pro-react/customSelectStyle.jsx';
+import styles from 'assets/jss/material-kit-pro-react/customSelectStyle.jsx'
 const mapStateToProps = state => {
   return {
     groups: state.newUser.groups,
-  };
-};
+  }
+}
 
 const mapDispatchToProps = dispatch => {
   return {
     onGroupChange: event => dispatch(groups(event)),
-  };
-};
+  }
+}
 
-const names = ['View', 'Edit', 'Create'];
+const names = ['View', 'Edit', 'Create']
 
 class GroupsSelect extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       name: [],
-    };
-    this.handleChange = this.handleChange.bind(this);
+    }
+    this.handleChange = this.handleChange.bind(this)
   }
 
   handleChange(data) {
-    this.setState({ name: data });
+    this.setState({ name: data })
 
     const suggestions = suggestion =>
       names.filter(found => {
-        return found === suggestion;
-      });
+        return found === suggestion
+      })
 
     const groupType = data.map(value => {
       if (!suggestions(value) || data <= 0) {
-        return `${suggestions(value)[0]}`;
+        return `${suggestions(value)[0]}`
       } else {
-        return `${suggestions(value)[0]}`;
+        return `${suggestions(value)[0]}`
       }
-    });
+    })
 
-    this.props.onGroupChange(groupType);
+    this.props.onGroupChange(groupType)
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes } = this.props
 
     return (
       <div className={classes.root}>
@@ -103,18 +103,18 @@ class GroupsSelect extends React.Component {
           </Select>
         </FormControl>
       </div>
-    );
+    )
   }
 }
 
 GroupsSelect.propTypes = {
   classes: PropTypes.object.isRequired,
   theme: PropTypes.object.isRequired,
-};
+}
 
 export default withStyles(styles, { withTheme: true })(
   connect(
     mapStateToProps,
     mapDispatchToProps,
   )(GroupsSelect),
-);
+)

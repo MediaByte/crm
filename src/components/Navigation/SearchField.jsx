@@ -1,15 +1,15 @@
-import React from 'react';
+import React from 'react'
 //Material-UI re-usable component
-import Drawer from '@material-ui/core/Drawer';
-import { withStyles } from '@material-ui/core/styles';
-import InputAdornment from '@material-ui/core/InputAdornment';
+import Drawer from '@material-ui/core/Drawer'
+import { withStyles } from '@material-ui/core/styles'
+import InputAdornment from '@material-ui/core/InputAdornment'
 //Material-UI Icons
-import IconButton from '@material-ui/core/IconButton';
-import Search from '@material-ui/icons/Search';
-import Close from '@material-ui/icons/Close';
+import IconButton from '@material-ui/core/IconButton'
+import Search from '@material-ui/icons/Search'
+import Close from '@material-ui/icons/Close'
 //Custom Project Components
-import CustomInput from 'components/CustomInput/CustomInput.jsx';
-import Button from 'components/CustomButtons/Button.jsx';
+import CustomInput from 'components/CustomInput/CustomInput.jsx'
+import Button from 'components/CustomButtons/Button.jsx'
 
 const content = (
   <CustomInput
@@ -35,7 +35,7 @@ const content = (
       ),
     }}
   />
-);
+)
 
 const styles = theme => ({
   icon: {
@@ -72,20 +72,20 @@ const styles = theme => ({
     display: 'flex',
     justifyContent: 'center',
   },
-});
+})
 class SearchField extends React.Component {
   constructor() {
-    super();
+    super()
     this.state = {
       openSearch: false,
-    };
-    this.toggleSearchField = this.toggleSearchField.bind(this);
+    }
+    this.toggleSearchField = this.toggleSearchField.bind(this)
   }
   toggleSearchField() {
-    this.setState({ openSearch: !this.state.openSearch });
+    this.setState({ openSearch: !this.state.openSearch })
   }
   render() {
-    const { classes } = this.props;
+    const { classes } = this.props
     return (
       <div>
         <div>
@@ -120,8 +120,8 @@ class SearchField extends React.Component {
           </div>
         </Drawer>
       </div>
-    );
+    )
   }
 }
 
-export default withStyles(styles, { withTheme: true })(SearchField);
+export default withStyles(styles, { withTheme: true })(SearchField)

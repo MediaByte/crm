@@ -153,6 +153,6 @@ const modalStyle = theme => ({
     padding: '40px 0',
     margin: '0',
   },
-});
+})
 
-export default modalStyle;
+export default modalStyle

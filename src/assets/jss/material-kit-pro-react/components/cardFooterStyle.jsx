@@ -20,6 +20,6 @@ const cardFooterStyle = {
   cardFooterTestimonial: {
     display: 'block',
   },
-};
+}
 
-export default cardFooterStyle;
+export default cardFooterStyle

@@ -5,7 +5,7 @@ import {
   mainRaised,
   mrAuto,
   mlAuto,
-} from 'assets/jss/material-kit-pro-react.jsx';
+} from 'assets/jss/material-kit-pro-react.jsx'
 
 const aboutUsStyle = {
   main,
@@ -61,6 +61,6 @@ const aboutUsStyle = {
     top: '3px',
     position: 'relative',
   },
-};
+}
 
-export default aboutUsStyle;
+export default aboutUsStyle

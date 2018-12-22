@@ -1,4 +1,4 @@
-import { container, title } from 'assets/jss/material-kit-pro-react.jsx';
+import { container, title } from 'assets/jss/material-kit-pro-react.jsx'
 
 const pillsStyle = {
   section: {
@@ -11,6 +11,6 @@ const pillsStyle = {
     minHeight: '32px',
     textDecoration: 'none',
   },
-};
+}
 
-export default pillsStyle;
+export default pillsStyle

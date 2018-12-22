@@ -4,8 +4,8 @@ import {
   description,
   section,
   btnLink,
-} from 'assets/jss/material-kit-pro-react.jsx';
-import imagesStyles from 'assets/jss/material-kit-pro-react/imagesStyles.jsx';
+} from 'assets/jss/material-kit-pro-react.jsx'
+import imagesStyles from 'assets/jss/material-kit-pro-react/imagesStyles.jsx'
 
 const style = {
   ...imagesStyles,
@@ -175,6 +175,6 @@ const style = {
     height: '18px',
     position: 'relative',
   },
-};
+}
 
-export default style;
+export default style

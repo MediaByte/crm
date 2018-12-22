@@ -96,6 +96,6 @@ const customInputStyle = {
   //     opacity: "1"
   //   }
   // }
-};
+}
 
-export default customInputStyle;
+export default customInputStyle

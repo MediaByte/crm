@@ -5,11 +5,11 @@ import {
   coloredShadow,
   mlAuto,
   mrAuto,
-} from 'assets/jss/material-kit-pro-react.jsx';
+} from 'assets/jss/material-kit-pro-react.jsx'
 
-import customCheckboxRadioSwitch from 'assets/jss/material-kit-pro-react/customCheckboxRadioSwitchStyle.jsx';
+import customCheckboxRadioSwitch from 'assets/jss/material-kit-pro-react/customCheckboxRadioSwitchStyle.jsx'
 
-import tooltipsStyle from 'assets/jss/material-kit-pro-react/tooltipsStyle.jsx';
+import tooltipsStyle from 'assets/jss/material-kit-pro-react/tooltipsStyle.jsx'
 
 const styles = {
   ...customCheckboxRadioSwitch,
@@ -87,6 +87,6 @@ const styles = {
   textLeft: {
     textAlign: 'left',
   },
-};
+}
 
-export default styles;
+export default styles

@@ -1,3 +1,3 @@
-import { USER_VALID } from './constants.js';
+import { USER_VALID } from './constants.js'
 
-export const isUserAuthorized = event => ({ type: USER_VALID, payload: event });
+export const isUserAuthorized = event => ({ type: USER_VALID, payload: event })

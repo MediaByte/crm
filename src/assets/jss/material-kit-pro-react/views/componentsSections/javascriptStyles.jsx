@@ -5,12 +5,12 @@ import {
   description,
   mlAuto,
   mrAuto,
-} from 'assets/jss/material-kit-pro-react.jsx';
+} from 'assets/jss/material-kit-pro-react.jsx'
 
-import modalStyle from 'assets/jss/material-kit-pro-react/modalStyle.jsx';
-import tooltipsStyle from 'assets/jss/material-kit-pro-react/tooltipsStyle.jsx';
-import popoverStyles from 'assets/jss/material-kit-pro-react/popoverStyles.jsx';
-import customCheckboxRadioSwitch from 'assets/jss/material-kit-pro-react/customCheckboxRadioSwitchStyle.jsx';
+import modalStyle from 'assets/jss/material-kit-pro-react/modalStyle.jsx'
+import tooltipsStyle from 'assets/jss/material-kit-pro-react/tooltipsStyle.jsx'
+import popoverStyles from 'assets/jss/material-kit-pro-react/popoverStyles.jsx'
+import customCheckboxRadioSwitch from 'assets/jss/material-kit-pro-react/customCheckboxRadioSwitchStyle.jsx'
 
 const javascriptStyles = theme => ({
   container,
@@ -85,6 +85,6 @@ const javascriptStyles = theme => ({
     height: '50px',
     display: 'block',
   },
-});
+})
 
-export default javascriptStyles;
+export default javascriptStyles

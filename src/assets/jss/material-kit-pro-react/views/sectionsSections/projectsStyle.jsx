@@ -7,7 +7,7 @@ import {
   description,
   coloredShadow,
   sectionDark,
-} from 'assets/jss/material-kit-pro-react.jsx';
+} from 'assets/jss/material-kit-pro-react.jsx'
 
 const projectsSection = {
   container,
@@ -90,6 +90,6 @@ const projectsSection = {
       maxWidth: '970px',
     },
   },
-};
+}
 
-export default projectsSection;
+export default projectsSection

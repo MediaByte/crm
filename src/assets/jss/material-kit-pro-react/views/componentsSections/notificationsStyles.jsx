@@ -2,7 +2,7 @@ import {
   container,
   title,
   section,
-} from 'assets/jss/material-kit-pro-react.jsx';
+} from 'assets/jss/material-kit-pro-react.jsx'
 
 const notificationsStyles = {
   section: {
@@ -24,6 +24,6 @@ const notificationsStyles = {
     display: 'block',
   },
   container,
-};
+}
 
-export default notificationsStyles;
+export default notificationsStyles

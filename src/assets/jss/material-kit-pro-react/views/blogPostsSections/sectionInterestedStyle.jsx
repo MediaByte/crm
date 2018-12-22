@@ -2,7 +2,7 @@ import {
   title,
   cardTitle,
   coloredShadow,
-} from 'assets/jss/material-kit-pro-react.jsx';
+} from 'assets/jss/material-kit-pro-react.jsx'
 
 const sectionInterestedStyle = {
   title,
@@ -19,6 +19,6 @@ const sectionInterestedStyle = {
   description: {
     color: '#999',
   },
-};
+}
 
-export default sectionInterestedStyle;
+export default sectionInterestedStyle

@@ -237,6 +237,6 @@ const styles = theme => ({
       marginLeft: '-40px',
     },
   },
-});
+})
 
-export default styles;
+export default styles

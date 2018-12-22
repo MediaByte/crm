@@ -1,4 +1,4 @@
-import { container, section } from 'assets/jss/material-kit-pro-react.jsx';
+import { container, section } from 'assets/jss/material-kit-pro-react.jsx'
 
 const descriptionStyle = {
   container,
@@ -22,6 +22,6 @@ const descriptionStyle = {
       lineHeight: '1.6em',
     },
   },
-};
+}
 
-export default descriptionStyle;
+export default descriptionStyle

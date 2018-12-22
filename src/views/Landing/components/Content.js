@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import Logo from 'assets/img/crmLogo.png';
+import React, { Component } from 'react'
+import Logo from 'assets/img/crmLogo.png'
 
 class Content extends Component {
   render() {
@@ -7,8 +7,8 @@ class Content extends Component {
       <div>
         <img src={Logo} alt={''} />
       </div>
-    );
+    )
   }
 }
 
-export default Content;
+export default Content

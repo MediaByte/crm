@@ -5,7 +5,7 @@ import {
   sectionDescription,
   title,
   mlAuto,
-} from 'assets/jss/material-kit-pro-react.jsx';
+} from 'assets/jss/material-kit-pro-react.jsx'
 
 const cardsStyle = {
   section: {
@@ -39,6 +39,6 @@ const cardsStyle = {
     },
   },
   mlAuto,
-};
+}
 
-export default cardsStyle;
+export default cardsStyle

@@ -36,6 +36,6 @@ const buttonGroupStyle = {
       zIndex: '2',
     },
   },
-};
+}
 
-export default buttonGroupStyle;
+export default buttonGroupStyle

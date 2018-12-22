@@ -1,1 +1,1 @@
-export const MAX_PHONES_PER_COSTUMER = 3;
+export const MAX_PHONES_PER_COSTUMER = 3

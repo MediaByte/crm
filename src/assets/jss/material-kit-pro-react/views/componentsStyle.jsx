@@ -4,7 +4,7 @@ import {
   mainRaised,
   title,
   section,
-} from 'assets/jss/material-kit-pro-react.jsx';
+} from 'assets/jss/material-kit-pro-react.jsx'
 
 const componentsStyle = {
   main,
@@ -100,6 +100,6 @@ const componentsStyle = {
     top: '3px',
     position: 'relative',
   },
-};
+}
 
-export default componentsStyle;
+export default componentsStyle

@@ -2,7 +2,7 @@ import {
   container,
   description,
   cardTitle,
-} from 'assets/jss/material-kit-pro-react.jsx';
+} from 'assets/jss/material-kit-pro-react.jsx'
 
 const loginPageStyle = {
   logo: {
@@ -145,6 +145,6 @@ const loginPageStyle = {
     color: '#fff',
     zIndex: '2',
   },
-};
+}
 
-export default loginPageStyle;
+export default loginPageStyle

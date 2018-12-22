@@ -1,4 +1,4 @@
-import { title } from 'assets/jss/material-kit-pro-react.jsx';
+import { title } from 'assets/jss/material-kit-pro-react.jsx'
 
 const mediaStyle = {
   media: {
@@ -54,6 +54,6 @@ const mediaStyle = {
       clear: 'both',
     },
   },
-};
+}
 
-export default mediaStyle;
+export default mediaStyle

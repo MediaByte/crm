@@ -1,4 +1,4 @@
-import { container } from 'assets/jss/material-kit-pro-react.jsx';
+import { container } from 'assets/jss/material-kit-pro-react.jsx'
 
 const carouselStyle = {
   section: {
@@ -9,6 +9,6 @@ const carouselStyle = {
     marginLeft: 'auto !important',
     marginRight: 'auto !important',
   },
-};
+}
 
-export default carouselStyle;
+export default carouselStyle

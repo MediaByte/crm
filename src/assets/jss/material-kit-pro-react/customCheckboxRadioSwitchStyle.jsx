@@ -7,7 +7,7 @@ import {
   dangerColor,
   roseColor,
   grayColor,
-} from 'assets/jss/material-kit-pro-react.jsx';
+} from 'assets/jss/material-kit-pro-react.jsx'
 
 const customCheckboxRadioSwitch = {
   checkboxAndRadio: {
@@ -166,6 +166,6 @@ const customCheckboxRadioSwitch = {
       backgroundColor: 'rgba(156, 39, 176, 1) !important',
     },
   },
-};
+}
 
-export default customCheckboxRadioSwitch;
+export default customCheckboxRadioSwitch

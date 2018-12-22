@@ -3,7 +3,7 @@ import {
   title,
   cardTitle,
   coloredShadow,
-} from 'assets/jss/material-kit-pro-react.jsx';
+} from 'assets/jss/material-kit-pro-react.jsx'
 
 const sectionSimilarStoriesStyle = {
   container,
@@ -21,6 +21,6 @@ const sectionSimilarStoriesStyle = {
   description: {
     color: '#999',
   },
-};
+}
 
-export default sectionSimilarStoriesStyle;
+export default sectionSimilarStoriesStyle

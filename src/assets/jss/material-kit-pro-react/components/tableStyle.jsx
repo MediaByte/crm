@@ -11,7 +11,7 @@ import {
   roseColor,
   grayColor,
   defaultFont,
-} from 'assets/jss/material-kit-pro-react.jsx';
+} from 'assets/jss/material-kit-pro-react.jsx'
 
 const tableStyle = theme => ({
   warning: {
@@ -120,6 +120,6 @@ const tableStyle = theme => ({
       backgroundColor: '#c4e3f3',
     },
   },
-});
+})
 
-export default tableStyle;
+export default tableStyle

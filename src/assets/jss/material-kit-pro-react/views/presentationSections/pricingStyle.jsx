@@ -6,7 +6,7 @@ import {
   title,
   description,
   card,
-} from 'assets/jss/material-kit-pro-react.jsx';
+} from 'assets/jss/material-kit-pro-react.jsx'
 
 const pricingStyle = {
   container,
@@ -83,6 +83,6 @@ const pricingStyle = {
   navPillsContent: {
     padding: '20px 0px 50px 0px',
   },
-};
+}
 
-export default pricingStyle;
+export default pricingStyle

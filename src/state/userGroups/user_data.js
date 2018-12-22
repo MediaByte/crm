@@ -32,7 +32,7 @@ export const user = {
       delete: false,
     },
   ],
-};
+}
 
 export const userGroupsList = [
   {
@@ -83,4 +83,4 @@ export const userGroupsList = [
   { ...user, id: 10, name: 'User 10', status: 'Inactive' },
   { ...user, id: 11, name: 'User 11', status: 'Inactive' },
   { ...user, id: 12, name: 'User 12', status: 'Inactive' },
-];
+]

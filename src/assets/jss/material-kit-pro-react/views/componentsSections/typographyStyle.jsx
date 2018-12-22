@@ -1,6 +1,6 @@
-import { container, title } from 'assets/jss/material-kit-pro-react.jsx';
+import { container, title } from 'assets/jss/material-kit-pro-react.jsx'
 
-import imagesStyles from 'assets/jss/material-kit-pro-react/imagesStyles.jsx';
+import imagesStyles from 'assets/jss/material-kit-pro-react/imagesStyles.jsx'
 
 const typographyStyle = {
   section: {
@@ -40,6 +40,6 @@ const typographyStyle = {
     marginLeft: 'auto !important',
   },
   ...imagesStyles,
-};
+}
 
-export default typographyStyle;
+export default typographyStyle

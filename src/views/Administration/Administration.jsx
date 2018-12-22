@@ -1,18 +1,18 @@
-import React from 'react';
+import React from 'react'
 //react router
-import { NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom'
 //material-ui components
-import { withStyles } from '@material-ui/core/styles';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import { withStyles } from '@material-ui/core/styles'
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemText from '@material-ui/core/ListItemText'
+import Typography from '@material-ui/core/Typography'
+import IconButton from '@material-ui/core/IconButton'
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 //Material-ui icons
-import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
+import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight'
 //project files
-import Page from 'views/Page/Page';
+import Page from 'views/Page/Page'
 
 const styles = theme => ({
   demo: {
@@ -55,15 +55,15 @@ const styles = theme => ({
       marginBottom: 1,
     },
   },
-});
+})
 
 class AdminPanel extends React.Component {
   componentDidMount() {
-    window.scrollTo(0, 0);
-    document.body.scrollTop = 0;
+    window.scrollTo(0, 0)
+    document.body.scrollTop = 0
   }
   render() {
-    const { classes } = this.props;
+    const { classes } = this.props
     return (
       <Page component={'administration'} titleText={'Administration'}>
         <Typography
@@ -337,8 +337,8 @@ class AdminPanel extends React.Component {
           </List>
         </div>
       </Page>
-    );
+    )
   }
 }
 
-export default withStyles(styles)(AdminPanel);
+export default withStyles(styles)(AdminPanel)

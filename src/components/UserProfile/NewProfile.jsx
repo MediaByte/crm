@@ -1,34 +1,34 @@
-import React from 'react';
+import React from 'react'
 //a stateless react component that toggles the display of it's children
-import ToggleDisplay from 'react-toggle-display';
+import ToggleDisplay from 'react-toggle-display'
 //gundb
-import Gun from 'gun/gun';
+import Gun from 'gun/gun'
 // @material-ui/core components
-import withStyles from '@material-ui/core/styles/withStyles';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
+import withStyles from '@material-ui/core/styles/withStyles'
+import IconButton from '@material-ui/core/IconButton'
+import Typography from '@material-ui/core/Typography'
 // core components
-import GridItem from 'components/Grid/GridItem.jsx';
-import GridContainer from 'components/Grid/GridContainer.jsx';
-import CustomInput from 'components/CustomInput/CustomInput.jsx';
-import Button from 'components/CustomButtons/Button.jsx';
-import CardAvatar from 'components/Card/CardAvatar.jsx';
-import CardBody from 'components/Card/CardBody.jsx';
-import GroupsSelect from 'components/UserProfile/GroupsSelect.jsx';
-import PhoneInput from 'components/UserProfile/PhoneInput.jsx';
-import AddressSelect from 'components/UserProfile/AddressSelect.jsx';
+import GridItem from 'components/Grid/GridItem.jsx'
+import GridContainer from 'components/Grid/GridContainer.jsx'
+import CustomInput from 'components/CustomInput/CustomInput.jsx'
+import Button from 'components/CustomButtons/Button.jsx'
+import CardAvatar from 'components/Card/CardAvatar.jsx'
+import CardBody from 'components/Card/CardBody.jsx'
+import GroupsSelect from 'components/UserProfile/GroupsSelect.jsx'
+import PhoneInput from 'components/UserProfile/PhoneInput.jsx'
+import AddressSelect from 'components/UserProfile/AddressSelect.jsx'
 // import newPassword from 'components/UserProfile/generatePassword.js';
 // material-ui icons
-import AddCircle from '@material-ui/icons/AddCircle';
-import RemoveCircle from '@material-ui/icons/RemoveCircle';
+import AddCircle from '@material-ui/icons/AddCircle'
+import RemoveCircle from '@material-ui/icons/RemoveCircle'
 //files
-import avatar from 'assets/img/faces/marc.jpg';
+import avatar from 'assets/img/faces/marc.jpg'
 //constants
-import { MAX_PHONES_PER_COSTUMER } from '../../constants/config';
+import { MAX_PHONES_PER_COSTUMER } from '../../constants/config'
 //styles
-import styles from 'assets/jss/material-kit-pro-react/components/newProfileStyle.jsx';
+import styles from 'assets/jss/material-kit-pro-react/components/newProfileStyle.jsx'
 //State
-import { connect } from 'react-redux';
+import { connect } from 'react-redux'
 import {
   first,
   last,
@@ -54,14 +54,14 @@ import {
   mailAddressState,
   mailAddressZip,
   mailAddressCountry,
-} from 'state/newUser/actions.js';
+} from 'state/newUser/actions.js'
 
-const gun = Gun('https://pineconeserver.herokuapp.com/gun');
-const db = gun.get('testRost').get('users');
+const gun = Gun('https://pineconeserver.herokuapp.com/gun')
+const db = gun.get('testRost').get('users')
 const dbRelations = gun
   .get('testRost')
   .get('relation')
-  .get('users');
+  .get('users')
 
 const mapStateToProps = state => {
   return {
@@ -90,8 +90,8 @@ const mapStateToProps = state => {
     mailAddressZip: state.newUser.mailAddressZip,
     mailAddressCountry: state.newUser.mailAddressCountry,
     groups: state.newUser.groups,
-  };
-};
+  }
+}
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -119,12 +119,12 @@ const mapDispatchToProps = dispatch => {
     onChangeMailingState: event => dispatch(mailAddressState(event)),
     onChangeMailingZip: event => dispatch(mailAddressZip(event)),
     onChangeMailingCountry: event => dispatch(mailAddressCountry(event)),
-  };
-};
+  }
+}
 
 class NewProfile extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       id: 0,
       group: '',
@@ -136,10 +136,10 @@ class NewProfile extends React.Component {
       showAddress2: false,
       showAddress3: false,
       phoneNumbers: [],
-    };
-    this.onChangeValues = this.onChangeValues.bind(this);
-    this.addressField = this.addressField.bind(this);
-    this.saveData = this.saveData.bind(this);
+    }
+    this.onChangeValues = this.onChangeValues.bind(this)
+    this.addressField = this.addressField.bind(this)
+    this.saveData = this.saveData.bind(this)
   }
 
   componentDidMount() {
@@ -173,7 +173,7 @@ class NewProfile extends React.Component {
       groups,
       first,
       last,
-    } = this.props;
+    } = this.props
     //schema
     let newEmployee = {
       [email]: {
@@ -203,8 +203,8 @@ class NewProfile extends React.Component {
         mailAddressZip: mailAddressZip,
         mailAddressCountry: mailAddressCountry,
       },
-    };
-    let lastReset = new Date();
+    }
+    let lastReset = new Date()
     //relations
     const newRelation = {
       [email]: {
@@ -213,24 +213,24 @@ class NewProfile extends React.Component {
         temp: true,
         lastReset: lastReset.toString(),
       },
-    };
+    }
     db.put(newEmployee, ack => {
       // eslint-disable-next-line
-      !ack.err ? dbRelations.put(newRelation) : null;
-    });
+      !ack.err ? dbRelations.put(newRelation) : null
+    })
 
-    this.props.toggleViews();
+    this.props.toggleViews()
   }
 
   addressField() {
     if (!this.state.showAddress1) {
       this.setState({
         showAddress1: true,
-      });
+      })
     } else if (this.state.showAddress1 && !this.state.showAddress2) {
       this.setState({
         showAddress2: true,
-      });
+      })
     } else if (
       this.state.showAddress1 &&
       this.state.showAddress2 &&
@@ -238,7 +238,7 @@ class NewProfile extends React.Component {
     ) {
       this.setState({
         showAddress3: true,
-      });
+      })
     }
   }
 
@@ -246,7 +246,7 @@ class NewProfile extends React.Component {
     this.setState(prevState => {
       // Don't add more phone numbers than allowed
       if (prevState.phoneNumbers.length === MAX_PHONES_PER_COSTUMER) {
-        return null;
+        return null
       }
       return {
         ...prevState,
@@ -254,9 +254,9 @@ class NewProfile extends React.Component {
           phoneNumber: '',
           phoneType: '',
         }),
-      };
-    });
-  };
+      }
+    })
+  }
 
   removePhoneField = phoneNumberField => {
     // Removes the current phoneNumberField clicked
@@ -264,33 +264,33 @@ class NewProfile extends React.Component {
       return {
         ...prevState,
         phoneNumbers: prevState.phoneNumbers.filter((phone, index) => {
-          return index !== phoneNumberField;
+          return index !== phoneNumberField
         }),
-      };
-    });
-  };
+      }
+    })
+  }
 
   onChangeValues(event, key, reference = null) {
     //buggy - not worth investing time into now
-    const functionString = `onChange${key}${reference}`;
-    const parsedMethod = this.props[functionString];
+    const functionString = `onChange${key}${reference}`
+    const parsedMethod = this.props[functionString]
     typeof parsedMethod === 'function' && key === 'Home'
       ? parsedMethod(event)
       : typeof parsedMethod === 'function' && key === 'Mailing'
       ? parsedMethod(event)
       : typeof method === 'function' && key === 'Work'
       ? parsedMethod(event)
-      : console.log(parsedMethod);
+      : console.log(parsedMethod)
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes } = this.props
     const {
       showAddress1,
       showAddress2,
       showAddress3,
       phoneNumbers,
-    } = this.state;
+    } = this.state
 
     return (
       <div>
@@ -812,7 +812,7 @@ class NewProfile extends React.Component {
           </Button>
         </div>
       </div>
-    );
+    )
   }
 }
 
@@ -821,4 +821,4 @@ export default withStyles(styles)(
     mapStateToProps,
     mapDispatchToProps,
   )(NewProfile),
-);
+)
