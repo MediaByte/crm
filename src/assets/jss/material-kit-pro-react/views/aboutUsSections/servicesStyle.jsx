@@ -3,7 +3,7 @@ import {
   description,
   mrAuto,
   mlAuto,
-} from 'assets/jss/material-kit-pro-react.jsx';
+} from 'assets/jss/material-kit-pro-react.jsx'
 
 const servicesStyle = {
   title,
@@ -17,6 +17,6 @@ const servicesStyle = {
     textAlign: 'center',
   },
   description,
-};
+}
 
-export default servicesStyle;
+export default servicesStyle

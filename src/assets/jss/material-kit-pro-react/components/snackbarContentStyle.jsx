@@ -10,7 +10,7 @@ import {
   warningBoxShadow,
   dangerBoxShadow,
   container,
-} from 'assets/jss/material-kit-pro-react.jsx';
+} from 'assets/jss/material-kit-pro-react.jsx'
 
 const snackbarContentStyle = {
   root: {
@@ -82,6 +82,6 @@ const snackbarContentStyle = {
     ...container,
     position: 'relative',
   },
-};
+}
 
-export default snackbarContentStyle;
+export default snackbarContentStyle

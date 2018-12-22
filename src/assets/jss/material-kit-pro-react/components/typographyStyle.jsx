@@ -10,7 +10,7 @@ import {
   warningColor,
   dangerColor,
   roseColor,
-} from 'assets/jss/material-kit-pro-react.jsx';
+} from 'assets/jss/material-kit-pro-react.jsx'
 
 const typographyStyle = {
   defaultFontStyle: {
@@ -85,6 +85,6 @@ const typographyStyle = {
     lineHeight: '1',
     color: '#777',
   },
-};
+}
 
-export default typographyStyle;
+export default typographyStyle

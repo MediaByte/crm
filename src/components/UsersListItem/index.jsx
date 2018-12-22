@@ -21,12 +21,6 @@ import { NavLink } from 'react-router-dom'
 
 import getInitialsFromName from './getInitialsFromName'
 
-const styles = {
-  root: {
-    width: '100%',
-  },
-}
-
 /**
  * This will probably get passed an id prop in the future
  * @type {React.SFC<NavLinkProps>}
@@ -37,8 +31,8 @@ const ItemNavLink = props => <NavLink to={'/management/employees'} {...props} />
  * @typedef {object} UsersListItemProps
  * @prop {StyleRules<keyof styles>} classes Do not pass this prop, as this is
  * injected by material-ui's withStyles
- * @prop {string} name Name of the user
  * @prop {string} employeeRole Role of the user
+ * @prop {string} name Name of the user
  */
 
 /**
@@ -62,6 +56,12 @@ class UsersListItem extends React.PureComponent {
       </ListItem>
     )
   }
+}
+
+const styles = {
+  root: {
+    width: '100%',
+  },
 }
 
 /**

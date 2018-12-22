@@ -1,5 +1,5 @@
-import { cardTitle, title } from 'assets/jss/material-kit-pro-react.jsx';
-import imagesStyle from 'assets/jss/material-kit-pro-react/imagesStyles.jsx';
+import { cardTitle, title } from 'assets/jss/material-kit-pro-react.jsx'
+import imagesStyle from 'assets/jss/material-kit-pro-react/imagesStyles.jsx'
 
 const teamStyle = {
   section: {
@@ -45,6 +45,6 @@ const teamStyle = {
   card3: {
     textAlign: 'center',
   },
-};
+}
 
-export default teamStyle;
+export default teamStyle

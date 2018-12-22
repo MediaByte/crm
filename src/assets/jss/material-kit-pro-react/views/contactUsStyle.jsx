@@ -5,7 +5,7 @@ import {
   mainRaised,
   mlAuto,
   description,
-} from 'assets/jss/material-kit-pro-react.jsx';
+} from 'assets/jss/material-kit-pro-react.jsx'
 
 const contactUsStyle = {
   main,
@@ -70,6 +70,6 @@ const contactUsStyle = {
     top: '3px',
     position: 'relative',
   },
-};
+}
 
-export default contactUsStyle;
+export default contactUsStyle

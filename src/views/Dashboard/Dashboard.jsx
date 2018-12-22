@@ -1,17 +1,17 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 //material ui components
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles'
 //project components
-import Page from 'views/Page/Page.jsx';
-import GridItem from 'components/Grid/GridItem.jsx';
-import GridContainer from 'components/Grid/GridContainer.jsx';
-import Cards from 'components/Cards/Card.jsx';
+import Page from 'views/Page/Page.jsx'
+import GridItem from 'components/Grid/GridItem.jsx'
+import GridContainer from 'components/Grid/GridContainer.jsx'
+import Cards from 'components/Cards/Card.jsx'
 //gundb
-import Gun from 'gun/gun';
+import Gun from 'gun/gun'
 
-const gun = Gun('https://crm-server.herokuapp.com/gun');
-const db = gun.get('users');
+const gun = Gun('https://crm-server.herokuapp.com/gun')
+const db = gun.get('users')
 
 const styles = theme => ({
   root: {},
@@ -29,30 +29,30 @@ const styles = theme => ({
       marginTop: theme.spacing.unit * 2,
     },
   },
-});
+})
 
 class Dashboard extends Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       user: '',
-    };
+    }
   }
 
   componentDidMount() {
-    const { match } = this.props;
-    const profile = match.params.id;
+    const { match } = this.props
+    const profile = match.params.id
 
     db.get(profile).once(user => {
-      this.setState({ user: user });
-    });
+      this.setState({ user: user })
+    })
 
-    window.scrollTo(0, 0);
-    document.body.scrollTop = 0;
+    window.scrollTo(0, 0)
+    document.body.scrollTop = 0
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes } = this.props
 
     return (
       <div classNames={classes.root}>
@@ -123,12 +123,12 @@ class Dashboard extends Component {
           </div>
         </Page>
       </div>
-    );
+    )
   }
 }
 
 Dashboard.propTypes = {
   classes: PropTypes.object.isRequired,
-};
+}
 
-export default withStyles(styles)(Dashboard);
+export default withStyles(styles)(Dashboard)

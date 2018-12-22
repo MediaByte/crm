@@ -11,7 +11,7 @@ import {
   roseColor,
   grayColor,
   title,
-} from 'assets/jss/material-kit-pro-react.jsx';
+} from 'assets/jss/material-kit-pro-react.jsx'
 
 const infoStyle = {
   infoArea: {
@@ -74,6 +74,6 @@ const infoStyle = {
     width: '61px',
     height: '61px',
   },
-};
+}
 
-export default infoStyle;
+export default infoStyle

@@ -3,7 +3,7 @@ import {
   title,
   main,
   mainRaised,
-} from 'assets/jss/material-kit-pro-react.jsx';
+} from 'assets/jss/material-kit-pro-react.jsx'
 
 const blogPostsPageStyle = {
   container: {
@@ -58,6 +58,6 @@ const blogPostsPageStyle = {
     top: '3px',
     position: 'relative',
   },
-};
+}
 
-export default blogPostsPageStyle;
+export default blogPostsPageStyle

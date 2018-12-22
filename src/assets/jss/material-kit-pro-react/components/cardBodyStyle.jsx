@@ -41,6 +41,6 @@ const cardBodyStyle = {
       },
     },
   },
-};
+}
 
-export default cardBodyStyle;
+export default cardBodyStyle

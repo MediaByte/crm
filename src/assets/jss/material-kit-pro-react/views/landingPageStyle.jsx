@@ -3,7 +3,7 @@ import {
   title,
   main,
   mainRaised,
-} from 'assets/jss/material-kit-pro-react.jsx';
+} from 'assets/jss/material-kit-pro-react.jsx'
 
 const landingPageStyle = {
   container: {
@@ -67,6 +67,6 @@ const landingPageStyle = {
     top: '3px',
     position: 'relative',
   },
-};
+}
 
-export default landingPageStyle;
+export default landingPageStyle

@@ -6,7 +6,7 @@ import {
   container,
   primaryColor,
   btnLink,
-} from 'assets/jss/material-kit-pro-react.jsx';
+} from 'assets/jss/material-kit-pro-react.jsx'
 
 const footerStyle = {
   left: {
@@ -161,5 +161,5 @@ const footerStyle = {
   clearFix: {
     clear: 'both',
   },
-};
-export default footerStyle;
+}
+export default footerStyle

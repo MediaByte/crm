@@ -10,7 +10,7 @@ import {
   successColor,
   infoColor,
   roseColor,
-} from 'assets/jss/material-kit-pro-react.jsx';
+} from 'assets/jss/material-kit-pro-react.jsx'
 
 const accordionStyle = theme => ({
   root: {
@@ -138,6 +138,6 @@ const accordionStyle = theme => ({
     padding: '15px 0px 5px',
     fontSize: '.875rem',
   },
-});
+})
 
-export default accordionStyle;
+export default accordionStyle

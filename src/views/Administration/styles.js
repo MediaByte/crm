@@ -203,21 +203,6 @@ const styles = theme => ({
       paddingTop: 10,
     },
   },
-  filterBox: {
-    padding: 15,
-  },
-  filterButton: {
-    fontWeight: 'bold',
-    cursor: 'pointer',
-  },
-  resetButton: {
-    color: '#0dacc4',
-    marginTop: '-10px',
-  },
-  formControl: {
-    margin: theme.spacing.unit,
-    minWidth: 120,
-  },
   root2: {
     color: '#2db8b8',
     '&$checked': {
@@ -237,6 +222,6 @@ const styles = theme => ({
       marginLeft: '-40px',
     },
   },
-});
+})
 
-export default styles;
+export default styles

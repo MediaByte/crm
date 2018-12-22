@@ -2,7 +2,7 @@ import {
   container,
   title,
   description,
-} from 'assets/jss/material-kit-pro-react.jsx';
+} from 'assets/jss/material-kit-pro-react.jsx'
 
 const sectionSubscribeLineStyle = {
   container,
@@ -26,6 +26,6 @@ const sectionSubscribeLineStyle = {
     display: 'flex',
     alignItems: 'center',
   },
-};
+}
 
-export default sectionSubscribeLineStyle;
+export default sectionSubscribeLineStyle

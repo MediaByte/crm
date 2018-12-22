@@ -162,6 +162,6 @@ const cardStyle = {
     },
     color: '#FFFFFF',
   },
-};
+}
 
-export default cardStyle;
+export default cardStyle

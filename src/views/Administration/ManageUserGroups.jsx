@@ -1,34 +1,30 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import BlockUi from 'react-block-ui';
-import 'react-block-ui/style.css';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import BlockUi from 'react-block-ui'
+import 'react-block-ui/style.css'
 // import _ from 'lodash';
 //material ui components
-import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import Grid from '@material-ui/core/Grid';
-import Divider from '@material-ui/core/Divider';
-import Menu from '@material-ui/core/Menu';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import Select from '@material-ui/core/Select';
-import InputAdornment from '@material-ui/core/InputAdornment';
+import { withStyles } from '@material-ui/core/styles'
+import Typography from '@material-ui/core/Typography'
+import IconButton from '@material-ui/core/IconButton'
+import Grid from '@material-ui/core/Grid'
+import Divider from '@material-ui/core/Divider'
+import Menu from '@material-ui/core/Menu'
+import InputAdornment from '@material-ui/core/InputAdornment'
 //material-ui icons
-import Add from '@material-ui/icons/Add';
-import Edit from '@material-ui/icons/Edit';
-import MoreHoriz from '@material-ui/icons/MoreHoriz';
-import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
-import ErrorOutlineOutlined from '@material-ui/icons/ErrorOutlineOutlined';
-import FilterList from '@material-ui/icons/FilterList';
-import Search from '@material-ui/icons/Search';
-import Cloud from '@material-ui/icons/CloudDownloadOutlined';
-import BackArrow from '@material-ui/icons/ArrowBackIosOutlined';
+import Add from '@material-ui/icons/Add'
+import Edit from '@material-ui/icons/Edit'
+import MoreHoriz from '@material-ui/icons/MoreHoriz'
+import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight'
+import ErrorOutlineOutlined from '@material-ui/icons/ErrorOutlineOutlined'
+import FilterList from '@material-ui/icons/FilterList'
+import Search from '@material-ui/icons/Search'
+import Cloud from '@material-ui/icons/CloudDownloadOutlined'
+import BackArrow from '@material-ui/icons/ArrowBackIosOutlined'
 //project components
-import styles from './styles.js';
-import UserGroupForm from './UserGroupForm';
-import PageColumn from 'views/Page/PageColumn.jsx';
+import styles from './styles.js'
+import UserGroupForm from './UserGroupForm'
+import PageColumn from 'views/Page/PageColumn.jsx'
 
 import {
   AppBar,
@@ -43,41 +39,42 @@ import {
   ListItem,
   List,
   TextField,
-} from '@material-ui/core';
+} from '@material-ui/core'
 
 //gundb
-import Gun from 'gun/gun';
+import Gun from 'gun/gun'
+
+import UsersFilter from '../../components/UsersFilter'
 
 //State
-import { connect } from 'react-redux';
+import { connect } from 'react-redux'
 import {
   loadUser,
   saveUser,
   removeUser,
   duplicateUser,
   filter,
-} from '../../state/userGroups/actions';
-import { user } from '../../state/userGroups/user_data.js';
+} from '../../state/userGroups/actions'
+import { user } from '../../state/userGroups/user_data.js'
 
 // const formatData = data => Object.keys(data)
 // 	.map(key => ({ key, ...data[key]  }))
 // 	.filter(m => m.key !== '_')
 
 function Transition(props) {
-  return <Slide direction="up" {...props} />;
+  return <Slide direction="up" {...props} />
 }
 
 class ManageUserGroups extends Component {
   constructor(props) {
-    super(props);
-    console.log('props', props);
+    super(props)
+    console.log('props', props)
 
-    this.gun = Gun('https://pineconeserver.herokuapp.com/gun');
+    this.gun = Gun('https://pineconeserver.herokuapp.com/gun')
     this.state = {
       addUser: false,
       open: false,
       // users: props.users.filter(user => user.status === 'Active'),
-      usersCopy: props.users,
       selected: false,
       searchActive: false,
       anchorEl2: null,
@@ -91,52 +88,52 @@ class ManageUserGroups extends Component {
       filterStatus: 'active',
       status: '',
       newUser: user,
-    };
-    this.toggleViews = this.toggleViews.bind(this);
-    this.showUser = this.showUser.bind(this);
-    this.toggleBlocking = this.toggleBlocking.bind(this);
+    }
+    this.toggleViews = this.toggleViews.bind(this)
+    this.showUser = this.showUser.bind(this)
+    this.toggleBlocking = this.toggleBlocking.bind(this)
   }
 
   toggleBlocking() {
-    this.setState({ blocking: !this.state.blocking });
+    this.setState({ blocking: !this.state.blocking })
   }
 
   handleClick = event => {
-    this.setState({ anchorEl: event.currentTarget });
-  };
+    this.setState({ anchorEl: event.currentTarget })
+  }
 
   handleCloseMenu = () => {
-    this.setState({ anchorEl: null });
-  };
+    this.setState({ anchorEl: null })
+  }
 
   componentDidMount() {
-    let users = [];
+    let users = []
     this.gun
       .get('testRost')
       .get('users')
       .map()
       .on((user, key) => {
-        users[key] = user;
-        this.setState({ users: Object.assign({}, this.state.users, users) });
-      });
-    window.scrollTo(0, 0);
-    document.body.scrollTop = 0;
+        users[key] = user
+        this.setState({ users: Object.assign({}, this.state.users, users) })
+      })
+    window.scrollTo(0, 0)
+    document.body.scrollTop = 0
   }
 
   componentWillMount() {
-    let users = [];
+    let users = []
     this.gun
       .get('testRost')
       .get('users')
       .map()
       .on((user, key) => {
-        users[key] = user;
-        this.setState({ users: Object.assign({}, this.state.users, users) });
-      });
+        users[key] = user
+        this.setState({ users: Object.assign({}, this.state.users, users) })
+      })
   }
 
   toggleViews() {
-    this.setState({ addUser: !this.state.addUser });
+    this.setState({ addUser: !this.state.addUser })
   }
 
   showUser(user) {
@@ -145,11 +142,11 @@ class ManageUserGroups extends Component {
       last: user.last,
       email: user.email,
       group: user.groups,
-    });
+    })
   }
 
   renderUserGroups() {
-    const { classes, selected, users } = this.props;
+    const { classes, selected, users } = this.props
     if (!users.length) {
       return (
         <Hidden only={['xs']}>
@@ -158,7 +155,7 @@ class ManageUserGroups extends Component {
             No User Group Selected
           </div>
         </Hidden>
-      );
+      )
     } else {
       return (
         <div style={{ width: '100%' }}>
@@ -202,18 +199,18 @@ class ManageUserGroups extends Component {
               .reverse() */}
           </List>
         </div>
-      );
+      )
     }
   }
 
   handleChangeCheckbox = name => event => {
-    this.setState({ [name]: event.target.checked });
-  };
+    this.setState({ [name]: event.target.checked })
+  }
 
   renderContent() {
-    const { classes, selected } = this.props;
-    const { anchorEl } = this.state;
-    const user = selected;
+    const { classes, selected } = this.props
+    const { anchorEl } = this.state
+    const user = selected
 
     if (selected !== false && selected.id) {
       return (
@@ -276,7 +273,7 @@ class ManageUserGroups extends Component {
             </Paper>
           </Hidden>
         </div>
-      );
+      )
     } else {
       return (
         <Hidden only={['xs']}>
@@ -287,20 +284,20 @@ class ManageUserGroups extends Component {
             </div>
           </div>
         </Hidden>
-      );
+      )
     }
   }
 
   selectUser(user) {
-    const openModal = window.innerWidth < 750;
+    const openModal = window.innerWidth < 750
     // const user = _.find(this.props.users, {id: id})
-    this.props.loadUser(user);
+    this.props.loadUser(user)
     // this.setState({selected: user.id, addUser: false, open: openModal, title: user.name})
-    this.setState({ addUser: false, open: openModal, title: user.name });
+    this.setState({ addUser: false, open: openModal, title: user.name })
   }
 
   addNewGroup() {
-    this.props.loadUser(false);
+    this.props.loadUser(false)
     // const openModal = window.innerWidth < 750
     this.setState(
       {
@@ -311,36 +308,36 @@ class ManageUserGroups extends Component {
         title: 'New User Group',
       },
       function() {},
-    );
+    )
   }
 
   showSearch() {
-    this.setState({ searchActive: !this.state.searchActive });
+    this.setState({ searchActive: !this.state.searchActive })
   }
 
   showFilter = event => {
-    this.setState({ anchorEl2: event.currentTarget });
-  };
+    this.setState({ anchorEl2: event.currentTarget })
+  }
 
   closeFilter = () => {
-    this.setState({ anchorEl2: null });
-  };
+    this.setState({ anchorEl2: null })
+  }
 
   onChangeFilter(e) {
-    const value = e.target.value.toLowerCase();
-    let users;
+    const value = e.target.value.toLowerCase()
+    let users
     if (value === '') {
-      users = this.state.usersCopy;
+      users = this.props.users
     } else {
-      users = this.state.usersCopy.filter(item =>
+      users = this.props.users.filter(item =>
         item.name.toLowerCase().includes(value),
-      );
+      )
     }
-    this.setState({ users });
+    this.setState({ users })
   }
 
   handleChange = event => {
-    const value = event.target.value.toLowerCase();
+    const value = event.target.value.toLowerCase()
     // let users
     // if (value === '' || value === 'all') {
     //   users = this.state.usersCopy
@@ -348,21 +345,21 @@ class ManageUserGroups extends Component {
     //   users = this.state.usersCopy.filter((item) => item.status.toLowerCase() === value)
     // }
     // this.setState({ users, filterStatus: value })
-    this.props.filter(value);
-  };
+    this.props.filter(value)
+  }
 
   resetFilter() {
     // this.setState({ users: this.state.usersCopy, filterStatus: 'all' })
-    this.props.filter('all');
+    this.props.filter('all')
   }
 
   handleClickOpen = () => {
-    this.setState({ open: true });
-  };
+    this.setState({ open: true })
+  }
 
   handleClose = () => {
-    this.setState({ open: false, title: '' });
-  };
+    this.setState({ open: false, title: '' })
+  }
 
   renderContentWrapper() {
     // this.openInModal();
@@ -373,15 +370,15 @@ class ManageUserGroups extends Component {
           handleClose={this.handleClose}
           title={this.state.title}
         />
-      );
+      )
     } else {
-      return this.renderContent();
+      return this.renderContent()
     }
   }
 
   render() {
-    const { classes, users } = this.props;
-    const { anchorEl2 } = this.state;
+    const { classes, users } = this.props
+    const { anchorEl2 } = this.state
     // let parsedData = formatData(this.state.users)
 
     return (
@@ -432,55 +429,25 @@ class ManageUserGroups extends Component {
                       <FilterList onClick={this.showFilter} />
                     </IconButton>
                   </div>
-                  <Menu
-                    id="simple-menu2"
+                  <UsersFilter
                     anchorEl={anchorEl2}
-                    open={Boolean(anchorEl2)}
+                    currentStatusValue={this.props.filterText}
                     onClose={this.closeFilter}
-                  >
-                    <div className={classes.filterBox}>
-                      <div style={{ float: 'right' }}>
-                        <Button
-                          component="span"
-                          className={classes.resetButton}
-                          onClick={() => this.resetFilter()}
-                        >
-                          RESET
-                        </Button>
-                      </div>
-                      <Typography
-                        variant="button"
-                        color="inherit"
-                        className={classes.filterButton}
-                      >
-                        FILTERS
-                      </Typography>
-                      <Grid container spacing={24}>
-                        <Grid item xs={9}>
-                          <FormControl className={classes.formControl}>
-                            <InputLabel htmlFor="age-simple">Status</InputLabel>
-                            <Select
-                              autoWidth
-                              value={this.props.filterText}
-                              onChange={this.handleChange}
-                              // inputProps={{
-                              //   name: 'age',
-                              //   id: 'age-simple',
-                              // }}
-                            >
-                              <MenuItem value="all">
-                                <em>All</em>
-                              </MenuItem>
-                              <MenuItem value="active">Active</MenuItem>
-                              <MenuItem value="inactive">Inactive</MenuItem>
-                            </Select>
-                          </FormControl>
-                        </Grid>
-                        <Grid item xs={3} />
-                      </Grid>
-                      {/* <MenuItem onClick={this.closeFilter}>Option 1</MenuItem> */}
-                    </div>
-                  </Menu>
+                    open={!!anchorEl2}
+                    onStatusChange={statusValue =>
+                      this.props.filter(statusValue)
+                    }
+                    possibleStatuses={[
+                      {
+                        displayValue: 'Active',
+                        value: 'active',
+                      },
+                      {
+                        displayValue: 'Inactive',
+                        value: 'inactive',
+                      },
+                    ]}
+                  />
                   <div className={classes.records}>{users.length} records</div>
                 </div>
                 <Divider />
@@ -555,7 +522,7 @@ class ManageUserGroups extends Component {
           </Grid>
         </PageColumn>
       </div>
-    );
+    )
   }
 }
 
@@ -564,8 +531,8 @@ const mapStateToProps = state => {
     users: state.userGroups.users,
     selected: state.userGroups.selected,
     filterText: state.userGroups.filter,
-  };
-};
+  }
+}
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -574,19 +541,19 @@ const mapDispatchToProps = dispatch => {
     loadUser: userId => dispatch(loadUser(userId)),
     saveUser: user => dispatch(saveUser(user)),
     removeUser: userId => {
-      dispatch(removeUser(userId));
+      dispatch(removeUser(userId))
       // this.setState({ anchorEl: null });
     },
-  };
-};
+  }
+}
 
 ManageUserGroups.propTypes = {
   classes: PropTypes.object.isRequired,
-};
+}
 
 export default withStyles(styles)(
   connect(
     mapStateToProps,
     mapDispatchToProps,
   )(ManageUserGroups),
-);
+)

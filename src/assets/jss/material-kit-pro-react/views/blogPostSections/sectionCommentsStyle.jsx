@@ -1,6 +1,6 @@
-import { title } from 'assets/jss/material-kit-pro-react.jsx';
+import { title } from 'assets/jss/material-kit-pro-react.jsx'
 
-import tooltipsStyle from 'assets/jss/material-kit-pro-react/tooltipsStyle.jsx';
+import tooltipsStyle from 'assets/jss/material-kit-pro-react/tooltipsStyle.jsx'
 
 const sectionCommentsStyle = {
   ...tooltipsStyle,
@@ -33,6 +33,6 @@ const sectionCommentsStyle = {
       color: '#555 !important',
     },
   },
-};
+}
 
-export default sectionCommentsStyle;
+export default sectionCommentsStyle

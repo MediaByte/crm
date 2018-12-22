@@ -3,7 +3,7 @@ import {
   container,
   cardTitle,
   coloredShadow,
-} from 'assets/jss/material-kit-pro-react.jsx';
+} from 'assets/jss/material-kit-pro-react.jsx'
 
 const styles = {
   cardTitle,
@@ -22,6 +22,6 @@ const styles = {
   textRose: {
     color: '#e91e63!important',
   },
-};
+}
 
-export default styles;
+export default styles

@@ -1,32 +1,32 @@
-import React from 'react';
+import React from 'react'
 //gundb
-import Gun from 'gun/gun';
+import Gun from 'gun/gun'
 //Navigation
-import { Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom'
 // @material-ui/core components
-import withStyles from '@material-ui/core/styles/withStyles';
-import FormHelperText from '@material-ui/core/FormHelperText';
+import withStyles from '@material-ui/core/styles/withStyles'
+import FormHelperText from '@material-ui/core/FormHelperText'
 // @material-ui/icons
-import EmailOutlined from '@material-ui/icons/EmailOutlined';
-import LockOutlined from '@material-ui/icons/LockOutlined';
+import EmailOutlined from '@material-ui/icons/EmailOutlined'
+import LockOutlined from '@material-ui/icons/LockOutlined'
 // core components
-import GridContainer from 'components/Grid/GridContainer.jsx';
-import GridItem from 'components/Grid/GridItem.jsx';
-import Button from 'components/CustomButtons/Button.jsx';
-import Card from 'components/Card/Card.jsx';
-import CardBody from 'components/Card/CardBody.jsx';
-import CardHeader from 'components/Card/CardHeader.jsx';
-import CustomInput from 'components/CustomInput/CustomInput.jsx';
-import Grid from '@material-ui/core/Grid';
+import GridContainer from 'components/Grid/GridContainer.jsx'
+import GridItem from 'components/Grid/GridItem.jsx'
+import Button from 'components/CustomButtons/Button.jsx'
+import Card from 'components/Card/Card.jsx'
+import CardBody from 'components/Card/CardBody.jsx'
+import CardHeader from 'components/Card/CardHeader.jsx'
+import CustomInput from 'components/CustomInput/CustomInput.jsx'
+import Grid from '@material-ui/core/Grid'
 
 //Styles
-import loginPageStyle from 'assets/jss/material-kit-pro-react/views/loginPageStyle.jsx';
+import loginPageStyle from 'assets/jss/material-kit-pro-react/views/loginPageStyle.jsx'
 //Media
-import Logo from 'assets/img/crmLogo.png';
-const gun = Gun('https://pineconeserver.herokuapp.com/gun');
+import Logo from 'assets/img/crmLogo.png'
+const gun = Gun('https://pineconeserver.herokuapp.com/gun')
 class LoginPage extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       username: '',
       password: '',
@@ -34,18 +34,18 @@ class LoginPage extends React.Component {
       inputError: false,
       emailNotFound: false,
       correctEmail: false,
-    };
-    this.handleAuthentication = this.handleAuthentication.bind(this);
+    }
+    this.handleAuthentication = this.handleAuthentication.bind(this)
   }
 
   componentDidMount() {
-    window.scrollTo(0, 0);
-    document.body.scrollTop = 0;
+    window.scrollTo(0, 0)
+    document.body.scrollTop = 0
   }
 
   keyPress(e) {
     if (e.keyCode === 13) {
-      this.handleAuthentication();
+      this.handleAuthentication()
     }
   }
 
@@ -56,21 +56,21 @@ class LoginPage extends React.Component {
       .once(data => {
         data === undefined
           ? this.setState({ emailNotFound: true })
-          : this.setState({ emailNotFound: false, correctEmail: true });
-      });
-    this.setState({ username: event.target.value.toLowerCase() });
+          : this.setState({ emailNotFound: false, correctEmail: true })
+      })
+    this.setState({ username: event.target.value.toLowerCase() })
   }
 
   handlePassword(event) {
-    this.setState({ password: event.target.value });
+    this.setState({ password: event.target.value })
   }
 
   handleAuthentication() {
-    const { username, password } = this.state;
+    const { username, password } = this.state
     const ref = gun
       .get('users')
       .get(username)
-      .get('password');
+      .get('password')
     ref.once(data => {
       password === data
         ? this.setState({ authenticated: true })
@@ -78,13 +78,13 @@ class LoginPage extends React.Component {
             authenticated: false,
             inputError: true,
             password: '',
-          });
-    });
+          })
+    })
   }
 
   render() {
-    const { classes } = this.props;
-    const { authenticated, correctEmail, username } = this.state;
+    const { classes } = this.props
+    const { authenticated, correctEmail, username } = this.state
 
     return !authenticated ? (
       <div>
@@ -175,7 +175,7 @@ class LoginPage extends React.Component {
       </div>
     ) : (
       <Redirect push to={`/pinecone/dashboard/${username}`} />
-    );
+    )
   }
 }
-export default withStyles(loginPageStyle)(LoginPage);
+export default withStyles(loginPageStyle)(LoginPage)

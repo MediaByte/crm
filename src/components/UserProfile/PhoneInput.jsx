@@ -1,32 +1,32 @@
 /* eslint-disable react/prefer-stateless-function */
 
-import React from 'react';
-import MaskedInput from 'react-text-mask';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import Select from '@material-ui/core/Select';
-import FormControl from '@material-ui/core/FormControl';
+import React from 'react'
+import MaskedInput from 'react-text-mask'
+import PropTypes from 'prop-types'
+import { withStyles } from '@material-ui/core/styles'
+import Input from '@material-ui/core/Input'
+import InputLabel from '@material-ui/core/InputLabel'
+import Select from '@material-ui/core/Select'
+import FormControl from '@material-ui/core/FormControl'
 //State
-import { connect } from 'react-redux';
-import { homePhone, mobilePhone, workPhone } from 'state/newUser/actions.js';
+import { connect } from 'react-redux'
+import { homePhone, mobilePhone, workPhone } from 'state/newUser/actions.js'
 
 const mapStateToProps = state => {
   return {
     homePhone: state.newUser.homePhone,
     mobilePhone: state.newUser.mobilePhone,
     workPhone: state.newUser.workPhone,
-  };
-};
+  }
+}
 
 const mapDispatchToProps = dispatch => {
   return {
     onChangeHomePhone: event => dispatch(homePhone(event)),
     onChangeMobilePhone: event => dispatch(mobilePhone(event)),
     onChangeWorkPhone: event => dispatch(workPhone(event)),
-  };
-};
+  }
+}
 
 const styles = theme => ({
   container: {
@@ -44,10 +44,10 @@ const styles = theme => ({
   selectEmpty: {
     marginTop: theme.spacing.unit * 2,
   },
-});
+})
 
 function TextMaskCustom(props) {
-  const { inputRef, ...other } = props;
+  const { inputRef, ...other } = props
 
   return (
     <MaskedInput
@@ -72,21 +72,21 @@ function TextMaskCustom(props) {
       placeholderChar={'\u2000'}
       showMask
     />
-  );
+  )
 }
 
 TextMaskCustom.propTypes = {
   inputRef: PropTypes.func.isRequired,
-};
+}
 
 class PhoneInput extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       type: '',
       number: '(  )    -    ',
-    };
-    this.handleChange = this.handleChange.bind(this);
+    }
+    this.handleChange = this.handleChange.bind(this)
   }
 
   handleChange(event, key) {
@@ -94,11 +94,11 @@ class PhoneInput extends React.Component {
       onChangeHomePhone,
       onChangeMobilePhone,
       onChangeWorkPhone,
-    } = this.props;
-    const type = document.getElementById(this.props.select).value;
-    const input = document.getElementById(this.props.input).value;
+    } = this.props
+    const type = document.getElementById(this.props.select).value
+    const input = document.getElementById(this.props.input).value
 
-    this.setState({ [key]: event.target.value });
+    this.setState({ [key]: event.target.value })
     // eslint-disable-next-line
     type === 'homePhone'
       ? onChangeHomePhone(input)
@@ -106,11 +106,11 @@ class PhoneInput extends React.Component {
       ? onChangeMobilePhone(input)
       : type === 'workPhone'
       ? onChangeWorkPhone(input)
-      : null;
+      : null
   }
 
   render() {
-    const { classes, select, input } = this.props;
+    const { classes, select, input } = this.props
     return (
       <React.Fragment>
         <div className={classes.root}>
@@ -144,17 +144,17 @@ class PhoneInput extends React.Component {
           </FormControl>
         </div>
       </React.Fragment>
-    );
+    )
   }
 }
 
 PhoneInput.propTypes = {
   classes: PropTypes.object.isRequired,
-};
+}
 
 export default withStyles(styles)(
   connect(
     mapStateToProps,
     mapDispatchToProps,
   )(PhoneInput),
-);
+)

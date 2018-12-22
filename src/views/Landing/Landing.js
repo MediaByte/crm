@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 
 //Material-UI components
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles'
 
 //project components
-import HeaderBar from './components/HeaderBar.js';
-import Content from './components/Content.js';
+import HeaderBar from './components/HeaderBar.js'
+import Content from './components/Content.js'
 
 const styles = theme => ({
   root: {},
@@ -17,11 +17,11 @@ const styles = theme => ({
       marginTop: theme.spacing.unit * 20,
     },
   },
-});
+})
 
 class Landing extends Component {
   render() {
-    const { classes } = this.props;
+    const { classes } = this.props
     return (
       <div className={classes.root}>
         <HeaderBar />
@@ -29,8 +29,8 @@ class Landing extends Component {
           <Content />
         </div>
       </div>
-    );
+    )
   }
 }
 
-export default withStyles(styles)(Landing);
+export default withStyles(styles)(Landing)

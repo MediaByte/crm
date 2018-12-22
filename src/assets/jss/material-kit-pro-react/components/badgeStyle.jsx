@@ -9,7 +9,7 @@ import {
   successColor,
   infoColor,
   roseColor,
-} from 'assets/jss/material-kit-pro-react.jsx';
+} from 'assets/jss/material-kit-pro-react.jsx'
 
 const badgeStyle = {
   badge: {
@@ -47,6 +47,6 @@ const badgeStyle = {
   gray: {
     backgroundColor: '#6c757d',
   },
-};
+}
 
-export default badgeStyle;
+export default badgeStyle

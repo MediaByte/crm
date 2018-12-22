@@ -1,17 +1,17 @@
-import React from 'react';
+import React from 'react'
 // @material-ui/core components
-import withStyles from '@material-ui/core/styles/withStyles';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
+import withStyles from '@material-ui/core/styles/withStyles'
+import Button from '@material-ui/core/Button'
+import Typography from '@material-ui/core/Typography'
 // core components
-import GridItem from 'components/Grid/GridItem.jsx';
-import GridContainer from 'components/Grid/GridContainer.jsx';
-import CardAvatar from 'components/Card/CardAvatar.jsx';
-import CardBody from 'components/Card/CardBody.jsx';
+import GridItem from 'components/Grid/GridItem.jsx'
+import GridContainer from 'components/Grid/GridContainer.jsx'
+import CardAvatar from 'components/Card/CardAvatar.jsx'
+import CardBody from 'components/Card/CardBody.jsx'
 
 // material-ui icons
-import AddIcon from '@material-ui/icons/Add';
-import avatar from 'assets/img/faces/marc.jpg';
+import AddIcon from '@material-ui/icons/Add'
+import avatar from 'assets/img/faces/marc.jpg'
 
 const styles = theme => ({
   footerButton: {
@@ -49,18 +49,18 @@ const styles = theme => ({
     marginTop: '5px',
     cursor: 'pointer',
   },
-});
+})
 
 class EmployeeCard extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       addUser: false,
-    };
+    }
   }
 
   render() {
-    const { classes, first, last, email, phone, group } = this.props;
+    const { classes, first, last, email, phone, group } = this.props
     return (
       <div>
         <GridContainer justify="center" className={classes.container}>
@@ -113,7 +113,7 @@ class EmployeeCard extends React.Component {
           </Button>
         </div>
       </div>
-    );
+    )
   }
 }
-export default withStyles(styles)(EmployeeCard);
+export default withStyles(styles)(EmployeeCard)

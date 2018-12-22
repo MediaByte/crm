@@ -4,9 +4,9 @@ import {
   cardTitle,
   coloredShadow,
   mlAuto,
-} from 'assets/jss/material-kit-pro-react.jsx';
+} from 'assets/jss/material-kit-pro-react.jsx'
 
-import tooltipsStyle from 'assets/jss/material-kit-pro-react/tooltipsStyle.jsx';
+import tooltipsStyle from 'assets/jss/material-kit-pro-react/tooltipsStyle.jsx'
 
 const styles = {
   cardTitle,
@@ -42,6 +42,6 @@ const styles = {
   textCenter: {
     textAlign: 'center',
   },
-};
+}
 
-export default styles;
+export default styles

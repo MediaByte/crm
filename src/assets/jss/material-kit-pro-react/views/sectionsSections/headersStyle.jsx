@@ -1,9 +1,5 @@
-import headerLinksStyle from 'assets/jss/material-kit-pro-react/components/headerLinksStyle.jsx';
-import {
-  container,
-  mrAuto,
-  title,
-} from 'assets/jss/material-kit-pro-react.jsx';
+import headerLinksStyle from 'assets/jss/material-kit-pro-react/components/headerLinksStyle.jsx'
+import { container, mrAuto, title } from 'assets/jss/material-kit-pro-react.jsx'
 
 const headersSection = theme => ({
   ...headerLinksStyle(theme),
@@ -80,6 +76,6 @@ const headersSection = theme => ({
   button: {
     margin: '0 !important',
   },
-});
+})
 
-export default headersSection;
+export default headersSection

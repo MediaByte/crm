@@ -1,4 +1,4 @@
-import { container } from 'assets/jss/material-kit-pro-react.jsx';
+import { container } from 'assets/jss/material-kit-pro-react.jsx'
 
 const tabsStyle = {
   section: {
@@ -8,6 +8,6 @@ const tabsStyle = {
   textCenter: {
     textAlign: 'center',
   },
-};
+}
 
-export default tabsStyle;
+export default tabsStyle

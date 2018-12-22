@@ -66,6 +66,6 @@ const styles = theme => ({
       height: '400px',
     },
   },
-});
+})
 
-export default styles;
+export default styles

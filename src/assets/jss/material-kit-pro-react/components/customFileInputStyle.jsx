@@ -15,6 +15,6 @@ const customFileInputStyle = {
       color: 'inherit',
     },
   },
-};
+}
 
-export default customFileInputStyle;
+export default customFileInputStyle

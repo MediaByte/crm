@@ -1,14 +1,10 @@
-import {
-  container,
-  title,
-  mlAuto,
-} from 'assets/jss/material-kit-pro-react.jsx';
+import { container, title, mlAuto } from 'assets/jss/material-kit-pro-react.jsx'
 
 const reusableStylesForImgs = {
   position: 'absolute',
   boxShadow:
     '0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12), 0 5px 5px -3px rgba(0, 0, 0, 0.2)',
-};
+}
 
 const componentsStyle = theme => ({
   '@keyframes Floatingx': {
@@ -135,6 +131,6 @@ const componentsStyle = theme => ({
     borderRadius: '3px',
     WebkitAnimation: 'Floatingy 15s ease-in-out infinite',
   },
-});
+})
 
-export default componentsStyle;
+export default componentsStyle

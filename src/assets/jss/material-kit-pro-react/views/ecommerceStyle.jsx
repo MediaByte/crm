@@ -6,8 +6,8 @@ import {
   mlAuto,
   container,
   description,
-} from 'assets/jss/material-kit-pro-react.jsx';
-import imagesStyles from 'assets/jss/material-kit-pro-react/imagesStyles.jsx';
+} from 'assets/jss/material-kit-pro-react.jsx'
+import imagesStyles from 'assets/jss/material-kit-pro-react/imagesStyles.jsx'
 
 const styles = {
   ...imagesStyles,
@@ -129,6 +129,6 @@ const styles = {
     position: 'relative',
     display: 'block',
   },
-};
+}
 
-export default styles;
+export default styles

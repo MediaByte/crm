@@ -3,9 +3,9 @@ import {
   title,
   mlAuto,
   mrAuto,
-} from 'assets/jss/material-kit-pro-react.jsx';
-import customCheckboxRadioSwitch from 'assets/jss/material-kit-pro-react/customCheckboxRadioSwitchStyle.jsx';
-import customSelectStyle from 'assets/jss/material-kit-pro-react/customSelectStyle.jsx';
+} from 'assets/jss/material-kit-pro-react.jsx'
+import customCheckboxRadioSwitch from 'assets/jss/material-kit-pro-react/customCheckboxRadioSwitchStyle.jsx'
+import customSelectStyle from 'assets/jss/material-kit-pro-react/customSelectStyle.jsx'
 
 const basicsStyle = {
   mlAuto,
@@ -35,6 +35,6 @@ const basicsStyle = {
     height: '17px',
     color: '#FFFFFF',
   },
-};
+}
 
-export default basicsStyle;
+export default basicsStyle

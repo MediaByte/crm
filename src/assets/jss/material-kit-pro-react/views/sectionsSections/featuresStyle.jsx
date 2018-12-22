@@ -4,7 +4,7 @@ import {
   mrAuto,
   title,
   description,
-} from 'assets/jss/material-kit-pro-react.jsx';
+} from 'assets/jss/material-kit-pro-react.jsx'
 
 const features = {
   container,
@@ -97,6 +97,6 @@ const features = {
     padding: '10px 0 0px',
   },
   infoArea5: {},
-};
+}
 
-export default features;
+export default features

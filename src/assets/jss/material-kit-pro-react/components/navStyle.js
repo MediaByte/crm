@@ -1,6 +1,6 @@
-import { fade } from '@material-ui/core/styles/colorManipulator';
+import { fade } from '@material-ui/core/styles/colorManipulator'
 
-const drawerWidth = 220;
+const drawerWidth = 220
 
 const navStyles = theme => ({
   title: {
@@ -255,5 +255,5 @@ const navStyles = theme => ({
   white: {
     color: '#fff',
   },
-});
-export default navStyles;
+})
+export default navStyles

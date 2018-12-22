@@ -1,5 +1,5 @@
-import { container, title } from 'assets/jss/material-kit-pro-react.jsx';
-import headerLinksStyle from 'assets/jss/material-kit-pro-react/components/headerLinksStyle.jsx';
+import { container, title } from 'assets/jss/material-kit-pro-react.jsx'
+import headerLinksStyle from 'assets/jss/material-kit-pro-react/components/headerLinksStyle.jsx'
 
 const navbarsStyle = theme => ({
   container,
@@ -53,6 +53,6 @@ const navbarsStyle = theme => ({
     borderRadius: '50%',
     marginLeft: '5px',
   },
-});
+})
 
-export default navbarsStyle;
+export default navbarsStyle

@@ -36,6 +36,6 @@ const cardAvatarStyle = {
     marginBottom: '-50px',
     marginTop: '10px',
   },
-};
+}
 
-export default cardAvatarStyle;
+export default cardAvatarStyle

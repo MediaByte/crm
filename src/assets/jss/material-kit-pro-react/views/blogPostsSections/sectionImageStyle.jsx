@@ -3,7 +3,7 @@ import {
   sectionDark,
   cardTitle,
   container,
-} from 'assets/jss/material-kit-pro-react.jsx';
+} from 'assets/jss/material-kit-pro-react.jsx'
 
 const sectionImageStyle = {
   container: {
@@ -38,6 +38,6 @@ const sectionImageStyle = {
   textLeft: {
     textAlign: 'left',
   },
-};
+}
 
-export default sectionImageStyle;
+export default sectionImageStyle

@@ -14,7 +14,7 @@ import {
   transition,
   boxShadow,
   drawerWidth,
-} from 'assets/jss/material-kit-pro-react.jsx';
+} from 'assets/jss/material-kit-pro-react.jsx'
 
 const headerStyle = theme => ({
   appBar: {
@@ -170,6 +170,6 @@ const headerStyle = theme => ({
     top: '9px',
     zIndex: '1',
   },
-});
+})
 
-export default headerStyle;
+export default headerStyle

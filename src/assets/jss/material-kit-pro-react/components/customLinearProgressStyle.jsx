@@ -10,7 +10,7 @@ import {
   infoColor,
   roseColor,
   grayColor,
-} from 'assets/jss/material-kit-pro-react.jsx';
+} from 'assets/jss/material-kit-pro-react.jsx'
 
 const customLinearProgressStyle = {
   root: {
@@ -63,6 +63,6 @@ const customLinearProgressStyle = {
   grayBackground: {
     background: 'rgba(221, 221, 221, 0.2)',
   },
-};
+}
 
-export default customLinearProgressStyle;
+export default customLinearProgressStyle

@@ -3,8 +3,8 @@ import {
   description,
   mrAuto,
   mlAuto,
-} from 'assets/jss/material-kit-pro-react.jsx';
-import customSelectStyle from 'assets/jss/material-kit-pro-react/customSelectStyle.jsx';
+} from 'assets/jss/material-kit-pro-react.jsx'
+import customSelectStyle from 'assets/jss/material-kit-pro-react/customSelectStyle.jsx'
 
 const contactStyle = {
   title,
@@ -26,6 +26,6 @@ const contactStyle = {
   aboutUs: {
     padding: '80px 0px',
   },
-};
+}
 
-export default contactStyle;
+export default contactStyle

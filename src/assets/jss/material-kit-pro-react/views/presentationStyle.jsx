@@ -3,8 +3,8 @@ import {
   title,
   main,
   mainRaised,
-} from 'assets/jss/material-kit-pro-react.jsx';
-import footerStyle from 'assets/jss/material-kit-pro-react/views/componentsSections/footerStyle.jsx';
+} from 'assets/jss/material-kit-pro-react.jsx'
+import footerStyle from 'assets/jss/material-kit-pro-react/views/componentsSections/footerStyle.jsx'
 
 const presentationStyle = {
   ...footerStyle,
@@ -49,6 +49,6 @@ const presentationStyle = {
     lineHeight: '22px',
     boxShadow: '0 5px 5px -2px rgba(31,31,31,.4)',
   },
-};
+}
 
-export default presentationStyle;
+export default presentationStyle

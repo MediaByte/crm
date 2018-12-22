@@ -7,11 +7,11 @@ import {
   mlAuto,
   infoColor,
   roseColor,
-} from 'assets/jss/material-kit-pro-react.jsx';
+} from 'assets/jss/material-kit-pro-react.jsx'
 
-import imageStyles from 'assets/jss/material-kit-pro-react/imagesStyles.jsx';
+import imageStyles from 'assets/jss/material-kit-pro-react/imagesStyles.jsx'
 
-import rotatingCards from 'assets/jss/material-kit-pro-react/rotatingCards.jsx';
+import rotatingCards from 'assets/jss/material-kit-pro-react/rotatingCards.jsx'
 
 const styles = {
   container,
@@ -177,6 +177,6 @@ const styles = {
   marginBottom20: {
     marginBottom: '20px',
   },
-};
+}
 
-export default styles;
+export default styles

@@ -1,6 +1,6 @@
-import { container, cardTitle } from 'assets/jss/material-kit-pro-react.jsx';
+import { container, cardTitle } from 'assets/jss/material-kit-pro-react.jsx'
 
-import customCheckboxRadioSwitchStyle from 'assets/jss/material-kit-pro-react/customCheckboxRadioSwitchStyle.jsx';
+import customCheckboxRadioSwitchStyle from 'assets/jss/material-kit-pro-react/customCheckboxRadioSwitchStyle.jsx'
 
 const signupPageStyle = {
   container: {
@@ -121,6 +121,6 @@ const signupPageStyle = {
     top: '3px',
     position: 'relative',
   },
-};
+}
 
-export default signupPageStyle;
+export default signupPageStyle

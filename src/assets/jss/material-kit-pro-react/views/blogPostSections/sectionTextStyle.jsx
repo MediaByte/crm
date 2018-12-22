@@ -1,6 +1,6 @@
-import { container, title } from 'assets/jss/material-kit-pro-react.jsx';
+import { container, title } from 'assets/jss/material-kit-pro-react.jsx'
 
-import imagesStyles from 'assets/jss/material-kit-pro-react/imagesStyles.jsx';
+import imagesStyles from 'assets/jss/material-kit-pro-react/imagesStyles.jsx'
 
 const sectionTextStyle = {
   container,
@@ -21,6 +21,6 @@ const sectionTextStyle = {
     fontSize: '1.5rem !important',
   },
   ...imagesStyles,
-};
+}
 
-export default sectionTextStyle;
+export default sectionTextStyle

@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { Formik } from 'formik';
-import Brightness1 from '@material-ui/icons/Brightness1Outlined';
-import Description from '@material-ui/icons/DescriptionOutlined';
-import Group from '@material-ui/icons/GroupAddOutlined';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+import { Formik } from 'formik'
+import Brightness1 from '@material-ui/icons/Brightness1Outlined'
+import Description from '@material-ui/icons/DescriptionOutlined'
+import Group from '@material-ui/icons/GroupAddOutlined'
 
-import Close from '@material-ui/icons/Close';
+import Close from '@material-ui/icons/Close'
 import {
   Paper,
   Grid,
@@ -19,12 +19,12 @@ import {
   Toolbar,
   IconButton,
   TextField,
-} from '@material-ui/core';
+} from '@material-ui/core'
 
-import { saveUser, addUser } from '../../state/userGroups/actions';
+import { saveUser, addUser } from '../../state/userGroups/actions'
 
 //material ui components
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles'
 
 const styles = theme => ({
   wrapper: {
@@ -134,13 +134,13 @@ const styles = theme => ({
       dropShadow: 'none',
     },
   },
-});
+})
 
 class UserGroupForm extends Component {
   render() {
-    const { classes, user } = this.props;
+    const { classes, user } = this.props
 
-    const isAdd = user && !user.id;
+    const isAdd = user && !user.id
 
     return (
       <div>
@@ -149,16 +149,16 @@ class UserGroupForm extends Component {
           validate={values => {}}
           enableReinitialize={true}
           onSubmit={(values, { setSubmitting }) => {
-            console.log('onSubmit', values, this);
+            console.log('onSubmit', values, this)
             if (values.id) {
-              this.props.saveUser(values);
+              this.props.saveUser(values)
             } else {
-              this.props.addUser(values);
+              this.props.addUser(values)
             }
             setTimeout(() => {
-              setSubmitting(false);
-              this.props.handleClose();
-            }, 300);
+              setSubmitting(false)
+              this.props.handleClose()
+            }, 300)
           }}
         >
           {({
@@ -380,31 +380,31 @@ class UserGroupForm extends Component {
                 </Paper>
                 <br />
               </form>
-            );
+            )
           }}
         </Formik>
       </div>
-    );
+    )
   }
 }
 
 const mapStateToProps = state => {
-  return {};
-};
+  return {}
+}
 
 const mapDispatchToProps = dispatch => {
   return {
     saveUser: user => dispatch(saveUser(user)),
     addUser: user => dispatch(addUser(user)),
-  };
-};
+  }
+}
 
 UserGroupForm.propTypes = {
   classes: PropTypes.object.isRequired,
-};
+}
 export default withStyles(styles)(
   connect(
     mapStateToProps,
     mapDispatchToProps,
   )(UserGroupForm),
-);
+)

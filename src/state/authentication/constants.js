@@ -1,1 +1,1 @@
-export const USER_VALID = 'USER_VALID';
+export const USER_VALID = 'USER_VALID'

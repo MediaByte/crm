@@ -12,6 +12,6 @@ const instructionStyle = {
     display: 'block',
     maxWidth: '100%',
   },
-};
+}
 
-export default instructionStyle;
+export default instructionStyle

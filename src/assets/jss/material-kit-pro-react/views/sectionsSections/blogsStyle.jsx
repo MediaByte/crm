@@ -6,7 +6,7 @@ import {
   description,
   mlAuto,
   mrAuto,
-} from 'assets/jss/material-kit-pro-react.jsx';
+} from 'assets/jss/material-kit-pro-react.jsx'
 
 const blogsSection = {
   container,
@@ -45,6 +45,6 @@ const blogsSection = {
     marginBottom: '60px',
     textAlign: 'center',
   },
-};
+}
 
-export default blogsSection;
+export default blogsSection

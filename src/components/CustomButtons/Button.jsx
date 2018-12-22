@@ -1,14 +1,14 @@
-import React from 'react';
+import React from 'react'
 // nodejs library that concatenates classes
-import classNames from 'classnames';
+import classNames from 'classnames'
 // nodejs library to set properties for components
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
 
 // @material-ui/core components
-import withStyles from '@material-ui/core/styles/withStyles';
-import Button from '@material-ui/core/Button';
+import withStyles from '@material-ui/core/styles/withStyles'
+import Button from '@material-ui/core/Button'
 
-import buttonStyle from 'assets/jss/material-kit-pro-react/components/buttonStyle.jsx';
+import buttonStyle from 'assets/jss/material-kit-pro-react/components/buttonStyle.jsx'
 
 function RegularButton(props) {
   const {
@@ -26,7 +26,7 @@ function RegularButton(props) {
     fileButton,
     className,
     ...rest
-  } = props;
+  } = props
   const btnClasses = classNames({
     [classes.button]: true,
     [classes[size]]: size,
@@ -40,12 +40,12 @@ function RegularButton(props) {
     [classes.justIcon]: justIcon,
     [classes.fileButton]: fileButton,
     [className]: className,
-  });
+  })
   return (
     <Button {...rest} className={btnClasses}>
       {children}
     </Button>
-  );
+  )
 }
 
 RegularButton.propTypes = {
@@ -82,6 +82,6 @@ RegularButton.propTypes = {
   link: PropTypes.bool,
   justIcon: PropTypes.bool,
   fileButton: PropTypes.bool,
-};
+}
 
-export default withStyles(buttonStyle)(RegularButton);
+export default withStyles(buttonStyle)(RegularButton)

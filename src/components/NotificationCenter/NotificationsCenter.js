@@ -1,14 +1,14 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
-import List from '@material-ui/core/List';
-import Divider from '@material-ui/core/Divider';
-import Icon from '@material-ui/core/Icon';
-import Typography from '@material-ui/core/Typography';
-import GridItem from 'components/Grid/GridItem.jsx';
-import GridContainer from 'components/Grid/GridContainer.jsx';
-import NotificationsOutlined from '@material-ui/icons/NotificationsOutlined';
+import React from 'react'
+import PropTypes from 'prop-types'
+import { withStyles } from '@material-ui/core/styles'
+import Drawer from '@material-ui/core/Drawer'
+import List from '@material-ui/core/List'
+import Divider from '@material-ui/core/Divider'
+import Icon from '@material-ui/core/Icon'
+import Typography from '@material-ui/core/Typography'
+import GridItem from 'components/Grid/GridItem.jsx'
+import GridContainer from 'components/Grid/GridContainer.jsx'
+import NotificationsOutlined from '@material-ui/icons/NotificationsOutlined'
 
 const styles = theme => ({
   list: {
@@ -60,19 +60,19 @@ const styles = theme => ({
     margin: 'auto',
     marginLeft: '20px',
   },
-});
+})
 class NotificationsCenter extends React.Component {
   state = {
     right: false,
-  };
+  }
 
   toggleDrawer = (side, open) => () => {
     this.setState({
       [side]: open,
-    });
-  };
+    })
+  }
   render() {
-    const { classes } = this.props;
+    const { classes } = this.props
 
     const header = (
       <div className={classes.list}>
@@ -92,7 +92,7 @@ class NotificationsCenter extends React.Component {
         </GridContainer>
         <Divider />
       </div>
-    );
+    )
 
     const footer = (
       <div className={classes.fullList}>
@@ -112,7 +112,7 @@ class NotificationsCenter extends React.Component {
           </GridItem>
         </GridContainer>
       </div>
-    );
+    )
 
     return (
       <div>
@@ -136,12 +136,12 @@ class NotificationsCenter extends React.Component {
           </div>
         </Drawer>
       </div>
-    );
+    )
   }
 }
 
 NotificationsCenter.propTypes = {
   classes: PropTypes.object.isRequired,
-};
+}
 
-export default withStyles(styles)(NotificationsCenter);
+export default withStyles(styles)(NotificationsCenter)

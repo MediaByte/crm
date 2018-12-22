@@ -4,7 +4,7 @@ import {
   title,
   sectionDescription,
   mlAuto,
-} from 'assets/jss/material-kit-pro-react.jsx';
+} from 'assets/jss/material-kit-pro-react.jsx'
 
 const contentStyle = theme => ({
   container,
@@ -71,6 +71,6 @@ const contentStyle = theme => ({
     left: '60%',
     position: 'absolute',
   },
-});
+})
 
-export default contentStyle;
+export default contentStyle

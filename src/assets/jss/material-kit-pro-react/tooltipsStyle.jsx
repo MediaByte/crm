@@ -24,6 +24,6 @@ const tooltipsStyle = {
     whiteSpace: 'normal',
     lineBreak: 'auto',
   },
-};
+}
 
-export default tooltipsStyle;
+export default tooltipsStyle

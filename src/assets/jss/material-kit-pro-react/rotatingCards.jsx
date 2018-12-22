@@ -103,6 +103,6 @@ const style = {
     background: 'linear-gradient(60deg,#ec407a,#c2185b)',
     color: '#FFFFFF',
   },
-};
+}
 
-export default style;
+export default style

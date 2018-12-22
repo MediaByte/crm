@@ -39,6 +39,6 @@ const imagesStyles = {
     left: '0',
     padding: '1.25rem',
   },
-};
+}
 
-export default imagesStyles;
+export default imagesStyles

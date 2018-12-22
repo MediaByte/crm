@@ -147,6 +147,6 @@ const parallaxStyle = {
     minHeight: '65vh',
     maxHeight: '650px',
   },
-};
+}
 
-export default parallaxStyle;
+export default parallaxStyle

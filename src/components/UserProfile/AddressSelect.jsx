@@ -1,29 +1,29 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import Chip from '@material-ui/core/Chip';
-import styles from 'assets/jss/material-kit-pro-react/customSelectStyle.jsx';
+import React from 'react'
+import PropTypes from 'prop-types'
+import { withStyles } from '@material-ui/core/styles'
+import Input from '@material-ui/core/Input'
+import InputLabel from '@material-ui/core/InputLabel'
+import MenuItem from '@material-ui/core/MenuItem'
+import FormControl from '@material-ui/core/FormControl'
+import Select from '@material-ui/core/Select'
+import Chip from '@material-ui/core/Chip'
+import styles from 'assets/jss/material-kit-pro-react/customSelectStyle.jsx'
 
-const names = ['Home', 'Mailing', 'Work'];
+const names = ['Home', 'Mailing', 'Work']
 
 class AddressSelect extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       name: [],
-    };
+    }
   }
   handleChange = event => {
-    this.setState({ name: event.target.value });
-    console.log(event.target.value);
-  };
+    this.setState({ name: event.target.value })
+    console.log(event.target.value)
+  }
   render() {
-    const { classes, refID } = this.props;
+    const { classes, refID } = this.props
     return (
       <FormControl className={classes.selectFormControl} fullWidth>
         <InputLabel
@@ -63,13 +63,13 @@ class AddressSelect extends React.Component {
           ))}
         </Select>
       </FormControl>
-    );
+    )
   }
 }
 
 AddressSelect.propTypes = {
   classes: PropTypes.object.isRequired,
   theme: PropTypes.object.isRequired,
-};
+}
 
-export default withStyles(styles, { withTheme: true })(AddressSelect);
+export default withStyles(styles, { withTheme: true })(AddressSelect)

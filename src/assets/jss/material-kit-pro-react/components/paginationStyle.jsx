@@ -9,7 +9,7 @@ import {
   successColor,
   warningColor,
   dangerColor,
-} from 'assets/jss/material-kit-pro-react.jsx';
+} from 'assets/jss/material-kit-pro-react.jsx'
 
 const paginationStyle = {
   pagination: {
@@ -127,6 +127,6 @@ const paginationStyle = {
       borderColor: '#ddd',
     },
   },
-};
+}
 
-export default paginationStyle;
+export default paginationStyle

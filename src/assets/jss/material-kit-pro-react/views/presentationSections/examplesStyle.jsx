@@ -6,7 +6,7 @@ import {
   mrAuto,
   title,
   description,
-} from 'assets/jss/material-kit-pro-react.jsx';
+} from 'assets/jss/material-kit-pro-react.jsx'
 
 const examplesStyle = {
   section: {
@@ -40,6 +40,6 @@ const examplesStyle = {
       transform: 'translate3d(0, -10px, 0)',
     },
   },
-};
+}
 
-export default examplesStyle;
+export default examplesStyle

@@ -2,7 +2,7 @@ import {
   infoColor,
   primaryBoxShadow,
   defaultFont,
-} from 'assets/jss/material-kit-pro-react.jsx';
+} from 'assets/jss/material-kit-pro-react.jsx'
 
 const customSelectStyle = theme => ({
   selectLabel: {
@@ -141,6 +141,6 @@ const customSelectStyle = theme => ({
     backgroundColor: 'transparent',
     maxHeight: '266px',
   },
-});
+})
 
-export default customSelectStyle;
+export default customSelectStyle
