@@ -60,15 +60,13 @@ export const userGroups = (state = initialState, action = {}) => {
         selected: false,
       }
     case FILTER:
-      let status = action.payload.toLowerCase()
-      let usersCopy = state.usersCopy
-      if (status === 'active' || status === 'inactive') {
-        usersCopy = _.filter(
-          usersCopy,
-          user => user.status.toLowerCase() === status,
-        )
-      }
-      return { ...state, filter: status, users: usersCopy }
+      const filter = action.payload.toLowerCase()
+      if (filter === '') return { ...state, filter, users: state.usersCopy }
+      const filteredUsers = _.filter(
+        state.usersCopy,
+        user => user.status.toLowerCase() === filter,
+      )
+      return { ...state, filter: filter, users: filteredUsers }
     case DUPLICATE_USER:
       let duplicatedUser = {
         ...action.payload,
