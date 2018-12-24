@@ -33,7 +33,8 @@ import * as R from '../../res'
 
 /**
  * @typedef {object} UsersFilterProps
- * @prop {MenuProps['anchorEl']} anchorEl
+ * @prop {MenuProps['anchorEl']} anchorEl DOM element to which the filter
+ * pop-over menu will attach itself.
  * @prop {StyleRules<keyof ReturnType<typeof styles>>} classes Don't pass this
  * prop, it is passed to the component by material-ui.
  * @prop {string|undefined|false|null} currentStatusValue

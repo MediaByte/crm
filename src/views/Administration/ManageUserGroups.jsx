@@ -46,8 +46,6 @@ import UsersListToolbar from '../../components/UsersListToolbar'
 //gundb
 import Gun from 'gun/gun'
 
-import UsersFilter from '../../components/UsersFilter'
-
 //State
 import { connect } from 'react-redux'
 import {
@@ -313,7 +311,7 @@ class ManageUserGroups extends Component {
     )
   }
 
-  showSearch = () => {
+  toggleSearch = () => {
     this.setState(({ searchActive }) => ({
       searchActive: !searchActive,
     }))
@@ -398,13 +396,29 @@ class ManageUserGroups extends Component {
               className={classes.demoLeft}
             >
               <div>
+                {/* this will later be refactored into a simpler container */}
                 <UsersListToolbar
+                  anchorEl={anchorEl2}
+                  currentStatusValue={this.props.filterText}
+                  onClose={this.closeFilter}
+                  onStatusChange={status => this.props.filter(status)}
+                  open={!!anchorEl2}
+                  possibleStatuses={[
+                    {
+                      displayValue: 'Active',
+                      value: 'active',
+                    },
+                    {
+                      displayValue: 'Inactive',
+                      value: 'inactive',
+                    },
+                  ]}
                   numberOfRecords={users.length}
                   onChangeSearchValue={this.onChangeFilter}
                   onClickAddNewGroup={this.addNewGroup}
                   onClickFilter={this.showFilter}
-                  onClickSearch={this.showSearch}
-                  showSearch={true}
+                  onClickSearch={this.toggleSearch}
+                  showSearch={this.state.searchActive}
                 />
                 <Divider />
                 {/* <br/>

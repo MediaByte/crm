@@ -17,23 +17,39 @@ import { withStyles } from '@material-ui/core'
  * @typedef {import('@material-ui/core/styles').StyleRules<K>} StyleRules
  */
 
+import UsersFilter from '../UsersFilter'
 /**
- * @typedef {object} UsersListToolbarProps
- * @prop {StyleRules<keyof ReturnType<typeof styles>>} classes
- * @prop {number} numberOfRecords
- * @prop {BaseTextFieldProps['onChange']} onChangeSearchValue
- * @prop {Function} onClickAddNewGroup
- * @prop {Function} onClickFilter
- * @prop {Function} onClickSearch
- * @prop {boolean|null|undefined} showSearch
+ * @typedef {import('../UsersFilter').UsersFilterProps} UsersFilterProps
  */
 
 /**
+ * @typedef {object} _UsersListToolbarProps
+ * @prop {StyleRules<keyof ReturnType<typeof styles>>} classes
+ * @prop {number} numberOfRecords
+ * @prop {BaseTextFieldProps['onChange']} onChangeSearchValue Called when the
+ * value inside the search text (if it's currently on display) input changes.
+ * @prop {Function} onClickAddNewGroup Called when the user clicks on the plus
+ * icon.
+ * @prop {Function} onClickFilter Consumer should create a dom ref to pass into
+ * filter (through filterProps), to which the menu will 'attach'.
+ * @prop {Function} onClickSearch Called when the user clicks on the search
+ * icon, ideally this should change state above and pass true to the
+ * `showSearch` prop as a result.
+ * @prop {boolean|null|undefined} showSearch Determines whether the text input
+ * for search should be on display.
+ */
+
+/**
+ * @typedef {_UsersListToolbarProps & UsersFilterProps} UsersListToolbarProps
+ */
+
+export { undefined } // stop jsdoc comments from mergin
+/**
+ * This component receives the underlying <UsersFilter /> props directly as an
+ * optimization technique.
  * @augments React.PureComponent<UsersListToolbarProps>
  */
 class UsersListToolbar extends React.PureComponent {
-  filterIconref = React.createRef()
-
   render() {
     const {
       classes,
@@ -43,6 +59,7 @@ class UsersListToolbar extends React.PureComponent {
       onClickFilter,
       onClickSearch,
       showSearch,
+      ...filterProps
     } = this.props
 
     return (
@@ -67,6 +84,7 @@ class UsersListToolbar extends React.PureComponent {
             />
           </div>
         )}
+
         <div className={classes.filters}>
           <IconButton className={classes.icons}>
             <Add onClick={onClickAddNewGroup} />
@@ -81,7 +99,7 @@ class UsersListToolbar extends React.PureComponent {
             <FilterList onClick={onClickFilter} />
           </IconButton>
         </div>
-        {/** UsersFilter here */}
+        <UsersFilter {...filterProps} />
         <div className={classes.records}>{numberOfRecords} records</div>
       </div>
     )
@@ -94,7 +112,6 @@ const styles = theme => ({
     display: 'flex',
     justifyContent: 'space-between',
   },
-
   inputAdornment: {
     position: 'start',
   },
