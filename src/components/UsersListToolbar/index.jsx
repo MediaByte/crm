@@ -50,7 +50,7 @@ class UsersListToolbar extends React.PureComponent {
         {showSearch && (
           <div>
             <TextField
-              style={classes.textField}
+              className={classes.textField}
               type="search"
               margin="dense"
               variant="outlined"
@@ -58,8 +58,8 @@ class UsersListToolbar extends React.PureComponent {
               placeholder="Search Groups"
               InputProps={{
                 startAdornment: (
-                  <InputAdornment style={classes.inputAdornment}>
-                    <Search style={classes.searchIcon} />
+                  <InputAdornment className={classes.inputAdornment}>
+                    <Search className={classes.searchIcon} />
                   </InputAdornment>
                 ),
               }}
