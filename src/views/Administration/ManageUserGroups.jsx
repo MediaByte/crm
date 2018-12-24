@@ -17,7 +17,7 @@ import Edit from '@material-ui/icons/Edit'
 import MoreHoriz from '@material-ui/icons/MoreHoriz'
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight'
 import ErrorOutlineOutlined from '@material-ui/icons/ErrorOutlineOutlined'
-import FilterList from '@material-ui/icons/FilterList'
+
 import Search from '@material-ui/icons/Search'
 import Cloud from '@material-ui/icons/CloudDownloadOutlined'
 import BackArrow from '@material-ui/icons/ArrowBackIosOutlined'
@@ -40,6 +40,8 @@ import {
   List,
   TextField,
 } from '@material-ui/core'
+
+import UsersListToolbar from '../../components/UsersListToolbar'
 
 //gundb
 import Gun from 'gun/gun'
@@ -296,7 +298,7 @@ class ManageUserGroups extends Component {
     this.setState({ addUser: false, open: openModal, title: user.name })
   }
 
-  addNewGroup() {
+  addNewGroup = () => {
     this.props.loadUser(false)
     // const openModal = window.innerWidth < 750
     this.setState(
@@ -311,8 +313,10 @@ class ManageUserGroups extends Component {
     )
   }
 
-  showSearch() {
-    this.setState({ searchActive: !this.state.searchActive })
+  showSearch = () => {
+    this.setState(({ searchActive }) => ({
+      searchActive: !searchActive,
+    }))
   }
 
   showFilter = event => {
@@ -323,7 +327,7 @@ class ManageUserGroups extends Component {
     this.setState({ anchorEl2: null })
   }
 
-  onChangeFilter(e) {
+  onChangeFilter = e => {
     const value = e.target.value.toLowerCase()
     let users
     if (value === '') {
@@ -394,62 +398,14 @@ class ManageUserGroups extends Component {
               className={classes.demoLeft}
             >
               <div>
-                <div className={classes.toolbar}>
-                  {this.state.searchActive && (
-                    <div>
-                      <TextField
-                        style={{ backgroundColor: '#F9F9F9', color: 'white' }}
-                        type="search"
-                        margin="dense"
-                        variant="outlined"
-                        fullWidth
-                        placeholder="Search Groups"
-                        InputProps={{
-                          startAdornment: (
-                            <InputAdornment style={{ position: 'start' }}>
-                              <Search style={{ color: 'bdbdbd' }} />
-                            </InputAdornment>
-                          ),
-                        }}
-                        onChange={e => this.onChangeFilter(e)}
-                      />
-                    </div>
-                  )}
-                  <div className={classes.filters}>
-                    <IconButton className={classes.icons}>
-                      <Add onClick={() => this.addNewGroup()} />
-                    </IconButton>
-                    <IconButton className={classes.icons}>
-                      <Cloud />
-                    </IconButton>
-                    <IconButton className={classes.icons}>
-                      <Search onClick={() => this.showSearch()} />
-                    </IconButton>
-                    <IconButton className={classes.icons}>
-                      <FilterList onClick={this.showFilter} />
-                    </IconButton>
-                  </div>
-                  <UsersFilter
-                    anchorEl={anchorEl2}
-                    currentStatusValue={this.props.filterText}
-                    onClose={this.closeFilter}
-                    open={!!anchorEl2}
-                    onStatusChange={statusValue =>
-                      this.props.filter(statusValue)
-                    }
-                    possibleStatuses={[
-                      {
-                        displayValue: 'Active',
-                        value: 'active',
-                      },
-                      {
-                        displayValue: 'Inactive',
-                        value: 'inactive',
-                      },
-                    ]}
-                  />
-                  <div className={classes.records}>{users.length} records</div>
-                </div>
+                <UsersListToolbar
+                  numberOfRecords={users.length}
+                  onChangeSearchValue={this.onChangeFilter}
+                  onClickAddNewGroup={this.addNewGroup}
+                  onClickFilter={this.showFilter}
+                  onClickSearch={this.showSearch}
+                  showSearch={true}
+                />
                 <Divider />
                 {/* <br/>
 								<CustomInput
