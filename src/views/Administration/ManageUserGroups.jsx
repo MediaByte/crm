@@ -10,16 +10,12 @@ import IconButton from '@material-ui/core/IconButton'
 import Grid from '@material-ui/core/Grid'
 import Divider from '@material-ui/core/Divider'
 import Menu from '@material-ui/core/Menu'
-import InputAdornment from '@material-ui/core/InputAdornment'
 //material-ui icons
-import Add from '@material-ui/icons/Add'
 import Edit from '@material-ui/icons/Edit'
 import MoreHoriz from '@material-ui/icons/MoreHoriz'
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight'
 import ErrorOutlineOutlined from '@material-ui/icons/ErrorOutlineOutlined'
 
-import Search from '@material-ui/icons/Search'
-import Cloud from '@material-ui/icons/CloudDownloadOutlined'
 import BackArrow from '@material-ui/icons/ArrowBackIosOutlined'
 //project components
 import styles from './styles.js'
@@ -38,7 +34,6 @@ import {
   ListItemSecondaryAction,
   ListItem,
   List,
-  TextField,
 } from '@material-ui/core'
 
 import UsersListToolbar from '../../components/UsersListToolbar'
@@ -396,13 +391,12 @@ class ManageUserGroups extends Component {
               className={classes.demoLeft}
             >
               <div>
-                {/* this will later be refactored into a simpler container */}
                 <UsersListToolbar
-                  anchorEl={anchorEl2}
-                  currentStatusValue={this.props.filterText}
-                  onClose={this.closeFilter}
-                  onStatusChange={status => this.props.filter(status)}
-                  open={!!anchorEl2}
+                  filterMenuAnchorEl={anchorEl2}
+                  filterMenuCurrentStatusValue={this.props.filterText}
+                  onCloseFilterMenu={this.closeFilter}
+                  onFilterMenuStatusChange={status => this.props.filter(status)}
+                  filterMenuOpen={!!anchorEl2}
                   possibleStatuses={[
                     {
                       displayValue: 'Active',
@@ -416,29 +410,11 @@ class ManageUserGroups extends Component {
                   numberOfRecords={users.length}
                   onChangeSearchValue={this.onChangeFilter}
                   onClickAddNewGroup={this.addNewGroup}
-                  onClickFilter={this.showFilter}
+                  onClickFilterButton={this.showFilter}
                   onClickSearch={this.toggleSearch}
                   showSearch={this.state.searchActive}
                 />
                 <Divider />
-                {/* <br/>
-								<CustomInput
-									id="search"
-									// fullwidth={true}
-									inputProps={{
-										className: classes.input,
-										type: "text",
-										placeholder: 'Search',
-										onChange: (e) => console.log(e),
-										startAdornment: (
-											<InputAdornment position="end">
-												<IconButton color="inherit">
-													<Search onClick={this.handleInputFocus} style={{fontSize: 25}}/>
-												</IconButton>
-											</InputAdornment>
-										)
-									}}
-								/> */}
                 {this.renderUserGroups()}
               </div>
             </Grid>

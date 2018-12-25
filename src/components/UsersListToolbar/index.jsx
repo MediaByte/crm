@@ -1,12 +1,12 @@
 import React from 'react'
 
-import TextField from '@material-ui/core/TextField'
+import Add from '@material-ui/icons/Add'
+import Cloud from '@material-ui/icons/CloudDownloadOutlined'
+import FilterList from '@material-ui/icons/FilterList'
+import IconButton from '@material-ui/core/IconButton'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import Search from '@material-ui/icons/Search'
-import IconButton from '@material-ui/core/IconButton'
-import Add from '@material-ui/icons/Add'
-import FilterList from '@material-ui/icons/FilterList'
-import Cloud from '@material-ui/icons/CloudDownloadOutlined'
+import TextField from '@material-ui/core/TextField'
 import { withStyles } from '@material-ui/core'
 /**
  * @typedef {import('@material-ui/core').Theme} Theme
@@ -23,27 +23,36 @@ import UsersFilter from '../UsersFilter'
  */
 
 /**
- * @typedef {object} _UsersListToolbarProps
+ * Props to be given to the `<usersListToolbar />` component.
+ * @typedef {object} UsersListToolbarProps
  * @prop {StyleRules<keyof ReturnType<typeof styles>>} classes
+ * @prop {UsersFilterProps['anchorEl']} filterMenuAnchorEl (Refer to
+ * `<UsersFilter />`'s props).
+ * @prop {UsersFilterProps['currentStatusValue']} filterMenuCurrentStatusValue
+ * (Refer to `<UsersFilter />`'s props).
+ * @prop {UsersFilterProps['open']} filterMenuOpen (Refer to`<UsersFilter />`'s
+ * props).
  * @prop {number} numberOfRecords
- * @prop {BaseTextFieldProps['onChange']} onChangeSearchValue Called when the
- * value inside the search text (if it's currently on display) input changes.
  * @prop {Function} onClickAddNewGroup Called when the user clicks on the plus
  * icon.
- * @prop {Function} onClickFilter Consumer should create a dom ref to pass into
- * filter (through filterProps), to which the menu will 'attach'.
+ * @prop {Function} onClickFilterButton Consumer should create a dom ref to pass
+ * into filter (through filterProps), to which the menu will 'attach'.
  * @prop {Function} onClickSearch Called when the user clicks on the search
  * icon, ideally this should change state above and pass true to the
  * `showSearch` prop as a result.
+ * @prop {BaseTextFieldProps['onChange']} onChangeSearchValue Called when the
+ * value inside the search text (if it's currently on display) input changes.
+ * @prop {UsersFilterProps['onClose']} onCloseFilterMenu (Refer to
+ * `<UsersFilter />`'s props).
+ * @prop {UsersFilterProps['onStatusChange']} onFilterMenuStatusChange (Refer to
+ * `<UsersFilter />`'s props).
+ * @prop {UsersFilterProps['possibleStatuses']} possibleStatuses (Refer to
+ * `<UsersFilter />`'s props).
  * @prop {boolean|null|undefined} showSearch Determines whether the text input
  * for search should be on display.
  */
 
-/**
- * @typedef {_UsersListToolbarProps & UsersFilterProps} UsersListToolbarProps
- */
-
-export { undefined } // stop jsdoc comments from mergin
+export {} // stop jsdoc comments from merging
 /**
  * This component receives the underlying <UsersFilter /> props directly as an
  * optimization technique.
@@ -53,13 +62,18 @@ class UsersListToolbar extends React.PureComponent {
   render() {
     const {
       classes,
+      filterMenuAnchorEl,
+      filterMenuCurrentStatusValue,
+      filterMenuOpen,
       numberOfRecords,
       onChangeSearchValue,
       onClickAddNewGroup,
-      onClickFilter,
+      onClickFilterButton,
       onClickSearch,
+      onCloseFilterMenu,
+      onFilterMenuStatusChange,
+      possibleStatuses,
       showSearch,
-      ...filterProps
     } = this.props
 
     return (
@@ -96,16 +110,27 @@ class UsersListToolbar extends React.PureComponent {
             <Search onClick={onClickSearch} />
           </IconButton>
           <IconButton className={classes.icons}>
-            <FilterList onClick={onClickFilter} />
+            <FilterList onClick={onClickFilterButton} />
           </IconButton>
         </div>
-        <UsersFilter {...filterProps} />
+        <UsersFilter
+          anchorEl={filterMenuAnchorEl}
+          currentStatusValue={filterMenuCurrentStatusValue}
+          onClose={onCloseFilterMenu}
+          onStatusChange={onFilterMenuStatusChange}
+          open={filterMenuOpen}
+          possibleStatuses={possibleStatuses}
+        />
         <div className={classes.records}>{numberOfRecords} records</div>
       </div>
     )
   }
 }
 
+/**
+ * Styles for the `<UsersListToolbar />` component.
+ * @param {Theme} theme
+ */
 const styles = theme => ({
   filters: {
     alignItems: 'center',
