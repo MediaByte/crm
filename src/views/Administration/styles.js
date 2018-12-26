@@ -106,12 +106,7 @@ const styles = theme => ({
     margin: '0 auto',
     color: '#999',
   },
-  toolbar: {
-    padding: '0 15px 15px 25px',
-    [theme.breakpoints.up('sm')]: {
-      padding: '15px 15px 15px 25px',
-    },
-  },
+
   heading: {
     fontSize: theme.typography.pxToRem(15),
     fontWeight: theme.typography.fontWeightRegular,
@@ -191,18 +186,7 @@ const styles = theme => ({
       padding: '20px 30px',
     },
   },
-  filters: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  records: {
-    textAlign: 'center',
-    paddingTop: 0,
-    [theme.breakpoints.up('sm')]: {
-      paddingTop: 10,
-    },
-  },
+
   root2: {
     color: '#2db8b8',
     '&$checked': {
