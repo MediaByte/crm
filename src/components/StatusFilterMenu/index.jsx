@@ -31,8 +31,11 @@ import * as R from '../../res'
  * callbacks.
  */
 
+export {} // stop jsdoc comments from merging
+
 /**
- * @typedef {object} UsersFilterProps
+ * Props for the `<StatusFilterMenu />` component.
+ * @typedef {object} Props
  * @prop {MenuProps['anchorEl']} anchorEl DOM element to which the filter
  * pop-over menu will attach itself.
  * @prop {StyleRules<keyof ReturnType<typeof styles>>} classes Don't pass this
@@ -46,12 +49,19 @@ import * as R from '../../res'
  * @prop {Status[]} possibleStatuses
  */
 
+export {} // stop jsdoc comments from merging
+
 /**
- * @augments React.PureComponent<UsersFilterProps>
+ * A data-agnostic pop-over menu for filtering statuses from a given list. The
+ * most common use case is to have a control to show/hide the menu, anchored to
+ * the provided DOM node through the `anchorEl` prop, and update a list based
+ * on the current status selected by the user. It provides an 'All' selection by
+ * default, which calls the selection change callback with an empty string.
+ * @augments React.PureComponent<Props>
  */
-class UsersFilter extends React.PureComponent {
+class StatusFilterMenu extends React.PureComponent {
   /**
-   * @type {Pick<UsersFilterProps, 'currentStatusValue'>}
+   * @type {Pick<Props, 'currentStatusValue'>}
    */
   static defaultProps = {
     currentStatusValue: '',
@@ -68,13 +78,17 @@ class UsersFilter extends React.PureComponent {
   ]
 
   /**
+   * When the user clicks the reset button, we probably want to revert to the
+   * 'All' filter, that is, no filter, that's what done inside this function.
    * @private
    */
   _onClickReset = () => {
-    this.props.onStatusChange(UsersFilter.defaultStatuses[0].value)
+    this.props.onStatusChange(StatusFilterMenu.defaultStatuses[0].value)
   }
 
   /**
+   * Receives the newly selected value from the drop-down menu and calls the
+   * `onStatusChange()` callback with the value as argument.
    * @private
    * @type {SelectProps['onChange']}
    */
@@ -120,7 +134,7 @@ class UsersFilter extends React.PureComponent {
                   onChange={this._onSelectChange}
                   value={currentStatusValue}
                 >
-                  {UsersFilter.defaultStatuses
+                  {StatusFilterMenu.defaultStatuses
                     .concat(possibleStatuses)
                     .map(({ displayValue, value }, i) => (
                       <MenuItem key={value} value={value}>
@@ -139,6 +153,7 @@ class UsersFilter extends React.PureComponent {
 }
 
 /**
+ * Styles for the `<StatusFilterMenu />` component/.
  * @param {Theme} theme
  */
 const styles = theme => ({
@@ -159,4 +174,4 @@ const styles = theme => ({
   },
 })
 
-export default withStyles(styles)(UsersFilter)
+export default withStyles(styles)(StatusFilterMenu)

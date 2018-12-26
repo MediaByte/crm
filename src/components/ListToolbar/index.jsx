@@ -17,21 +17,20 @@ import { withStyles } from '@material-ui/core'
  * @typedef {import('@material-ui/core/styles').StyleRules<K>} StyleRules
  */
 
-import UsersFilter from '../UsersFilter'
+import StatusFilterMenu from '../StatusFilterMenu'
 /**
- * @typedef {import('../UsersFilter').UsersFilterProps} UsersFilterProps
+ * @typedef {import('../StatusFilterMenu').Props} StatusFilterMenuProps
  */
 
 /**
- * Props to be given to the `<usersListToolbar />` component.
- * @typedef {object} UsersListToolbarProps
+ * @typedef {object} Props
  * @prop {StyleRules<keyof ReturnType<typeof styles>>} classes
- * @prop {UsersFilterProps['anchorEl']} filterMenuAnchorEl (Refer to
- * `<UsersFilter />`'s props).
- * @prop {UsersFilterProps['currentStatusValue']} filterMenuCurrentStatusValue
- * (Refer to `<UsersFilter />`'s props).
- * @prop {UsersFilterProps['open']} filterMenuOpen (Refer to`<UsersFilter />`'s
- * props).
+ * @prop {StatusFilterMenuProps['anchorEl']} filterMenuAnchorEl (Refer to
+ * `<StatusFilterMenu />`'s props).
+ * @prop {StatusFilterMenuProps['currentStatusValue']} filterMenuCurrentStatusValue
+ * (Refer to `<StatusFilterMenu />`'s props).
+ * @prop {StatusFilterMenuProps['open']} filterMenuOpen (Refer to
+ * `<StatusFilterMenu />`'s props).
  * @prop {number} numberOfRecords
  * @prop {Function} onClickAddNewGroup Called when the user clicks on the plus
  * icon.
@@ -42,23 +41,29 @@ import UsersFilter from '../UsersFilter'
  * `showSearch` prop as a result.
  * @prop {BaseTextFieldProps['onChange']} onChangeSearchValue Called when the
  * value inside the search text (if it's currently on display) input changes.
- * @prop {UsersFilterProps['onClose']} onCloseFilterMenu (Refer to
- * `<UsersFilter />`'s props).
- * @prop {UsersFilterProps['onStatusChange']} onFilterMenuStatusChange (Refer to
- * `<UsersFilter />`'s props).
- * @prop {UsersFilterProps['possibleStatuses']} possibleStatuses (Refer to
- * `<UsersFilter />`'s props).
+ * @prop {StatusFilterMenuProps['onClose']} onCloseFilterMenu (Refer to
+ * `<StatusFilterMenu />`'s props).
+ * @prop {StatusFilterMenuProps['onStatusChange']} onFilterMenuStatusChange
+ * (Refer to `<StatusFilterMenu />`'s props).
+ * @prop {StatusFilterMenuProps['possibleStatuses']} possibleStatuses (Refer to
+ * `<StatusFilterMenu />`'s props).
  * @prop {boolean|null|undefined} showSearch Determines whether the text input
  * for search should be on display.
  */
 
 export {} // stop jsdoc comments from merging
+
 /**
- * This component receives the underlying <UsersFilter /> props directly as an
- * optimization technique.
- * @augments React.PureComponent<UsersListToolbarProps>
+ * You shouldn't probably be importing this component but instead any consumier
+ * container, as you'll be managing more state than needed (such as keeping
+ * track of opening and closing the pop-over filter menu). Please refer to that
+ * container's documentation to know what is offered from this
+ * component/container combo.
+ * This component receives the underlying filter menu component's props directly
+ * as an optimization technique.
+ * @augments React.PureComponent<Props>
  */
-class UsersListToolbar extends React.PureComponent {
+class ListToolbar extends React.PureComponent {
   render() {
     const {
       classes,
@@ -113,7 +118,7 @@ class UsersListToolbar extends React.PureComponent {
             <FilterList onClick={onClickFilterButton} />
           </IconButton>
         </div>
-        <UsersFilter
+        <StatusFilterMenu
           anchorEl={filterMenuAnchorEl}
           currentStatusValue={filterMenuCurrentStatusValue}
           onClose={onCloseFilterMenu}
@@ -128,7 +133,6 @@ class UsersListToolbar extends React.PureComponent {
 }
 
 /**
- * Styles for the `<UsersListToolbar />` component.
  * @param {Theme} theme
  */
 const styles = theme => ({
@@ -162,4 +166,4 @@ const styles = theme => ({
   },
 })
 
-export default withStyles(styles)(UsersListToolbar)
+export default withStyles(styles)(ListToolbar)

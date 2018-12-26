@@ -36,7 +36,7 @@ import {
   List,
 } from '@material-ui/core'
 
-import UsersListToolbar from '../../components/UsersListToolbar'
+import ListToolbar from '../../components/ListToolbar'
 
 //gundb
 import Gun from 'gun/gun'
@@ -391,7 +391,7 @@ class ManageUserGroups extends Component {
               className={classes.demoLeft}
             >
               <div>
-                <UsersListToolbar
+                <ListToolbar
                   filterMenuAnchorEl={anchorEl2}
                   filterMenuCurrentStatusValue={this.props.filterText}
                   onCloseFilterMenu={this.closeFilter}
