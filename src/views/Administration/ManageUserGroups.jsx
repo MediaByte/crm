@@ -159,11 +159,11 @@ class ManageUserGroups extends Component {
     return (
       <div style={{ width: '100%' }}>
         <List component="nav" className={classes.list}>
-          {users.map((item, index) => (
+          {users.map(item => (
             <ListItem
               selected={selected && selected.id === item.id}
               className={classes.list}
-              key={index}
+              key={item.id}
               onClick={() => this.selectUser(item)}
             >
               <ListItemText primary={item.name} secondary={item.status} />
