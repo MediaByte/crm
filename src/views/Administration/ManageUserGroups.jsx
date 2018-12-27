@@ -142,7 +142,10 @@ class ManageUserGroups extends Component {
 
   renderUserGroups() {
     const { classes, selected, users } = this.props
-    if (!users.length) {
+
+    const noUsers = users.length === 0
+
+    if (noUsers) {
       return (
         <Hidden only={['xs']}>
           <div className={classes.noGroups}>
@@ -151,51 +154,31 @@ class ManageUserGroups extends Component {
           </div>
         </Hidden>
       )
-    } else {
-      return (
-        <div style={{ width: '100%' }}>
-          <List component="nav" className={classes.list}>
-            {users.map((item, index) => (
-              <ListItem
-                selected={selected && selected.id === item.id}
-                className={classes.list}
-                key={index}
-                onClick={() => this.selectUser(item)}
-              >
-                <ListItemText primary={item.name} secondary={item.status} />
-                <Hidden smUp>
-                  <ListItemSecondaryAction>
-                    <IconButton>
-                      <KeyboardArrowRight />
-                    </IconButton>
-                  </ListItemSecondaryAction>
-                </Hidden>
-              </ListItem>
-            ))}
-            {/* parsedData
-              .map((user, i) => {
-                if ( user.hasOwnProperty('first')) {
-                  return (
-                    <div key={i}>
-                      <GridItem md={12} className={classes.grid} style={{ cursor: 'pointer' }}>
-                        <Card className={classes.item} raised onClick={()=>this.showUser(user)}>
-                          <Typography variant='title'>{user.first + ' ' + user.last}</Typography>
-                          <div className={classes.itemSubContent}>
-                            <Typography variant='body2'>{user.groups}</Typography>
-                            <Typography variant='body1'>{user.home}</Typography>
-                            <Typography variant='body1'>{user.email}</Typography>
-                          </div>
-                        </Card>
-                      </GridItem>
-                    </div>
-                  )
-                }
-                })
-              .reverse() */}
-          </List>
-        </div>
-      )
     }
+
+    return (
+      <div style={{ width: '100%' }}>
+        <List component="nav" className={classes.list}>
+          {users.map((item, index) => (
+            <ListItem
+              selected={selected && selected.id === item.id}
+              className={classes.list}
+              key={index}
+              onClick={() => this.selectUser(item)}
+            >
+              <ListItemText primary={item.name} secondary={item.status} />
+              <Hidden smUp>
+                <ListItemSecondaryAction>
+                  <IconButton>
+                    <KeyboardArrowRight />
+                  </IconButton>
+                </ListItemSecondaryAction>
+              </Hidden>
+            </ListItem>
+          ))}
+        </List>
+      </div>
+    )
   }
 
   handleChangeCheckbox = name => event => {
