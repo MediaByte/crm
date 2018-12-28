@@ -12,13 +12,9 @@ import { userGroupsList, user } from './user_data.js'
 
 const initialState = {
   open: false,
-  users: _.filter(
-    userGroupsList,
-    user => user.status.toLowerCase() === 'active',
-  ),
-  usersCopy: userGroupsList,
+  users: userGroupsList,
   selected: false,
-  filter: 'active',
+  filter: '',
 }
 
 export const userGroups = (state = initialState, action = {}) => {

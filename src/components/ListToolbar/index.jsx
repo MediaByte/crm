@@ -1,4 +1,5 @@
 import React from 'react'
+import ReactDOM from 'react-dom'
 
 import Add from '@material-ui/icons/Add'
 import Cloud from '@material-ui/icons/CloudDownloadOutlined'
@@ -25,6 +26,7 @@ import StatusFilterMenu from '../StatusFilterMenu'
 /**
  * @typedef {object} Props
  * @prop {StyleRules<keyof ReturnType<typeof styles>>} classes
+ * @prop {React.Ref<SVGSVGElement>} filterIconRef
  * @prop {StatusFilterMenuProps['anchorEl']} filterMenuAnchorEl (Refer to
  * `<StatusFilterMenu />`'s props).
  * @prop {StatusFilterMenuProps['currentStatusValue']} filterMenuCurrentStatusValue
@@ -32,11 +34,12 @@ import StatusFilterMenu from '../StatusFilterMenu'
  * @prop {StatusFilterMenuProps['open']} filterMenuOpen (Refer to
  * `<StatusFilterMenu />`'s props).
  * @prop {number} numberOfRecords
- * @prop {Function} onClickAddNewGroup Called when the user clicks on the plus
+ * @prop {Function=} onClickAdd Called when the user clicks on the plus icon.
+ * @prop {Function=} onClickDownload Called when the user clicks on the download
  * icon.
- * @prop {Function} onClickFilterButton Consumer should create a dom ref to pass
- * into filter (through filterProps), to which the menu will 'attach'.
- * @prop {Function} onClickSearch Called when the user clicks on the search
+ * @prop {Function=} onClickFilterButton Consumer should create a dom ref to
+ * pass into filter , to which the menu will 'attach'.
+ * @prop {Function=} onClickSearch Called when the user clicks on the search
  * icon, ideally this should change state above and pass true to the
  * `showSearch` prop as a result.
  * @prop {BaseTextFieldProps['onChange']} onChangeSearchValue Called when the
@@ -67,12 +70,14 @@ class ListToolbar extends React.PureComponent {
   render() {
     const {
       classes,
+      filterIconRef,
       filterMenuAnchorEl,
       filterMenuCurrentStatusValue,
       filterMenuOpen,
       numberOfRecords,
       onChangeSearchValue,
-      onClickAddNewGroup,
+      onClickAdd,
+      onClickDownload,
       onClickFilterButton,
       onClickSearch,
       onCloseFilterMenu,
@@ -106,20 +111,20 @@ class ListToolbar extends React.PureComponent {
 
         <div className={classes.filters}>
           <IconButton className={classes.icons}>
-            <Add onClick={onClickAddNewGroup} />
+            <Add onClick={onClickAdd} />
           </IconButton>
           <IconButton className={classes.icons}>
-            <Cloud />
+            <Cloud onClick={onClickDownload} />
           </IconButton>
           <IconButton className={classes.icons}>
             <Search onClick={onClickSearch} />
           </IconButton>
           <IconButton className={classes.icons}>
-            <FilterList onClick={onClickFilterButton} />
+            <FilterList ref={filterIconRef} onClick={onClickFilterButton} />
           </IconButton>
         </div>
         <StatusFilterMenu
-          anchorEl={filterMenuAnchorEl}
+          anchorEl={ReactDOM.findDOMNode(filterMenuAnchorEl)}
           currentStatusValue={filterMenuCurrentStatusValue}
           onClose={onCloseFilterMenu}
           onStatusChange={onFilterMenuStatusChange}

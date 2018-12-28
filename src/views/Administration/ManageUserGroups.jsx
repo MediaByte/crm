@@ -13,7 +13,7 @@ import Menu from '@material-ui/core/Menu'
 //material-ui icons
 import Edit from '@material-ui/icons/Edit'
 import MoreHoriz from '@material-ui/icons/MoreHoriz'
-import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight'
+
 import ErrorOutlineOutlined from '@material-ui/icons/ErrorOutlineOutlined'
 
 import BackArrow from '@material-ui/icons/ArrowBackIosOutlined'
@@ -30,13 +30,10 @@ import {
   Hidden,
   Paper,
   MenuItem,
-  ListItemText,
-  ListItemSecondaryAction,
-  ListItem,
-  List,
 } from '@material-ui/core'
 
 import ListToolbar from '../../components/ListToolbar'
+import TitleSubtitleList from '../../containers/TitleSubtitleList'
 
 //gundb
 import Gun from 'gun/gun'
@@ -142,7 +139,10 @@ class ManageUserGroups extends Component {
 
   renderUserGroups() {
     const { classes, selected, users } = this.props
-    if (!users.length) {
+
+    const noUsers = users.length === 0
+
+    if (noUsers) {
       return (
         <Hidden only={['xs']}>
           <div className={classes.noGroups}>
@@ -151,51 +151,30 @@ class ManageUserGroups extends Component {
           </div>
         </Hidden>
       )
-    } else {
-      return (
-        <div style={{ width: '100%' }}>
-          <List component="nav" className={classes.list}>
-            {users.map((item, index) => (
-              <ListItem
-                selected={selected && selected.id === item.id}
-                className={classes.list}
-                key={index}
-                onClick={() => this.selectUser(item)}
-              >
-                <ListItemText primary={item.name} secondary={item.status} />
-                <Hidden smUp>
-                  <ListItemSecondaryAction>
-                    <IconButton>
-                      <KeyboardArrowRight />
-                    </IconButton>
-                  </ListItemSecondaryAction>
-                </Hidden>
-              </ListItem>
-            ))}
-            {/* parsedData
-              .map((user, i) => {
-                if ( user.hasOwnProperty('first')) {
-                  return (
-                    <div key={i}>
-                      <GridItem md={12} className={classes.grid} style={{ cursor: 'pointer' }}>
-                        <Card className={classes.item} raised onClick={()=>this.showUser(user)}>
-                          <Typography variant='title'>{user.first + ' ' + user.last}</Typography>
-                          <div className={classes.itemSubContent}>
-                            <Typography variant='body2'>{user.groups}</Typography>
-                            <Typography variant='body1'>{user.home}</Typography>
-                            <Typography variant='body1'>{user.email}</Typography>
-                          </div>
-                        </Card>
-                      </GridItem>
-                    </div>
-                  )
-                }
-                })
-              .reverse() */}
-          </List>
-        </div>
-      )
     }
+
+    return (
+      <div style={{ width: '100%' }}>
+        <TitleSubtitleList
+          extractID={userGroup => userGroup.id}
+          extractFilterable={userGroup => ({
+            displayValue: userGroup.status,
+            value: userGroup.status.toLowerCase(),
+          })}
+          extractSubtitle={userGroup => userGroup.status}
+          extractTitle={userGroup => userGroup.name}
+          items={users}
+          onChangeSearchTerm={this.onChangeFilter}
+          onClickAdd={this.addNewGroup}
+          onClickItem={id => {
+            const user = users.find(user => user.id === id)
+            this.selectUser(user)
+          }}
+          selectedIDs={selected && [selected.id]}
+          showToolbar
+        />
+      </div>
+    )
   }
 
   handleChangeCheckbox = name => event => {
@@ -289,6 +268,17 @@ class ManageUserGroups extends Component {
     this.props.loadUser(user)
     // this.setState({selected: user.id, addUser: false, open: openModal, title: user.name})
     this.setState({ addUser: false, open: openModal, title: user.name })
+  }
+
+  /**
+   * @param {number} id
+   */
+  onClickUserGroup = id => {
+    const userGroup = /** @type {object} */ this.props.users.find(
+      userGroup => userGroup.id === id,
+    )
+
+    this.selectUser(userGroup)
   }
 
   addNewGroup = () => {
@@ -390,33 +380,7 @@ class ManageUserGroups extends Component {
               lg={3}
               className={classes.demoLeft}
             >
-              <div>
-                <ListToolbar
-                  filterMenuAnchorEl={anchorEl2}
-                  filterMenuCurrentStatusValue={this.props.filterText}
-                  onCloseFilterMenu={this.closeFilter}
-                  onFilterMenuStatusChange={status => this.props.filter(status)}
-                  filterMenuOpen={!!anchorEl2}
-                  possibleStatuses={[
-                    {
-                      displayValue: 'Active',
-                      value: 'active',
-                    },
-                    {
-                      displayValue: 'Inactive',
-                      value: 'inactive',
-                    },
-                  ]}
-                  numberOfRecords={users.length}
-                  onChangeSearchValue={this.onChangeFilter}
-                  onClickAddNewGroup={this.addNewGroup}
-                  onClickFilterButton={this.showFilter}
-                  onClickSearch={this.toggleSearch}
-                  showSearch={this.state.searchActive}
-                />
-                <Divider />
-                {this.renderUserGroups()}
-              </div>
+              <div>{this.renderUserGroups()}</div>
             </Grid>
             <Grid item xs={12} sm={7} md={8} lg={9} className={classes.demo}>
               <div className={classes.demoContent}>

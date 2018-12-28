@@ -1,5 +1,4 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
 
 import { createMount, createShallow } from '@material-ui/core/test-utils'
 
@@ -59,8 +58,13 @@ describe('<StatusFilterMenu />', () => {
       />,
     )
 
+    // open up the selection menu<
+    wrapper.find('[aria-haspopup="true"]').simulate('click')
+
+    const html = wrapper.html()
+
     possibleStatuses.forEach(status => {
-      expect(wrapper.contains(status.displayValue)).toBe(true)
+      expect(html.indexOf(status.displayValue) > -1).toBe(true)
     })
   })
 })
