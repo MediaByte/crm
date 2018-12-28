@@ -284,16 +284,13 @@ class ManageUserGroups extends Component {
   addNewGroup = () => {
     this.props.loadUser(false)
     // const openModal = window.innerWidth < 750
-    this.setState(
-      {
-        addUser: true,
-        selected: false,
-        open: true,
-        dropShadow: false,
-        title: 'New User Group',
-      },
-      function() {},
-    )
+    this.setState({
+      addUser: true,
+      selected: false,
+      open: true,
+      dropShadow: false,
+      title: 'New User Group',
+    })
   }
 
   toggleSearch = () => {
@@ -364,8 +361,7 @@ class ManageUserGroups extends Component {
   }
 
   render() {
-    const { classes, users } = this.props
-    const { anchorEl2 } = this.state
+    const { classes } = this.props
     // let parsedData = formatData(this.state.users)
 
     return (
