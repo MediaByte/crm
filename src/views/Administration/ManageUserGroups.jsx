@@ -48,6 +48,7 @@ import {
   filter,
 } from '../../state/userGroups/actions'
 import { user } from '../../state/userGroups/user_data.js'
+import AddOrEditDialog from '../../components/AddOrEditDialog/index.jsx'
 
 // const formatData = data => Object.keys(data)
 // 	.map(key => ({ key, ...data[key]  }))
@@ -284,16 +285,13 @@ class ManageUserGroups extends Component {
   addNewGroup = () => {
     this.props.loadUser(false)
     // const openModal = window.innerWidth < 750
-    this.setState(
-      {
-        addUser: true,
-        selected: false,
-        open: true,
-        dropShadow: false,
-        title: 'New User Group',
-      },
-      function() {},
-    )
+    this.setState({
+      addUser: true,
+      selected: false,
+      open: true,
+      dropShadow: false,
+      title: 'New User Group',
+    })
   }
 
   toggleSearch = () => {
@@ -364,8 +362,7 @@ class ManageUserGroups extends Component {
   }
 
   render() {
-    const { classes, users } = this.props
-    const { anchorEl2 } = this.state
+    const { classes } = this.props
     // let parsedData = formatData(this.state.users)
 
     return (
@@ -383,51 +380,12 @@ class ManageUserGroups extends Component {
               <div>{this.renderUserGroups()}</div>
             </Grid>
             <Grid item xs={12} sm={7} md={8} lg={9} className={classes.demo}>
-              <div className={classes.demoContent}>
-                <Dialog
-                  fullScreen={window.innerWidth < 750}
-                  fullWidth
-                  open={this.state.open}
-                  onClose={this.handleClose}
-                  TransitionComponent={Transition}
-                  scroll="paper"
-                >
-                  <Hidden smUp>
-                    {this.props.selected && (
-                      <div className={classes.appBar}>
-                        <AppBar
-                          position="fixed"
-                          dropShadow="none"
-                          color="default"
-                        >
-                          <Toolbar className={classes.noShadow}>
-                            <IconButton
-                              className={classes.menuButton}
-                              color="default"
-                              onClick={this.handleClose}
-                              aria-label="Close"
-                            >
-                              <BackArrow />
-                            </IconButton>
-                            <Typography
-                              variant="subtitle1"
-                              textAlign="center"
-                              color="inherit"
-                              className={classes.newTitle}
-                            >
-                              {!this.state.selected ? this.state.title : ''}
-                            </Typography>
-                          </Toolbar>
-                        </AppBar>
-                      </div>
-                    )}
-                  </Hidden>
-                  <div className={classes.demoContent}>
-                    {this.renderContentWrapper()}
-                  </div>
-                </Dialog>
-                {this.renderContentWrapper()}
-              </div>
+              <AddOrEditDialog
+                onClose={this.handleClose}
+                open={this.state.open}
+                title="AJASDKL"
+              />
+              {this.renderContentWrapper()}
             </Grid>
           </Grid>
         </PageColumn>
