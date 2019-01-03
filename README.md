@@ -34,6 +34,12 @@ Standard create react app eject script.
 
 Runs prettier on all files inside the src folder, given the configuration file present at the root.
 
+## typecheck
+
+Typechecks all files specified in the `includes` property of `tsconfig.json`. Please refer to `tsconfig.json` for fur further configuration and typescript's documentation.
+
+There's currently no way to both use the config file and typecheck specific files, which would allow us to use it for `lint-staged`, when the project reaches 0 type errors `tsc` should be run as a pre-commit hook.
+
 ## dependencies
 
 ### @material-ui/core
