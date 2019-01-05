@@ -13,21 +13,21 @@ import { withStyles } from '@material-ui/core/styles'
  * @prop {Record<keyof typeof styles, string>} classes
  * @prop {(React.ComponentType|null|false|undefined)=} icon
  * @prop {React.DOMAttributes<HTMLDivElement>['onClick']=} onClick (Optional)
- * @prop {string} subtitle
+ * @prop {string} text
  * @prop {string} title
  */
 
 export {} // prevent JSDOC comments from merging
 
 /**
- * A left-aligned title and subtitle pair (subtitle will always appear below the
+ * A left-aligned title and short text pair (text will always appear below the
  * title plus some indentation). Receives an optional icon component to be
  * rendered alongside the title.
  * @augments React.PureComponent<Props>
  */
-class TitleSubtitleTuple extends React.PureComponent {
+class TitleShortTextTuple extends React.PureComponent {
   render() {
-    const { classes, icon: Icon, onClick, subtitle, title } = this.props
+    const { classes, icon: Icon, onClick, text, title } = this.props
 
     return (
       <div className={classes.root} onClick={onClick}>
@@ -41,12 +41,8 @@ class TitleSubtitleTuple extends React.PureComponent {
             </IconButton>
           )}
         </div>
-        <Typography
-          className={classes.subtitle}
-          align="left"
-          variant="subtitle1"
-        >
-          {subtitle}
+        <Typography className={classes.text} align="left" variant="subtitle1">
+          {text}
         </Typography>
       </div>
     )
@@ -68,7 +64,7 @@ const styles = {
     display: 'flex',
     justifyContent: 'flex-start',
   },
-  subtitle: {
+  text: {
     paddingLeft: 6,
   },
 }
@@ -76,4 +72,4 @@ const styles = {
 export default withStyles(
   // Cast: no way to pass in generic arguments in JSDOC+Typescript
   /** @type {StyleRules<keyof typeof styles>} */ (styles),
-)(TitleSubtitleTuple)
+)(TitleShortTextTuple)

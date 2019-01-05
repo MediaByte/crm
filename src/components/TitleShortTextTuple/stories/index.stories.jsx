@@ -7,14 +7,14 @@ import PhoneIcon from '@material-ui/icons/Phone'
 import { action } from '@storybook/addon-actions'
 import { storiesOf } from '@storybook/react'
 
-import TitleSubtitleTuple from '..'
+import TitleShortTextTuple from '..'
 
-storiesOf('TitleSubtitleTuple', module)
+storiesOf('TitleShortTextTuple', module)
   .add('with names', () => (
-    <TitleSubtitleTuple subtitle="Daniel Lugo" title="Name" />
+    <TitleShortTextTuple text="Daniel Lugo" title="Name" />
   ))
   .add('with a number', () => (
-    <TitleSubtitleTuple subtitle="312 - 555 - 4545" title="Phone" />
+    <TitleShortTextTuple text="312 - 555 - 4545" title="Phone" />
   ))
   .add('wrapped in a card', () => (
     <Card
@@ -24,9 +24,9 @@ storiesOf('TitleSubtitleTuple', module)
       raised
     >
       <CardContent>
-        <TitleSubtitleTuple
+        <TitleShortTextTuple
           onClick={action('clicked')}
-          subtitle="Daniel Lugo"
+          text="Daniel Lugo"
           title="Name"
         />
       </CardContent>
@@ -40,10 +40,10 @@ storiesOf('TitleSubtitleTuple', module)
       raised
     >
       <CardContent>
-        <TitleSubtitleTuple
+        <TitleShortTextTuple
           icon={PhoneIcon}
           onClick={action('clicked')}
-          subtitle="Daniel Lugo"
+          text="Daniel Lugo"
           title="Name"
         />
       </CardContent>

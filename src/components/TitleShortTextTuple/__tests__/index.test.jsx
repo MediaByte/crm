@@ -8,17 +8,15 @@ import TitleShortTextTuple from '..'
 it('renders without crashing when given its mandatory props', () => {
   const mount = createMount()
 
-  mount(<TitleShortTextTuple subtitle="Subtitle" title="Title" />)
+  mount(<TitleShortTextTuple text="text" title="Title" />)
 })
 
-it('renders both the title and subtitle', () => {
+it('renders both the title and text', () => {
   const mount = createMount()
   const title = Math.random().toString()
-  const subtitle = Math.random().toString()
+  const text = Math.random().toString()
 
-  const wrapper = mount(
-    <TitleShortTextTuple subtitle={subtitle} title={title} />,
-  )
+  const wrapper = mount(<TitleShortTextTuple text={text} title={title} />)
 
   const html = wrapper.html()
 
@@ -31,11 +29,7 @@ it('calls the onclick prop when clicked on', () => {
   const mockOnClick = jest.fn(() => {})
 
   const wrapper = shallow(
-    <TitleShortTextTuple
-      onClick={mockOnClick}
-      subtitle="subtitle"
-      title="title"
-    />,
+    <TitleShortTextTuple onClick={mockOnClick} text="text" title="title" />,
   )
 
   wrapper.simulate('click')
@@ -47,7 +41,7 @@ it('renders an icon if provided with one', () => {
   const mount = createMount()
 
   const wrapper = mount(
-    <TitleShortTextTuple icon={PhoneIcon} subtitle="subtitle" title="title" />,
+    <TitleShortTextTuple icon={PhoneIcon} text="text" title="title" />,
   )
 
   const wrapperContainsPhoneIcon = wrapper.contains(<PhoneIcon />)
