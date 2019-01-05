@@ -9,3 +9,19 @@
 export const width100Percent = {
   width: '100%',
 }
+
+/**
+ * Enable flex context for a container.
+ * @type {CSSProperties}
+ */
+export const flex = {
+  display: 'flex',
+}
+
+/**
+ * Sets a flex container's layout to column.
+ * @type {CSSProperties}
+ */
+export const flexColumn = {
+  flexDirection: 'column',
+}
