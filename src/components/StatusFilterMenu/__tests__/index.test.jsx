@@ -4,67 +4,80 @@ import { createMount, createShallow } from '@material-ui/core/test-utils'
 
 import StatusFilterMenu from '../index'
 
-describe('<StatusFilterMenu />', () => {
-  let div, mount, shallow
+/**
+ * @type {HTMLDivElement}
+ */
+let div
 
-  beforeEach(() => {
-    div = document.createElement('div')
-    shallow = createShallow()
-    mount = createMount()
-  })
+/**
+ * @type {ReturnType<typeof createMount>}
+ */
+let mount
 
-  afterEach(() => {
-    mount.cleanUp()
-  })
+/**
+ * @type {ReturnType<typeof createShallow>}
+ */
+let shallow
 
-  it('renders without crashing when given its mandatory props', () => {
-    const wrapper = mount(
-      <StatusFilterMenu anchorEl={div} open possibleStatuses={[]} />,
-    )
+beforeEach(() => {
+  div = document.createElement('div')
+  shallow = createShallow()
+  mount = createMount()
+})
 
-    expect(wrapper.find(<div>All</div>)).toBeTruthy()
-  })
+afterEach(() => {
+  mount.cleanUp()
+})
 
-  it('shallowly renders without crashing too', () => {
-    shallow(<StatusFilterMenu anchorEl={div} open possibleStatuses={[]} />)
-  })
+it('renders without crashing when given its mandatory props', () => {
+  const wrapper = mount(
+    <StatusFilterMenu anchorEl={div} open possibleStatuses={[]} />,
+  )
 
-  it('has populated static defaultStatuses array', () => {
-    expect(Array.isArray(StatusFilterMenu.defaultStatuses)).toBeTruthy()
-    expect(StatusFilterMenu.defaultStatuses.length > 0).toBeTruthy()
-  })
+  expect(wrapper.find(<div>All</div>)).toBeTruthy()
+})
 
-  it('displays given statuses along with the default one', () => {
-    const possibleStatuses = [
-      {
-        displayValue: 'FOO',
-        value: 'foo',
-      },
-      {
-        displayValue: 'BAR',
-        value: 'bar',
-      },
-      {
-        displayValue: 'BAZ',
-        value: 'baz',
-      },
-    ]
+it('shallowly renders without crashing too', () => {
+  shallow(<StatusFilterMenu anchorEl={div} open possibleStatuses={[]} />)
+})
 
-    const wrapper = mount(
-      <StatusFilterMenu
-        anchorEl={div}
-        open
-        possibleStatuses={possibleStatuses}
-      />,
-    )
+it('has populated static defaultStatuses array', () => {
+  // @ts-ignore it is there
+  expect(Array.isArray(StatusFilterMenu.defaultStatuses)).toBeTruthy()
+  // @ts-ignore it is there
+  expect(StatusFilterMenu.defaultStatuses.length > 0).toBeTruthy()
+})
 
-    // open up the selection menu<
-    wrapper.find('[aria-haspopup="true"]').simulate('click')
+it('displays given statuses along with the default one', () => {
+  const possibleStatuses = [
+    {
+      displayValue: 'FOO',
+      value: 'foo',
+    },
+    {
+      displayValue: 'BAR',
+      value: 'bar',
+    },
+    {
+      displayValue: 'BAZ',
+      value: 'baz',
+    },
+  ]
 
-    const html = wrapper.html()
+  const wrapper = mount(
+    <StatusFilterMenu
+      anchorEl={div}
+      open
+      possibleStatuses={possibleStatuses}
+    />,
+  )
 
-    possibleStatuses.forEach(status => {
-      expect(html.indexOf(status.displayValue) > -1).toBe(true)
-    })
+  // open up the selection menu<
+  wrapper.find('[aria-haspopup="true"]').simulate('click')
+
+  const html = wrapper.html()
+
+  possibleStatuses.forEach(status => {
+    expect(html.indexOf(status.displayValue) > -1).toBe(true)
   })
 })
