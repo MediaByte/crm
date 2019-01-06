@@ -47,7 +47,7 @@ export {} // stop jsdoc comments from merging
 
 /**
  * @typedef {object} State
- * @prop {string|null} currentFilter If null, the list is not filtered, if it's
+ * @prop {string|undefined} currentFilter If null, the list is not filtered, if it's
  * an string, the list will be filtered according to the `extractFilterable`
  * prop.
  * @prop {boolean} filterMenuOpen
@@ -65,7 +65,7 @@ class TitleSubtitleList extends React.PureComponent {
    * @type {State}
    */
   state = {
-    currentFilter: null,
+    currentFilter: undefined,
     filterMenuOpen: false,
     searchActive: false,
   }
@@ -103,12 +103,24 @@ class TitleSubtitleList extends React.PureComponent {
 
   /**
    * @private
+   * @param {React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>} e
+   */
+  onChangeSearchTerm = e => {
+    const { onChangeSearchTerm } = this.props
+
+    if (onChangeSearchTerm) {
+      onChangeSearchTerm(e.target.value)
+    }
+  }
+
+  /**
+   * @private
    * @param {string} nextFilter
    */
   onFilterChange = nextFilter => {
     if (nextFilter === '') {
       this.setState({
-        currentFilter: null,
+        currentFilter: undefined,
       })
     } else {
       this.setState({
@@ -159,7 +171,6 @@ class TitleSubtitleList extends React.PureComponent {
       extractSubtitle,
       extractTitle,
       items: unfiltered,
-      onChangeSearchTerm,
       onClickAdd,
       onClickDownload,
       onClickItem,
@@ -181,11 +192,12 @@ class TitleSubtitleList extends React.PureComponent {
         {showToolbar && (
           <ListToolbar
             filterIconRef={this.filterIconRef}
+            // @ts-ignore it works
             filterMenuAnchorEl={this.filterIconRef.current}
             filterMenuCurrentStatusValue={currentFilter}
             filterMenuOpen={filterMenuOpen}
             numberOfRecords={items.length}
-            onChangeSearchValue={onChangeSearchTerm}
+            onChangeSearchValue={this.onChangeSearchTerm}
             onClickAdd={onClickAdd}
             onClickDownload={onClickDownload}
             onClickFilterButton={this.toggleFilterMenu}
