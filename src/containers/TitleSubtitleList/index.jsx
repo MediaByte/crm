@@ -23,15 +23,16 @@ import TitleSubtitleListItem from '../../components/TitleSubtitleListItem'
  * will be used for getting all possible filtering values.
  * @prop {((item: T) => number)=} extractID (Optional) Extract the id from the
  * item, this will be passed as the first argument to the `onClickItem` prop.
- * @prop {((item: T) => string)} extractSubtitle (Optional) Extract the subtitle
- * from the item. If not provided, no subtitle will be rendered.
+ * Index will be used if not be provided.
+ * @prop {((item: T) => string)=} extractSubtitle (Optional) Extract the
+ * subtitle from the item. If not provided, no subtitle will be rendered.
  * @prop {(item: T) => string} extractTitle Extract the title to be rendered.
  * @prop {T[]} items The items that will be rendered.
  * @prop {((nextSearchTerm: string) => void)=} onChangeSearchTerm (Optional) If
  * provided, gets called with the next search term inputted into the search
  * field.
- * @prop {ListToolbarProps['onClickAdd']} onClickAdd
- * @prop {ListToolbarProps['onClickDownload']} onClickDownload
+ * @prop {ListToolbarProps['onClickAdd']=} onClickAdd
+ * @prop {ListToolbarProps['onClickDownload']=} onClickDownload
  * @prop {((itemID: number) => void)=} onClickItem (Optional) Gets called with
  * the ID of the item (if the `extractID` prop is defined), otherwise the
  * function will be passed the index of the item.
@@ -59,7 +60,7 @@ export {} // stop jsdoc comments from merging
  * @template T
  * @augments React.PureComponent<Props<T>, State>
  */
-class TitleSubtitleList extends React.Component {
+class TitleSubtitleList extends React.PureComponent {
   /**
    * @type {State}
    */
@@ -82,6 +83,9 @@ class TitleSubtitleList extends React.Component {
    */
   filterIconRef = React.createRef()
 
+  /**
+   * @param {Props<T>} props
+   */
   constructor(props) {
     super(props)
 
@@ -165,11 +169,12 @@ class TitleSubtitleList extends React.Component {
 
     const { currentFilter, filterMenuOpen, searchActive } = this.state
 
-    const items = currentFilter
-      ? unfiltered.filter(
-          item => extractFilterable(item).value === currentFilter,
-        )
-      : unfiltered
+    const items =
+      currentFilter && extractFilterable
+        ? unfiltered.filter(
+            item => extractFilterable(item).value === currentFilter,
+          )
+        : unfiltered
 
     return (
       <React.Fragment>
@@ -197,7 +202,7 @@ class TitleSubtitleList extends React.Component {
             const id = extractID ? extractID(item) : idx
             const subtitle = extractSubtitle ? extractSubtitle(item) : undefined
             const title = extractTitle(item)
-            const selected = selectedIDs && selectedIDs.includes(id)
+            const selected = selectedIDs && selectedIDs.indexOf(id) > -1
 
             return (
               <TitleSubtitleListItem
