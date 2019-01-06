@@ -7,27 +7,29 @@ import ListToolbar from '..'
 storiesOf('ListToolbar', module)
   .add('default look', () => (
     <ListToolbar
+      filterIconRef={() => {}}
+      filterMenuAnchorEl={document.createElement('div')}
       numberOfRecords={5}
-      onClickAdd={action('clicked')}
-      onClickDownload={action('clicked')}
-      onClickFilterButton={action('clicked')}
-      onClickSearch={action('clicked')}
-      onChangeSearchValue={() => {}}
-      onCloseFilterMenu={() => {}}
-      onFilterMenuStatusChange={() => {}}
+      onClickAdd={action('click-add')}
+      onClickDownload={action('click-download')}
+      onClickFilterButton={action('click-filter-button')}
+      onClickSearch={action('click-search')}
+      filterMenuCurrentStatusValue=""
+      onChangeSearchValue={action('change-search-value')}
       possibleStatuses={[]}
     />
   ))
-  .add('showing search field', () => (
+  .add('showing search', () => (
     <ListToolbar
+      filterIconRef={() => {}}
+      filterMenuAnchorEl={document.createElement('div')}
       numberOfRecords={5}
-      onClickAdd={action('clicked')}
-      onClickDownload={action('clicked')}
-      onClickFilterButton={action('clicked')}
-      onClickSearch={action('clicked')}
-      onChangeSearchValue={() => {}}
-      onCloseFilterMenu={() => {}}
-      onFilterMenuStatusChange={() => {}}
+      onClickAdd={action('click-add')}
+      onClickDownload={action('click-download')}
+      onClickFilterButton={action('click-filter-button')}
+      onClickSearch={action('click-search')}
+      filterMenuCurrentStatusValue=""
+      onChangeSearchValue={action('change-search-value')}
       possibleStatuses={[]}
       showSearch
     />
