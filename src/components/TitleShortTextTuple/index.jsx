@@ -10,7 +10,8 @@ import { withStyles } from '@material-ui/core/styles'
 
 /**
  * @typedef {object} Props
- * @prop {Record<keyof typeof styles, string>} classes
+ * @prop {Record<keyof typeof styles, string>} classes Don't pass in this prop,
+ * it will be passed in by material-ui.
  * @prop {(React.ComponentType|null|false|undefined)=} icon
  * @prop {React.DOMAttributes<HTMLDivElement>['onClick']=} onClick (Optional)
  * @prop {string} text
