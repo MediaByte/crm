@@ -5,12 +5,18 @@ import { createMount, createShallow } from '@material-ui/core/test-utils'
 import TitleSubtitleListItem from '../index'
 
 describe('<TitleSubtitleListItem />', () => {
-  let div, mount, shallow
+  /**
+   * @type {ReturnType<typeof createMount>}
+   */
+  let mount
+  /**
+   * @type {ReturnType<typeof createShallow>}
+   */
+  let shallow
 
   beforeEach(() => {
-    div = document.createElement('div')
-    shallow = createShallow()
     mount = createMount()
+    shallow = createShallow()
   })
 
   afterEach(() => {
@@ -18,16 +24,18 @@ describe('<TitleSubtitleListItem />', () => {
   })
 
   it('shallowly renders without crashing when given its mandatory props', () => {
-    shallow(<TitleSubtitleListItem id="foo" title="baz" />)
+    shallow(<TitleSubtitleListItem id={Math.random()} title="baz" />)
   })
 
   it('renders without crashing when given its mandatory props', () => {
-    mount(<TitleSubtitleListItem id="foo" title="baz" />)
+    mount(<TitleSubtitleListItem id={Math.random()} title="baz" />)
   })
 
   it('renders the title', () => {
     const title = Math.random().toString()
-    const wrapper = mount(<TitleSubtitleListItem id="foo" title={title} />)
+    const wrapper = mount(
+      <TitleSubtitleListItem id={Math.random()} title={title} />,
+    )
 
     const html = wrapper.html()
 
@@ -37,7 +45,11 @@ describe('<TitleSubtitleListItem />', () => {
   it('renders the subtitle', () => {
     const subTitle = Math.random().toString()
     const wrapper = mount(
-      <TitleSubtitleListItem id="foo" title="baz" subTitle={subTitle} />,
+      <TitleSubtitleListItem
+        id={Math.random()}
+        title="baz"
+        subtitle={subTitle}
+      />,
     )
 
     const html = wrapper.html()
