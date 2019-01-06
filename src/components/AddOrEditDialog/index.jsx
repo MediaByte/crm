@@ -16,7 +16,7 @@ import Typography from '@material-ui/core/Typography'
  */
 /**
  * @template K
- * @typedef {import('@material-ui/core/styles').StyleRules<K>} StyleRules
+ * @typedef {import('@material-ui/core/styles').StyleRulesCallback<K>} StyleRulesCallback
  */
 
 import BackArrow from '@material-ui/icons/ArrowBackIosOutlined'
@@ -27,14 +27,14 @@ import { user } from '../../state/userGroups/user_data.js'
 
 /**
  * @typedef {object} Props
- * @prop {StyleRules<keyof ReturnType<typeof styles>>} classes Don't pass this
- * prop, this will be passed in by the built in material-ui styles.
+ * @prop {Record<classNames, string>} classes Don't pass this prop, this will be
+ * passed in by the built in material-ui styles.
  * @prop {boolean} open Controls whether the dialog is on display.
  * @prop {DialogProps['onClose']=} onClose Called when the user tries to close
  * the dialog through either clicking either outside of it or the close button
  * at the top of the dialog. It'd be ideal to set `open` to false when this
  * callback gets executed.
- * @prop {string=} title (optional) Title that will appear at the top of the
+ * @prop {string=} title (Optional) Title that will appear at the top of the
  * dialog, default is 'add'.
  */
 
@@ -66,7 +66,7 @@ class AddDialog extends React.PureComponent {
         >
           <Hidden smUp>
             <div className={classes.appBar}>
-              <AppBar position="fixed" dropShadow="none" color="default">
+              <AppBar position="fixed" color="default">
                 <Toolbar className={classes.noShadow}>
                   <IconButton
                     className={classes.menuButton}
@@ -78,7 +78,7 @@ class AddDialog extends React.PureComponent {
                   </IconButton>
                   <Typography
                     variant="subtitle1"
-                    textAlign="center"
+                    align="center"
                     color="inherit"
                     className={classes.title}
                   >
@@ -138,4 +138,11 @@ const styles = theme => ({
   },
 })
 
-export default withStyles(styles)(AddDialog)
+/**
+ * @typedef {keyof ReturnType<typeof styles>} classNames
+ */
+
+export default withStyles(
+  // Cast: no way to pass in generic arguments in JSDOC+Typescript
+  /** @type {StyleRulesCallback<classNames>} */ (styles),
+)(AddDialog)
