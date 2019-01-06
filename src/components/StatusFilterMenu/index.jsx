@@ -17,7 +17,7 @@ import Typography from '@material-ui/core/Typography'
  */
 /**
  * @template K
- * @typedef {import('@material-ui/core/styles').StyleRules<K>} StyleRules
+ * @typedef {import('@material-ui/core/styles').StyleRulesCallback<K>} StyleRulesCallback
  */
 
 import * as R from '../../res'
@@ -34,16 +34,15 @@ import * as R from '../../res'
 export {} // stop jsdoc comments from merging
 
 /**
- * Props for the `<StatusFilterMenu />` component.
  * @typedef {object} Props
  * @prop {MenuProps['anchorEl']} anchorEl DOM element to which the filter
  * pop-over menu will attach itself.
- * @prop {StyleRules<keyof ReturnType<typeof styles>>} classes Don't pass this
- * prop, it is passed to the component by material-ui.
- * @prop {string|undefined|false|null} currentStatusValue
- * @prop {MenuProps['onClose']} onClose Called when the user blurs the menu.
+ * @prop {Record<classNames, string>} classes Don't pass this prop, it is passed
+ * to the component by material-ui.
+ * @prop {string|undefined|false} currentStatusValue
+ * @prop {MenuProps['onClose']=} onClose Called when the user blurs the menu.
  * @prop {MenuProps['open']} open
- * @prop {(statusValue: string) => void} onStatusChange Called with the curent
+ * @prop {((statusValue: string) => void)=} onStatusChange Called with the curent
  * status changes. Called with an empty string if the user picks 'All' from the
  * drop down list.
  * @prop {Status[]} possibleStatuses
@@ -83,7 +82,10 @@ class StatusFilterMenu extends React.PureComponent {
    * @private
    */
   _onClickReset = () => {
-    this.props.onStatusChange(StatusFilterMenu.defaultStatuses[0].value)
+    const { onStatusChange } = this.props
+    if (onStatusChange) {
+      onStatusChange(StatusFilterMenu.defaultStatuses[0].value)
+    }
   }
 
   /**
@@ -93,7 +95,10 @@ class StatusFilterMenu extends React.PureComponent {
    * @type {SelectProps['onChange']}
    */
   _onSelectChange = ({ target: { value: statusValue } }) => {
-    this.props.onStatusChange(statusValue)
+    const { onStatusChange } = this.props
+    if (onStatusChange) {
+      onStatusChange(statusValue)
+    }
   }
 
   render() {
@@ -174,4 +179,11 @@ const styles = theme => ({
   },
 })
 
-export default withStyles(styles)(StatusFilterMenu)
+/**
+ * @typedef {keyof ReturnType<typeof styles>} classNames
+ */
+
+export default withStyles(
+  // Cast: no way to pass in generic arguments in JSDOC+Typescript
+  /** @type {StyleRulesCallback<classNames>} */ (styles),
+)(StatusFilterMenu)

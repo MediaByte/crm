@@ -2,45 +2,51 @@ import React from 'react'
 
 import { createMount, createShallow } from '@material-ui/core/test-utils'
 
-import TitleSubtitleList from '../index'
+import TitleSubtitleList from '..'
 
-describe('<TitleSubtitleList />', () => {
-  let mount, shallow
+/**
+ * @typedef {{foo: string }} MockItem
+ */
 
-  beforeEach(() => {
-    shallow = createShallow()
-    mount = createMount()
-  })
+/**
+ * @type {MockItem[]}
+ */
+const mockItems = [
+  {
+    foo: 'Baz',
+  },
+]
 
-  afterEach(() => {
-    mount.cleanUp()
-  })
+/**
+ * @param {MockItem} item
+ */
+const mockExtractTitle = item => item.foo
 
-  it('shallowly renders without crashing when given its mandatory props', () => {
-    shallow(<TitleSubtitleListItem id="foo" title="baz" />)
-  })
+/**
+ * @type {ReturnType<typeof createMount>}
+ */
+let mount
 
-  it('renders without crashing when given its mandatory props', () => {
-    mount(<TitleSubtitleListItem id="foo" title="baz" />)
-  })
+/**
+ * @type {ReturnType<typeof createShallow>}
+ */
+let shallow
 
-  it('renders the title', () => {
-    const title = Math.random().toString()
-    const wrapper = mount(<TitleSubtitleListItem id="foo" title={title} />)
+beforeEach(() => {
+  shallow = createShallow()
+  mount = createMount()
+})
 
-    const html = wrapper.html()
+afterEach(() => {
+  mount.cleanUp()
+})
 
-    expect(html.indexOf(title) > -1).toBe(true)
-  })
+it('shallowly renders without crashing when given its mandatory props', () => {
+  shallow(
+    <TitleSubtitleList extractTitle={mockExtractTitle} items={mockItems} />,
+  )
+})
 
-  it('renders the subtitle', () => {
-    const subtitle = Math.random().toString()
-    const wrapper = mount(
-      <TitleSubtitleListItem id="foo" title="baz" subtitle={subtitle} />,
-    )
-
-    const html = wrapper.html()
-
-    expect(html.indexOf(subtitle) > -1).toBe(true)
-  })
+it('deeply renders without crashing when given its mandatory props', () => {
+  mount(<TitleSubtitleList extractTitle={mockExtractTitle} items={mockItems} />)
 })

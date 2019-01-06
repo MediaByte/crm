@@ -23,15 +23,16 @@ import TitleSubtitleListItem from '../../components/TitleSubtitleListItem'
  * will be used for getting all possible filtering values.
  * @prop {((item: T) => number)=} extractID (Optional) Extract the id from the
  * item, this will be passed as the first argument to the `onClickItem` prop.
- * @prop {((item: T) => string)} extractSubtitle (Optional) Extract the subtitle
- * from the item. If not provided, no subtitle will be rendered.
+ * Index will be used if not be provided.
+ * @prop {((item: T) => string)=} extractSubtitle (Optional) Extract the
+ * subtitle from the item. If not provided, no subtitle will be rendered.
  * @prop {(item: T) => string} extractTitle Extract the title to be rendered.
  * @prop {T[]} items The items that will be rendered.
  * @prop {((nextSearchTerm: string) => void)=} onChangeSearchTerm (Optional) If
  * provided, gets called with the next search term inputted into the search
  * field.
- * @prop {ListToolbarProps['onClickAdd']} onClickAdd
- * @prop {ListToolbarProps['onClickDownload']} onClickDownload
+ * @prop {ListToolbarProps['onClickAdd']=} onClickAdd
+ * @prop {ListToolbarProps['onClickDownload']=} onClickDownload
  * @prop {((itemID: number) => void)=} onClickItem (Optional) Gets called with
  * the ID of the item (if the `extractID` prop is defined), otherwise the
  * function will be passed the index of the item.
@@ -46,7 +47,7 @@ export {} // stop jsdoc comments from merging
 
 /**
  * @typedef {object} State
- * @prop {string|null} currentFilter If null, the list is not filtered, if it's
+ * @prop {string|undefined} currentFilter If null, the list is not filtered, if it's
  * an string, the list will be filtered according to the `extractFilterable`
  * prop.
  * @prop {boolean} filterMenuOpen
@@ -59,12 +60,12 @@ export {} // stop jsdoc comments from merging
  * @template T
  * @augments React.PureComponent<Props<T>, State>
  */
-class TitleSubtitleList extends React.Component {
+class TitleSubtitleList extends React.PureComponent {
   /**
    * @type {State}
    */
   state = {
-    currentFilter: null,
+    currentFilter: undefined,
     filterMenuOpen: false,
     searchActive: false,
   }
@@ -82,6 +83,9 @@ class TitleSubtitleList extends React.Component {
    */
   filterIconRef = React.createRef()
 
+  /**
+   * @param {Props<T>} props
+   */
   constructor(props) {
     super(props)
 
@@ -99,12 +103,24 @@ class TitleSubtitleList extends React.Component {
 
   /**
    * @private
+   * @param {React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>} e
+   */
+  onChangeSearchTerm = e => {
+    const { onChangeSearchTerm } = this.props
+
+    if (onChangeSearchTerm) {
+      onChangeSearchTerm(e.target.value)
+    }
+  }
+
+  /**
+   * @private
    * @param {string} nextFilter
    */
   onFilterChange = nextFilter => {
     if (nextFilter === '') {
       this.setState({
-        currentFilter: null,
+        currentFilter: undefined,
       })
     } else {
       this.setState({
@@ -155,7 +171,6 @@ class TitleSubtitleList extends React.Component {
       extractSubtitle,
       extractTitle,
       items: unfiltered,
-      onChangeSearchTerm,
       onClickAdd,
       onClickDownload,
       onClickItem,
@@ -165,22 +180,24 @@ class TitleSubtitleList extends React.Component {
 
     const { currentFilter, filterMenuOpen, searchActive } = this.state
 
-    const items = currentFilter
-      ? unfiltered.filter(
-          item => extractFilterable(item).value === currentFilter,
-        )
-      : unfiltered
+    const items =
+      currentFilter && extractFilterable
+        ? unfiltered.filter(
+            item => extractFilterable(item).value === currentFilter,
+          )
+        : unfiltered
 
     return (
       <React.Fragment>
         {showToolbar && (
           <ListToolbar
             filterIconRef={this.filterIconRef}
+            // @ts-ignore it works
             filterMenuAnchorEl={this.filterIconRef.current}
             filterMenuCurrentStatusValue={currentFilter}
             filterMenuOpen={filterMenuOpen}
             numberOfRecords={items.length}
-            onChangeSearchValue={onChangeSearchTerm}
+            onChangeSearchValue={this.onChangeSearchTerm}
             onClickAdd={onClickAdd}
             onClickDownload={onClickDownload}
             onClickFilterButton={this.toggleFilterMenu}
@@ -197,7 +214,7 @@ class TitleSubtitleList extends React.Component {
             const id = extractID ? extractID(item) : idx
             const subtitle = extractSubtitle ? extractSubtitle(item) : undefined
             const title = extractTitle(item)
-            const selected = selectedIDs && selectedIDs.includes(id)
+            const selected = selectedIDs && selectedIDs.indexOf(id) > -1
 
             return (
               <TitleSubtitleListItem

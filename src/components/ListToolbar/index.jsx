@@ -12,10 +12,11 @@ import { withStyles } from '@material-ui/core'
 /**
  * @typedef {import('@material-ui/core').Theme} Theme
  * @typedef {import('@material-ui/core/TextField').BaseTextFieldProps} BaseTextFieldProps
+ * @typedef {import('@material-ui/core/SvgIcon').SvgIconProps['onClick']} SvgIconOnClick
  */
 /**
  * @template K
- * @typedef {import('@material-ui/core/styles').StyleRules<K>} StyleRules
+ * @typedef {import('@material-ui/core/styles').StyleRulesCallback<K>} StyleRulesCallback
  */
 
 import StatusFilterMenu from '../StatusFilterMenu'
@@ -25,32 +26,32 @@ import StatusFilterMenu from '../StatusFilterMenu'
 
 /**
  * @typedef {object} Props
- * @prop {StyleRules<keyof ReturnType<typeof styles>>} classes
+ * @prop {Record<classNames, string>} classes
  * @prop {React.Ref<SVGSVGElement>} filterIconRef
  * @prop {StatusFilterMenuProps['anchorEl']} filterMenuAnchorEl (Refer to
  * `<StatusFilterMenu />`'s props).
- * @prop {StatusFilterMenuProps['currentStatusValue']} filterMenuCurrentStatusValue
+ * @prop {StatusFilterMenuProps['currentStatusValue']=} filterMenuCurrentStatusValue
  * (Refer to `<StatusFilterMenu />`'s props).
- * @prop {StatusFilterMenuProps['open']} filterMenuOpen (Refer to
+ * @prop {StatusFilterMenuProps['open']=} filterMenuOpen (Refer to
  * `<StatusFilterMenu />`'s props).
  * @prop {number} numberOfRecords
- * @prop {Function=} onClickAdd Called when the user clicks on the plus icon.
- * @prop {Function=} onClickDownload Called when the user clicks on the download
+ * @prop {SvgIconOnClick=} onClickAdd Called when the user clicks on the plus icon.
+ * @prop {SvgIconOnClick=} onClickDownload Called when the user clicks on the download
  * icon.
- * @prop {Function=} onClickFilterButton Consumer should create a dom ref to
- * pass into filter , to which the menu will 'attach'.
- * @prop {Function=} onClickSearch Called when the user clicks on the search
+ * @prop {SvgIconOnClick=} onClickFilterButton Consumer should create a dom ref to
+ * pass inSvgIconOnClick= , to which the menu will 'attach'.
+ * @prop {SvgIconOnClick=} onClickSearch Called when the user clicks on the search
  * icon, ideally this should change state above and pass true to the
  * `showSearch` prop as a result.
- * @prop {BaseTextFieldProps['onChange']} onChangeSearchValue Called when the
+ * @prop {BaseTextFieldProps['onChange']=} onChangeSearchValue Called when the
  * value inside the search text (if it's currently on display) input changes.
- * @prop {StatusFilterMenuProps['onClose']} onCloseFilterMenu (Refer to
+ * @prop {StatusFilterMenuProps['onClose']=} onCloseFilterMenu (Refer to
  * `<StatusFilterMenu />`'s props).
- * @prop {StatusFilterMenuProps['onStatusChange']} onFilterMenuStatusChange
+ * @prop {StatusFilterMenuProps['onStatusChange']=} onFilterMenuStatusChange
  * (Refer to `<StatusFilterMenu />`'s props).
  * @prop {StatusFilterMenuProps['possibleStatuses']} possibleStatuses (Refer to
  * `<StatusFilterMenu />`'s props).
- * @prop {boolean|null|undefined} showSearch Determines whether the text input
+ * @prop {(boolean|null)=} showSearch Determines whether the text input
  * for search should be on display.
  */
 
@@ -99,7 +100,10 @@ class ListToolbar extends React.PureComponent {
               placeholder="Search Groups"
               InputProps={{
                 startAdornment: (
-                  <InputAdornment className={classes.inputAdornment}>
+                  <InputAdornment
+                    className={classes.inputAdornment}
+                    position="start"
+                  >
                     <Search className={classes.searchIcon} />
                   </InputAdornment>
                 ),
@@ -110,25 +114,28 @@ class ListToolbar extends React.PureComponent {
         )}
 
         <div className={classes.filters}>
-          <IconButton className={classes.icons}>
+          <IconButton>
             <Add onClick={onClickAdd} />
           </IconButton>
-          <IconButton className={classes.icons}>
+          <IconButton>
             <Cloud onClick={onClickDownload} />
           </IconButton>
-          <IconButton className={classes.icons}>
+          <IconButton>
             <Search onClick={onClickSearch} />
           </IconButton>
-          <IconButton className={classes.icons}>
+          <IconButton>
             <FilterList ref={filterIconRef} onClick={onClickFilterButton} />
           </IconButton>
         </div>
         <StatusFilterMenu
-          anchorEl={ReactDOM.findDOMNode(filterMenuAnchorEl)}
+          anchorEl={
+            // @ts-ignore it works
+            ReactDOM.findDOMNode(filterMenuAnchorEl)
+          }
           currentStatusValue={filterMenuCurrentStatusValue}
           onClose={onCloseFilterMenu}
           onStatusChange={onFilterMenuStatusChange}
-          open={filterMenuOpen}
+          open={!!filterMenuOpen}
           possibleStatuses={possibleStatuses}
         />
         <div className={classes.records}>{numberOfRecords} records</div>
@@ -171,4 +178,11 @@ const styles = theme => ({
   },
 })
 
-export default withStyles(styles)(ListToolbar)
+/**
+ * @typedef {keyof ReturnType<typeof styles>} classNames
+ */
+
+export default withStyles(
+  // Cast: no way to pass in generic arguments in JSDOC+Typescript
+  /** @type {StyleRulesCallback<classNames>} */ (styles),
+)(ListToolbar)

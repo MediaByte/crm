@@ -13,7 +13,7 @@ import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight'
  * @prop {number} id
  * @prop {((id: number) => void)=} onClick (Optional) Handler for the onClick
  * event called with the id of the item.
- * @prop {boolean|null=} selected Pass true to highlight the item
+ * @prop {boolean=} selected Pass true to highlight the item
  * compared to its siblings.
  * @prop {string|null|boolean=} subtitle Text that will rendered below
  * the main title in smaller type.
@@ -31,7 +31,7 @@ export default class TitleSubtitleListItem extends React.PureComponent {
   onClick = () => {
     const { onClick, id } = this.props
 
-    onClick(id)
+    onClick && onClick(id)
   }
 
   render() {

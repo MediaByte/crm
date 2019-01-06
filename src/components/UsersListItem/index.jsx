@@ -23,13 +23,13 @@ import getInitialsFromName from './getInitialsFromName'
 
 /**
  * This will probably get passed an id prop in the future
- * @type {React.SFC<NavLinkProps>}
+ * @type {React.SFC}
  */
 const ItemNavLink = props => <NavLink to={'/management/employees'} {...props} />
 
 /**
  * @typedef {object} UsersListItemProps
- * @prop {StyleRules<keyof styles>} classes Do not pass this prop, as this is
+ * @prop {Record<ClassNames, string>} classes Do not pass this prop, as this is
  * injected by material-ui's withStyles
  * @prop {string} employeeRole Role of the user
  * @prop {string} name Name of the user
@@ -63,6 +63,12 @@ const styles = {
     width: '100%',
   },
 }
+
+/**
+ * @typedef {keyof typeof styles} ClassNames
+ */
+
+export {} // stop jsdoc comments from merging
 
 /**
  * A pure component that can be used to render a representation of an user

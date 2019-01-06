@@ -8,7 +8,6 @@ import { withStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import IconButton from '@material-ui/core/IconButton'
 import Grid from '@material-ui/core/Grid'
-import Divider from '@material-ui/core/Divider'
 import Menu from '@material-ui/core/Menu'
 //material-ui icons
 import Edit from '@material-ui/icons/Edit'
@@ -16,23 +15,13 @@ import MoreHoriz from '@material-ui/icons/MoreHoriz'
 
 import ErrorOutlineOutlined from '@material-ui/icons/ErrorOutlineOutlined'
 
-import BackArrow from '@material-ui/icons/ArrowBackIosOutlined'
 //project components
 import styles from './styles.js'
 import UserGroupForm from './UserGroupForm'
 import PageColumn from 'views/Page/PageColumn.jsx'
 
-import {
-  AppBar,
-  Dialog,
-  Toolbar,
-  Slide,
-  Hidden,
-  Paper,
-  MenuItem,
-} from '@material-ui/core'
+import { Hidden, Paper, MenuItem } from '@material-ui/core'
 
-import ListToolbar from '../../components/ListToolbar'
 import TitleSubtitleList from '../../containers/TitleSubtitleList'
 
 //gundb
@@ -53,10 +42,6 @@ import AddOrEditDialog from '../../components/AddOrEditDialog/index.jsx'
 // const formatData = data => Object.keys(data)
 // 	.map(key => ({ key, ...data[key]  }))
 // 	.filter(m => m.key !== '_')
-
-function Transition(props) {
-  return <Slide direction="up" {...props} />
-}
 
 class ManageUserGroups extends Component {
   constructor(props) {
@@ -383,7 +368,7 @@ class ManageUserGroups extends Component {
               <AddOrEditDialog
                 onClose={this.handleClose}
                 open={this.state.open}
-                title="AJASDKL"
+                title="Add User Group"
               />
               {this.renderContentWrapper()}
             </Grid>
