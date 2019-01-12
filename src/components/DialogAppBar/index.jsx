@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography'
 import { withStyles } from '@material-ui/core/styles'
 /**
  * @typedef {import('@material-ui/core').Theme} Theme
+ * @typedef {import('@material-ui/core/Button').ButtonProps} ButtonProps
  */
 /**
  * @template K
@@ -18,6 +19,10 @@ import Close from '@material-ui/icons/Close'
 
 /**
  * @typedef {object} Props
+ * @prop {boolean=} actionButtonSubmitsForm If enabled, the action button is a
+ * submit type, useful for wrapping this component in a `<form>` and have
+ * declarative required/error handling. `preventDefault()` will be called on the
+ * event.
  * @prop {string} actionButtonText
  * @prop {Record<ClassNames, string>} classes Material-UI's classes. Don't pass
  * unless you'll be overriding.
@@ -34,11 +39,22 @@ export {} // stop jsdoc from merging
  * @augments React.PureComponent<Props>
  */
 class DialogAppBar extends React.PureComponent {
+  /**
+   * @type {ButtonProps['onClick']}
+   */
+  onClickActionButton = e => {
+    const { actionButtonSubmitsForm, onClickActionButton } = this.props
+
+    actionButtonSubmitsForm && e.preventDefault()
+
+    onClickActionButton && onClickActionButton()
+  }
+
   render() {
     const {
+      actionButtonSubmitsForm,
       actionButtonText,
       classes,
-      onClickActionButton,
       onClickCloseButton,
       title,
     } = this.props
@@ -65,8 +81,8 @@ class DialogAppBar extends React.PureComponent {
               aria-label={actionButtonText}
               className={classes.actionButton}
               color="inherit"
-              onClick={onClickActionButton}
-              type="submit"
+              onClick={this.onClickActionButton}
+              type={(actionButtonSubmitsForm && 'submit') || undefined}
             >
               {actionButtonText}
             </Button>
