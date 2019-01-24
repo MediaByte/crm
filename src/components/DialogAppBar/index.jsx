@@ -15,6 +15,7 @@ import { withStyles } from '@material-ui/core/styles'
  * @typedef {import('@material-ui/core/styles').StyleRulesCallback<K>} StyleRulesCallback
  */
 
+import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft'
 import Close from '@material-ui/icons/Close'
 
 /**
@@ -23,13 +24,17 @@ import Close from '@material-ui/icons/Close'
  * submit type, useful for wrapping this component in a `<form>` and have
  * declarative required/error handling. `preventDefault()` will be called on the
  * event.
- * @prop {string} actionButtonText
+ * @prop {string=} actionButtonText (Optional) If not provided, the action
+ * button won't be rendered.
  * @prop {Record<ClassNames, string>} classes Material-UI's classes. Don't pass
  * unless you'll be overriding.
+ * @prop {boolean=} hideCloseButton (Optional) Hides the close button.
  * @prop {(() => void)=} onClickActionButton (Optional) Called when the user
  * clicks on the designated close button.
  * @prop {(() => void)=} onClickCloseButton (Optional) Called when the user
  * clicks on the designated close button.
+ * @prop {boolean=} showBackArrow (Optional) Show a backarrow instead of an x
+ * button for the close button.
  * @prop {string} title The title the bar will render, centered and up-top.
  */
 
@@ -55,21 +60,27 @@ class DialogAppBar extends React.PureComponent {
       actionButtonSubmitsForm,
       actionButtonText,
       classes,
+      hideCloseButton,
       onClickCloseButton,
+      showBackArrow,
       title,
     } = this.props
+
+    const showCloseButton = !hideCloseButton
 
     return (
       <div className={classes.appBar}>
         <AppBar position="sticky" color="default" className={classes.noStyle}>
           <Toolbar className={classes.noShadow}>
-            <IconButton
-              aria-label="Close"
-              className={classes.closeButton}
-              onClick={onClickCloseButton}
-            >
-              <Close />
-            </IconButton>
+            {showCloseButton && (
+              <IconButton
+                aria-label="Close"
+                className={classes.closeButton}
+                onClick={onClickCloseButton}
+              >
+                {showBackArrow ? <KeyboardArrowLeft /> : <Close />}
+              </IconButton>
+            )}
             <Typography
               variant="subtitle1"
               color="inherit"
@@ -77,15 +88,17 @@ class DialogAppBar extends React.PureComponent {
             >
               {title}
             </Typography>
-            <Button
-              aria-label={actionButtonText}
-              className={classes.actionButton}
-              color="inherit"
-              onClick={this.onClickActionButton}
-              type={(actionButtonSubmitsForm && 'submit') || undefined}
-            >
-              {actionButtonText}
-            </Button>
+            {actionButtonText && (
+              <Button
+                aria-label={actionButtonText}
+                className={classes.actionButton}
+                color="inherit"
+                onClick={this.onClickActionButton}
+                type={(actionButtonSubmitsForm && 'submit') || undefined}
+              >
+                {actionButtonText}
+              </Button>
+            )}
           </Toolbar>
         </AppBar>
       </div>
