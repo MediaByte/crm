@@ -2,21 +2,20 @@ import React from 'react'
 
 import { withStyles } from '@material-ui/core/styles'
 
+import Divider from '@material-ui/core/Divider'
 import Dialog from '@material-ui/core/Dialog'
+import Grid from '@material-ui/core/Grid'
+import IconButton from '@material-ui/core/IconButton'
 import InputAdornment from '@material-ui/core/InputAdornment'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
-import MenuItem from '@material-ui/core/MenuItem'
-import Select from '@material-ui/core/Select'
 import Slide from '@material-ui/core/Slide'
 import TextField from '@material-ui/core/TextField'
 import Tooltip from '@material-ui/core/Tooltip'
-import Typography from '@material-ui/core/Typography'
+
 /**
  * @typedef {import('@material-ui/core/Select').SelectProps} SelectProps
  * @typedef {import('@material-ui/core/SvgIcon').SvgIconProps} SvgIconProps
  * @typedef {import('@material-ui/core/TextField').TextFieldProps} TextFieldProps
  * @typedef {import('@material-ui/core').Theme} Theme
- * @typedef {import('@material-ui/core').WithStyles} WithStyles
  */
 /**
  * @template K
@@ -29,39 +28,36 @@ import DialogAppBar from '../DialogAppBar'
 
 /**
  * @typedef {object} Props
- * @prop {Record<ClassNames, string>} classes Don't pass this prop, this will be
- * passed in by the built in material-ui styles.
+ * @prop {Record<ClassNames, string>} classes
  * @prop {(() => void)=} handleClose (Optional) Called when the user tries to
  * close the dialog through either clicking either outside of it or the close
  * button at the top of the dialog. It'd be ideal to set `open` to false when
  * this callback gets executed.
  * @prop {(() => void)=} handleSave (Optional) Called when the user clicks on
  * the save button at the top of the dialog.
- * @prop {string} iconSelectValue Currently selected icon value
- * @prop {boolean} identifierFieldError If true, sets the identifier field to an
+ * @prop {boolean=} identifierFieldError (Optional) If true, sets the identifier
+ * field to an error state.
+ * @prop {string=} identifierFieldValue (Optional) Current value for the
+ * identifier field.
+ * @prop {boolean=} labelFieldError (Optional) If true, sets the label field to
+ * an error state.
+ * @prop {string=} labelFieldValue (Optional) Current value for the label field.
+ * @prop {boolean=} nameFieldError (Optional) If true, sets the name field to an
  * error state.
- * @prop {string=} identifierFieldValue Current value for the identifier field.
- * @prop {boolean} labelFieldError If true, sets the label field to an error
- * state.
- * @prop {string=} labelFieldValue Current value for the label field.
- * @prop {boolean} nameFieldError If true, sets the name field to an error
- * state.
- * @prop {string=} nameFieldValue Current value for the name field.
- * @prop {(nextIconSelection: string) => void} onChangeIconSelect Gets called
- * with the new selection value for the icons menu each time it changes.
- * @prop {(nextIdentifierValue: string) => void} onChangeIdentifierField Gets
+ * @prop {string=} nameFieldValue (Optional) Current value for the name field.
+ * @prop {(() => void)=} onClickSelectedIcon (Optional)
+ * @prop {((nextIdentifierValue: string) => void)=} onChangeIdentifierField
+ * (Optional) If provided, gets called with the new value of the name field each
+ * time it changes.
+ * @prop {((nextLabelValue: string) => void)=} onChangeLabelField (Optional)
+ * If provided, gets called with the new value of the label field each time it
+ * changes.
+ * @prop {((nextNameValue: string) => void)=} onChangeNameField (Optional) Gets
  * called with the new value of the name field each time it changes.
- * @prop {(nextLabelValue: string) => void} onChangeLabelField Gets called with
- * the new value of the label field each time it changes.
- * @prop {(nextNameValue: string) => void} onChangeNameField Gets called with
- * the new value of the name field each time it changes.
  * @prop {boolean} open Controls whether the dialog is on display.
- * @prop {{iconNode: React.ComponentType<SvgIconProps>, id: string}[]} svgIcons
- * A list of icons from which the user can select, the `iconNode` prop is a svg
- * icon component type, the `id` prop is an unique identifier for each icon and
- * will be used for the `value` prop inside the `<Select>`'s options. This is
- * done this way because the list of icons must live in the model, as they will
- * be referenced by user-created nodes.
+ * @prop {React.ComponentType<SvgIconProps>} selectedIcon Will be rendered to
+ * display to the user that this icon is the one selected for the node to be
+ * created.
  */
 
 export {} // stop jsdoc comments from merging
@@ -115,15 +111,6 @@ const labelFieldInputProps = {
  */
 class AddDialog extends React.PureComponent {
   /**
-   * @type {SelectProps['onChange']}
-   */
-  onChangeIconSelect = e => {
-    const { onChangeIconSelect } = this.props
-
-    onChangeIconSelect && onChangeIconSelect(e.target.value)
-  }
-
-  /**
    * @type {TextFieldProps['onChange']}
    */
   onChangeIdentifierField = e => {
@@ -155,15 +142,15 @@ class AddDialog extends React.PureComponent {
       classes,
       handleClose,
       handleSave,
-      iconSelectValue,
       identifierFieldError,
       identifierFieldValue,
       labelFieldError,
       labelFieldValue,
       nameFieldError,
       nameFieldValue,
+      onClickSelectedIcon,
       open,
-      svgIcons,
+      selectedIcon: SelectedIcon,
     } = this.props
 
     return (
@@ -223,33 +210,21 @@ class AddDialog extends React.PureComponent {
                 name="label" // for accessibility only
                 onChange={this.onChangeLabelField}
                 placeholder={LABEL_FIELD_HELPER_TEXT}
-                value={labelFieldValue}
                 required
+                value={labelFieldValue}
               />
-              <div className={classes.selectIconGroup}>
-                <Typography
-                  align="center"
-                  color="textSecondary"
-                  paragraph
-                  variant="h6"
-                >
-                  Icon
-                </Typography>
-                <Select
-                  autoWidth
-                  name="icon"
-                  onChange={this.onChangeIconSelect}
-                  value={iconSelectValue || svgIcons[0].id}
-                >
-                  {svgIcons.map(({ iconNode: Icon, id }) => (
-                    <MenuItem key={id} value={id}>
-                      <ListItemIcon>
-                        <Icon />
-                      </ListItemIcon>
-                    </MenuItem>
-                  ))}
-                </Select>
-              </div>
+              <Divider />
+              <Grid
+                alignContent="center"
+                alignItems="center"
+                container
+                direction="row"
+                justify="center"
+              >
+                <IconButton onClick={onClickSelectedIcon}>
+                  <SelectedIcon className={classes.selectedIcon} />
+                </IconButton>
+              </Grid>
             </div>
           </form>
         </Dialog>
@@ -297,12 +272,9 @@ const styles = theme => ({
     },
     padding: 10,
   },
-  selectIconGroup: {
-    alignContent: 'center',
-    alignItems: 'center',
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
+  selectedIcon: {
+    height: 60,
+    width: 60,
   },
   title: {
     [theme.breakpoints.up('md')]: {

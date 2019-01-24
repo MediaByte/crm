@@ -1,14 +1,14 @@
 import React from 'react'
 
 import Button from '@material-ui/core/Button'
-import IconButton from '@material-ui/core/IconButton'
-import Select from '@material-ui/core/Select'
 import { createMount, createShallow } from '@material-ui/core/test-utils'
 
 import SomeIcon from '@material-ui/icons/QueueMusic'
-import Someicon2 from '@material-ui/icons/ErrorOutline'
 
 import AddNodeDialog from '..'
+/**
+ * @typedef {import('..').Props} AddNodeDialogProps
+ */
 
 /**
  * @type {ReturnType<typeof createMount>}
@@ -24,31 +24,21 @@ beforeEach(() => {
   shallow = createShallow()
 })
 
+afterEach(() => {
+  mount.cleanUp()
+})
+
 const mockPreventDefaultEvent = {
   preventDefault() {},
 }
 
-const someSvgIcon = { iconNode: SomeIcon, id: '0' }
-const someSvgIcon2 = { iconNode: Someicon2, id: '1' }
-
+/**
+ * @type {Pick<AddNodeDialogProps, Exclude<keyof AddNodeDialogProps, 'classes'>>}
+ */
 const mandatoryProps = {
-  handleClose: () => {},
-  handleSave: () => {},
-  iconSelectValue: someSvgIcon.id,
-  identifierFieldError: false,
-  labelFieldError: false,
-  nameFieldError: false,
-  onChangeIconSelect: () => {},
-  onChangeIdentifierField: () => {},
-  onChangeLabelField: () => {},
-  onChangeNameField: () => {},
   open: true,
-  svgIcons: [someSvgIcon, someSvgIcon2],
+  selectedIcon: SomeIcon,
 }
-
-afterEach(() => {
-  mount.cleanUp()
-})
 
 it('renders without crashing when given its mandatory props', () => {
   mount(<AddNodeDialog {...mandatoryProps} />)
@@ -58,6 +48,17 @@ it('shallowly renders without crashing when given its mandatory props', () => {
   shallow(<AddNodeDialog {...mandatoryProps} />)
 })
 
+it('renders the selected icon', () => {
+  const wrapper = mount(<AddNodeDialog {...mandatoryProps} />)
+
+  const TheIcon = mandatoryProps.selectedIcon
+  // we use find(Type) instead of contains(Element) because of:
+  // https://github.com/jsdom/jsdom/issues/2128
+  const nodesWithThatIcon = wrapper.find(TheIcon).length
+
+  expect(nodesWithThatIcon).toBeGreaterThan(0)
+})
+
 it('calls the handleClose prop when that button is clicked', () => {
   const mockOnClick = jest.fn(() => {})
 
@@ -65,9 +66,9 @@ it('calls the handleClose prop when that button is clicked', () => {
     <AddNodeDialog {...mandatoryProps} handleClose={mockOnClick} />,
   )
 
-  const actionButton = wrapper.find(IconButton)
+  const closeButton = wrapper.find('button[aria-label="Close"]')
 
-  actionButton.simulate('click')
+  closeButton.simulate('click')
 
   expect(mockOnClick.mock.calls.length).toBe(1)
 })
@@ -86,43 +87,40 @@ it('calls the handleSave prop when that button is clicked', () => {
   expect(mockOnClick.mock.calls.length).toBe(1)
 })
 
-it('renders the values for the controlled text inputs', () => {
-  const identifierFieldValue = Math.random().toString()
-  const labelFieldValue = Math.random().toString()
-  const nameFieldValue = Math.random().toString()
+it('renders the value for the controlled identifier input', () => {
+  const expectedValue = Math.random().toString()
 
   const wrapper = mount(
-    <AddNodeDialog
-      {...mandatoryProps}
-      identifierFieldValue={identifierFieldValue}
-    />,
+    <AddNodeDialog {...mandatoryProps} identifierFieldValue={expectedValue} />,
   )
 
-  const html = wrapper.html()
+  const { value } = wrapper.find('input[name="identifier"]').props()
 
-  expect(html.indexOf(identifierFieldValue) > -1).toBe(true)
-  expect(html.indexOf(labelFieldValue) > 1).toBe(true)
-  expect(html.indexOf(nameFieldValue) > 1).toBe(true)
+  expect(value).toBe(expectedValue)
 })
 
-it('calls the onChangeIconSelect when changing that select', () => {
-  const mockFn = jest.fn(() => {})
+it('renders the value for the controlled label input', () => {
+  const expectedValue = Math.random().toString()
 
   const wrapper = mount(
-    <AddNodeDialog {...mandatoryProps} onChangeIconSelect={mockFn} />,
+    <AddNodeDialog {...mandatoryProps} labelFieldValue={expectedValue} />,
   )
 
-  const select = wrapper.find(Select)
+  const { value } = wrapper.find('input[name="label"]').props()
 
-  select.simulate('click')
+  expect(value).toBe(expectedValue)
+})
 
-  select.find(`input[value="${someSvgIcon2.id}"]`).simulate('click', {
-    target: {
-      value: someSvgIcon2.id,
-    },
-  })
+it('renders the value for the controlled name input', () => {
+  const expectedValue = Math.random().toString()
 
-  expect(mockFn.mock.calls.length).toBe(1)
+  const wrapper = mount(
+    <AddNodeDialog {...mandatoryProps} nameFieldValue={expectedValue} />,
+  )
+
+  const { value } = wrapper.find('input[name="name"]').props()
+
+  expect(value).toBe(expectedValue)
 })
 
 it('calls the onChangeIdentifierField when changing that field', () => {
@@ -165,12 +163,4 @@ it('calls the onChangeNameField when changing that field', () => {
   input.simulate('change', mockPreventDefaultEvent)
 
   expect(mockFn.mock.calls.length).toBe(1)
-})
-
-it('renders the provided icons', () => {
-  const wrapper = mount(<AddNodeDialog {...mandatoryProps} />)
-
-  mandatoryProps.svgIcons.forEach(({ iconNode: Icon }) => {
-    expect(wrapper.find(Icon).length).toBeTruthy()
-  })
 })
