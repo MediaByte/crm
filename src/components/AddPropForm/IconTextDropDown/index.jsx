@@ -36,7 +36,11 @@ const itemToElement = ({ icon: Icon, readableText, value }, i, { length }) => [
     )}
     <ListItemText inset={!Icon} primary={readableText || value} />
   </MenuItem>,
-  i !== length - 1 && <Divider />,
+  i !== length - 1 && (
+    <li>
+      <Divider />
+    </li>
+  ),
 ]
 
 /**
