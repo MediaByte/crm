@@ -12,7 +12,6 @@ import TextField from '@material-ui/core/TextField'
 import Tooltip from '@material-ui/core/Tooltip'
 
 /**
- * @typedef {import('@material-ui/core/Select').SelectProps} SelectProps
  * @typedef {import('@material-ui/core/SvgIcon').SvgIconProps} SvgIconProps
  * @typedef {import('@material-ui/core/TextField').TextFieldProps} TextFieldProps
  * @typedef {import('@material-ui/core').Theme} Theme
@@ -28,7 +27,6 @@ import DialogAppBar from '../DialogAppBar'
 
 /**
  * @typedef {object} Props
- * @prop {Record<ClassNames, string>} classes
  * @prop {(() => void)=} handleClose (Optional) Called when the user tries to
  * close the dialog through either clicking either outside of it or the close
  * button at the top of the dialog. It'd be ideal to set `open` to false when
@@ -107,7 +105,7 @@ const labelFieldInputProps = {
 }
 
 /**
- * @augments React.PureComponent<Props>
+ * @augments React.PureComponent<Props & { classes: Classes }>
  */
 class AddDialog extends React.PureComponent {
   /**
@@ -289,6 +287,7 @@ const styles = theme => ({
 
 /**
  * @typedef {keyof ReturnType<typeof styles>} ClassNames
+ * @typedef {Record<ClassNames, string>} Classes
  */
 
 export default withStyles(
