@@ -13,6 +13,7 @@ import Select from '@material-ui/core/Select'
 
 /**
  * @typedef {object} Item
+ *
  * @prop {(React.ComponentType<SvgIconProps>)=} icon (Optional) An icon for
  * displaying along side the text in each item.
  * @prop {string=} readableText (Optional) Human-readable text for displaying on
@@ -45,6 +46,8 @@ const itemToElement = ({ icon: Icon, readableText, value }, i, { length }) => [
 
 /**
  * @typedef {object} Props
+ * @prop {boolean=} fullWidth (Optional) Pass true to have the select take up
+ * the full width of its parent container.
  * @prop {Item[]} items
  * @prop {((nextValue: string) => void)=} onValueChange (Optional) If provided,
  * it will be called with the new value when clicked on its item.
@@ -96,11 +99,15 @@ export default class IconTextDropDown extends React.PureComponent {
   }
 
   render() {
-    const { items } = this.props
+    const { fullWidth, items } = this.props
     const selectedValue = this.props.selectedValue || this.state.selectedValue
 
     return (
-      <Select onChange={this.onChange} value={selectedValue}>
+      <Select
+        fullWidth={fullWidth}
+        onChange={this.onChange}
+        value={selectedValue}
+      >
         {items.map(itemToElement)}
       </Select>
     )
