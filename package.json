@@ -47,7 +47,7 @@
     "start-js": "react-scripts start",
     "start": "NODE_PATH=./src npm-run-all -p watch-css start-js",
     "build": "npm run build-css && NODE_PATH=./src react-scripts build",
-    "test": "react-scripts test --env=jsdom",
+    "test": "NODE_PATH=./src react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "prettify": "prettier --write 'src/**/*.{js,jsx,ts,tsx,json,css,scss,md}'",
     "typecheck": "tsc",
