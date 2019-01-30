@@ -46,6 +46,11 @@ const itemToElement = ({ icon: Icon, readableText, value }, i, { length }) => [
 
 /**
  * @typedef {object} Props
+ * @prop {string=} emptyValueText An initial item for the dropdown, it is
+ * preferrable  that you pass this prop when using the component uncontrolled
+ * style. Allows for the initial internal state to be an empty string for the
+ * value, and subsequent `onValueChange()` prop calls should accurately reflect
+ * the underlying selection state.
  * @prop {boolean=} fullWidth (Optional) Pass true to have the select take up
  * the full width of its parent container.
  * @prop {Item[]} items
@@ -99,7 +104,7 @@ export default class IconTextDropDown extends React.PureComponent {
   }
 
   render() {
-    const { fullWidth, items } = this.props
+    const { emptyValueText, fullWidth, items } = this.props
     const selectedValue = this.props.selectedValue || this.state.selectedValue
 
     return (
@@ -108,7 +113,12 @@ export default class IconTextDropDown extends React.PureComponent {
         onChange={this.onChange}
         value={selectedValue}
       >
-        {items.map(itemToElement)}
+        {emptyValueText
+          ? [{ readableText: emptyValueText, value: '' }, ...items].map(
+              itemToElement,
+            )
+          : items.map(itemToElement)}
+        {}
       </Select>
     )
   }
