@@ -26,8 +26,6 @@ import Close from '@material-ui/icons/Close'
  * event.
  * @prop {string=} actionButtonText (Optional) If not provided, the action
  * button won't be rendered.
- * @prop {Record<ClassNames, string>} classes Material-UI's classes. Don't pass
- * unless you'll be overriding.
  * @prop {boolean=} hideCloseButton (Optional) Hides the close button.
  * @prop {(() => void)=} onClickActionButton (Optional) Called when the user
  * clicks on the designated close button.
@@ -41,7 +39,7 @@ import Close from '@material-ui/icons/Close'
 export {} // stop jsdoc from merging
 
 /**
- * @augments React.PureComponent<Props>
+ * @augments React.PureComponent<Props & { classes: Classes }>
  */
 class DialogAppBar extends React.PureComponent {
   /**
@@ -146,6 +144,7 @@ const styles = theme => ({
 
 /**
  * @typedef {keyof ReturnType<typeof styles>} ClassNames
+ * @typedef {Record<ClassNames, string>} Classes
  */
 
 export {} // stop jsdoc comments from merging

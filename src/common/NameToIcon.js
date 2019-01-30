@@ -11,13 +11,45 @@ import CalendarFilled from '@material-ui/icons/CalendarToday'
 import CalendarOutlined from '@material-ui/icons/CalendarTodayOutlined'
 import CalendarTwoTone from '@material-ui/icons/CalendarTodayTwoTone'
 
+import CheckboxFilled from '@material-ui/icons/CheckBox'
+import CheckboxOutlined from '@material-ui/icons/CheckBoxOutlined'
+import CheckboxTwoTone from '@material-ui/icons/CheckBoxTwoTone'
+
+import ClockFilled from '@material-ui/icons/AccessTime'
+import ClockOutlined from '@material-ui/icons/AccessTimeOutlined'
+import ClockTwoTone from '@material-ui/icons/AccessTimeTwoTone'
+
 import FilmFilled from '@material-ui/icons/Theaters'
 import FilmOutlined from '@material-ui/icons/TheatersOutlined'
 import FilmTwoTone from '@material-ui/icons/TheatersTwoTone'
 
+import ListFilled from '@material-ui/icons/FormatListNumbered'
+import ListOutlined from '@material-ui/icons/FormatListNumberedOutlined'
+import ListTwoTone from '@material-ui/icons/FormatListNumberedTwoTone'
+
+import PhoneFilled from '@material-ui/icons/LocalPhone'
+import PhoneOutlined from '@material-ui/icons/LocalPhoneOutlined'
+import PhoneTwoTone from '@material-ui/icons/LocalPhoneTwoTone'
+
+import PinDropFilled from '@material-ui/icons/PinDrop'
+import PinDropOutlined from '@material-ui/icons/PinDropOutlined'
+import PinDropTwoTone from '@material-ui/icons/PinDropTwoTone'
+
 import PuzzleFilled from '@material-ui/icons/Extension'
 import PuzzleOutlined from '@material-ui/icons/ExtensionOutlined'
 import PuzzleTwoTone from '@material-ui/icons/ExtensionTwoTone'
+
+import RadioButtonFilled from '@material-ui/icons/RadioButtonChecked'
+import RadioButtonOutlined from '@material-ui/icons/RadioButtonCheckedOutlined'
+import RadioButtonTwoTone from '@material-ui/icons/RadioButtonCheckedTwoTone'
+
+import TextFilled from '@material-ui/icons/TextFields'
+import TextOutlined from '@material-ui/icons/TextFieldsOutlined'
+import TextTwoTone from '@material-ui/icons/TextFieldsTwoTone'
+
+import WrapTextFilled from '@material-ui/icons/WrapText'
+import WrapTextOutlined from '@material-ui/icons/WrapTextOutlined'
+import WrapTextTwoTone from '@material-ui/icons/WrapTextTwoTone'
 
 /**
  * @typedef {object} IconTriple
@@ -41,14 +73,54 @@ export const nameToIconMap = {
     outlined: CalendarOutlined,
     twoTone: CalendarTwoTone,
   },
+  checkbox: {
+    filled: CheckboxFilled,
+    outlined: CheckboxOutlined,
+    twoTone: CheckboxTwoTone,
+  },
+  clock: {
+    filled: ClockFilled,
+    outlined: ClockOutlined,
+    twoTone: ClockTwoTone,
+  },
   film: {
     filled: FilmFilled,
     outlined: FilmOutlined,
     twoTone: FilmTwoTone,
   },
+  list: {
+    filled: ListFilled,
+    outlined: ListOutlined,
+    twoTone: ListTwoTone,
+  },
+  longText: {
+    filled: WrapTextFilled,
+    outlined: WrapTextOutlined,
+    twoTone: WrapTextTwoTone,
+  },
+  phone: {
+    filled: PhoneFilled,
+    outlined: PhoneOutlined,
+    twoTone: PhoneTwoTone,
+  },
+  pindrop: {
+    filled: PinDropFilled,
+    outlined: PinDropOutlined,
+    twoTone: PinDropTwoTone,
+  },
   puzzle: {
     filled: PuzzleFilled,
     outlined: PuzzleOutlined,
     twoTone: PuzzleTwoTone,
+  },
+  radiobutton: {
+    filled: RadioButtonFilled,
+    outlined: RadioButtonOutlined,
+    twoTone: RadioButtonTwoTone,
+  },
+  text: {
+    filled: TextFilled,
+    outlined: TextOutlined,
+    twoTone: TextTwoTone,
   },
 }
