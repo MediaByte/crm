@@ -12,7 +12,7 @@ import Add from '@material-ui/icons/Add'
 
 import TitleShortTextTuple from 'components/TitleShortTextTuple'
 import { nameToIconMap } from 'common/NameToIcon'
-import { typeToIconName } from 'common/PropTypeToMetadata'
+import { typeToIconName, typeToReadableName } from 'common/PropTypeToMetadata'
 
 /**
  * @typedef {object} Props
@@ -24,7 +24,7 @@ import { typeToIconName } from 'common/PropTypeToMetadata'
  * @prop {(() => void)=} onClickAddRelationship
  * @prop {((index: number) => void)=} onClickProperty
  * @prop {((index: number) => void)=} onClickRelationship
- * @prop {{name: string, readableType: string, type: string}[]} properties
+ * @prop {{name: string, type: string}[]} properties
  * @prop {{icon?: string, name: string, relatedNodeName: string}[]} relationships
  */
 
@@ -177,13 +177,13 @@ class NodeOverview extends React.PureComponent {
           item
           spacing={width === 'xs' ? 0 : 32} // TODO: spacing isn't working
         >
-          {properties.map(({ name, readableType, type }, i) => {
+          {properties.map(({ name, type }, i) => {
             const icon = nameToIconMap[typeToIconName[type]]
             const iconExists = !!icon
 
             return this.renderPropOrRel(
               iconExists && icon.twoTone,
-              readableType,
+              typeToReadableName[type],
               name,
               i,
             )
