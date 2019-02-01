@@ -27,6 +27,10 @@ import ListFilled from '@material-ui/icons/FormatListNumbered'
 import ListOutlined from '@material-ui/icons/FormatListNumberedOutlined'
 import ListTwoTone from '@material-ui/icons/FormatListNumberedTwoTone'
 
+import PersonFilled from '@material-ui/icons/Person'
+import PersonOutlined from '@material-ui/icons/PersonOutlined'
+import PersonTwoTone from '@material-ui/icons/PersonTwoTone'
+
 import PhoneFilled from '@material-ui/icons/LocalPhone'
 import PhoneOutlined from '@material-ui/icons/LocalPhoneOutlined'
 import PhoneTwoTone from '@material-ui/icons/LocalPhoneTwoTone'
@@ -97,6 +101,11 @@ export const nameToIconMap = {
     filled: WrapTextFilled,
     outlined: WrapTextOutlined,
     twoTone: WrapTextTwoTone,
+  },
+  person: {
+    filled: PersonFilled,
+    outlined: PersonOutlined,
+    twoTone: PersonTwoTone,
   },
   phone: {
     filled: PhoneFilled,
