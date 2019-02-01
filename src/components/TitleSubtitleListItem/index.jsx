@@ -38,7 +38,7 @@ export default class TitleSubtitleListItem extends React.PureComponent {
     const { selected, subtitle, title } = this.props
 
     return (
-      <ListItem selected={selected} onClick={this.onClick}>
+      <ListItem onClick={this.onClick} selected={selected} style={style}>
         <ListItemText primary={title} secondary={subtitle} />
         <Hidden smUp>
           {/* TODO: Why smUp here?*/}
@@ -51,4 +51,9 @@ export default class TitleSubtitleListItem extends React.PureComponent {
       </ListItem>
     )
   }
+}
+
+/** @type {React.CSSProperties} */
+const style = {
+  cursor: 'pointer',
 }
