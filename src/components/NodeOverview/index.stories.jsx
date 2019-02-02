@@ -21,17 +21,14 @@ const baseProps = {
     {
       name: 'Name',
       type: 'textfield',
-      readableType: 'Text Field',
     },
     {
       name: 'Phone',
       type: 'textfield',
-      readableType: 'Text Field',
     },
     {
       name: 'Billing Address',
       type: 'address',
-      readableType: 'Address',
     },
   ],
   relationships: [
