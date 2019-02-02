@@ -290,6 +290,9 @@ const styles = theme => {
       },
     },
     root: {
+      // force grey background, certain parent containers hardcode background
+      // colors so the grey-white contrast gets lost
+      backgroundColor: theme.palette.grey[200],
       padding: spacing,
     },
   }
