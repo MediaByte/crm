@@ -67,8 +67,8 @@ class NodeOverview extends React.PureComponent {
             this.props.onClickProperty(index)
           }
         }}
-        sm={3}
-        xs={12}
+        sm={3} // little boxes
+        xs={12} // resemble menu items in mobile OSs
       >
         <TitleShortTextTuple
           icon={icon || undefined}
