@@ -249,10 +249,6 @@ const styles = theme => {
   // ripple (ripple should only be present in XS) in each prop/rel 'collide'
   // against a white border up and above, which frankly doesn't look as
   // aesthetic.
-  // If we remove the white background from the container and instead give it
-  // to each prop or rel child, it looks good in XS, but in SM and up, the
-  // white background won't streatch all the way horizontally (which is correct
-  // behaviour).
   return {
     addButton: {
       color: theme.palette.primary.main,
