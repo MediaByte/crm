@@ -108,7 +108,7 @@ class NodeOverview extends React.PureComponent {
 
     return (
       <Grid
-        alignContent="center"
+        alignContent="stretch"
         className={classes.root}
         container
         direction="column"
