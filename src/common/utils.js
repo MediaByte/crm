@@ -36,6 +36,12 @@ export const isAZ = char => isAZLower(char) || isAZLower(char)
  * @param {string} char
  * @returns {boolean}
  */
+export const isNumber = char => '0123456789'.indexOf(char) > -1
+
+/**
+ * @param {string} char
+ * @returns {boolean}
+ */
 export const isSpace = char => {
   if (char.length !== 1) {
     throw new TypeError('isSpace called with a non-char string')
