@@ -7,6 +7,7 @@ import Dialog from 'components/Dialog'
 import NodeOverview from 'components/NodeOverview'
 import PageColumn from 'views/Page/PageColumn.jsx'
 import PropForm from 'components/PropForm'
+import RelationshipForm from 'components/RelationshipForm'
 import TitleSubtitleList from 'containers/TitleSubtitleList'
 import { nameToIconMap } from 'common/NameToIcon'
 
@@ -47,6 +48,7 @@ import { nameToIconMap } from 'common/NameToIcon'
  * @typedef {object} State
  * @prop {number|null} selectedNodeID
  * @prop {boolean} showingAddNodeDialog
+ * @prop {boolean} showingAddRelDialog
  * @prop {boolean} showingPropDialog
  */
 
@@ -58,6 +60,7 @@ export default class NodesAndProps extends React.PureComponent {
   state = {
     selectedNodeID: null,
     showingAddNodeDialog: false,
+    showingAddRelDialog: false,
     showingPropDialog: false,
   }
 
@@ -73,9 +76,6 @@ export default class NodesAndProps extends React.PureComponent {
       showingPropDialog: true,
     })
   }
-
-  /** @private */
-  onClickAddRelationship = () => {}
 
   /**
    * @private
@@ -93,11 +93,19 @@ export default class NodesAndProps extends React.PureComponent {
     }))
   }
 
+  /** @private */
+  toggleAddRelDialog = () => {
+    this.setState(({ showingAddRelDialog }) => ({
+      showingAddRelDialog: !showingAddRelDialog,
+    }))
+  }
+
   render() {
     const { availableTypes, nodes } = this.props
     const {
       selectedNodeID,
       showingAddNodeDialog,
+      showingAddRelDialog,
       showingPropDialog,
     } = this.state
     const classes = { demo: '' }
@@ -126,6 +134,16 @@ export default class NodesAndProps extends React.PureComponent {
           open={showingAddNodeDialog}
         />
 
+        <Dialog
+          actionButtonText="SAVE"
+          handleClose={this.toggleAddRelDialog}
+          onClickCloseButton={this.toggleAddRelDialog}
+          open={showingAddRelDialog}
+          title="Add a Relationship"
+        >
+          <RelationshipForm availableNodeNames={[]} />
+        </Dialog>
+
         <PageColumn titleText="Nodes And Properties">
           <Grid container>
             <Grid item>
@@ -149,7 +167,7 @@ export default class NodesAndProps extends React.PureComponent {
                   label={selectedNode.label}
                   name={selectedNode.name}
                   onClickAddProperty={this.onClickAddProperty}
-                  onClickAddRelationship={this.onClickAddRelationship}
+                  onClickAddRelationship={this.toggleAddRelDialog}
                   properties={selectedNode.props}
                   relationships={selectedNode.relationships}
                 />
