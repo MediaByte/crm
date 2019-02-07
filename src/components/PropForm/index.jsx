@@ -26,7 +26,7 @@ import { nameToIconMap } from 'common/NameToIcon'
 import { typeToIconName, typeToReadableName } from 'common/PropTypeToMetadata'
 import { isAZ, isSpace } from 'common/utils'
 
-import IconTextDropDown from './IconTextDropDown'
+import IconTextDropDown from '../IconTextDropDown'
 
 const NAME_FIELD_HELPER_TEXT = 'Only letters (a-z, A-Z) are allowed'
 const ONLY_LETTERS_AND_SPACES_HELPER_TEXT =
@@ -34,7 +34,7 @@ const ONLY_LETTERS_AND_SPACES_HELPER_TEXT =
 
 /**
  * @param {string} propType
- * @returns {import('./IconTextDropDown').Item}
+ * @returns {import('../IconTextDropDown').Item}
  */
 const propTypeToDropDownItem = propType => {
   const icon =
@@ -321,7 +321,7 @@ export default class PropForm extends React.PureComponent {
 
   /**
    * @private
-   * @type {import('./IconTextDropDown').Props['onValueChange']}
+   * @type {import('../IconTextDropDown').Props['onValueChange']}
    */
   onTypeChange = nextType => {
     const { onTypeChange } = this.props
