@@ -103,7 +103,8 @@ export default class NodesAndProps extends React.PureComponent {
     const classes = { demo: '' }
 
     const selectedNode =
-      selectedNodeID && nodes.filter(node => node.id === selectedNodeID)[0]
+      typeof selectedNodeID == 'number' &&
+      nodes.filter(node => node.id === selectedNodeID)[0]
 
     return (
       <React.Fragment>
