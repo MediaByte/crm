@@ -12,7 +12,6 @@ import { withStyles } from '@material-ui/core'
 /**
  * @typedef {import('@material-ui/core').Theme} Theme
  * @typedef {import('@material-ui/core/TextField').BaseTextFieldProps} BaseTextFieldProps
- * @typedef {import('@material-ui/core/SvgIcon').SvgIconProps['onClick']} SvgIconOnClick
  */
 /**
  * @template K
@@ -35,12 +34,12 @@ import StatusFilterMenu from '../StatusFilterMenu'
  * @prop {StatusFilterMenuProps['open']=} filterMenuOpen (Refer to
  * `<StatusFilterMenu />`'s props).
  * @prop {number} numberOfRecords
- * @prop {SvgIconOnClick=} onClickAdd Called when the user clicks on the plus icon.
- * @prop {SvgIconOnClick=} onClickDownload Called when the user clicks on the download
+ * @prop {(() => void)=} onClickAdd Called when the user clicks on the plus icon.
+ * @prop {(() => void)=} onClickDownload Called when the user clicks on the download
  * icon.
- * @prop {SvgIconOnClick=} onClickFilterButton Consumer should create a dom ref to
+ * @prop {(() => void)=} onClickFilterButton Consumer should create a dom ref to
  * pass inSvgIconOnClick= , to which the menu will 'attach'.
- * @prop {SvgIconOnClick=} onClickSearch Called when the user clicks on the search
+ * @prop {(() => void)=} onClickSearch Called when the user clicks on the search
  * icon, ideally this should change state above and pass true to the
  * `showSearch` prop as a result.
  * @prop {BaseTextFieldProps['onChange']=} onChangeSearchValue Called when the
@@ -114,17 +113,17 @@ class ListToolbar extends React.PureComponent {
         )}
 
         <div className={classes.filters}>
-          <IconButton>
-            <Add onClick={onClickAdd} />
+          <IconButton onClick={onClickAdd}>
+            <Add />
           </IconButton>
-          <IconButton>
-            <Cloud onClick={onClickDownload} />
+          <IconButton onClick={onClickDownload}>
+            <Cloud />
           </IconButton>
-          <IconButton>
-            <Search onClick={onClickSearch} />
+          <IconButton onClick={onClickSearch}>
+            <Search />
           </IconButton>
-          <IconButton>
-            <FilterList ref={filterIconRef} onClick={onClickFilterButton} />
+          <IconButton onClick={onClickFilterButton}>
+            <FilterList ref={filterIconRef} />
           </IconButton>
         </div>
         <StatusFilterMenu

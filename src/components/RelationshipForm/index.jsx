@@ -8,9 +8,7 @@ import InputAdornment from '@material-ui/core/InputAdornment'
 import Switch from '@material-ui/core/Switch'
 import TextField from '@material-ui/core/TextField'
 import Tooltip from '@material-ui/core/Tooltip'
-import Typography from '@material-ui/core/Typography'
 /**
- * @typedef {import('@material-ui/core/SvgIcon').SvgIconProps} SvgIconProps
  * @typedef {import('@material-ui/core/TextField').TextFieldProps} TextFieldProps
  * @typedef {import('@material-ui/core').Theme} Theme
  */
@@ -22,29 +20,22 @@ import Typography from '@material-ui/core/Typography'
 import ErrorOutline from '@material-ui/icons/ErrorOutline'
 import HelpOutline from '@material-ui/icons/HelpOutline'
 
-import { nameToIconMap } from 'common/NameToIcon'
-import { typeToIconName, typeToReadableName } from 'common/PropTypeToMetadata'
-import { isAZ, isSpace } from 'common/utils'
-
-import IconTextDropDown from '../IconTextDropDown'
+import { isAZ, isNumber, isSpace } from 'common/utils'
+import IconTextDropDown from 'components/IconTextDropDown'
 
 const NAME_FIELD_HELPER_TEXT = 'Only letters (a-z, A-Z) are allowed'
 const ONLY_LETTERS_AND_SPACES_HELPER_TEXT =
   'Only letters (a-z, A-Z) and spaces are allowed'
+const ONLY_NUMBERS_ALLOWED_HELPER_TEXT = 'Only numbers are allowed'
 
 /**
- * @param {string} propType
+ * @param {string} nodeName
  * @returns {import('../IconTextDropDown').Item}
  */
-const propTypeToDropDownItem = propType => {
-  const icon =
-    nameToIconMap[typeToIconName[propType]] &&
-    nameToIconMap[typeToIconName[propType]].filled
-
+const nodeNameToDropDownItem = nodeName => {
   return {
-    icon,
-    readableText: typeToReadableName[propType],
-    value: propType,
+    readableText: nodeName,
+    value: nodeName,
   }
 }
 
@@ -77,68 +68,73 @@ const labelFieldInputProps = {
 /**
  * @typedef {object} FormData
  * @prop {string|null} label `null` when no label is inputted.
+ * @prop {string|null} maxNumRecords `null` when limitting records  is disabled,
+ * or when the max number of records input is empty.
  * @prop {string|null} name `null` when no name is inputted.
- * @prop {string|null} tooltip `null` when tooltip is disabled, or when the
- * tooltip input field is empty.
- * @prop {string|null} type This type is obtained from the 'availableTypes'
- * prop, if by any chance this array is empty, this will be `null`.
+ * @prop {string|null} nodeName Sourced from the 'availableNodeNames' prop, if
+ * by any chance this array is empty, this will be `null`.
  */
 
 /**
  * @typedef {object} Props
- * @prop {string[]} availableTypes
- * @prop {boolean=} hideTypeSelection (Optional) If provided, hides the prop
- * type selection dropdown, useful when editing rather than adding a property.
+ * @prop {string[]} availableNodeNames
+ * @prop {boolean=} disableFullwidth (Optional)
+ * @prop {boolean=} hideMaxNumRecordsInput (Optional) If provided and set to
+ * `true`, hides the max number of records form group, useful when editing
+ * rather than adding a relationship.
+ * @prop {boolean=} hideNameInput (Optional) If provided and  set to `true`,
+ * hides the name form group, useful when editing rather than adding a
+ * relationship.
+ * @prop {boolean=} hideNodeNameInput (Optional) If provided and set to `true`,
+ * hides the node name form group, useful when editing rather than adding a
+ * relationship.
  * @prop {string=} initialLabelValue (Optional) If provided, this will be the
  * initial value for the label input. Works for using this form as an edit form.
  * You can use a key for this component to actually turn it into a controlled
  * component through this prop (controlled-with-key pattern).
+ * @prop {string=} initialMaxNumRecordsValue (Optional) If provided, this will be
+ * the initial value for the max number of records input. Useful for using this
+ * form as an edit form. You can use a key for this component to actually turn
+ * it into a controlled component through this prop (controlled-with-key
+ * pattern).
  * @prop {string=} initialNameValue (Optional) If provided, this will be the
  * initial value for the name input. Works for using this form as an edit form.
  * You can use a key for this component to actually turn it into a controlled
  * component through this prop (controlled-with-key pattern).
- * @prop {string=} initialTooltipValue (Optional) If provided, this will be the
- * initial value for the tooltip input. Works for using this form as an edit
- * form. You can use a key for this component to actually turn it into a
- * controlled component through this prop (controlled-with-key pattern).
- * @prop {(() => void)=} onClickSelectIcon (Optional)
  * @prop {((nextLabelValue: string) => void)=} onLabelChange (Optional) If
  * provided, gets called with the next value for the name input every time it
  * changes.
  * @prop {((nextNameValue: string) => void)=} onNameChange (Optional) If
  * provided, gets called with the next value for the name input every time it
  * changes.
- * @prop {((nextTooltipValue: string) => void)=} onTooltipChange (Optional) If
- * provided, gets called with the next value for the tooltip input every time it
- * changes.
- * @prop {((nextType: string) => void)=} onTypeChange (Optional) If provided,
- * gets called with the next value for the prop type selection drop down.
- * @prop {(React.ComponentType<SvgIconProps>)|undefined|null|false=} selectedIcon
- * (Optional) If provided, it will be rendered to indicate the user this icon is
- * the one selected for this node-property.
+ * @prop {((nextMaxNumRecordsValue: string) => void)=} onMaxNumRecordsChange
+ * (Optional) If provided, gets called with the next value for the tooltip input
+ * every time it changes.
+ * @prop {((nextNode: string) => void)=} onNodeNameChange (Optional) If
+ * provided, gets called with the next value for the node selection drop down.
  */
 
 /**
  * @typedef {Object} State
+ * @prop {string} currentMaxNumRecordsValue
  * @prop {string} currentNameValue
  * @prop {string} currentLabelValue
- * @prop {string} currentTooltipValue
  * @prop {boolean} invalidLabelCharAttempt Will be set to true as soon as the
  * user tries to enter an illegal character into the label input. The helper
  * text will be shown from here on forward.
+ * @prop {boolean} invalidMaxNumRecordsCharAttempt Will be set to true as soon
+ * as the user tries to enter an illegal character into the max number of
+ * records input. The helper text will be shown from here on forward.
  * @prop {boolean} invalidNameCharAttempt Will be set to true as soon as the
- * user tries to enter an illegal character into the name input. The helper text
- * will be shown from here on forward.
- * @prop {boolean} invalidTooltipCharAttempt Will be set to true as soon as the
- * user tries to enter an illegal character into the tooltip input. The helper
+ * user tries to enter an illegal character into the name input. The helper
  * text will be shown from here on forward.
- * @prop {string} selectedType Selected prop type. Empty string means no
- * type is selected.
- * @prop {boolean} tooltipEnabled
+ * @prop {boolean} maxNumRecordsEnabled
+ * @prop {string} selectedNodeName Selected node name. Empty string means no
+ * node is selected.
  */
 
 /**
- * @typedef {Object} AddPropFormInterface
+ * @typedef {Object} IRelationshipForm
  * @prop {() => FormData} getFormData
  */
 
@@ -155,23 +151,23 @@ export default class PropForm extends React.PureComponent {
     /**
      * HACK: https://github.com/Microsoft/TypeScript/issues/17498#issuecomment-399439654
      * Ensure the class conforms to the interface.
-     * @type {AddPropFormInterface}
+     * @type {IRelationshipForm}
      */
     const instance = this
     instance // avoid unused local error
 
     const {
-      availableTypes,
+      availableNodeNames,
       initialLabelValue,
       initialNameValue,
-      initialTooltipValue,
+      initialMaxNumRecordsValue,
     } = this.props
 
-    if (availableTypes.length === 0) {
+    if (availableNodeNames.length === 0) {
       console.warn(
-        `<AddPropForm expected the 'availableTypes' prop to be populated, instead of a length of : ${
-          this.props.availableTypes.length
-        }`,
+        `<RelationshipForm expected the 'availableNodeNames' prop to be populated, instead a length of : ${
+          availableNodeNames.length
+        } was found.`,
       )
     }
 
@@ -181,50 +177,43 @@ export default class PropForm extends React.PureComponent {
     this.state = {
       currentLabelValue: initialLabelValue || '',
       currentNameValue: initialNameValue || '',
-      currentTooltipValue: initialTooltipValue || '',
+      currentMaxNumRecordsValue: initialMaxNumRecordsValue || '',
       invalidLabelCharAttempt: false,
+      invalidMaxNumRecordsCharAttempt: false,
       invalidNameCharAttempt: false,
-      invalidTooltipCharAttempt: false,
-      selectedType: availableTypes[0] || '',
-      tooltipEnabled:
-        typeof initialTooltipValue === 'string' && initialTooltipValue !== '',
+      maxNumRecordsEnabled:
+        typeof initialMaxNumRecordsValue === 'string' &&
+        initialMaxNumRecordsValue !== '',
+      selectedNodeName: availableNodeNames[0] || '',
     }
   }
 
   /**
    * @public
    * Get the form data when necessary. This prevents the need from having to
-   * handle form data up-above.Returns an object looking like this:
-   ```
-   {
-     // null when no label is inputted.
-     label: string|null
-     // null when no name is inputted.
-     name: string|null
-     // null when tooltip is disabled, or when the tooltip input field is empty
-     tooltip: string|null
-     // this type is obtained from the 'availableTypes' prop, if by any chance
-     // this array is empty, this will be null.
-     type: string|null
-   }
-   ```
+   * handle form data up-above. See the `FormData` interface defined in this
+   * component's file for the format of the object returned.
    * @returns {FormData}
    */
   getFormData() {
-    const { currentTooltipValue, tooltipEnabled } = this.state
+    const { availableNodeNames } = this.props
+    const {
+      currentMaxNumRecordsValue,
+      maxNumRecordsEnabled,
+      selectedNodeName,
+    } = this.state
 
-    const tooltipValue = (() => {
-      if (!tooltipEnabled) return null
-      if (currentTooltipValue.length === 0) return null
-      return currentTooltipValue
+    const maxNumRecordsData = (() => {
+      if (!maxNumRecordsEnabled) return null
+      if (currentMaxNumRecordsValue.length === 0) return null
+      return currentMaxNumRecordsValue
     })()
 
     return {
       label: this.state.currentLabelValue || null,
       name: this.state.currentNameValue || null,
-      tooltip: tooltipValue,
-      type:
-        this.props.availableTypes.length === 0 ? null : this.state.selectedType,
+      maxNumRecords: maxNumRecordsData,
+      nodeName: availableNodeNames.length === 0 ? null : selectedNodeName,
     }
   }
 
@@ -282,23 +271,23 @@ export default class PropForm extends React.PureComponent {
    * @private
    * @type {TextFieldProps['onChange']}
    */
-  onTooltipChange = ({ target: { value } }) => {
-    const { onTooltipChange } = this.props
+  onMaxNumRecordsChange = ({ target: { value } }) => {
+    const { onMaxNumRecordsChange } = this.props
 
     if (value.length === 0) {
-      this.setState({ currentTooltipValue: '' })
-      onTooltipChange && onTooltipChange('')
+      this.setState({ currentMaxNumRecordsValue: '' })
+      onMaxNumRecordsChange && onMaxNumRecordsChange('')
     }
 
     const chars = value.split('')
-    const legalChars = chars.every(char => isAZ(char) || isSpace(char))
+    const legalChars = chars.every(isNumber)
 
     if (legalChars) {
-      this.setState({ currentTooltipValue: value })
-      onTooltipChange && onTooltipChange(value)
+      this.setState({ currentMaxNumRecordsValue: value })
+      onMaxNumRecordsChange && onMaxNumRecordsChange(value)
     } else {
       this.setState({
-        invalidTooltipCharAttempt: true,
+        invalidMaxNumRecordsCharAttempt: true,
       })
     }
   }
@@ -307,15 +296,15 @@ export default class PropForm extends React.PureComponent {
    * @private
    * @type {import('@material-ui/core/Switch').SwitchProps['onChange']}
    */
-  onTooltipSwitchChange = ({ target: { checked } }) => {
+  onMaxNumRecordsSwitchChange = ({ target: { checked } }) => {
     this.setState({
-      tooltipEnabled: checked,
+      maxNumRecordsEnabled: checked,
     })
 
-    // reset tooltip input if disabled via the switch
+    // reset max num records input if disabled via the switch
     !checked &&
       this.setState({
-        currentTooltipValue: '',
+        currentMaxNumRecordsValue: '',
       })
   }
 
@@ -323,35 +312,36 @@ export default class PropForm extends React.PureComponent {
    * @private
    * @type {import('../IconTextDropDown').Props['onValueChange']}
    */
-  onTypeChange = nextType => {
-    const { onTypeChange } = this.props
+  onNodeNameChange = nextNodeName => {
+    const { onNodeNameChange } = this.props
 
     this.setState({
-      selectedType: nextType,
+      selectedNodeName: nextNodeName,
     })
 
-    onTypeChange && onTypeChange(nextType)
+    onNodeNameChange && onNodeNameChange(nextNodeName)
   }
 
   render() {
     const {
-      availableTypes,
-      hideTypeSelection,
-      onClickSelectIcon,
-      selectedIcon: SelectedIcon,
+      availableNodeNames,
+      disableFullwidth,
+      hideNodeNameInput,
     } = this.props
+
     const {
       currentLabelValue,
+      currentMaxNumRecordsValue,
       currentNameValue,
-      currentTooltipValue,
       invalidLabelCharAttempt,
+      invalidMaxNumRecordsCharAttempt,
       invalidNameCharAttempt,
-      invalidTooltipCharAttempt,
-      selectedType,
-      tooltipEnabled,
+      maxNumRecordsEnabled,
+      selectedNodeName,
     } = this.state
 
-    const showTypeSelection = !hideTypeSelection
+    const enableFullwidth = !disableFullwidth
+    const showNodeNameSelect = !hideNodeNameInput
 
     return (
       <Grid
@@ -363,9 +353,9 @@ export default class PropForm extends React.PureComponent {
       >
         <TextField
           InputProps={nameFieldInputProps}
-          fullWidth
+          fullWidth={enableFullwidth}
           helperText={invalidNameCharAttempt && NAME_FIELD_HELPER_TEXT}
-          id="add-prop-form-name-field" // required for Accessibility
+          id="relationship-form-name-field" // required for Accessibility
           label="Name"
           name="name"
           onChange={this.onNameChange}
@@ -375,11 +365,11 @@ export default class PropForm extends React.PureComponent {
 
         <TextField
           InputProps={labelFieldInputProps}
-          fullWidth
+          fullWidth={enableFullwidth}
           helperText={
             invalidLabelCharAttempt && ONLY_LETTERS_AND_SPACES_HELPER_TEXT
           }
-          id="add-prop-form-label-field" // required for Accessibility
+          id="relationship-form-label-field" // required for Accessibility
           label="Label"
           name="label" // for accessibility only
           onChange={this.onLabelChange}
@@ -391,11 +381,11 @@ export default class PropForm extends React.PureComponent {
           <FormControlLabel
             control={
               <Switch
-                checked={tooltipEnabled}
-                onChange={this.onTooltipSwitchChange}
+                checked={maxNumRecordsEnabled}
+                onChange={this.onMaxNumRecordsSwitchChange}
               />
             }
-            label="Enable tooltip for this property."
+            label="Limit the amount of record for this node."
           />
 
           <IconButton>
@@ -403,79 +393,30 @@ export default class PropForm extends React.PureComponent {
           </IconButton>
         </Grid>
 
-        {tooltipEnabled && (
+        {maxNumRecordsEnabled && (
           <TextField
-            fullWidth
+            fullWidth={enableFullwidth}
             helperText={
-              invalidTooltipCharAttempt && ONLY_LETTERS_AND_SPACES_HELPER_TEXT
+              invalidMaxNumRecordsCharAttempt &&
+              ONLY_NUMBERS_ALLOWED_HELPER_TEXT
             }
             id="add-prop-form-tooltip-field" // required for Accessibility
-            label="Tooltip"
-            name="tooltip" // for accessibility only
-            onChange={this.onTooltipChange}
+            label="Max number of records"
+            name="max-number-of-records" // for accessibility only
+            onChange={this.onMaxNumRecordsChange}
             required
-            value={currentTooltipValue}
+            value={currentMaxNumRecordsValue}
           />
         )}
-
-        <Grid>
-          {SelectedIcon ? (
-            <div onClick={onClickSelectIcon} style={iconSelectionStyle}>
-              <SelectedIcon style={iconStyle} />
-            </div>
-          ) : (
-            <div onClick={onClickSelectIcon} style={noIconSelectedStyle}>
-              <Typography align="center" color="primary" variant="subtitle2">
-                Click/tap here to select an icon for this property
-              </Typography>
-            </div>
-          )}
-
-          {showTypeSelection && (
-            <IconTextDropDown
-              emptyValueText=""
-              items={availableTypes.map(propTypeToDropDownItem)}
-              onValueChange={this.onTypeChange}
-              selectedValue={selectedType}
-            />
-          )}
-        </Grid>
+        {showNodeNameSelect && (
+          <IconTextDropDown
+            emptyValueText=""
+            items={availableNodeNames.map(nodeNameToDropDownItem)}
+            onValueChange={this.onNodeNameChange}
+            selectedValue={selectedNodeName}
+          />
+        )}
       </Grid>
     )
   }
-}
-
-const ICON_AREA_DIMENSIONS = 96
-
-/**
- * @type {React.CSSProperties}
- */
-const iconSelectionStyle = {
-  alignContent: 'center',
-  alignItems: 'center',
-  display: 'flex',
-  borderColor: '#CCC',
-  borderRadius: 25,
-  borderStyle: 'solid',
-  borderWidth: 4,
-  cursor: 'pointer',
-  justifyContent: 'center',
-  width: ICON_AREA_DIMENSIONS,
-  height: ICON_AREA_DIMENSIONS,
-}
-
-/**
- * @type {React.CSSProperties}
- */
-const noIconSelectedStyle = {
-  ...iconSelectionStyle,
-  borderStyle: 'dashed',
-}
-
-/**
- * @type {React.CSSProperties}
- */
-const iconStyle = {
-  width: ICON_AREA_DIMENSIONS,
-  height: ICON_AREA_DIMENSIONS,
 }

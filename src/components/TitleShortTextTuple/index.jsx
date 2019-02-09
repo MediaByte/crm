@@ -14,6 +14,8 @@ import { withStyles } from '@material-ui/core/styles'
  * it will be passed in by material-ui.
  * @prop {(React.ComponentType|null|false|undefined)=} icon
  * @prop {React.DOMAttributes<HTMLDivElement>['onClick']=} onClick (Optional)
+ * @prop {boolean=} pointerCursor (Optional) If passed, will show the pointer
+ * cursor on hover.
  * @prop {string} text
  * @prop {string} title
  */
@@ -28,10 +30,22 @@ export {} // prevent JSDOC comments from merging
  */
 class TitleShortTextTuple extends React.PureComponent {
   render() {
-    const { classes, icon: Icon, onClick, text, title } = this.props
+    const {
+      classes,
+      icon: Icon,
+      onClick,
+      pointerCursor,
+      text,
+      title,
+    } = this.props
 
     return (
-      <div className={classes.root} onClick={onClick}>
+      <div
+        className={
+          pointerCursor ? classes.rootStylePointerCursor : classes.root
+        }
+        onClick={onClick}
+      >
         <div className={classes.heading}>
           <Typography align="left" color="textSecondary" variant="h5">
             {title}
@@ -42,7 +56,12 @@ class TitleShortTextTuple extends React.PureComponent {
             </IconButton>
           )}
         </div>
-        <Typography className={classes.text} align="left" variant="subtitle1">
+        <Typography
+          className={classes.text}
+          align="left"
+          variant="subtitle1"
+          paragraph
+        >
           {text}
         </Typography>
       </div>
@@ -50,13 +69,19 @@ class TitleShortTextTuple extends React.PureComponent {
   }
 }
 
+const rootStyle = {
+  alignContent: 'flex-start',
+  alignItems: 'flex-start',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'flex-start',
+}
+
 const styles = {
-  root: {
-    alignContent: 'flex-start',
-    alignItems: 'flex-start',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
+  root: rootStyle,
+  rootStylePointerCursor: {
+    ...rootStyle,
+    cursor: 'pointer',
   },
   heading: {
     alignContent: 'flex-start',
