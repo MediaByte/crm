@@ -5,7 +5,7 @@ const drawerWidth = 220
 const navStyles = theme => ({
   title: {
     flexGrow: 1,
-    // visibility: 'hidden',
+    visibility: 'visible',
     textAlign: 'center',
     [theme.breakpoints.up('sm')]: {
       textAlign: 'left',
@@ -14,6 +14,26 @@ const navStyles = theme => ({
       fontWeight: '900',
       fontSize: '15px',
     },
+    [theme.breakpoints.down('xs')]: {
+      visibility: 'hidden',
+    },
+  },
+  iconHeader: {
+    marginLeft: '5px',
+    marginRight: '5px',
+    [theme.breakpoints.down('xs')]: {
+      visibility: 'hidden',
+    },
+  },
+  dividerLogo: {
+    height: '1px',
+    margin: '0',
+    border: 'none',
+    flexShrink: '0',
+    backgroundColor: 'rgb(255, 255, 255)',
+    marginLeft: '15px',
+    marginRight: '15px',
+    marginBottom: '10px',
   },
   titleContent: {
     display: 'none',
@@ -79,6 +99,10 @@ const navStyles = theme => ({
       marginLeft: '75px',
       // marginRight: 22,
     },
+    [theme.breakpoints.down('sm')]: {
+      marginLeft: '10px',
+      // marginRight: 22,
+    },
     transition: theme.transitions.create(['margin'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
@@ -130,8 +154,13 @@ const navStyles = theme => ({
     width: theme.spacing.unit * 9,
     [theme.breakpoints.up('sm')]: {
       width: theme.spacing.unit * 9,
+      overflow: 'hidden',
     },
     [theme.breakpoints.down('xs')]: {
+      width: '0px',
+      marginLeft: '-1px',
+    },
+    [theme.breakpoints.down('sm')]: {
       width: '0px',
       marginLeft: '-1px',
     },
@@ -177,8 +206,25 @@ const navStyles = theme => ({
   imgLogo: {
     margin: '0 auto',
   },
+  itemSearch: {
+    display: 'flex',
+    [theme.breakpoints.down('sm')]: {
+      position: 'absolute',
+      left: '50%',
+      top: '50%',
+      transform: 'translate(-50%, -50%)',
+    },
+    [theme.breakpoints.down('xs')]: {
+      position: 'absolute',
+      left: '50%',
+      top: '50%',
+      transform: 'translate(-50%, -50%)',
+      width: '90%',
+    },
+  },
   search: {
     position: 'relative',
+    marginRight: '15px',
     borderRadius: theme.shape.borderRadius,
     backgroundColor: fade('#f6f6f6', 1),
     '&:hover': {
@@ -186,7 +232,7 @@ const navStyles = theme => ({
     },
     marginLeft: 0,
     width: '100%',
-    display: 'none',
+    display: 'block',
     [theme.breakpoints.up('sm')]: {
       marginLeft: theme.spacing.unit,
       width: 'auto',
@@ -194,12 +240,15 @@ const navStyles = theme => ({
     },
   },
   searchIcon: {
+    color: '#ccc',
     width: theme.spacing.unit * 9,
     height: '100%',
     position: 'absolute',
+    top: 4,
     pointerEvents: 'none',
     display: 'flex',
     alignItems: '100%',
+
     justifyContent: 'center',
   },
   inputRoot: {
@@ -242,9 +291,6 @@ const navStyles = theme => ({
     borderTop: '1px solid #eee',
     position: 'fixed',
     bottom: '0',
-    [theme.breakpoints.up('sm')]: {
-      display: 'none',
-    },
   },
   label: {
     ' span': {

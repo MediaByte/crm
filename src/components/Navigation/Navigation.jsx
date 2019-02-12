@@ -19,6 +19,9 @@ import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import BottomNavigation from '@material-ui/core/BottomNavigation'
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction'
+import InputBase from '@material-ui/core/InputBase'
+import Hidden from '@material-ui/core/Hidden'
+import Button from '@material-ui/core/Button'
 
 //material ui icons
 import CalendarTodayOutlined from '@material-ui/icons/CalendarTodayOutlined'
@@ -29,6 +32,7 @@ import Event from '@material-ui/icons/EventOutlined'
 import AccountBalance from '@material-ui/icons/AccountBalanceOutlined'
 import CreditCard from '@material-ui/icons/CreditCard'
 import MailOutline from '@material-ui/icons/MailOutline'
+import SearchIcon from '@material-ui/icons/Search'
 
 //projects components
 import NotificationsCenter from 'components/NotificationCenter/NotificationsCenter.js'
@@ -43,6 +47,7 @@ const mapStateToProps = state => {
   console.log(state)
   return {
     open: state.userGroups.open,
+    hide: true,
   }
 }
 const mapDispatchToProps = dispatch => {
@@ -56,6 +61,7 @@ class Navigation extends React.Component {
     disableUnderline: true,
     value: 0,
     mobileOpen: false,
+    hide: true,
   }
   componentDidMount() {
     // const { closed } = this.props;
@@ -69,6 +75,12 @@ class Navigation extends React.Component {
 
   handleDrawerToggle = () => {
     this.setState(state => ({ mobileOpen: !state.mobileOpen }))
+  }
+
+  handleSearchToggle = () => {
+    this.setState(prevState => ({
+      hide: !prevState.hide,
+    }))
   }
 
   handleChange = (event, value) => {
@@ -118,7 +130,7 @@ class Navigation extends React.Component {
           </IconButton>
         </div>
         <div>
-          <Divider />
+          <Divider className={classes.dividerLogo} />
           <List className={classes.drawerList} style={{ marginTop: -8 }}>
             <ListItem
               selected={component === 'dashboard'}
@@ -204,17 +216,19 @@ class Navigation extends React.Component {
           >
             <Toolbar className={classes.toolbar}>
               {!this.props.open ? (
-                <IconButton
-                  color="inherit"
-                  aria-label="Open drawer"
-                  onClick={this.handleDrawerOpen}
-                  className={classNames(
-                    classes.menuButton,
-                    this.props.open && classes.hide,
-                  )}
-                >
-                  <MenuIcon />
-                </IconButton>
+                this.state.hide && (
+                  <IconButton
+                    color="inherit"
+                    aria-label="Open drawer"
+                    onClick={this.handleDrawerOpen}
+                    className={classNames(
+                      classes.menuButton,
+                      this.props.open && classes.hide,
+                    )}
+                  >
+                    <MenuIcon />
+                  </IconButton>
+                )
               ) : (
                 <IconButton
                   className={classNames(
@@ -226,14 +240,47 @@ class Navigation extends React.Component {
                   <MenuIcon />
                 </IconButton>
               )}
-
-              <Typography variant="title" noWrap className={classes.title}>
-                {this.props.title}
-              </Typography>
-              <IconButton>
-                <MenuIcon style={{ visibility: 'hidden' }} />
-              </IconButton>
-              {/* <SearchField /> */}
+              {this.state.hide && (
+                <Typography variant="title" noWrap className={classes.title}>
+                  {this.props.title}
+                </Typography>
+              )}
+              {!this.state.hide && (
+                <div className={classes.itemSearch}>
+                  <div className={classes.search}>
+                    <div className={classes.searchIcon}>
+                      <SearchIcon />
+                    </div>
+                    <InputBase
+                      placeholder="Search…"
+                      classes={{
+                        root: classes.inputRoot,
+                        input: classes.inputInput,
+                      }}
+                    />
+                  </div>
+                  <Button
+                    color="primary"
+                    className={classes.button}
+                    onClick={this.handleSearchToggle}
+                  >
+                    Cancel
+                  </Button>
+                </div>
+              )}
+              {this.state.hide && (
+                <IconButton color="inherit">
+                  <SearchIcon onClick={this.handleSearchToggle} />
+                </IconButton>
+              )}
+              <Hidden smDown>
+                <IconButton color="inherit" className={classes.iconHeader}>
+                  <CalendarTodayOutlined />
+                </IconButton>
+                <IconButton color="inherit" className={classes.iconHeader}>
+                  <NotificationsCenter />
+                </IconButton>
+              </Hidden>
             </Toolbar>
           </AppBar>
           {/* <Hidden smUp>
@@ -268,22 +315,24 @@ class Navigation extends React.Component {
             <div style={{ height: '100%' }}>{children}</div>
           </main>
         </div>
-        <BottomNavigation
-          value={value}
-          onChange={this.handleChange}
-          showLabels
-          className={classes.bottom}
-        >
-          <BottomNavigationAction label="Dashboard" icon={<Dashboard />} />
-          <BottomNavigationAction
-            label="Calendar"
-            icon={<CalendarTodayOutlined />}
-          />
-          <BottomNavigationAction
-            label="Notifications"
-            icon={<NotificationsCenter />}
-          />
-        </BottomNavigation>
+        <Hidden only={['lg', 'xl']}>
+          <BottomNavigation
+            value={value}
+            onChange={this.handleChange}
+            showLabels
+            className={classes.bottom}
+          >
+            <BottomNavigationAction label="Dashboard" icon={<Dashboard />} />
+            <BottomNavigationAction
+              label="Calendar"
+              icon={<CalendarTodayOutlined />}
+            />
+            <BottomNavigationAction
+              label="Notifications"
+              icon={<NotificationsCenter />}
+            />
+          </BottomNavigation>
+        </Hidden>
       </div>
     )
   }
