@@ -17,7 +17,7 @@ const navStyles = theme => ({
   },
   titleContent: {
     display: 'none',
-    visibility: 'visible',
+    visibility: 'hidden',
     marginTop: '60px',
     height: '100%',
     [theme.breakpoints.up('sm')]: {
@@ -179,7 +179,12 @@ const navStyles = theme => ({
   },
 
   search: {
-    position: 'relative',
+    position: 'absolute',
+    left: '50%',
+    top: '50%',
+    transform: 'translate(-50%, -50%)',
+    webkitTransform: 'translate(-50%, -50%)',
+
     borderRadius: theme.shape.borderRadius,
     backgroundColor: fade('#f6f6f6', 1),
     '&:hover': {
@@ -191,13 +196,14 @@ const navStyles = theme => ({
     [theme.breakpoints.up('sm')]: {
       marginLeft: theme.spacing.unit,
       width: 'auto',
-      display: 'block',
+      display: 'none',
     },
   },
   searchIcon: {
     width: theme.spacing.unit * 9,
     height: '100%',
     position: 'absolute',
+    top: 4,
     pointerEvents: 'none',
     display: 'flex',
     alignItems: '100%',
