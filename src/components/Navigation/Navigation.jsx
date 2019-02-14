@@ -270,15 +270,18 @@ class Navigation extends React.Component {
               )}
               {this.state.hide && (
                 <IconButton color="inherit">
-                  <SearchIcon onClick={this.handleSearchToggle} />
+                  <SearchIcon
+                    className={classes.icon}
+                    onClick={this.handleSearchToggle}
+                  />
                 </IconButton>
               )}
               <Hidden smDown>
                 <IconButton color="inherit" className={classes.iconHeader}>
-                  <CalendarTodayOutlined />
+                  <CalendarTodayOutlined className={classes.icon} />
                 </IconButton>
                 <IconButton color="inherit" className={classes.iconHeader}>
-                  <NotificationsCenter />
+                  <NotificationsCenter className={classes.icon} />
                 </IconButton>
               </Hidden>
             </Toolbar>
