@@ -15,12 +15,13 @@ const navStyles = theme => ({
       fontSize: '15px',
     },
     [theme.breakpoints.down('xs')]: {
-      visibility: 'hidden',
+      visibility: 'visible',
     },
   },
   iconHeader: {
     marginLeft: '5px',
     marginRight: '5px',
+    color: '#757575 !important',
     [theme.breakpoints.down('xs')]: {
       visibility: 'hidden',
     },
@@ -250,6 +251,10 @@ const navStyles = theme => ({
     alignItems: '100%',
 
     justifyContent: 'center',
+  },
+  icon: {
+    color: '#757575 !important',
+    fontSize: '24px',
   },
   inputRoot: {
     color: 'inherit',
