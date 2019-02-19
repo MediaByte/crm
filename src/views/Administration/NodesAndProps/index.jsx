@@ -9,6 +9,7 @@ import PageColumn from 'views/Page/PageColumn.jsx'
 import PropForm from 'components/PropForm'
 import RelationshipForm from 'components/RelationshipForm'
 import TitleSubtitleList from 'containers/TitleSubtitleList'
+import NodeDrawer from 'components/NodeDrawer/NodeDrawer'
 import { nameToIconMap } from 'common/NameToIcon'
 
 /**
@@ -111,7 +112,7 @@ export default class NodesAndProps extends React.PureComponent {
     const classes = { demo: '' }
 
     const selectedNode =
-      typeof selectedNodeID == 'number' &&
+      typeof selectedNodeID === 'number' &&
       nodes.filter(node => node.id === selectedNodeID)[0]
 
     return (
@@ -146,19 +147,17 @@ export default class NodesAndProps extends React.PureComponent {
 
         <PageColumn titleText="Nodes And Properties">
           <Grid container>
-            <Grid item>
-              <TitleSubtitleList
-                extractID={extractNodeID}
-                extractTitle={extractNodeName}
-                onClickAdd={this.toggleAddNodeDialog}
-                onClickItem={this.onClickNodeOnList}
-                items={nodes}
-                // TODO: optimize away array literal
-                selectedIDs={(selectedNodeID && [selectedNodeID]) || undefined}
-                showToolbar
-              />
-            </Grid>
-
+            <TitleSubtitleList
+              extractID={extractNodeID}
+              extractTitle={extractNodeName}
+              onClickAdd={this.toggleAddNodeDialog}
+              onClickItem={this.onClickNodeOnList}
+              items={nodes}
+              // TODO: optimize away array literal
+              selectedIDs={(selectedNodeID && [selectedNodeID]) || undefined}
+              showToolbar
+            />
+            <NodeDrawer />
             <Grid item xs={12} sm={7} md={8} lg={9} className={classes.demo}>
               {selectedNode && (
                 <NodeOverview

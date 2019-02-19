@@ -19,6 +19,7 @@ import 'assets/scss/material-kit-pro-react.css'
 
 //Material-UI Theme Override
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
+import NodesAndProps from 'views/Administration/NodesAndProps'
 
 const theme = createMuiTheme({
   shadows: ['none'],
@@ -32,6 +33,78 @@ const theme = createMuiTheme({
     },
   },
 })
+
+const baseProps = {
+  availableTypes: [
+    'textfield',
+    'phone',
+    'address',
+    'picklist',
+    'radio',
+    'checkbox',
+    'time',
+    'date',
+    'memo',
+  ],
+  nodes: [
+    {
+      iconName: 'calendar',
+      id: Math.random(),
+      identifier: 'NOTERPT-0001',
+      label: 'Notes and Reports',
+      name: 'REPORT',
+      props: [
+        {
+          name: 'Title',
+          type: 'textfield',
+        },
+        {
+          name: 'Content',
+          type: 'memo',
+        },
+      ],
+      relationships: [],
+    },
+    {
+      iconName: 'person',
+      id: Math.random(),
+      identifier: 'PRSN-0001',
+      label: 'People',
+      name: 'PERSON',
+      props: [
+        {
+          name: 'Name',
+          type: 'textfield',
+        },
+        {
+          name: 'Phone',
+          type: 'textfield',
+        },
+        {
+          name: 'Billing Address',
+          type: 'address',
+        },
+      ],
+      relationships: [
+        {
+          iconName: 'checkbox',
+          name: 'Works At',
+          relatedNodeName: 'Establishment',
+        },
+        {
+          iconName: 'puzzle',
+          name: 'Owns',
+          relatedNodeName: 'Vehicle',
+        },
+        {
+          iconName: 'puzzle',
+          name: 'Drives',
+          relatedNodeName: 'Vehicle',
+        },
+      ],
+    },
+  ],
+}
 
 //Reducers
 const rootReducers = combineReducers({ newUser, isUserAuthorized, userGroups })
@@ -50,13 +123,14 @@ ReactDOM.render(
   <Provider store={store}>
     <Router history={hist}>
       <MuiThemeProvider theme={theme}>
-        <Switch>
+        {/* <Switch>
           {indexRoutes.map((prop, key) => {
             return (
               <Route path={prop.path} key={key} component={prop.component} />
             )
           })}
-        </Switch>
+        </Switch> */}
+        <NodesAndProps {...baseProps} />
       </MuiThemeProvider>
     </Router>
   </Provider>,
