@@ -6,11 +6,29 @@ import AddNodeDialog from 'containers/AddNodeDialog'
 import Dialog from 'components/Dialog'
 import NodeOverview from 'components/NodeOverview'
 import PageColumn from 'views/Page/PageColumn.jsx'
+import { withStyles } from '@material-ui/core/styles'
 import PropForm from 'components/PropForm'
 import RelationshipForm from 'components/RelationshipForm'
 import TitleSubtitleList from 'containers/TitleSubtitleList'
+import IconButton from '@material-ui/core/IconButton'
+import Icon from '@material-ui/core/Icon'
+import AddIcon from '@material-ui/icons/Add'
 import NodeDrawer from 'components/NodeDrawer/NodeDrawer'
 import { nameToIconMap } from 'common/NameToIcon'
+
+// const style = theme => ({
+//   buttonAdd: {
+// position: 'absolute',
+// bottom: '40px',
+// right: '50px',
+// backgroundColor: '#f34930',
+// color: '#fff',
+// transition:
+//   'background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
+// boxShadow:
+//   '0px 3px 5px -1px rgba(0,0,0,0.2), 0px 6px 10px 0px rgba(0,0,0,0.14), 0px 1px 18px 0px rgba(0,0,0,0.12)',
+//   },
+// })
 
 /**
  * Placeholder while the model shape clears up.
@@ -56,6 +74,7 @@ import { nameToIconMap } from 'common/NameToIcon'
 /**
  * @augments React.PureComponent<Props, State, never>
  */
+
 export default class NodesAndProps extends React.PureComponent {
   /** @type {State} */
   state = {
@@ -146,8 +165,11 @@ export default class NodesAndProps extends React.PureComponent {
         </Dialog>
 
         <PageColumn titleText="Nodes And Properties">
-          <Grid container>
-            <TitleSubtitleList
+          <Grid
+            container
+            style={{ backgroundColor: '#fafafa', height: '100%' }}
+          >
+            {/* <TitleSubtitleList
               extractID={extractNodeID}
               extractTitle={extractNodeName}
               onClickAdd={this.toggleAddNodeDialog}
@@ -156,9 +178,12 @@ export default class NodesAndProps extends React.PureComponent {
               // TODO: optimize away array literal
               selectedIDs={(selectedNodeID && [selectedNodeID]) || undefined}
               showToolbar
-            />
-            <NodeDrawer />
-            <Grid item xs={12} sm={7} md={8} lg={9} className={classes.demo}>
+            /> */}
+            <Grid item xs={12}>
+              <NodeDrawer />
+            </Grid>
+
+            {/* <Grid item xs={12} sm={7} md={8} lg={9} className={classes.demo}>
               {selectedNode && (
                 <NodeOverview
                   identifier={selectedNode.identifier}
@@ -171,13 +196,32 @@ export default class NodesAndProps extends React.PureComponent {
                   relationships={selectedNode.relationships}
                 />
               )}
-            </Grid>
+            </Grid> */}
+            <IconButton
+              onClickAdd={this.toggleAddNodeDialog}
+              color="secondary"
+              className={classes.buttonAdd}
+              style={{
+                position: 'absolute',
+                bottom: '40px',
+                right: '50px',
+                backgroundColor: '#f34930',
+                color: '#fff',
+                transition:
+                  'background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
+                boxShadow:
+                  '0px 3px 5px -1px rgba(0,0,0,0.2), 0px 6px 10px 0px rgba(0,0,0,0.14), 0px 1px 18px 0px rgba(0,0,0,0.12)',
+              }}
+            >
+              <AddIcon />
+            </IconButton>
           </Grid>
         </PageColumn>
       </React.Fragment>
     )
   }
 }
+
 /** @param {Node} node */
 const extractNodeID = node => node.id
 
