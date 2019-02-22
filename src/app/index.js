@@ -1,1 +1,1 @@
-import { root } from './Gun'
+export { default as Icon } from './Icon'

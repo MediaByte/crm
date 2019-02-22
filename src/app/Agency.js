@@ -1,5 +1,7 @@
-import { root } from './Gun'
+import { root } from './Root'
 /**
+ * @typedef {import('./Graph').Agency} Agency
+ * @typedef {import('./GunInstance').GunInstance<Agency>} AgencyInstance
  * @typedef {import('./Graph').User} User
  */
 /**
@@ -11,12 +13,9 @@ export {} // stop jsdoc comments from merging
 
 /**
  * Gets an agency from the db.
- * @param {string} agencyName
- * @returns {import('./GunInstance').GunInstance<import('./Graph').Agency>}
+ * @param {string} agencyName Since this is the first thing the app looks up
+ * after login, we only accept strings as the caller won't probably readily have
+ * an Agency Gun Instance.
+ * @returns {AgencyInstance}
  */
 export const getAgency = agencyName => root.get('agencies').get(agencyName)
-
-/**
- * @param {string|GunInstance<User>}
- */
-export const getAgencyForUser = user => {}
