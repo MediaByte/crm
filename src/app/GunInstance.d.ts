@@ -9,7 +9,6 @@ type GunValue<T> = T extends object
   : T
 
 interface GunInstanceBase<T> {
-  back(levels: number): GunInstance<any>
   on(cb: (value: GunValue<T>, key?: string) => void): void
   once(cb: (value: GunValue<T>, key?: string) => void): void
   off(): void
@@ -17,8 +16,6 @@ interface GunInstanceBase<T> {
 
 interface GunInstanceObject<T> extends GunInstanceBase<T> {
   get<K extends keyof T>(key: K): GunInstance<T[K]>
-  // let's ignore the transformation function for now since it's experimental
-  // map()
   put(partial: Partial<T>): void
 }
 
