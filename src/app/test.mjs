@@ -1,7 +1,15 @@
-import { Node, SCHEMA_NAME } from './index'
+// @ts-check
+import Gun from 'gun/gun'
+import 'gun/lib/store'
+
+import { Node } from './index'
+
+import { SCHEMA_NAME } from './Utils'
+
+const gun = Gun()
 
 /**
- * @type {import('./index').Schema}
+ * @type {import('./typings').Schema}
  */
 const mySchema = {
   [SCHEMA_NAME]: 'User',
@@ -22,26 +30,28 @@ const mySchema = {
     onChange(_, nextVal) {
       const errs = []
       if (nextVal.indexOf('1') > -1) {
-        errs.push("names can't contain number")
+        errs.push('names cannot contain numbers')
       }
       if (nextVal.indexOf('#') > -1) {
-        errs.push("names can't contain special characters")
+        errs.push('names cannot contain special characters')
       }
-      return undefined
+      return errs
     },
   },
 }
 
-const node = new Node(mySchema)
+const node = new Node(mySchema, gun.get(Math.random()))
 
-node.on(n => {
-  console.log(n)
+node.on(cache => {
+  console.log(cache)
 })
 
 node
   .put({
-    age: 45,
-    name: 2,
+    age: 4,
+    name: 'john',
   })
   .then(console.log)
-  .catch(console.log)
+  .catch(() => {
+    console.log('error')
+  })

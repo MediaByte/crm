@@ -1,24 +1,45 @@
-import { SCHEMA_NAME } from './index'
+import { Node, SCHEMA_NAME } from './index'
 
-interface _stringLeaf<T> {
+type _OnChangeReturn = string | string[] | null | false | undefined
+type OnChangeReturn = _OnChangeReturn | Promise<_OnChangeReturn>
+
+interface _stringLeaf<T extends object> {
+  onChange(self: T, nextVal: string): OnChangeReturn
   type: 'string'
-  onChange(
-    self: T,
-    nextVal: string,
-  ): string | string[] | null | false | undefined
 }
 
-interface _numberLeaf<T> {
+interface _numberLeaf<T extends object> {
+  onChange(self: T, nextVal: number): OnChangeReturn
   type: 'number'
-  onChange(
-    self: T,
-    nextVal: number,
-  ): string | string[] | null | false | undefined
 }
 
-export type Leaf<T> = _stringLeaf<T> | _numberLeaf<T>
+interface _referenceLeaf<T extends object, RT extends object> {
+  onChange(self: T, nextVal: Node<RT>): OnChangeReturn
+  type: Array<T>
+}
 
-interface Schema {
+export type Leaf<T extends object, RT extends object = {}> =
+  | _stringLeaf<T>
+  | _numberLeaf<T>
+  | _referenceLeaf<T, RT>
+
+export interface Schema {
   readonly [SCHEMA_NAME]: unique symbol
-  readonly [K: string]: Schema | Leaf<any>
+  readonly [K: string]: Leaf<any>
 }
+
+type _PutOKResponse = {
+  ok: true
+}
+
+interface _PutErrResponse<T extends object> {
+  ok: false
+  message: string
+  details: {
+    [K in keyof T]: T[K] extends object
+      ? PutResponse<T[K]>
+      : ReadonlyArray<string>
+  }
+}
+
+type PutResponse<T extends object> = _PutOKResponse | _PutErrResponse<T>
