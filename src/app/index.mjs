@@ -57,8 +57,6 @@ export class Node {
         this.edges[key] = new Node(subschema, this.gunInstance.get(key))
       })
 
-    this.gunInstance.once(gunListener.bind(this))
-
     this.gunInstance.on(gunListener.bind(this), {
       // delta updates
       change: true,
@@ -201,6 +199,10 @@ export class Node {
     this.subscribers.forEach(cb => cb(this.cache))
   }
 
+  /**
+   *
+   * @param {Function} cb
+   */
   on(cb) {
     this.subscribers.push(cb)
   }
