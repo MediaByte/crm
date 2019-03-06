@@ -94,6 +94,9 @@ const styles = theme => ({
   icon: {
     height: ICON_SIZE,
     width: ICON_SIZE,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   selectedWrapper: {
     borderColor: theme.palette.primary.main,

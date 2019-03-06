@@ -12,7 +12,12 @@ class Page extends React.Component {
   render() {
     const { children, classes, ...navProps } = this.props
     return (
-      <Navigation title={this.props.titleText} classes {...navProps}>
+      <Navigation
+        title={this.props.titleText}
+        classes
+        style={{ backgroundColor: 'red' }}
+        {...navProps}
+      >
         <Typography variant="title" noWrap className={classes.title}>
           {this.props.titleText}
         </Typography>

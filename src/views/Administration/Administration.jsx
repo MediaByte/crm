@@ -15,16 +15,13 @@ import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight'
 import Page from 'views/Page/Page'
 
 const styles = theme => ({
-  demo: {
-    [theme.breakpoints.down('sm')]: {
-      marginRight: -20,
-      marginLeft: -20,
-    },
-  },
+  demo: {},
   content: {
-    width: '100%',
-    display: 'flex',
-    justifyContent: 'center',
+    [theme.breakpoints.down('xs')]: {
+      marginTop: theme.spacing.unit * 2,
+      marginButtom: theme.spacing.unit * 4,
+      padding: theme.spacing.unit,
+    },
   },
   button: {
     height: '100%',
@@ -66,275 +63,279 @@ class AdminPanel extends React.Component {
     const { classes } = this.props
     return (
       <Page component={'administration'} titleText={'Administration'}>
-        <Typography
-          className={classes.panelTitle}
-          gutterBottom
-          noWrap
-          align="left"
-        >
-          Users and Control
-        </Typography>
-        <div className={classes.demo}>
-          <List>
-            <ListItem
-              component={props => (
-                <NavLink to={'/management/user-groups'} {...props} />
-              )}
-              className={classes.listItem}
-            >
-              <ListItemText primary="Manage User Groups" />
-              <ListItemSecondaryAction>
-                <IconButton>
-                  <KeyboardArrowRight />
-                </IconButton>
-              </ListItemSecondaryAction>
-            </ListItem>
-            <ListItem
-              component={props => (
-                <NavLink to={'/management/employees'} {...props} />
-              )}
-              className={classes.listItem}
-            >
-              <ListItemText primary="Manage Employees" />
-              <ListItemSecondaryAction>
-                <IconButton>
-                  <KeyboardArrowRight />
-                </IconButton>
-              </ListItemSecondaryAction>
-            </ListItem>
-            <ListItem
-              component={props => <NavLink to={'/passwordrules'} {...props} />}
-              className={classes.listItem}
-            >
-              <ListItemText primary="Password Rules" />
-              <ListItemSecondaryAction>
-                <IconButton>
-                  <KeyboardArrowRight />
-                </IconButton>
-              </ListItemSecondaryAction>
-            </ListItem>
-          </List>
-        </div>
+        <div className={classes.content}>
+          <Typography
+            className={classes.panelTitle}
+            gutterBottom
+            noWrap
+            align="left"
+          >
+            Users and Control
+          </Typography>
+          <div className={classes.demo}>
+            <List>
+              <ListItem
+                component={props => (
+                  <NavLink to={'/management/user-groups'} {...props} />
+                )}
+                className={classes.listItem}
+              >
+                <ListItemText primary="Manage User Groups" />
+                <ListItemSecondaryAction>
+                  <IconButton>
+                    <KeyboardArrowRight />
+                  </IconButton>
+                </ListItemSecondaryAction>
+              </ListItem>
+              <ListItem
+                component={props => (
+                  <NavLink to={'/management/employees'} {...props} />
+                )}
+                className={classes.listItem}
+              >
+                <ListItemText primary="Manage Employees" />
+                <ListItemSecondaryAction>
+                  <IconButton>
+                    <KeyboardArrowRight />
+                  </IconButton>
+                </ListItemSecondaryAction>
+              </ListItem>
+              <ListItem
+                component={props => (
+                  <NavLink to={'/passwordrules'} {...props} />
+                )}
+                className={classes.listItem}
+              >
+                <ListItemText primary="Password Rules" />
+                <ListItemSecondaryAction>
+                  <IconButton>
+                    <KeyboardArrowRight />
+                  </IconButton>
+                </ListItemSecondaryAction>
+              </ListItem>
+            </List>
+          </div>
 
-        <Typography
-          className={classes.panelTitle}
-          gutterBottom
-          noWrap
-          align="left"
-        >
-          General
-        </Typography>
-        <div className={classes.demo}>
-          <List>
-            <ListItem
-              component={props => (
-                <NavLink to={'/management/employees'} {...props} />
-              )}
-              className={classes.listItem}
-            >
-              <ListItemText primary="Agency Details" />
-              <ListItemSecondaryAction>
-                <IconButton>
-                  <KeyboardArrowRight />
-                </IconButton>
-              </ListItemSecondaryAction>
-            </ListItem>
-            <ListItem
-              component={props => (
-                <NavLink to={'/management/employees'} {...props} />
-              )}
-              className={classes.listItem}
-            >
-              <ListItemText primary="Uploads" />
-              <ListItemSecondaryAction>
-                <IconButton>
-                  <KeyboardArrowRight />
-                </IconButton>
-              </ListItemSecondaryAction>
-            </ListItem>
-          </List>
-        </div>
+          <Typography
+            className={classes.panelTitle}
+            gutterBottom
+            noWrap
+            align="left"
+          >
+            General
+          </Typography>
+          <div className={classes.demo}>
+            <List>
+              <ListItem
+                component={props => (
+                  <NavLink to={'/management/employees'} {...props} />
+                )}
+                className={classes.listItem}
+              >
+                <ListItemText primary="Agency Details" />
+                <ListItemSecondaryAction>
+                  <IconButton>
+                    <KeyboardArrowRight />
+                  </IconButton>
+                </ListItemSecondaryAction>
+              </ListItem>
+              <ListItem
+                component={props => (
+                  <NavLink to={'/management/employees'} {...props} />
+                )}
+                className={classes.listItem}
+              >
+                <ListItemText primary="Uploads" />
+                <ListItemSecondaryAction>
+                  <IconButton>
+                    <KeyboardArrowRight />
+                  </IconButton>
+                </ListItemSecondaryAction>
+              </ListItem>
+            </List>
+          </div>
 
-        <Typography
-          className={classes.panelTitle}
-          gutterBottom
-          noWrap
-          align="left"
-        >
-          Customization
-        </Typography>
-        <div className={classes.demo}>
-          <List>
-            <ListItem
-              component={props => (
-                <NavLink to={'/management/employees'} {...props} />
-              )}
-              className={classes.listItem}
-            >
-              <ListItemText primary="Nodes and Properties" />
-              <ListItemSecondaryAction>
-                <IconButton>
-                  <KeyboardArrowRight />
-                </IconButton>
-              </ListItemSecondaryAction>
-            </ListItem>
-            <ListItem
-              component={props => (
-                <NavLink to={'/management/employees'} {...props} />
-              )}
-              className={classes.listItem}
-            >
-              <ListItemText primary="Email Templates" />
-              <ListItemSecondaryAction>
-                <IconButton>
-                  <KeyboardArrowRight />
-                </IconButton>
-              </ListItemSecondaryAction>
-            </ListItem>
-            <ListItem
-              component={props => (
-                <NavLink to={'/management/employees'} {...props} />
-              )}
-              className={classes.listItem}
-            >
-              <ListItemText primary="Letter Templates" />
-              <ListItemSecondaryAction>
-                <IconButton>
-                  <KeyboardArrowRight />
-                </IconButton>
-              </ListItemSecondaryAction>
-            </ListItem>
-          </List>
-        </div>
+          <Typography
+            className={classes.panelTitle}
+            gutterBottom
+            noWrap
+            align="left"
+          >
+            Customization
+          </Typography>
+          <div className={classes.demo}>
+            <List>
+              <ListItem
+                component={props => (
+                  <NavLink to={'/management/employees'} {...props} />
+                )}
+                className={classes.listItem}
+              >
+                <ListItemText primary="Nodes and Properties" />
+                <ListItemSecondaryAction>
+                  <IconButton>
+                    <KeyboardArrowRight />
+                  </IconButton>
+                </ListItemSecondaryAction>
+              </ListItem>
+              <ListItem
+                component={props => (
+                  <NavLink to={'/management/employees'} {...props} />
+                )}
+                className={classes.listItem}
+              >
+                <ListItemText primary="Email Templates" />
+                <ListItemSecondaryAction>
+                  <IconButton>
+                    <KeyboardArrowRight />
+                  </IconButton>
+                </ListItemSecondaryAction>
+              </ListItem>
+              <ListItem
+                component={props => (
+                  <NavLink to={'/management/employees'} {...props} />
+                )}
+                className={classes.listItem}
+              >
+                <ListItemText primary="Letter Templates" />
+                <ListItemSecondaryAction>
+                  <IconButton>
+                    <KeyboardArrowRight />
+                  </IconButton>
+                </ListItemSecondaryAction>
+              </ListItem>
+            </List>
+          </div>
 
-        <Typography
-          className={classes.panelTitle}
-          gutterBottom
-          noWrap
-          align="left"
-        >
-          Financial
-        </Typography>
-        <div className={classes.demo}>
-          <List>
-            <ListItem
-              component={props => (
-                <NavLink to={'/management/employees'} {...props} />
-              )}
-              className={classes.listItem}
-            >
-              <ListItemText primary="Expense Settings" />
-              <ListItemSecondaryAction>
-                <IconButton>
-                  <KeyboardArrowRight />
-                </IconButton>
-              </ListItemSecondaryAction>
-            </ListItem>
-            <ListItem
-              component={props => (
-                <NavLink to={'/management/employees'} {...props} />
-              )}
-              className={classes.listItem}
-            >
-              <ListItemText primary="Invoice Settings" />
-              <ListItemSecondaryAction>
-                <IconButton>
-                  <KeyboardArrowRight />
-                </IconButton>
-              </ListItemSecondaryAction>
-            </ListItem>
-            <ListItem
-              component={props => (
-                <NavLink to={'/management/employees'} {...props} />
-              )}
-              className={classes.listItem}
-            >
-              <ListItemText primary="Fees" />
-              <ListItemSecondaryAction>
-                <IconButton>
-                  <KeyboardArrowRight />
-                </IconButton>
-              </ListItemSecondaryAction>
-            </ListItem>
-            <ListItem
-              component={props => (
-                <NavLink to={'/management/employees'} {...props} />
-              )}
-              className={classes.listItem}
-            >
-              <ListItemText primary="License Settings" />
-              <ListItemSecondaryAction>
-                <IconButton>
-                  <KeyboardArrowRight />
-                </IconButton>
-              </ListItemSecondaryAction>
-            </ListItem>
-          </List>
-        </div>
+          <Typography
+            className={classes.panelTitle}
+            gutterBottom
+            noWrap
+            align="left"
+          >
+            Financial
+          </Typography>
+          <div className={classes.demo}>
+            <List>
+              <ListItem
+                component={props => (
+                  <NavLink to={'/management/employees'} {...props} />
+                )}
+                className={classes.listItem}
+              >
+                <ListItemText primary="Expense Settings" />
+                <ListItemSecondaryAction>
+                  <IconButton>
+                    <KeyboardArrowRight />
+                  </IconButton>
+                </ListItemSecondaryAction>
+              </ListItem>
+              <ListItem
+                component={props => (
+                  <NavLink to={'/management/employees'} {...props} />
+                )}
+                className={classes.listItem}
+              >
+                <ListItemText primary="Invoice Settings" />
+                <ListItemSecondaryAction>
+                  <IconButton>
+                    <KeyboardArrowRight />
+                  </IconButton>
+                </ListItemSecondaryAction>
+              </ListItem>
+              <ListItem
+                component={props => (
+                  <NavLink to={'/management/employees'} {...props} />
+                )}
+                className={classes.listItem}
+              >
+                <ListItemText primary="Fees" />
+                <ListItemSecondaryAction>
+                  <IconButton>
+                    <KeyboardArrowRight />
+                  </IconButton>
+                </ListItemSecondaryAction>
+              </ListItem>
+              <ListItem
+                component={props => (
+                  <NavLink to={'/management/employees'} {...props} />
+                )}
+                className={classes.listItem}
+              >
+                <ListItemText primary="License Settings" />
+                <ListItemSecondaryAction>
+                  <IconButton>
+                    <KeyboardArrowRight />
+                  </IconButton>
+                </ListItemSecondaryAction>
+              </ListItem>
+            </List>
+          </div>
 
-        <Typography
-          className={classes.panelTitle}
-          gutterBottom
-          noWrap
-          align="left"
-        >
-          Automation
-        </Typography>
-        <div className={classes.demo}>
-          <List>
-            <ListItem
-              component={props => (
-                <NavLink to={'/management/employees'} {...props} />
-              )}
-              className={classes.listItem}
-            >
-              <ListItemText primary="Action Builder" />
-              <ListItemSecondaryAction>
-                <IconButton>
-                  <KeyboardArrowRight />
-                </IconButton>
-              </ListItemSecondaryAction>
-            </ListItem>
-            <ListItem
-              component={props => (
-                <NavLink to={'/management/employees'} {...props} />
-              )}
-              className={classes.listItem}
-            >
-              <ListItemText primary="Webhooks" />
-              <ListItemSecondaryAction>
-                <IconButton>
-                  <KeyboardArrowRight />
-                </IconButton>
-              </ListItemSecondaryAction>
-            </ListItem>
-            <ListItem
-              component={props => (
-                <NavLink to={'/management/employees'} {...props} />
-              )}
-              className={classes.listItem}
-            >
-              <ListItemText primary="Mass Data Change" />
-              <ListItemSecondaryAction>
-                <IconButton>
-                  <KeyboardArrowRight />
-                </IconButton>
-              </ListItemSecondaryAction>
-            </ListItem>
-            <ListItem
-              component={props => (
-                <NavLink to={'/management/employees'} {...props} />
-              )}
-              className={classes.listItem}
-            >
-              <ListItemText primary="Portal" />
-              <ListItemSecondaryAction>
-                <IconButton>
-                  <KeyboardArrowRight />
-                </IconButton>
-              </ListItemSecondaryAction>
-            </ListItem>
-          </List>
+          <Typography
+            className={classes.panelTitle}
+            gutterBottom
+            noWrap
+            align="left"
+          >
+            Automation
+          </Typography>
+          <div className={classes.demo}>
+            <List>
+              <ListItem
+                component={props => (
+                  <NavLink to={'/management/employees'} {...props} />
+                )}
+                className={classes.listItem}
+              >
+                <ListItemText primary="Action Builder" />
+                <ListItemSecondaryAction>
+                  <IconButton>
+                    <KeyboardArrowRight />
+                  </IconButton>
+                </ListItemSecondaryAction>
+              </ListItem>
+              <ListItem
+                component={props => (
+                  <NavLink to={'/management/employees'} {...props} />
+                )}
+                className={classes.listItem}
+              >
+                <ListItemText primary="Webhooks" />
+                <ListItemSecondaryAction>
+                  <IconButton>
+                    <KeyboardArrowRight />
+                  </IconButton>
+                </ListItemSecondaryAction>
+              </ListItem>
+              <ListItem
+                component={props => (
+                  <NavLink to={'/management/employees'} {...props} />
+                )}
+                className={classes.listItem}
+              >
+                <ListItemText primary="Mass Data Change" />
+                <ListItemSecondaryAction>
+                  <IconButton>
+                    <KeyboardArrowRight />
+                  </IconButton>
+                </ListItemSecondaryAction>
+              </ListItem>
+              <ListItem
+                component={props => (
+                  <NavLink to={'/management/employees'} {...props} />
+                )}
+                className={classes.listItem}
+              >
+                <ListItemText primary="Portal" />
+                <ListItemSecondaryAction>
+                  <IconButton>
+                    <KeyboardArrowRight />
+                  </IconButton>
+                </ListItemSecondaryAction>
+              </ListItem>
+            </List>
+          </div>
         </div>
       </Page>
     )

@@ -13,7 +13,7 @@ import GridContainer from 'components/Grid/GridContainer.jsx'
 import ClearIcon from '@material-ui/icons/Clear'
 import IconButton from '@material-ui/core/IconButton'
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline'
-import EditIcon from '@material-ui/icons/Edit'
+import EditOutlineIcon from '@material-ui/icons/EditOutlined'
 import AddIcon from '@material-ui/icons/Add'
 import HomeIcon from '@material-ui/icons/Home'
 import LocationIcon from '@material-ui/icons/LocationOn'
@@ -31,8 +31,12 @@ import NodeOverview from '../NodeOverview'
 
 const styles = theme => ({
   root: {
-    padding: theme.spacing.unit,
     margin: theme.spacing.unit,
+    marginTop: theme.spacing.unit * 4,
+    width: 'auto',
+    [theme.breakpoints.down('xs')]: {
+      marginTop: theme.spacing.unit * 2,
+    },
   },
   list: {
     width: '100%',
@@ -235,71 +239,12 @@ class NodeDrawer extends React.Component {
             </Button>
           </Grid>
         </Grid>
-        <IconButton
-          // onClickAdd={this.toggleAddNodeDialog}
-          color="secondary"
-          className={classes.buttonAdd}
-          style={{
-            position: 'absolute',
-            bottom: '40px',
-            right: '50px',
-            backgroundColor: '#f34930',
-            color: '#fff',
-            transition:
-              'background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
-            boxShadow:
-              '0px 3px 5px -1px rgba(0,0,0,0.2), 0px 6px 10px 0px rgba(0,0,0,0.14), 0px 1px 18px 0px rgba(0,0,0,0.12)',
-          }}
-        >
-          <AddIcon />
-        </IconButton>
+        <NodeOverview {...nodeOverviewProps} />
       </div>
     )
-    // const footer = (
-    //   <div className={classes.fullList}>
-    //     <Divider />
-    //     <GridContainer className={classes.bottomPanel}>
-    //       <GridItem xs={6}>
-    //         <ClearIcon className={classes.userIcon} />
-    //       </GridItem>
-    //       <GridItem xs={6} className={classes.signOut}>
-    //         <Typography
-    //           className={classes.signOut}
-    //           color="primary"
-    //           variant={'button'}
-    //         >
-    //           SIGN OUT
-    //         </Typography>
-    //       </GridItem>
-    //     </GridContainer>
-    //   </div>
-    // )
 
     return (
       <div>
-        {/* <IconButton onClick={this.toggleDrawer('right', true)}> */}
-        {/* <Card className={classes.card} onClick={this.handleDrawerOpen}>
-          <CardContent>
-            <Typography
-              className={classes.title}
-              color="textSecondary"
-              gutterBottom
-            >
-              Word of the Day
-            </Typography>
-            <Typography variant="h5" component="h2">
-              be lent
-            </Typography>
-            <Typography className={classes.pos} color="textSecondary">
-              adjective
-            </Typography>
-            <Typography component="p">
-              well meaning and kindly.
-              <br />
-              {'"a benevolent smile"'}
-            </Typography>
-          </CardContent>
-        </Card> */}
         <Grid container className={classes.root}>
           <Grid item xs={12} md={3}>
             <List className={classes.card}>
@@ -318,8 +263,9 @@ class NodeDrawer extends React.Component {
                   <IconButton
                     aria-label="Edit"
                     className={classes.buttomOption}
+                    onClick={this.props.onclickEditNode}
                   >
-                    <EditIcon />
+                    <EditOutlineIcon />
                   </IconButton>
                   <IconButton
                     aria-label="Delete"
@@ -350,7 +296,7 @@ class NodeDrawer extends React.Component {
                     aria-label="Edit"
                     className={classes.buttomOption}
                   >
-                    <EditIcon />
+                    <EditOutlineIcon />
                   </IconButton>
                   <IconButton
                     aria-label="Delete"
@@ -381,7 +327,7 @@ class NodeDrawer extends React.Component {
                     aria-label="Edit"
                     className={classes.buttomOption}
                   >
-                    <EditIcon />
+                    <EditOutlineIcon />
                   </IconButton>
                   <IconButton
                     aria-label="Delete"
@@ -407,8 +353,6 @@ class NodeDrawer extends React.Component {
           <div>
             {header}
             {bodyDrawer}
-            <NodeOverview {...nodeOverviewProps} />
-            {/* {footer} */}
           </div>
         </Drawer>
       </div>

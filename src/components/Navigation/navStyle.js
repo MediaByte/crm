@@ -45,17 +45,17 @@ const navStyles = theme => ({
       visibility: 'hidden',
     },
   },
-  titleStyle: {
-    // [theme.breakpoints.down('sm')]: {
-    //   paddingTop: '40px',
-    // },
-    height: '100%',
-    paddingTop: '40px',
-    paddingBottom: '30px',
-    [theme.breakpoints.up('sm')]: {
-      paddingTop: '70px',
-    },
-  },
+  // titleStyle: {
+  //   // [theme.breakpoints.down('sm')]: {
+  //   //   paddingTop: '40px',
+  //   // },
+  //   height: '100%',
+  //   paddingTop: '40px',
+  //   paddingBottom: '30px',
+  //   [theme.breakpoints.up('sm')]: {
+  //     paddingTop: '70px',
+  //   },
+  // },
   headerInput: {
     marginTop: -7,
   },
@@ -186,18 +186,23 @@ const navStyles = theme => ({
     padding: theme.spacing.unit * 3,
   },
   children: {
+    padding: theme.spacing.unit * 4,
     [theme.breakpoints.down('xs')]: {
-      position: 'absolute',
-      paddingBottom: '20px',
+      // position: 'absolute',
+      // paddingBottom: '20px',
     },
-    padding: theme.spacing.unit * 3,
+    // padding: theme.spacing.unit * 3,
     // height: '100vh',
     width: '100%',
+    backgroundColor: '#fafafa',
     // overflowX: 'hidden',
-    paddingBottom: '20px',
+    // paddingBottom: '20px',
     [theme.breakpoints.up('sm')]: {
       height: '100vh',
       overflowX: 'hidden',
+    },
+    [theme.breakpoints.down('xs')]: {
+      padding: theme.spacing.unit * 2,
     },
     // flexGrow: 1,
     // backgroundColor: theme.palette.background.default,

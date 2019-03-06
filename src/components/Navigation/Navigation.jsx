@@ -315,7 +315,10 @@ class Navigation extends React.Component {
           {/* </Hidden> */}
 
           <main className={classes.children}>
-            <div style={{ height: '100%' }}>{children}</div>
+            <div style={{ height: '100%' }}>
+              {children}
+              <br />
+            </div>
           </main>
         </div>
         <Hidden only={['lg', 'xl']}>

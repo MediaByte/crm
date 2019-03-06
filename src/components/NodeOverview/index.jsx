@@ -16,12 +16,13 @@ import ListItemText from '@material-ui/core/ListItemText'
 import Avatar from '@material-ui/core/Avatar'
 
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline'
-import EditIcon from '@material-ui/icons/Edit'
+import EditOutlineIcon from '@material-ui/icons/EditOutlined'
 import PersonIcon from '@material-ui/icons/Person'
 import PhoneIcon from '@material-ui/icons/Phone'
 import EmailIcon from '@material-ui/icons/Email'
 import HomeIcon from '@material-ui/icons/Home'
 import TagFacesIcon from '@material-ui/icons/TagFaces'
+import AddIcon from '@material-ui/icons/Add'
 
 import Add from '@material-ui/icons/Add'
 
@@ -136,11 +137,8 @@ class NodeOverview extends React.PureComponent {
               </ListItemAvatar>
               <ListItemText primary="First Name" secondary="Text" />
               <ListItemSecondaryAction className={classes.itemOption}>
-                <IconButton
-                  aria-label="Delete"
-                  className={classes.buttomOption}
-                >
-                  <EditIcon />
+                <IconButton aria-label="Edit" className={classes.buttomOption}>
+                  <EditOutlineIcon />
                 </IconButton>
                 <IconButton
                   aria-label="Delete"
@@ -163,7 +161,7 @@ class NodeOverview extends React.PureComponent {
                   aria-label="Delete"
                   className={classes.buttomOption}
                 >
-                  <EditIcon />
+                  <EditOutlineIcon />
                 </IconButton>
                 <IconButton
                   aria-label="Delete"
@@ -186,7 +184,7 @@ class NodeOverview extends React.PureComponent {
                   aria-label="Delete"
                   className={classes.buttomOption}
                 >
-                  <EditIcon />
+                  <EditOutlineIcon />
                 </IconButton>
                 <IconButton
                   aria-label="Delete"
@@ -209,7 +207,7 @@ class NodeOverview extends React.PureComponent {
                   aria-label="Delete"
                   className={classes.buttomOption}
                 >
-                  <EditIcon />
+                  <EditOutlineIcon />
                 </IconButton>
                 <IconButton
                   aria-label="Delete"
@@ -232,7 +230,7 @@ class NodeOverview extends React.PureComponent {
                   aria-label="Delete"
                   className={classes.buttomOption}
                 >
-                  <EditIcon />
+                  <EditOutlineIcon />
                 </IconButton>
                 <IconButton
                   aria-label="Delete"
@@ -255,7 +253,7 @@ class NodeOverview extends React.PureComponent {
                   aria-label="Delete"
                   className={classes.buttomOption}
                 >
-                  <EditIcon />
+                  <EditOutlineIcon />
                 </IconButton>
                 <IconButton
                   aria-label="Delete"
@@ -268,6 +266,24 @@ class NodeOverview extends React.PureComponent {
             </ListItem>
           </List>
         </Grid>
+        <IconButton
+          onClick={this.toggleAddNodeDialog}
+          color="secondary"
+          className={classes.buttonAdd}
+          style={{
+            position: 'absolute',
+            bottom: '40px',
+            right: '50px',
+            backgroundColor: '#f34930',
+            color: '#fff',
+            transition:
+              'background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
+            boxShadow:
+              '0px 3px 5px -1px rgba(0,0,0,0.2), 0px 6px 10px 0px rgba(0,0,0,0.14), 0px 1px 18px 0px rgba(0,0,0,0.12)',
+          }}
+        >
+          <AddIcon />
+        </IconButton>
       </Grid>
       // <Grid
       //   alignContent="stretch"

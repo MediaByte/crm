@@ -20,13 +20,14 @@ const styles = theme => ({
     justifyContent: 'space-between',
   },
   content: {
+    margin: theme.spacing.unit,
+    marginTop: theme.spacing.unit * 6,
     display: 'flex',
     justifyContent: 'center',
-    [theme.breakpoints.up('sm')]: {
-      marginTop: '0px',
-    },
     [theme.breakpoints.down('xs')]: {
-      marginTop: theme.spacing.unit * 2,
+      marginTop: theme.spacing.unit * 4,
+      marginButtom: theme.spacing.unit * 4,
+      padding: theme.spacing.unit * 2,
     },
   },
 })
