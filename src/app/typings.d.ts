@@ -15,7 +15,7 @@ interface _numberLeaf<T extends object> {
 
 interface _referenceLeaf<T extends object, RT extends object> {
   onChange(self: T, nextVal: Node<RT>): OnChangeReturn
-  type: Array<T>
+  type: Leaf<{}>
 }
 
 export type Leaf<T extends object, RT extends object = {}> =
@@ -28,18 +28,8 @@ export interface Schema {
   readonly [K: string]: Leaf<any>
 }
 
-type _PutOKResponse = {
-  ok: true
+interface PutResponse<T extends object> {
+  ok: boolean
+  messages: string[]
+  details: { [K in keyof T]?: string[] }
 }
-
-interface _PutErrResponse<T extends object> {
-  ok: false
-  message: string
-  details: {
-    [K in keyof T]: T[K] extends object
-      ? PutResponse<T[K]>
-      : ReadonlyArray<string>
-  }
-}
-
-type PutResponse<T extends object> = _PutOKResponse | _PutErrResponse<T>

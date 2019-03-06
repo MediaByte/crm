@@ -2,20 +2,30 @@
 import Gun from 'gun/gun'
 import 'gun/lib/store'
 
-import { Node } from './index'
+console.log('\n\n\n\n\n\n\n\n\n\n\n')
+
+import { Node } from '.'
 
 import { SCHEMA_NAME } from './Utils'
 
 const gun = Gun()
 
+const UserGroup = {
+  [SCHEMA_NAME]: 'UserGroup',
+  name: {
+    type: 'string',
+    async onChange() {},
+  },
+}
+
 /**
  * @type {import('./typings').Schema}
  */
-const mySchema = {
+const User = {
   [SCHEMA_NAME]: 'User',
   age: {
     type: 'number',
-    onChange(self, nextVal) {
+    async onChange(self, nextVal) {
       if (nextVal < 0 || nextVal > 120) {
         return 'invalid age'
       }
@@ -27,7 +37,7 @@ const mySchema = {
   },
   name: {
     type: 'string',
-    onChange(_, nextVal) {
+    async onChange(_, nextVal) {
       const errs = []
       if (nextVal.indexOf('1') > -1) {
         errs.push('names cannot contain numbers')
@@ -38,20 +48,35 @@ const mySchema = {
       return errs
     },
   },
+  userGroup: {
+    type: UserGroup,
+    async onChange() {},
+  },
 }
 
-const node = new Node(mySchema, gun.get(Math.random()))
+;(async () => {
+  try {
+    const node = new Node(User, gun.get(Math.random()))
+    const userGroup = new Node(UserGroup, gun.get(Math.random()))
+    // const userGroupEdge = node.get('userGroup')
 
-node.on(cache => {
-  console.log(cache)
-})
+    node.on(r => {
+      console.log(r)
+    })
 
-node
-  .put({
-    age: 4,
-    name: 'john',
-  })
-  .then(console.log)
-  .catch(() => {
-    console.log('error')
-  })
+    await node.put({
+      age: 4,
+      name: 'john',
+    })
+
+    await userGroup.put({
+      name: 'myUserGroup',
+    })
+
+    const res = await node.get('userGroup').put(userGroup)
+
+    console.log(res)
+  } catch (e) {
+    console.log(e)
+  }
+})()

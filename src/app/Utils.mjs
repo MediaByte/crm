@@ -1,4 +1,5 @@
 // @ts-check
+import flattenDeep from 'lodash/flattenDeep'
 
 export const SCHEMA_NAME = Symbol('SCHEMA_NAME')
 
