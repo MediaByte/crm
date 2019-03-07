@@ -157,7 +157,6 @@ export class Node {
   }
 
   /**
-   *
    * @param {Partial<T>} data
    * @returns {Promise<PutResponse<T>>}
    */
@@ -219,6 +218,28 @@ export class Node {
 
   /**
    * @param {Partial<T>} data
+   * @returns {{ edgePuts: Record<string, Node<{}>> , primitivePuts: Record<string, string|number> }}
+   */
+  splitPuts(data) {
+    const edgePuts = {}
+    const primitivePuts = {}
+
+    for (const [key, value] of Object.entries(data)) {
+      if (key in this.edgeSchemas) {
+        edgePuts[key] = value
+      } else {
+        primitivePuts[key] = value
+      }
+    }
+
+    return {
+      edgePuts,
+      primitivePuts,
+    }
+  }
+
+  /**
+   * @param {Partial<T>} data
    * @returns {Promise<PutResponse<T>>}
    */
   async put(data) {
@@ -233,20 +254,13 @@ export class Node {
 
       const errorMap = new Utils.ErrorMap()
 
-      const primitivePuts = {}
-      const edgePuts = {}
-
       for (const [key, value] of Object.entries(data)) {
         if (!(key in this.schema)) {
           errorMap.puts(key, 'unexpected key')
         }
-
-        if (key in this.edgeSchemas) {
-          edgePuts[key] = value
-        } else {
-          primitivePuts[key] = value
-        }
       }
+
+      const { edgePuts, primitivePuts } = this.splitPuts(data)
 
       if (errorMap.hasErrors) {
         return {
@@ -306,7 +320,7 @@ export class Node {
         })
       }
 
-      const finalRes = mergeResponses(edgeRes, primitiveRes)
+      const finalRes = Utils.mergeResponses(edgeRes, primitiveRes)
 
       return finalRes
     } catch (e) {
@@ -471,25 +485,3 @@ const leafEntry = entry => {
   const [, maybeSubschema] = entry
   return isLeaf(maybeSubschema)
 }
-
-/**
- *
- * @param {import('./typings').PutResponse<{}>[]} responses
- * @returns {import('./typings').PutResponse<{}>}
- */
-const mergeResponses = (...responses) =>
-  responses.reduce((finalRes, nextRes) => ({
-    ok: finalRes.ok && nextRes.ok,
-    messages: finalRes.messages.concat(nextRes.messages),
-    details: _mergeResponseDetails(finalRes.details, nextRes.details),
-  }))
-
-/**
- *
- * @param {Array<import('./typings').PutResponse<{}>['details']>} detailsObjects
- */
-const _mergeResponseDetails = (...detailsObjects) =>
-  detailsObjects.reduce((finalDetails, nextDetails) => ({
-    ...finalDetails,
-    ...nextDetails,
-  }))

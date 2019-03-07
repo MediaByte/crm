@@ -35,24 +35,48 @@ export const reasonToString = reason => {
 export class ErrorMap {
   constructor() {
     this.hasErrors = false
+
     /**
      * @type {Record<string, string[]>}
      */
     this.map = {}
-    /**
-     * Arguments after the first one can be either strings or array of strings.
-     * All will be flattened to
-     * @param {string|number} key
-     */
   }
 
-  /** @param {string} key */
+  /**
+   * Arguments after the first one can be either strings or array of strings.
+   * All will be flattened to.
+   * @param {string} key
+   * @returns {void}
+   */
   puts(key) {
     if (!this.map[key]) this.map[key] = []
+
     const msgs = flattenDeep(Array.from(arguments).slice(1))
+
     if (msgs.length) {
       this.map[key].push(...msgs)
       this.hasErrors = true
     }
   }
 }
+
+/**
+ * @param {import('./typings').PutResponse<{}>[]} responses
+ * @returns {import('./typings').PutResponse<{}>}
+ */
+export const mergeResponses = (...responses) =>
+  responses.reduce((finalRes, nextRes) => ({
+    ok: finalRes.ok && nextRes.ok,
+    messages: finalRes.messages.concat(nextRes.messages),
+    details: _mergeResponseDetails(finalRes.details, nextRes.details),
+  }))
+
+/**
+ *
+ * @param {Array<import('./typings').PutResponse<{}>['details']>} detailsObjects
+ */
+const _mergeResponseDetails = (...detailsObjects) =>
+  detailsObjects.reduce((finalDetails, nextDetails) => ({
+    ...finalDetails,
+    ...nextDetails,
+  }))

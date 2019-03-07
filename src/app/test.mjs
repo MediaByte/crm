@@ -4,17 +4,21 @@ import 'gun/lib/store'
 
 console.log('\n\n\n\n\n\n\n\n\n\n\n')
 
-import { Node } from '.'
+import { Node, NodeSet } from '.'
 
 import { SCHEMA_NAME } from './Utils'
 
-const gun = Gun()
+const gun = Gun().get('root')
 
 const UserGroup = {
   [SCHEMA_NAME]: 'UserGroup',
   name: {
     type: 'string',
-    async onChange() {},
+    async onChange(self, nextVal) {
+      if (nextVal === 'foo') {
+        return 'illegal name'
+      }
+    },
   },
 }
 
@@ -58,24 +62,31 @@ const User = {
   try {
     const node = new Node(User, gun.get(Math.random()))
     const userGroup = new Node(UserGroup, gun.get(Math.random()))
-    // const userGroupEdge = node.get('userGroup')
 
-    node.on(r => {
-      console.log(r)
+    const userGroups = new NodeSet(
+      {
+        [SCHEMA_NAME]: 'UserGroups',
+        type: [UserGroup],
+        async onChange() {
+          return undefined
+        },
+      },
+      gun.get(Math.random()),
+    )
+    let cache = {}
+
+    userGroups.on(c => {
+      cache = c
     })
 
-    await node.put({
-      age: 4,
-      name: 'john',
-    })
+    await userGroups.set({ name: 'alice' })
 
-    await userGroup.put({
-      name: 'myUserGroup',
-    })
+    await userGroups.set({ name: 'bob' })
 
-    const res = await node.get('userGroup').put(userGroup)
+    const [key] = Object.entries(cache)[0]
 
-    console.log(res)
+    const someNode = userGroups.get(key)
+    console.log(someNode)
   } catch (e) {
     console.log(e)
   }
