@@ -20,15 +20,15 @@ const baseProps = {
   properties: [
     {
       name: 'Name',
-      type: 'textfield',
+      propType: 'textfield',
     },
     {
       name: 'Phone',
-      type: 'textfield',
+      propType: 'textfield',
     },
     {
       name: 'Billing Address',
-      type: 'address',
+      propType: 'address',
     },
   ],
   relationships: [

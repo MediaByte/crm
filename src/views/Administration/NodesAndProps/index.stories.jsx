@@ -40,14 +40,14 @@ const baseProps = {
       identifier: 'NOTERPT-0001',
       label: 'Notes and Reports',
       name: 'REPORT',
-      props: [
+      propDefs: [
         {
           name: 'Title',
-          type: 'textfield',
+          propType: 'textfield',
         },
         {
           name: 'Content',
-          type: 'memo',
+          propType: 'memo',
         },
       ],
       relationships: [],
@@ -58,18 +58,18 @@ const baseProps = {
       identifier: 'PRSN-0001',
       label: 'People',
       name: 'PERSON',
-      props: [
+      propDefs: [
         {
           name: 'Name',
-          type: 'textfield',
+          propType: 'textfield',
         },
         {
           name: 'Phone',
-          type: 'textfield',
+          propType: 'textfield',
         },
         {
           name: 'Billing Address',
-          type: 'address',
+          propType: 'address',
         },
       ],
       relationships: [
