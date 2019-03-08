@@ -4,7 +4,8 @@ import 'gun/lib/store'
 
 console.log('\n\n\n\n\n\n\n\n\n\n\n')
 
-import { Node, NodeSet } from '.'
+import { Node } from '.'
+import NodeSet from './NodeSet'
 
 import { SCHEMA_NAME } from './Utils'
 
@@ -19,6 +20,14 @@ const UserGroup = {
         return 'illegal name'
       }
     },
+  },
+}
+
+const UserGroups = {
+  [SCHEMA_NAME]: 'UserGroups',
+  type: [UserGroup],
+  async onChange() {
+    return false
   },
 }
 
@@ -58,35 +67,46 @@ const User = {
   },
 }
 
+const Users = {
+  [SCHEMA_NAME]: 'Users',
+  type: [User],
+  async onChange() {
+    return false
+  },
+}
+
 ;(async () => {
   try {
-    const node = new Node(User, gun.get(Math.random()))
-    const userGroup = new Node(UserGroup, gun.get(Math.random()))
+    const userGroups = new NodeSet(UserGroups, Gun().get(Math.random()))
+    const users = new NodeSet(Users, Gun().get(Math.random()))
 
-    const userGroups = new NodeSet(
-      {
-        [SCHEMA_NAME]: 'UserGroups',
-        type: [UserGroup],
-        async onChange() {
-          return undefined
-        },
-      },
-      gun.get(Math.random()),
-    )
+    let ugCache = {}
     let cache = {}
 
     userGroups.on(c => {
-      cache = c
+      ugCache = c
+      console.log(`userGroups = ${JSON.stringify(c)}`)
     })
 
-    await userGroups.set({ name: 'alice' })
+    users.on(c => {
+      cache = c
+      console.log(`users = ${JSON.stringify(c)}`)
+    })
 
-    await userGroups.set({ name: 'bob' })
+    await users.set({ age: 15, name: 'john1' })
+    await userGroups.set({ name: 'myUserGroup' })
 
     const [key] = Object.entries(cache)[0]
+    const [ugKey] = Object.entries(ugCache)[0]
 
-    const someNode = userGroups.get(key)
-    console.log(someNode)
+    const ugNode = userGroups.get(ugKey)
+
+    const res = await users
+      .get(key)
+      .get('userGroup')
+      .put(ugNode)
+
+    console.log(res)
   } catch (e) {
     console.log(e)
   }

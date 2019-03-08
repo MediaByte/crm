@@ -277,7 +277,6 @@ export class Node {
       let edgeRes = { ok: true, messages: [], details: {} }
       /** @type {import('./typings').PutResponse<{}>} */
       let primitiveRes = { ok: true, messages: [], details: {} }
-
       // It is more probable that an onChange() call for a reference has to
       // take a look at the primitives on its node than an onChange() call for a
       // primitive has to take a look at the references on that node.

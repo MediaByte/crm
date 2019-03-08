@@ -1,5 +1,7 @@
 import * as Utils from './Utils'
 
+import { Node } from '.'
+
 /**
  * @typedef {import('./Utils')._setLeaf<{}>} SetLeaf
  */
@@ -22,6 +24,8 @@ export default class NodeSet {
      * @type {Schema}
      */
     this.setSchemaLeaf = setSchemaLeaf
+
+    this.itemSchema = setSchemaLeaf.type[0]
 
     this.gunInstance = gunInstance
 
@@ -59,10 +63,8 @@ export default class NodeSet {
     })
   }
 
-
-
-  get(key) {
-    if (!(key in this.cache)) {
+  get(setKey) {
+    if (!(setKey in this.cache)) {
       return {
         ok: false,
         messages: ['unexistant key'],
@@ -70,34 +72,44 @@ export default class NodeSet {
       }
     }
 
-    const node = new Node(
-      this.singleNodeInjectedSchema,
-      this.gunInstance.get(key),
-    )
-    
-    const oldPut = node.put.bind(node)
+    const gunSubInstance = this.gunInstance.get(setKey)
 
-    node.put = async function (data) {
+    const node = new Node(this.itemSchema, gunSubInstance)
+
+    // we cannot trust map().on() on this set's gun instance to be called when
+    // the gun substinstance gets its put() method called.
+    // Therefore, we use our own on() to subscribe to updates
+    node.on(nodeValue => {
+      this._cachePut(setKey, nodeValue)
+    })
+
+    const self = this
+
+    const oldPut = node.put.bind(node)
+    node.put = async function(data) {
       const { edgePuts, primitivePuts } = this.splitPuts(data)
 
       // TODO: english this comment
       // Let's validate first even though node.put() already does it
       // because we want that fine-grained validation before doing our
       // more rough validation in the set.
-      const nodeRes = Utils.mergeResponses(await node.validateEdgePut(edgePuts), await node.validatePrimitivePut(primitivePuts))
+      const nodeRes = Utils.mergeResponses(
+        await node.validateEdgePut(edgePuts),
+        await node.validatePrimitivePut(primitivePuts),
+      )
 
       if (!nodeRes.ok) {
         return nodeRes
       }
 
       // now lets validate against the set schema
-      const err = this.setSchemaLeaf.onChange(this.cache, data, key)
+      const err = await self.setSchemaLeaf.onChange(this.cache, data, setKey)
 
       if (err) {
         return {
           ok: false,
           messages: typeof err == 'string' ? [err] : err,
-          details: {}
+          details: {},
         }
       }
 
@@ -105,14 +117,36 @@ export default class NodeSet {
     }
 
     const oldGet = node.get.bind(node)
+    node.get = key => {
+      // throws if the key is wrong
+      // it's pre-binded
+      const oldGetPut = oldGet(key).put
 
-    node.get = function(key) {
       return {
-        put: async data => {
-          this.schema = 
+        put: async nodeToBePut => {
+          const err = await self.setSchemaLeaf.onChange(
+            this.cache,
+            {
+              ...node.cache,
+              [key]: nodeToBePut.cache,
+            },
+            setKey,
+          )
+
+          if (err) {
+            return {
+              ok: false,
+              messages: typeof err == 'string' ? err : [err],
+              details: {},
+            }
+          }
+
+          return oldGetPut(nodeToBePut)
         },
       }
     }
+
+    return node
   }
 
   /**
