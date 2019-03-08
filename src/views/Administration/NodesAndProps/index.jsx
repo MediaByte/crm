@@ -58,6 +58,8 @@ export default class NodesAndProps extends React.PureComponent {
   state = {
     availablePropTypes: Object.keys(typeToReadableName),
     nodes: nodes.cache,
+    propDefs: [],
+    relDefs: [],
     selectedNodeKey: null,
     showingAddNodeDialog: false,
     showingAddRelDialog: false,
@@ -65,6 +67,7 @@ export default class NodesAndProps extends React.PureComponent {
   }
 
   addPropForm = React.createRef()
+  relForm = React.createRef()
 
   componentDidMount() {
     nodes.on(nodesValue => {
@@ -116,6 +119,27 @@ export default class NodesAndProps extends React.PureComponent {
     }))
   }
 
+  handleRelSave = () => {
+    const {
+      label,
+      maxNumRecords,
+      name,
+      nodeName,
+    } = this.relForm.current.getFormData()
+
+    this.setState(({ relDefs }) => ({
+      relDefs: relDefs.concat({
+        label: label | '',
+        maxNumRecords: maxNumRecords | '',
+        name: name | '',
+        nodeName: nodeName | '',
+        nodeKey: this.state.selectedNodeKey,
+      }),
+    }))
+
+    this.toggleAddRelDialog()
+  }
+
   handlePropSave = () => {
     const data = this.addPropForm.current.getFormData()
 
@@ -130,15 +154,15 @@ export default class NodesAndProps extends React.PureComponent {
 
     const { selectedNodeKey } = this.state
 
-    nodes
-      .get(selectedNodeKey)
-      .get('propDefs')
-      .set({
+    this.setState(({ propDefs }) => ({
+      propDefs: propDefs.concat({
         label,
         name,
         propType,
         tooltip,
-      })
+        nodeKey: selectedNodeKey,
+      }),
+    }))
 
     this.handleClosePropForm()
   }
@@ -167,12 +191,24 @@ export default class NodesAndProps extends React.PureComponent {
     const {
       availablePropTypes,
       nodes,
+      propDefs,
+      relDefs,
       selectedNodeKey,
       showingAddNodeDialog,
       showingAddRelDialog,
       showingPropDialog,
     } = this.state
     const classes = { demo: '' }
+
+    const thePropDefs = propDefs.filter(
+      propDef => propDef.nodeKey === selectedNodeKey,
+    )
+
+    const theRelDefs = relDefs.filter(
+      relDef => relDef.nodeKey === selectedNodeKey,
+    )
+
+    console.log(theRelDefs)
 
     const selectedNode = selectedNodeKey && nodes[selectedNodeKey]
     selectedNode && console.log(Object.keys(selectedNode.relDefs))
@@ -203,12 +239,16 @@ export default class NodesAndProps extends React.PureComponent {
 
         <Dialog
           actionButtonText="SAVE"
+          onClickActionButton={this.handleRelSave}
           handleClose={this.toggleAddRelDialog}
           onClickCloseButton={this.toggleAddRelDialog}
           open={showingAddRelDialog}
           title="Add a Relationship"
         >
-          <RelationshipForm availableNodeNames={[]} />
+          <RelationshipForm
+            availableNodeNames={Object.values(nodes).map(node => node.name)}
+            ref={this.relForm}
+          />
         </Dialog>
 
         <PageColumn titleText="Nodes And Properties">
@@ -240,13 +280,8 @@ export default class NodesAndProps extends React.PureComponent {
                   name={selectedNode.name}
                   onClickAddProperty={this.onClickAddProperty}
                   onClickAddRelationship={this.toggleAddRelDialog}
-                  properties={Object.values(selectedNode.propDefs)}
-                  relationships={Object.values(selectedNode.relDefs).map(
-                    relDef => ({
-                      ...relDef,
-                      relatedNodeName: relDef.relatedNode.name,
-                    }),
-                  )}
+                  properties={thePropDefs}
+                  relationships={theRelDefs}
                 />
               )}
             </Grid>
@@ -256,6 +291,7 @@ export default class NodesAndProps extends React.PureComponent {
     )
   }
 }
+
 /** @param {Node & { key: string }} node */
 const extractNodeKey = node => node.key
 
