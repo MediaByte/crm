@@ -1,6 +1,6 @@
 import * as Utils from './Utils'
 
-import { Node } from '.'
+import { Node } from './Node'
 
 /**
  * @typedef {import('./Utils')._setLeaf<{}>} SetLeaf

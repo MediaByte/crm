@@ -1,6 +1,7 @@
-import { Node, SCHEMA_NAME } from './index'
+import { Node } from './Node'
+import { SCHEMA_NAME } from './Utils'
 
-type _OnChangeReturn = string | string[] | null | false | undefined
+type _OnChangeReturn = string | string[] | null | false | undefined | void
 type OnChangeReturn = Promise<_OnChangeReturn>
 
 export interface StringLeaf<T extends object> {

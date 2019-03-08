@@ -1,6 +1,6 @@
 // @ts-check
 /**
- * @typedef {import('.').Node<any>} Node
+ * @typedef {import('./Node').Node<any>} Node
  * @typedef {import('./typings').PutResponse<any>} PutResponse
  */
 
