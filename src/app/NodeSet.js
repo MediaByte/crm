@@ -34,6 +34,7 @@ export default class NodeSet {
     this.cache = {}
 
     this.gunInstance.map().on((nodeValue, key) => {
+      console.log(nodeValue)
       this._cachePut(key, nodeValue)
     })
   }
@@ -174,6 +175,13 @@ export default class NodeSet {
   _cachePut(key, nodeValue) {
     this.cache[key] = { ...nodeValue }
     delete this.cache[key]['_']
+
+    for (const [k, v] of Object.entries(this.cache[key])) {
+      if (typeof v === 'object') {
+        delete this.cache[key][k]['#']
+      }
+    }
+
     this._onChange()
   }
 

@@ -35,8 +35,8 @@ import { nodes } from 'app'
  * @prop {string} identifier
  * @prop {string} label
  * @prop {string} name
- * @prop {PropDef[]} propDefs
- * @prop {RelDef[]} relDefs
+ * @prop {Record<string, PropDef>} propDefs
+ * @prop {Record<string, RelDef>} relDefs
  */
 
 /**
@@ -56,7 +56,7 @@ export default class NodesAndProps extends React.PureComponent {
   /** @type {State} */
   state = {
     availablePropTypes: [],
-    nodes: {},
+    nodes: nodes.cache,
     selectedNodeKey: null,
     showingAddNodeDialog: false,
     showingAddRelDialog: false,
@@ -111,18 +111,24 @@ export default class NodesAndProps extends React.PureComponent {
     }))
   }
 
-  handleSaveNode = (
-    selectedIconIndex: number,
-    identifier: string,
-    label: string,
-    name: string,
-  ) => {
+  /**
+   * @param {number} selectedIconIndex
+   * @param {string} identifier
+   * @param {string} label
+   * @param {string} name
+   * @returns {void}
+   */
+  handleSaveNode = (selectedIconIndex, identifier, label, name) => {
     nodes.set({
-      iconName
+      iconName: Object.keys(nameToIconMap)[selectedIconIndex],
       identifier,
       label,
       name,
+      propDefs: {},
+      relDefs: {},
     })
+
+    this.toggleAddNodeDialog()
   }
 
   render() {
@@ -137,7 +143,7 @@ export default class NodesAndProps extends React.PureComponent {
     const classes = { demo: '' }
 
     const selectedNode = selectedNodeKey && nodes[selectedNodeKey]
-
+    selectedNode && console.log(Object.keys(selectedNode.relDefs))
     return (
       <React.Fragment>
         <Dialog
@@ -197,11 +203,13 @@ export default class NodesAndProps extends React.PureComponent {
                   name={selectedNode.name}
                   onClickAddProperty={this.onClickAddProperty}
                   onClickAddRelationship={this.toggleAddRelDialog}
-                  properties={selectedNode.propDefs}
-                  relationships={selectedNode.relDefs.map(relDef => ({
-                    ...relDef,
-                    relatedNodeName: relDef.relatedNode.name,
-                  }))}
+                  properties={Object.values(selectedNode.propDefs)}
+                  relationships={Object.values(selectedNode.relDefs).map(
+                    relDef => ({
+                      ...relDef,
+                      relatedNodeName: relDef.relatedNode.name,
+                    }),
+                  )}
                 />
               )}
             </Grid>
