@@ -28,17 +28,17 @@ const baseProps = {
   properties: [
     {
       name: 'Name',
-      type: 'textfield',
+      propType: 'textfield',
       readableType: 'Text Field',
     },
     {
       name: 'Phone',
-      type: 'textfield',
+      propType: 'textfield',
       readableType: 'Text Field',
     },
     {
       name: 'Billing Address',
-      type: 'address',
+      propType: 'address',
       readableType: 'Address',
     },
   ],

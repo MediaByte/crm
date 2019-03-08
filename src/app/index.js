@@ -1,7 +1,6 @@
 import { SCHEMA_NAME } from './Utils'
 
-import Gun from 'gun/gun'
-import 'gun/lib/store'
+import Gun from 'gun'
 import NodeSet from './NodeSet'
 
 const gun = Gun().get('root')
@@ -82,9 +81,29 @@ const PropDef = {
   },
 }
 
+const RelDef = {
+  [SCHEMA_NAME]: 'RelDef',
+  name: {
+    type: 'string',
+    async onChange() {},
+  },
+  iconName: {
+    type: 'string',
+    async onChange() {},
+  },
+  relatedNode: {
+    type: PineconeNode,
+    async onChange() {},
+  },
+}
+
 const PineconeNode = {
   [SCHEMA_NAME]: 'Node',
-  name: {
+  iconName: {
+    type: 'string',
+    async onChange() {},
+  },
+  identifier: {
     type: 'string',
     async onChange() {},
   },
@@ -92,9 +111,16 @@ const PineconeNode = {
     type: 'string',
     async onChange() {},
   },
+  name: {
+    type: 'string',
+    async onChange() {},
+  },
   propDefs: {
     type: [PropDef],
     async onChange() {},
+  },
+  relDefs: {
+    type: [RelDef],
   },
 }
 

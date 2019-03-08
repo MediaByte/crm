@@ -21,9 +21,9 @@ import TitleSubtitleListItem from '../../components/TitleSubtitleListItem'
  * what will be shown in the UI, and `value` is what will be actually used for
  * filtering. This function should be pure, as an initial map over the items
  * will be used for getting all possible filtering values.
- * @prop {((item: T) => number)=} extractID (Optional) Extract the id from the
- * item, this will be passed as the first argument to the `onClickItem` prop.
- * Index will be used if not be provided.
+ * @prop {((item: T) => number|string)=} extractID (Optional) Extract the id
+ * from the item, this will be passed as the first argument to the `onClickItem`
+ * prop. Index will be used if not be provided.
  * @prop {((item: T) => string)=} extractSubtitle (Optional) Extract the
  * subtitle from the item. If not provided, no subtitle will be rendered.
  * @prop {(item: T) => string} extractTitle Extract the title to be rendered.
@@ -33,11 +33,11 @@ import TitleSubtitleListItem from '../../components/TitleSubtitleListItem'
  * field.
  * @prop {ListToolbarProps['onClickAdd']=} onClickAdd
  * @prop {ListToolbarProps['onClickDownload']=} onClickDownload
- * @prop {((itemID: number) => void)=} onClickItem (Optional) Gets called with
- * the ID of the item (if the `extractID` prop is defined), otherwise the
- * function will be passed the index of the item.
- * @prop {number[]=} selectedIDs (Optional) If provided, the items with these
- * IDs will be highlighted.
+ * @prop {((itemID: number|string) => void)=} onClickItem (Optional) Gets
+ * called with the ID of the item (if the `extractID` prop is defined),
+ * otherwise the function will be passed the index of the item.
+ * @prop {(number|string)[]=} selectedIDs (Optional) If provided, the items with
+ * these IDs will be highlighted.
  * @prop {(boolean|null)=} showToolbar (Optional) If set to true, an utility
  * toolbar will be provided, it includes some add and download action icons, a
  * toggeable search field and a toggeable pop-over filter menu.

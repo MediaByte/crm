@@ -387,7 +387,7 @@ export class Node {
         if (typeof err == 'string') {
           // don't ignore empty strings, just in case.
           ok = false
-          message = err
+          messages.push(err)
         }
 
         if (Array.isArray(err)) {

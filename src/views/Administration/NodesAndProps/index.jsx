@@ -11,59 +11,69 @@ import RelationshipForm from 'components/RelationshipForm'
 import TitleSubtitleList from 'containers/TitleSubtitleList'
 import { nameToIconMap } from 'common/NameToIcon'
 
+import { nodes } from 'app'
+
 /**
  * Placeholder while the model shape clears up.
- * @typedef {object} NodeProp
+ * @typedef {object} PropDef
  * @prop {string} name
- * @prop {string} type
+ * @prop {string} propType
  */
 
 /**
  * Placeholder while the model shape clears up.
- * @typedef {object} NodeRelationship
+ * @typedef {object} RelDef
  * @prop {string} iconName
  * @prop {string} name
- * @prop {string} relatedNodeName
+ * @prop {Node} relatedNode
  */
 
 /**
  * Placeholder while the model shape clears up.
  * @typedef {object} Node
  * @prop {string} iconName
- * @prop {number} id
  * @prop {string} identifier
  * @prop {string} label
  * @prop {string} name
- * @prop {NodeProp[]} props
- * @prop {NodeRelationship[]} relationships
- */
-
-/**
- * @typedef {object} Props
- * @prop {string[]} availableTypes
- * @prop {Node[]} nodes
+ * @prop {PropDef[]} propDefs
+ * @prop {RelDef[]} relDefs
  */
 
 /**
  * @typedef {object} State
- * @prop {number|null} selectedNodeID
+ * @prop {string[]} availablePropTypes
+ * @prop {Record<string, Node>} nodes
+ * @prop {string|null} selectedNodeKey
  * @prop {boolean} showingAddNodeDialog
  * @prop {boolean} showingAddRelDialog
  * @prop {boolean} showingPropDialog
  */
 
 /**
- * @augments React.PureComponent<Props, State, never>
+ * @augments React.PureComponent<{}, State, never>
  */
 export default class NodesAndProps extends React.PureComponent {
   /** @type {State} */
   state = {
-    selectedNodeID: null,
+    availablePropTypes: [],
+    nodes: {},
+    selectedNodeKey: null,
     showingAddNodeDialog: false,
     showingAddRelDialog: false,
     showingPropDialog: false,
   }
 
+  componentDidMount() {
+    nodes.on(nodesValue => {
+      this.setState({
+        nodes: nodesValue,
+      })
+    })
+  }
+
+  componentWillUnmount() {}
+
+  /** @private */
   handleClosePropForm = () => {
     this.setState({
       showingPropDialog: false,
@@ -79,14 +89,15 @@ export default class NodesAndProps extends React.PureComponent {
 
   /**
    * @private
-   * @param {number} id
+   * @param {string} key
    */
-  onClickNodeOnList = id => {
+  onClickNodeOnList = key => {
     this.setState({
-      selectedNodeID: id,
+      selectedNodeKey: key,
     })
   }
 
+  /** @private */
   toggleAddNodeDialog = () => {
     this.setState(({ showingAddNodeDialog }) => ({
       showingAddNodeDialog: !showingAddNodeDialog,
@@ -100,19 +111,32 @@ export default class NodesAndProps extends React.PureComponent {
     }))
   }
 
+  handleSaveNode = (
+    selectedIconIndex: number,
+    identifier: string,
+    label: string,
+    name: string,
+  ) => {
+    nodes.set({
+      iconName
+      identifier,
+      label,
+      name,
+    })
+  }
+
   render() {
-    const { availableTypes, nodes } = this.props
     const {
-      selectedNodeID,
+      availablePropTypes,
+      nodes,
+      selectedNodeKey,
       showingAddNodeDialog,
       showingAddRelDialog,
       showingPropDialog,
     } = this.state
     const classes = { demo: '' }
 
-    const selectedNode =
-      typeof selectedNodeID == 'number' &&
-      nodes.filter(node => node.id === selectedNodeID)[0]
+    const selectedNode = selectedNodeKey && nodes[selectedNodeKey]
 
     return (
       <React.Fragment>
@@ -121,13 +145,13 @@ export default class NodesAndProps extends React.PureComponent {
           open={showingPropDialog}
           title="Add a Property"
         >
-          <PropForm availableTypes={availableTypes} />
+          <PropForm availableTypes={availablePropTypes} />
         </Dialog>
 
         <AddNodeDialog
           availableIconNames={Object.keys(nameToIconMap)}
           handleClose={this.toggleAddNodeDialog}
-          handleSave={() => {}}
+          handleSave={this.handleSaveNode}
           isValidIdentifierValue={() => true}
           isValidLabelValue={() => true}
           isValidNameValue={() => true}
@@ -148,13 +172,18 @@ export default class NodesAndProps extends React.PureComponent {
           <Grid container>
             <Grid item>
               <TitleSubtitleList
-                extractID={extractNodeID}
+                extractID={extractNodeKey}
                 extractTitle={extractNodeName}
                 onClickAdd={this.toggleAddNodeDialog}
                 onClickItem={this.onClickNodeOnList}
-                items={nodes}
+                items={Object.entries(nodes).map(([key, node]) => ({
+                  key,
+                  ...node,
+                }))}
                 // TODO: optimize away array literal
-                selectedIDs={(selectedNodeID && [selectedNodeID]) || undefined}
+                selectedIDs={
+                  (selectedNodeKey && [selectedNodeKey]) || undefined
+                }
                 showToolbar
               />
             </Grid>
@@ -168,8 +197,11 @@ export default class NodesAndProps extends React.PureComponent {
                   name={selectedNode.name}
                   onClickAddProperty={this.onClickAddProperty}
                   onClickAddRelationship={this.toggleAddRelDialog}
-                  properties={selectedNode.props}
-                  relationships={selectedNode.relationships}
+                  properties={selectedNode.propDefs}
+                  relationships={selectedNode.relDefs.map(relDef => ({
+                    ...relDef,
+                    relatedNodeName: relDef.relatedNode.name,
+                  }))}
                 />
               )}
             </Grid>
@@ -179,8 +211,8 @@ export default class NodesAndProps extends React.PureComponent {
     )
   }
 }
-/** @param {Node} node */
-const extractNodeID = node => node.id
+/** @param {Node & { key: string }} node */
+const extractNodeKey = node => node.key
 
 /** @param {Node} node */
 const extractNodeName = node => node.name

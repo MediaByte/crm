@@ -24,7 +24,7 @@ import { typeToIconName, typeToReadableName } from 'common/PropTypeToMetadata'
  * @prop {(() => void)=} onClickAddRelationship
  * @prop {((index: number) => void)=} onClickProperty
  * @prop {((index: number) => void)=} onClickRelationship
- * @prop {{name: string, type: string}[]} properties
+ * @prop {{name: string, propType: string}[]} properties
  * @prop {{icon?: string, name: string, relatedNodeName: string}[]} relationships
  */
 
@@ -177,13 +177,13 @@ class NodeOverview extends React.PureComponent {
           item
           spacing={width === 'xs' ? 0 : 32} // TODO: spacing isn't working
         >
-          {properties.map(({ name, type }, i) => {
-            const icon = nameToIconMap[typeToIconName[type]]
+          {properties.map(({ name, propType }, i) => {
+            const icon = nameToIconMap[typeToIconName[propType]]
             const iconExists = !!icon
 
             return this.renderPropOrRel(
               iconExists && icon.twoTone,
-              typeToReadableName[type],
+              typeToReadableName[propType],
               name,
               i,
             )
