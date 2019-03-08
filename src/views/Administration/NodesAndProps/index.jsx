@@ -11,6 +11,7 @@ import RelationshipForm from 'components/RelationshipForm'
 import TitleSubtitleList from 'containers/TitleSubtitleList'
 import { nameToIconMap } from 'common/NameToIcon'
 
+import { typeToReadableName } from 'common/PropTypeToMetadata'
 import { nodes } from 'app'
 
 /**
@@ -55,13 +56,15 @@ import { nodes } from 'app'
 export default class NodesAndProps extends React.PureComponent {
   /** @type {State} */
   state = {
-    availablePropTypes: [],
+    availablePropTypes: Object.keys(typeToReadableName),
     nodes: nodes.cache,
     selectedNodeKey: null,
     showingAddNodeDialog: false,
     showingAddRelDialog: false,
     showingPropDialog: false,
   }
+
+  addPropForm = React.createRef()
 
   componentDidMount() {
     nodes.on(nodesValue => {
@@ -82,6 +85,8 @@ export default class NodesAndProps extends React.PureComponent {
 
   /** @private */
   onClickAddProperty = () => {
+    const x = nodes.get(this.state.selectedNodeKey).get('propDefs')
+    console.log(x)
     this.setState({
       showingPropDialog: true,
     })
@@ -109,6 +114,33 @@ export default class NodesAndProps extends React.PureComponent {
     this.setState(({ showingAddRelDialog }) => ({
       showingAddRelDialog: !showingAddRelDialog,
     }))
+  }
+
+  handlePropSave = () => {
+    const data = this.addPropForm.current.getFormData()
+
+    const label = data.label
+    const name = data.name
+    const propType = data.type
+    if (label == null) return
+    if (name == null) return
+    if (propType == null) return
+
+    const tooltip = data.tooltip || ''
+
+    const { selectedNodeKey } = this.state
+
+    nodes
+      .get(selectedNodeKey)
+      .get('propDefs')
+      .set({
+        label,
+        name,
+        propType,
+        tooltip,
+      })
+
+    this.handleClosePropForm()
   }
 
   /**
@@ -147,11 +179,16 @@ export default class NodesAndProps extends React.PureComponent {
     return (
       <React.Fragment>
         <Dialog
+          actionButtonText="SAVE"
           handleClose={this.handleClosePropForm}
+          onClickActionButton={this.handlePropSave}
           open={showingPropDialog}
           title="Add a Property"
         >
-          <PropForm availableTypes={availablePropTypes} />
+          <PropForm
+            availableTypes={availablePropTypes}
+            ref={this.addPropForm}
+          />
         </Dialog>
 
         <AddNodeDialog

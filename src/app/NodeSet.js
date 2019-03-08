@@ -34,7 +34,6 @@ export default class NodeSet {
     this.cache = {}
 
     this.gunInstance.map().on((nodeValue, key) => {
-      console.log(nodeValue)
       this._cachePut(key, nodeValue)
     })
   }
@@ -119,6 +118,10 @@ export default class NodeSet {
 
     const oldGet = node.get.bind(node)
     node.get = key => {
+      // HACK
+      if (key in node.nodeSets) {
+        return oldGet(key)
+      }
       // throws if the key is wrong
       // it's pre-binded
       const oldGetPut = oldGet(key).put

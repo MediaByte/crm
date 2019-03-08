@@ -77,6 +77,12 @@ export class Node {
       }
     }
 
+    for (const [k, v] of Object.entries(this.nodeSets)) {
+      v.on(c => {
+        this.cache[k] = c
+      })
+    }
+
     this.gunInstance.on(
       nodeValue => {
         for (const [key, value] of Object.entries(nodeValue)) {
@@ -87,6 +93,10 @@ export class Node {
           } else if (key in this.edgeSchemas) {
             this._cachePut({
               [key]: value == null ? null : this.edgeNodes[key].cache,
+            })
+          } else if (key in this.nodeSets) {
+            this._cachePut({
+              [key]: value,
             })
           } else {
             if (key == '_' || key == '#') continue

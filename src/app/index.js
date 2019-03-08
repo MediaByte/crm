@@ -71,11 +71,19 @@ const Users = {
 
 const PropDef = {
   [SCHEMA_NAME]: 'PropDef',
+  label: {
+    type: 'string',
+    async onChange() {},
+  },
   name: {
     type: 'string',
     async onChange() {},
   },
   propType: {
+    type: 'string',
+    async onChange() {},
+  },
+  tooltip: {
     type: 'string',
     async onChange() {},
   },
