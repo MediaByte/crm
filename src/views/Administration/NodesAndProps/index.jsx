@@ -16,6 +16,7 @@ import Icon from '@material-ui/core/Icon'
 import AddIcon from '@material-ui/icons/Add'
 import NodeDrawer from 'components/NodeDrawer/NodeDrawer'
 import { nameToIconMap } from 'common/NameToIcon'
+import EditNodeDialog from 'components/EditNodeDialog'
 
 // const style = theme => ({
 //   buttonAdd: {
@@ -146,7 +147,7 @@ export default class NodesAndProps extends React.PureComponent {
       <React.Fragment>
         <Dialog
           open={showingAddNodeDialog}
-          title="Add a Property"
+          title="Add a Node"
           handleClose={this.toggleAddNodeDialog}
         >
           <PropForm availableTypes={[]} />
@@ -154,10 +155,10 @@ export default class NodesAndProps extends React.PureComponent {
 
         <Dialog
           open={showingEditNodeDialog}
-          title="Add a Property"
+          title="Edit Node"
           handleClose={this.toggleEditNodeDialog}
         >
-          Edit Node
+          <EditNodeDialog />
         </Dialog>
 
         {/* <AddNodeDialog
@@ -185,7 +186,7 @@ export default class NodesAndProps extends React.PureComponent {
             container
             style={{ backgroundColor: '#fafafa', height: '100%' }}
           >
-            <TitleSubtitleList
+            {/* <TitleSubtitleList
               extractID={extractNodeID}
               extractTitle={extractNodeName}
               onClickAdd={this.toggleAddNodeDialog}
@@ -194,11 +195,11 @@ export default class NodesAndProps extends React.PureComponent {
               // TODO: optimize away array literal
               selectedIDs={(selectedNodeID && [selectedNodeID]) || undefined}
               showToolbar
-            />
+            /> */}
             <Grid item xs={12}>
               <NodeDrawer onclickEditNode={this.toggleEditNodeDialog} />
             </Grid>
-            <Grid item xs={12} className={classes.demo}>
+            {/* <Grid item xs={12} className={classes.demo}>
               {selectedNode && (
                 <NodeOverview
                   onclickEditNode={this.toggleEditNodeDialog}
@@ -212,7 +213,7 @@ export default class NodesAndProps extends React.PureComponent {
                   relationships={selectedNode.relationships}
                 />
               )}
-            </Grid>
+            </Grid> */}
             <IconButton
               color="secondary"
               className={classes.buttonAdd}

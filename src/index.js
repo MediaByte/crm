@@ -124,14 +124,14 @@ ReactDOM.render(
   <Provider store={store}>
     <Router history={hist}>
       <MuiThemeProvider theme={theme}>
-        {/* <Switch>
+        <Switch>
           {indexRoutes.map((prop, key) => {
             return (
               <Route path={prop.path} key={key} component={prop.component} />
             )
           })}
-        </Switch> */}
-        <NodesAndProps {...baseProps} />
+        </Switch>
+        {/* <NodesAndProps {...baseProps} /> */}
       </MuiThemeProvider>
     </Router>
   </Provider>,

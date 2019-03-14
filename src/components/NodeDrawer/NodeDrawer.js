@@ -295,6 +295,7 @@ class NodeDrawer extends React.Component {
                   <IconButton
                     aria-label="Edit"
                     className={classes.buttomOption}
+                    onClick={this.props.onclickEditNode}
                   >
                     <EditOutlineIcon />
                   </IconButton>
@@ -326,6 +327,7 @@ class NodeDrawer extends React.Component {
                   <IconButton
                     aria-label="Edit"
                     className={classes.buttomOption}
+                    onClick={this.props.onclickEditNode}
                   >
                     <EditOutlineIcon />
                   </IconButton>

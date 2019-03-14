@@ -197,15 +197,15 @@ export default class PropForm extends React.PureComponent {
    * handle form data up-above.Returns an object looking like this:
    ```
    {
-     // null when no label is inputted.
-     label: string|null
-     // null when no name is inputted.
-     name: string|null
-     // null when tooltip is disabled, or when the tooltip input field is empty
-     tooltip: string|null
-     // this type is obtained from the 'availableTypes' prop, if by any chance
-     // this array is empty, this will be null.
-     type: string|null
+    // null when no label is inputted.
+    label: string|null
+    // null when no name is inputted.
+    name: string|null
+    // null when tooltip is disabled, or when the tooltip input field is empty
+    tooltip: string|null
+    // this type is obtained from the 'availableTypes' prop, if by any chance
+    // this array is empty, this will be null.
+    type: string|null
    }
    ```
    * @returns {FormData}
@@ -360,6 +360,7 @@ export default class PropForm extends React.PureComponent {
         container
         direction="column"
         justify="center"
+        style={bodyDialogAddNode}
       >
         <TextField
           InputProps={nameFieldInputProps}
@@ -385,9 +386,10 @@ export default class PropForm extends React.PureComponent {
           onChange={this.onLabelChange}
           required
           value={currentLabelValue}
+          style={TextFieldMt}
         />
 
-        <Grid>
+        {/* <Grid>
           <FormControlLabel
             control={
               <Switch
@@ -401,9 +403,9 @@ export default class PropForm extends React.PureComponent {
           <IconButton>
             <HelpOutline />
           </IconButton>
-        </Grid>
+        </Grid> */}
 
-        {tooltipEnabled && (
+        {/* {tooltipEnabled && (
           <TextField
             fullWidth
             helperText={
@@ -416,9 +418,9 @@ export default class PropForm extends React.PureComponent {
             required
             value={currentTooltipValue}
           />
-        )}
+        )} */}
 
-        <Grid>
+        {/* <Grid>
           {SelectedIcon ? (
             <div onClick={onClickSelectIcon} style={iconSelectionStyle}>
               <SelectedIcon style={iconStyle} />
@@ -439,7 +441,7 @@ export default class PropForm extends React.PureComponent {
               selectedValue={selectedType}
             />
           )}
-        </Grid>
+        </Grid> */}
       </Grid>
     )
   }
@@ -462,6 +464,12 @@ const iconSelectionStyle = {
   justifyContent: 'center',
   width: ICON_AREA_DIMENSIONS,
   height: ICON_AREA_DIMENSIONS,
+}
+const bodyDialogAddNode = {
+  padding: '25px',
+}
+const TextFieldMt = {
+  marginTop: '15px',
 }
 
 /**

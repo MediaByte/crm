@@ -27,7 +27,13 @@ const Transition = props => <Slide direction="up" {...props} />
  */
 export default class Dialog extends React.PureComponent {
   render() {
-    const { children, handleClose, open, ...dialogAppBarProps } = this.props
+    const {
+      children,
+      handleClose,
+      open,
+      next,
+      ...dialogAppBarProps
+    } = this.props
 
     return (
       <MuiDialog
