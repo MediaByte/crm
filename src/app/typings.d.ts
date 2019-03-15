@@ -1,5 +1,5 @@
 import { Node } from './Node'
-import { SCHEMA_NAME } from './Utils'
+import { SCHEMA_NAME } from './Utils.mjs'
 
 type _OnChangeReturn = string | string[] | null | false | undefined | void
 type OnChangeReturn = Promise<_OnChangeReturn>

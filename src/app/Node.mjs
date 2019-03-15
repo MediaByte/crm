@@ -1,8 +1,9 @@
 // @ts-check
-//import Gun from 'gun'
+import Gun from 'gun/gun'
+import 'gun/lib/load'
 import * as Utils from './Utils'
 import size from 'lodash/size'
-import NodeSet from './NodeSet'
+import SetNode from './SetNode'
 
 // allow self to be undefined for intiial valuez?
 
@@ -31,88 +32,61 @@ export class Node {
    * @param {Schema} schema
    * @param {object} gunInstance
    */
-  constructor(schema, gunInstance) {
+  constructor(schema, gunInstance, isRoot = true) {
+    if (!Utils.isSchema(schema)) {
+      throw new TypeError('invalid schema')
+    }
+
+    if (!(gunInstance instanceof Gun)) {
+      throw new TypeError('invalid gunInstance')
+    }
+
     this.schema = schema
     this.gunInstance = gunInstance
+
     /**
      * @type {Record<keyof T, string|number|object>}
      */
-    this.cache = {}
-    /**
-     * @type {Record<keyof T, import('./typings')._referenceLeaf<{}, {}>}
-     */
-    this.edgeSchemas = {}
-    /**
-     * @type {Record<keyof T, Leaf>}
-     */
-    this.leafSchemas = {}
+    this.currentData = {}
+
     /** @type {Function[]} */
     this.subscribers = []
+
     /**
      * @type {Partial<Record<keyof T, Node>>}
      */
     this.edgeNodes = {}
 
     /**
-     * @type {Record<keyof T, NodeSet>}
+     * @type {Record<keyof T, SetNode>}
      */
-    this.nodeSets = {}
+    this.setNodes = {}
 
-    if (!isSchema(schema)) {
-      throw new TypeError()
+    for (const [key, setLeaf] of Object.entries(
+      Utils.getSetLeaves(this.schema),
+    )) {
+      this.setNodes[key] = new SetNode(setLeaf, this.gunInstance.get(key))
     }
 
-    for (const [key, leafOrSubschema] of Object.entries(schema)) {
-      if (typeof leafOrSubschema.type === 'string') {
-        this.leafSchemas[key] = leafOrSubschema
-      } else if (
-        typeof leafOrSubschema.type === 'object' &&
-        !Array.isArray(leafOrSubschema.type)
-      ) {
-        this.edgeSchemas[key] = leafOrSubschema
-      } else if (Array.isArray(leafOrSubschema.type)) {
-        this.nodeSets[key] = new NodeSet(leafOrSubschema, gunInstance.get(key))
-      } else {
-        throw new TypeError('invalid schema')
-      }
-    }
+    this.onOpen = this.onOpen.bind(this)
 
-    for (const [k, v] of Object.entries(this.nodeSets)) {
-      v.on(c => {
-        this.cache[k] = c
-      })
+    if (isRoot) {
+      this.gunInstance.open(this.onOpen)
     }
+  }
 
-    this.gunInstance.on(
-      nodeValue => {
-        for (const [key, value] of Object.entries(nodeValue)) {
-          if (key in this.leafSchemas) {
-            this._cachePut({
-              [key]: value,
-            })
-          } else if (key in this.edgeSchemas) {
-            this._cachePut({
-              [key]: value == null ? null : this.edgeNodes[key].cache,
-            })
-          } else if (key in this.nodeSets) {
-            this._cachePut({
-              [key]: value,
-            })
-          } else {
-            if (key == '_' || key == '#') continue
-            console.warn(
-              `an unknown key was received from the gun instance, in node: ${
-                this.schema[Utils.SCHEMA_NAME]
-              }, the key was: ${key}`,
-            )
-          }
+  onOpen(nextData) {
+    if (Utils.isValidOpenData(this.schema, nextData)) {
+      this.currentData = nextData
+      for (const [k, v] of Object.entries(this.currentData)) {
+        if (k in this.setNodes) {
+          this.setNodes[k].currentData = v
         }
-      },
-      {
-        // delta updates
-        change: true,
-      },
-    )
+      }
+      this.subscribers.forEach(cb => cb(this.currentData))
+    } else {
+      console.log('retry')
+    }
   }
 
   // uses for putedge:
@@ -128,9 +102,9 @@ export class Node {
     const errorMap = new Utils.ErrorMap()
 
     for (const [key, value] of Object.entries(data)) {
-      if (key in this.edgeSchemas) {
+      if (key in Utils.getEdgeLeaves(this.schema)) {
         if (value !== null) {
-          errorMap.put(key, 'can only be null')
+          errorMap.puts(key, 'can only be null')
         }
       }
     }
@@ -147,10 +121,10 @@ export class Node {
       const subschema = this.schema[key]
 
       const self = {
-        ...this.cache, // start with the cached objects
+        ...this.currentData, // start with the cached objects
         ...data, // actually provide the other values on this put() call to
         // ensure the onChange gets the whole picture.
-        [key]: this.cache[key], // keep the old value for key we are updating so
+        [key]: this.currentData[key], // keep the old value for key we are updating so
         // onChange() can compare it to the new value if
         // needed.
       }
@@ -189,7 +163,7 @@ export class Node {
     // so we check for that first and bail out early if the data isn't of the
     // correct types
     for (const [key, value] of Object.entries(data)) {
-      if (key in this.leafSchemas) {
+      if (key in Utils.getPrimitiveLeaves(this.schema)) {
         if (!Utils.valueIsOfType(this.schema[key].type, value)) {
           const msg = `Must be ${
             this.schema[key].type == 'number' ? 'a number' : 'text'
@@ -210,10 +184,10 @@ export class Node {
 
     for (const [key, value] of Object.entries(data)) {
       const self = {
-        ...this.cache, // start with the cached objects
+        ...this.currentData, // start with the cached objects
         ...data, // actually provide the other values on this put() call to
         // ensure the onChange gets the whole picture.
-        [key]: this.cache[key], // keep the old value for key we are updating so
+        [key]: this.currentData[key], // keep the old value for key we are updating so
         // onChange() can compare it to the new value if
         // needed.
       }
@@ -247,7 +221,7 @@ export class Node {
     const primitivePuts = {}
 
     for (const [key, value] of Object.entries(data)) {
-      if (key in this.edgeSchemas) {
+      if (key in Utils.getEdgeLeaves(this.schema)) {
         edgePuts[key] = value
       } else {
         primitivePuts[key] = value
@@ -276,8 +250,12 @@ export class Node {
 
       const errorMap = new Utils.ErrorMap()
 
-      for (const [key, value] of Object.entries(data)) {
-        if (!(key in this.schema)) {
+      for (const [key] of Object.entries(data)) {
+        const keyIsPrimitive = key in Utils.getPrimitiveLeaves(this.schema)
+        const keyIsEdge = key in Utils.getEdgeLeaves(this.schema)
+        const isValidKey = keyIsEdge || keyIsPrimitive
+
+        if (!isValidKey) {
           errorMap.puts(key, 'unexpected key')
         }
       }
@@ -358,7 +336,9 @@ export class Node {
    * @param {keyof T} key
    */
   get(key) {
-    const validKey = key in this.edgeSchemas || key in this.nodeSets
+    const validKey =
+      key in Utils.getEdgeLeaves(this.schema) ||
+      key in Utils.getSetLeaves(this.schema)
 
     if (!validKey) {
       throw new Error(
@@ -368,8 +348,8 @@ export class Node {
       )
     }
 
-    if (key in this.nodeSets) {
-      return this.nodeSets[key]
+    if (key in this.setNodes) {
+      return this.setNodes[key]
     }
 
     return {
@@ -378,7 +358,7 @@ export class Node {
        * @returns {Promise<PutResponse<T>>}
        */
       put: async node => {
-        const subschema = this.edgeSchemas[key]
+        const subschema = Utils.getEdgeLeaves(this.schema)[key]
 
         if (node.schema != subschema.type) {
           return {
@@ -388,75 +368,36 @@ export class Node {
           }
         }
 
-        const err = await subschema.onChange(this.cache, node.cache)
+        const err = await subschema.onChange(this.currentData, node.currentData)
 
-        let ok = true
-        /** @type {string|string[]} */
-        let messages = []
-
-        if (typeof err == 'string') {
-          // don't ignore empty strings, just in case.
-          ok = false
-          messages.push(err)
+        if (err) {
+          return {
+            ok: false,
+            messages: [],
+            details: {
+              [key]: typeof err == 'string' ? [err] : err,
+            },
+          }
         }
 
-        if (Array.isArray(err)) {
-          ok = err.length > 0
-          messages = err
-        }
+        return new Promise(resolve => {
+          this.gunInstance.get(key).put(node.gunInstance, ack => {
+            const ok = typeof ack.err == 'undefined'
 
-        if (ok) {
-          // gunInstance.on() will fire before this promise resolves, therefore
-          // we preemptively add the node to the edges so _onChange() can
-          // actually retrieve its value
-          this.edgeNodes[key] = node
-          return new Promise(resolve => {
-            this.gunInstance.get(key).put(node.gunInstance, ack => {
-              const ok = typeof ack.err == 'undefined'
+            if (!ok) this.edgeNodes[key] = null
 
-              if (!ok) this.edgeNodes[key] = null
-
-              resolve({
-                ok: typeof ack.err == 'undefined',
-                messages: typeof ack.err == 'string' ? [ack.err] : [],
-                details: {},
-              })
-            })
-          }).catch(e => {
-            this.edgeNodes[key] = null
-
-            return {
-              ok: false,
-              messages: [Utils.reasonToString(e)],
+            resolve({
+              ok: typeof ack.err == 'undefined',
+              messages: typeof ack.err == 'string' ? [ack.err] : [],
               details: {},
-            }
+            })
           })
-        }
-
-        return Promise.resolve({
-          ok,
-          messages,
+        }).catch(e => ({
+          ok: false,
+          messages: [Utils.reasonToString(e)],
           details: {},
-        })
+        }))
       },
-    }
-  }
-
-  /**
-   * @private
-   * @param {object} data
-   **/
-  _cachePut(data) {
-    Object.assign(this.cache, data)
-    this._onChange()
-  }
-
-  /** @private */
-  _onChange() {
-    // avoid broadcasting cache if the whole object hasn't been received from
-    // gun yet
-    if (Object.keys(this.cache).length == Object.keys(this.schema).length) {
-      this.subscribers.forEach(cb => cb(this.cache))
     }
   }
 
@@ -465,50 +406,28 @@ export class Node {
    * @returns {void}
    */
   on(cb) {
+    // TODO: fix memory leak
     this.subscribers.push(cb)
   }
 
   /**
-   * It also returns a promise.
    * @param {Function} cb
-   * @returns {Promise<object>}
+   * @returns {void}
    */
-  async once(cb) {
-    cb(this.cache)
-    return new Promise(resolve => {
-      resolve(this.cache)
-    })
+  off(cb) {
+    const idx = this.subscribers.indexOf(cb)
+    this.subscribers.splice(idx, 1)
   }
 
   /**
-   * @returns {void}
+   * It also returns a promise.
+   * @param {Function=} cb
+   * @returns {Promise<object>}
    */
-  off() {
-    this.subscribers = []
+  async once(cb) {
+    cb && cb(this.currentData)
+    return new Promise(resolve => {
+      resolve(this.currentData)
+    })
   }
-}
-
-/**
- * @param {any} o
- * @returns {o is Schema}
- */
-const isSchema = o => typeof o[Utils.SCHEMA_NAME] != 'undefined'
-
-/**
- * @param {any} o
- * @returns {o is Leaf}
- */
-const isLeaf = o => typeof o.type === 'string'
-
-// type can be 'string' or 'number' literals, howwever the type itself of
-// it will be an string
-// there could be a subschema with a 'type' key, however it would be an
-// object instead
-/**
- * @param {[string , Leaf|Schema]} entry
- * @returns {entry is [string , Leaf]}
- */
-const leafEntry = entry => {
-  const [, maybeSubschema] = entry
-  return isLeaf(maybeSubschema)
 }

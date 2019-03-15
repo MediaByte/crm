@@ -80,3 +80,112 @@ const _mergeResponseDetails = (...detailsObjects) =>
     ...finalDetails,
     ...nextDetails,
   }))
+
+//==============================================================================
+
+/**
+ * @param {any} o
+ * @returns {boolean}
+ */
+export const isSchema = o => {
+  if (typeof o[SCHEMA_NAME] !== 'string') return false
+  const leaves = Object.values(o)
+  if (leaves.length == 0) return false
+  return leaves.every(isSchemaLeaf)
+}
+
+/**
+ * @param {any} leaf
+ * @returns {boolean}
+ */
+export const isSchemaLeaf = leaf =>
+  isEdgeLeaf(leaf) || isPrimitiveLeaf(leaf) || isSetLeaf(leaf)
+
+/**
+ * @param {any} leaf
+ * @returns {boolean}
+ */
+export const isEdgeLeaf = leaf => {
+  if (typeof leaf !== 'object') return false
+  if (typeof leaf.type !== 'object') return false
+  if (!isSchema(leaf.type)) return false
+  if (typeof leaf.onChange !== 'function') return false
+  return true
+}
+
+/**
+ * @param {any} leaf
+ * @returns {boolean}
+ */
+export const isPrimitiveLeaf = leaf => {
+  if (typeof leaf !== 'object') return false
+  if (typeof leaf.type !== 'string') return false
+  if (!['number', 'string'].includes(leaf.type)) return false
+  if (typeof leaf.onChange !== 'function') return false
+  return true
+}
+
+export const isSetLeaf = leaf => {
+  if (typeof leaf !== 'object') return false
+  if (!Array.isArray(leaf.type)) return false
+  if (leaf.type.length !== 1) return false
+  if (!isSchema(leaf.type[0])) return false
+  if (typeof leaf.onChange !== 'function') return false
+  return true
+}
+
+/**
+ * @param {object} schema
+ * @returns {object}
+ */
+export const getEdgeLeaves = schema => {
+  const o = {}
+
+  for (const [key, leaf] of Object.entries(schema)) {
+    if (isEdgeLeaf(leaf)) {
+      o[key] = leaf
+    }
+  }
+
+  return o
+}
+
+/**
+ * @param {object} schema
+ * @returns {object}
+ */
+export const getPrimitiveLeaves = schema => {
+  const o = {}
+
+  for (const [key, leaf] of Object.entries(schema)) {
+    if (isPrimitiveLeaf(leaf)) {
+      o[key] = leaf
+    }
+  }
+
+  return o
+}
+
+/**
+ * @param {object} schema
+ * @returns {object}
+ */
+export const getSetLeaves = schema => {
+  const o = {}
+
+  for (const [key, leaf] of Object.entries(schema)) {
+    if (isSetLeaf(leaf)) {
+      o[key] = leaf
+    }
+  }
+
+  return o
+}
+
+/**
+ * @param {object} openData
+ * @returns {boolean}
+ */
+export const isValidOpenData = (schema, openData) => {
+  return schema && openData && Math.random() > 0
+}

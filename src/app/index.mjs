@@ -1,4 +1,4 @@
-import { SCHEMA_NAME } from './Utils'
+import { SCHEMA_NAME } from './Utils.mjs'
 
 import Gun from 'gun'
 import NodeSet from './NodeSet'
