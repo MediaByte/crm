@@ -4,6 +4,8 @@ import { SCHEMA_NAME } from './Utils.mjs'
 type _OnChangeReturn = string | string[] | null | false | undefined | void
 type OnChangeReturn = Promise<_OnChangeReturn>
 
+type Self<T> = { [K in keyof T]: T[K] | undefined }
+
 export interface StringLeaf<T extends object> {
   onChange(self: T, nextVal: string): OnChangeReturn
   type: 'string'
@@ -21,7 +23,11 @@ export interface ReferenceLeaf<T extends object, RT extends object> {
 
 export interface SetLeaf<T extends object> {
   type: Array<Schema>
-  onChange(self: Record<string, T>, nextVal: T, key: string): OnChangeReturn
+  onChange(
+    self: Record<string, T>,
+    nextVal: T,
+    key: string | undefined,
+  ): OnChangeReturn
 }
 
 export type Leaf<T extends object, RT extends object = {}> =

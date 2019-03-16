@@ -14,7 +14,9 @@ const UserGroup = {
   [Utils.SCHEMA_NAME]: 'UserGroup',
   name: {
     type: 'string',
-    async onChange() {},
+    async onChange(self, nextVal) {
+      return undefined
+    },
   },
 }
 
@@ -46,7 +48,17 @@ const Root = {
   },
   userGroups: {
     type: [UserGroup],
-    async onChange() {},
+    async onChange(ugs, next, key) {
+      if (key in ugs) {
+        // the node is being updated
+      } else {
+        for (const [key, ug] of Object.entries(ugs)) {
+          if (ug.name == next.name) {
+            return 'userGroup name duplicated'
+          }
+        }
+      }
+    },
   },
 }
 
@@ -61,37 +73,13 @@ root.on(console.log)
 
 let data
 ;(async () => {
-  await userGroups.set({ name: 'myUserGroup' })
+  await userGroups.set({
+    name: 'myUserGroup',
+  })
 
-  const [key] = Object.keys(userGroups.currentData)
+  res = await userGroups.set({
+    name: 'myUserGroupx',
+  })
 
-  if (key) {
-    const myUserGroup = userGroups.get(key)
-
-    await myUserGroup.put({
-      name: 'MYNEWUSERGROUPNAME',
-    })
-
-    await users.set({
-      name: 'myUser',
-    })
-
-    const [userKey] = Object.keys(users.currentData)
-
-    if (userKey) {
-      const myUser = users.get(userKey)
-
-      await myUser.put({
-        name: 'fakeMyUser',
-      })
-
-      await myUser.get('userGroup').put(myUserGroup)
-
-      root.get('mainUserGroup').put(myUserGroup)
-    } else {
-      console.log('no user key')
-    }
-  } else {
-    console.log('no userGroup key')
-  }
+  console.log(res)
 })()

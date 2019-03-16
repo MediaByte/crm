@@ -53,11 +53,6 @@ export class Node {
     this.subscribers = []
 
     /**
-     * @type {Partial<Record<keyof T, Node>>}
-     */
-    this.edgeNodes = {}
-
-    /**
      * @type {Record<keyof T, SetNode>}
      */
     this.setNodes = {}
@@ -383,8 +378,6 @@ export class Node {
         return new Promise(resolve => {
           this.gunInstance.get(key).put(node.gunInstance, ack => {
             const ok = typeof ack.err == 'undefined'
-
-            if (!ok) this.edgeNodes[key] = null
 
             resolve({
               ok: typeof ack.err == 'undefined',
