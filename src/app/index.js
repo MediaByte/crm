@@ -1,7 +1,7 @@
 import { SCHEMA_NAME } from './Utils.mjs'
 
 import Gun from 'gun'
-import NodeSet from './NodeSet'
+import SetNode from './SetNode'
 
 const gun = Gun().get('root')
 
@@ -11,7 +11,7 @@ const UserGroup = {
     type: 'string',
     async onChange(self, nextVal) {
       if (nextVal === 'foo') {
-        return 'illegal name'
+        return self && 'illegal name'
       }
     },
   },
@@ -140,6 +140,6 @@ const PineconeNodes = {
   },
 }
 
-export const userGroups = new NodeSet(UserGroups, gun.get('userGroups'))
-export const users = new NodeSet(Users, gun.get('users'))
-export const nodes = new NodeSet(PineconeNodes, gun.get('nodes'))
+export const userGroups = new SetNode(UserGroups, gun.get('userGroups'))
+export const users = new SetNode(Users, gun.get('users'))
+export const nodes = new SetNode(PineconeNodes, gun.get('nodes'))

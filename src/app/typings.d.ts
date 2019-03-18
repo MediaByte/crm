@@ -1,5 +1,6 @@
 import { Node } from './Node'
-import { SCHEMA_NAME } from './Utils.mjs'
+import { SCHEMA_NAME } from './Utils'
+import SetNode from './SetNode'
 
 type _OnChangeReturn = string | string[] | null | false | undefined | void
 type OnChangeReturn = Promise<_OnChangeReturn>
@@ -17,8 +18,8 @@ export interface NumberLeaf<T extends object> {
 }
 
 export interface ReferenceLeaf<T extends object, RT extends object> {
-  onChange(self: T, nextVal: Node<RT>): OnChangeReturn
-  type: Leaf<{}>
+  onChange(self: T, nextVal: RT): OnChangeReturn
+  type: Schema<RT>
 }
 
 export interface SetLeaf<T extends object> {
@@ -35,13 +36,22 @@ export type Leaf<T extends object, RT extends object = {}> =
   | NumberLeaf<T>
   | ReferenceLeaf<T, RT>
 
-export interface Schema {
-  readonly [SCHEMA_NAME]: unique symbol
-  readonly [K: string]: Leaf<{}>
-}
+type A<T extends object = {}> = { [K in keyof T]: string }
 
-interface PutResponse<T extends object> {
+export type Schema<T extends object = {}> = {
+  readonly [K in keyof T]: Leaf<T>
+} & { readonly [SCHEMA_NAME]: string }
+
+export interface PutResponse<T extends object> {
   ok: boolean
   messages: string[]
   details: { [K in keyof T]?: string[] }
+}
+
+export type SetNodes<T extends object> = {
+  [K in keyof T]: T[K] extends Record<string, infer K> ? SetNode<K> : never
+}
+
+export interface ReferenceNode<T extends object = {}> {
+  put(node: Node<T>): Promise<PutResponse<T>>
 }

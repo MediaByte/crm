@@ -4,7 +4,7 @@ import 'gun/lib/store'
 import 'gun/lib/open'
 
 import { Node } from './Node'
-import * as Utils from './Utils.mjs'
+import * as Utils from './Utils'
 
 console.log('\n\n\n\n\n\n\n\n\n')
 

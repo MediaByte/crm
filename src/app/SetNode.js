@@ -44,6 +44,9 @@ export default class SetNode {
 
     this.gunInstance = gunInstance
 
+    /**
+     * @type {Function[]}
+     */
     this.subscribers = []
 
     this.currentData = {}
@@ -61,6 +64,7 @@ export default class SetNode {
     }
 
     return new Promise(resolve => {
+      // @ts-ignore
       this.gunInstance.set(object, ack => {
         resolve({
           ok: typeof ack.err == 'undefined',
@@ -108,9 +112,12 @@ export default class SetNode {
         continue
       }
 
+      // @ts-ignore
       const isNull = objectData[key] === null
       const isCorrectType = Utils.valueIsOfType(
+        // @ts-ignore
         this.itemSchema[key].type,
+        // @ts-ignore
         objectData[key],
       )
 
@@ -140,6 +147,7 @@ export default class SetNode {
         [key]: undefined, // signals that this is a new node being created
       }
 
+      // @ts-ignore
       validations[key] = this.itemSchema[key].onChange(self, objectData[key])
     }
 
