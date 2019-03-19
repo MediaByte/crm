@@ -10,6 +10,7 @@ import InputAdornment from '@material-ui/core/InputAdornment'
 import Slide from '@material-ui/core/Slide'
 import TextField from '@material-ui/core/TextField'
 import Tooltip from '@material-ui/core/Tooltip'
+import Button from '@material-ui/core/Button'
 
 /**
  * @typedef {import('@material-ui/core/SvgIcon').SvgIconProps} SvgIconProps
@@ -171,6 +172,7 @@ class AddDialog extends React.PureComponent {
             />
             <div className={classes.dialogBody}>
               <TextField
+                className={classes.margin}
                 InputProps={nameFieldInputProps}
                 error={nameFieldError}
                 fullWidth
@@ -184,6 +186,7 @@ class AddDialog extends React.PureComponent {
                 required
               />
               <TextField
+                className={classes.margin}
                 InputProps={identifierFieldInputProps}
                 error={identifierFieldError}
                 fullWidth
@@ -199,6 +202,7 @@ class AddDialog extends React.PureComponent {
                 required
               />
               <TextField
+                className={classes.margin}
                 InputProps={labelFieldInputProps}
                 error={labelFieldError}
                 fullWidth
@@ -211,7 +215,6 @@ class AddDialog extends React.PureComponent {
                 required
                 value={labelFieldValue}
               />
-              <Divider />
               <Grid
                 alignContent="center"
                 alignItems="center"
@@ -219,9 +222,18 @@ class AddDialog extends React.PureComponent {
                 direction="row"
                 justify="center"
               >
-                <IconButton onClick={onClickSelectedIcon}>
+                <Button
+                  onClick={onClickSelectedIcon}
+                  variant="contained"
+                  size="small"
+                  color="primary"
+                  className={classes.margin}
+                >
+                  Choose Icon
+                </Button>
+                {/* <IconButton>
                   <SelectedIcon className={classes.selectedIcon} />
-                </IconButton>
+                </IconButton> */}
               </Grid>
             </div>
           </form>
@@ -244,10 +256,12 @@ const styles = theme => ({
     dropShadow: 'none',
   },
   dialogBody: {
-    marginBottom: 10,
-    marginLeft: 20,
-    marginRight: 20,
-    marginTop: 10,
+    padding: theme.spacing.unit * 2,
+    paddingRight: theme.spacing.unit * 6,
+    paddingLeft: theme.spacing.unit * 6,
+  },
+  margin: {
+    margin: theme.spacing.unit,
   },
   h6: {
     display: 'inline',

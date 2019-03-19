@@ -2,7 +2,13 @@ import React from 'react'
 
 import Dialog from '@material-ui/core/Dialog'
 import Grid from '@material-ui/core/Grid'
+import GridContainer from '@material-ui/core/Grid'
+import GridItem from '@material-ui/core/Grid'
+
 import Paper from '@material-ui/core/Paper'
+import DialogActions from '@material-ui/core/DialogActions'
+import Button from '@material-ui/core/Button'
+
 import Tab from '@material-ui/core/Tab'
 import Tabs from '@material-ui/core/Tabs'
 import Typography from '@material-ui/core/Typography'
@@ -97,7 +103,7 @@ class SelectIconDialog extends React.PureComponent {
         onClick={onClickIcon}
         selected={selectedIconIndex === i}
       >
-        {icon}
+        <div>{icon}</div>
       </IconWrapper>
     ))
 
@@ -116,28 +122,27 @@ class SelectIconDialog extends React.PureComponent {
         />
 
         <Grid
-          alignContent="center"
-          alignItems="center"
+          className={classes.bodyDialog}
+          alignContent="flex-start"
+          alignItems="flex-start"
           container
           direction="column"
           justify="flex-start"
         >
           {typeof selectedIconIndex === 'number' && (
             <React.Fragment>
-              <Typography color="primary" variant="body1">
+              {/* <Typography color="primary" variant="body1">
                 Selected Icon
-              </Typography>
-              <SelectableIcon big selected>
+              </Typography> */}
+              {/* <SelectableIcon big selected>
                 {children[selectedIconIndex]}
-              </SelectableIcon>
+              </SelectableIcon> */}
             </React.Fragment>
           )}
           <Paper className={classes.tabsPaper} square>
-            <Tabs onChange={this.onTabChange} value={currentIconStyle}>
-              <Tab label="Filled" value={IconStyle.filled} />
+            {/* <Tabs onChange={this.onTabChange} value={currentIconStyle}>
               <Tab label="Outlined" value={IconStyle.outlined} />
-              <Tab label="Two-Tone" value={IconStyle['twoTone']} />
-            </Tabs>
+            </Tabs> */}
           </Paper>
           <Grid className={classes.iconsList} container justify="center">
             {//
@@ -148,6 +153,10 @@ class SelectIconDialog extends React.PureComponent {
               icons}
           </Grid>
         </Grid>
+        <DialogActions className={classes.dialogActions}>
+          <Button color="secondary">Cancel</Button>
+          <Button color="primary">Save</Button>
+        </DialogActions>
       </Dialog>
     )
   }
@@ -183,11 +192,15 @@ class IconWrapper extends React.PureComponent {
 }
 
 const styles = {
-  iconsList: {
-    backgroundColor: '#ccc',
-  },
   tabsPaper: {
     maxWidth: '80%',
+  },
+  bodyDialog: {
+    padding: '15px',
+  },
+  dialogActions: {
+    justifyContent: 'space-between',
+    borderTop: '1px solid #ddd',
   },
 }
 

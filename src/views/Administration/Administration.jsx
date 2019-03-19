@@ -168,7 +168,7 @@ class AdminPanel extends React.Component {
             <List>
               <ListItem
                 component={props => (
-                  <NavLink to={'/management/employees'} {...props} />
+                  <NavLink to={'/management/nodes-and-props'} {...props} />
                 )}
                 className={classes.listItem}
               >

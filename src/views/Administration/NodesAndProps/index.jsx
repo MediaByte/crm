@@ -2,20 +2,34 @@ import React from 'react'
 
 import Grid from '@material-ui/core/Grid'
 
-import AddNodeDialog from 'containers/AddNodeDialog'
 import Dialog from 'components/Dialog'
-import NodeOverview from 'components/NodeOverview'
-import PageColumn from 'views/Page/PageColumn.jsx'
+import Page from 'views/Page/Page.jsx'
 import PropForm from 'components/PropForm'
-import RelationshipForm from 'components/RelationshipForm'
-import TitleSubtitleList from 'containers/TitleSubtitleList'
-import { nameToIconMap } from 'common/NameToIcon'
+import IconButton from '@material-ui/core/IconButton'
+import AddIcon from '@material-ui/icons/Add'
+import NodeDrawer from 'components/NodeDrawer/NodeDrawer'
+import EditNodeDialog from 'components/EditNodeDialog'
+
+// const style = theme => ({
+//   buttonAdd: {
+// position: 'absolute',
+// bottom: '40px',
+// right: '50px',
+// backgroundColor: '#f34930',
+// color: '#fff',
+// transition:
+//   'background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
+// boxShadow:
+//   '0px 3px 5px -1px rgba(0,0,0,0.2), 0px 6px 10px 0px rgba(0,0,0,0.14), 0px 1px 18px 0px rgba(0,0,0,0.12)',
+//   },
+// })
 
 /**
  * Placeholder while the model shape clears up.
  * @typedef {object} NodeProp
  * @prop {string} name
  * @prop {string} type
+ * @prop {(() => void)=} onClickAddProperty
  */
 
 /**
@@ -55,6 +69,7 @@ import { nameToIconMap } from 'common/NameToIcon'
 /**
  * @augments React.PureComponent<Props, State, never>
  */
+
 export default class NodesAndProps extends React.PureComponent {
   /** @type {State} */
   state = {
@@ -99,6 +114,11 @@ export default class NodesAndProps extends React.PureComponent {
       showingAddRelDialog: !showingAddRelDialog,
     }))
   }
+  toggleEditNodeDialog = () => {
+    this.setState(({ showingEditNodeDialog }) => ({
+      showingEditNodeDialog: !showingEditNodeDialog,
+    }))
+  }
 
   render() {
     const { availableTypes, nodes } = this.props
@@ -107,61 +127,74 @@ export default class NodesAndProps extends React.PureComponent {
       showingAddNodeDialog,
       showingAddRelDialog,
       showingPropDialog,
+      showingEditNodeDialog,
     } = this.state
     const classes = { demo: '' }
 
     const selectedNode =
-      typeof selectedNodeID == 'number' &&
+      typeof selectedNodeID === 'number' &&
       nodes.filter(node => node.id === selectedNodeID)[0]
 
     return (
       <React.Fragment>
         <Dialog
-          handleClose={this.handleClosePropForm}
-          open={showingPropDialog}
-          title="Add a Property"
+          open={showingAddNodeDialog}
+          title="Add a Node"
+          handleClose={this.toggleAddNodeDialog}
         >
-          <PropForm availableTypes={availableTypes} />
+          <PropForm availableTypes={[]} />
         </Dialog>
 
-        <AddNodeDialog
+        <Dialog
+          open={showingEditNodeDialog}
+          title="Edit Node"
+          handleClose={this.toggleEditNodeDialog}
+        >
+          <EditNodeDialog />
+        </Dialog>
+
+        {/* <AddNodeDialog
           availableIconNames={Object.keys(nameToIconMap)}
           handleClose={this.toggleAddNodeDialog}
           handleSave={() => {}}
           isValidIdentifierValue={() => true}
           isValidLabelValue={() => true}
           isValidNameValue={() => true}
-          open={showingAddNodeDialog}
+          open={false}
         />
 
         <Dialog
           actionButtonText="SAVE"
           handleClose={this.toggleAddRelDialog}
           onClickCloseButton={this.toggleAddRelDialog}
-          open={showingAddRelDialog}
+          open={true}
           title="Add a Relationship"
         >
           <RelationshipForm availableNodeNames={[]} />
-        </Dialog>
+        </Dialog> */}
 
-        <PageColumn titleText="Nodes And Properties">
-          <Grid container>
-            <Grid item>
-              <TitleSubtitleList
-                extractID={extractNodeID}
-                extractTitle={extractNodeName}
-                onClickAdd={this.toggleAddNodeDialog}
-                onClickItem={this.onClickNodeOnList}
-                items={nodes}
-                // TODO: optimize away array literal
-                selectedIDs={(selectedNodeID && [selectedNodeID]) || undefined}
-                showToolbar
-              />
+        <Page titleText="Nodes And Properties">
+          <Grid
+            container
+            style={{ backgroundColor: '#fafafa', height: '100%' }}
+          >
+            {/* <TitleSubtitleList
+              extractID={extractNodeID}
+              extractTitle={extractNodeName}
+              onClickAdd={this.toggleAddNodeDialog}
+              onClickItem={this.onClickNodeOnList}
+              items={nodes}
+              // TODO: optimize away array literal
+              selectedIDs={(selectedNodeID && [selectedNodeID]) || undefined}
+              showToolbar
+            /> */}
+            <Grid item xs={12}>
+              <NodeDrawer onclickEditNode={this.toggleEditNodeDialog} />
             </Grid>
-
-            <Grid item xs={12} sm={7} md={8} lg={9} className={classes.demo}>
+            {/* <Grid item xs={12} className={classes.demo}>
               {selectedNode && (
                 <NodeOverview
+                  onclickEditNode={this.toggleEditNodeDialog}
                   identifier={selectedNode.identifier}
                   iconName={selectedNode.iconName}
                   label={selectedNode.label}
@@ -172,13 +205,36 @@ export default class NodesAndProps extends React.PureComponent {
                   relationships={selectedNode.relationships}
                 />
               )}
-            </Grid>
+            </Grid> */}
+            <IconButton
+              color="secondary"
+              className={classes.buttonAdd}
+              style={{
+                position: 'absolute',
+                bottom: '40px',
+                right: '50px',
+                backgroundColor: '#f34930',
+                color: '#fff',
+                transition:
+                  'background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
+                boxShadow:
+                  '0px 3px 5px -1px rgba(0,0,0,0.2), 0px 6px 10px 0px rgba(0,0,0,0.14), 0px 1px 18px 0px rgba(0,0,0,0.12)',
+              }}
+              onClick={() => {
+                this.setState(state => ({
+                  showingAddNodeDialog: !state.showingAddNodeDialog,
+                }))
+              }}
+            >
+              <AddIcon />
+            </IconButton>
           </Grid>
-        </PageColumn>
+        </Page>
       </React.Fragment>
     )
   }
 }
+
 /** @param {Node} node */
 const extractNodeID = node => node.id
 
