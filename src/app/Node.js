@@ -89,7 +89,7 @@ export class Node {
    * @param {object} nextData
    */
   onOpen(nextData) {
-    if (Utils.isValidOpenData(this.schema, nextData)) {
+    if (Utils.conformsToSchema(this.schema, nextData)) {
       this.currentData = nextData
       for (const [k, v] of Object.entries(this.currentData)) {
         if (k in this.setNodes) {
@@ -99,7 +99,7 @@ export class Node {
       }
       this.subscribers.forEach(cb => cb(this.currentData))
     } else {
-      console.log('retry')
+      console.log('Node::onOpen: retry')
     }
   }
 

@@ -41,21 +41,41 @@ import flattenDeep from 'lodash/flattenDeep'
 export const SCHEMA_NAME = Symbol('SCHEMA_NAME')
 
 /**
- * @param {'number'|'string'} type
+ *
+ * @param {'number'|'number?'|'string'|'string?'} type
  * @param {any} value
- * @returns {boolean}
+ * @returns {boolean} Returns false for empty strings.
  * @throws {TypeError}
  */
 export const valueIsOfType = (type, value) => {
   const map = {
     /** @param {any} value */
-    number: value => typeof value == 'number',
+    number: value => typeof value === 'number',
+
     /** @param {any} value */
-    string: value => typeof value == 'string' && value.length > 0,
+    'number?': value => typeof value === 'number' || value === null,
+
+    /** @param {any} value */
+    string: value => typeof value === 'string' && value.length > 0,
+
+    /** @param {any} value */
+    'string?': value => {
+      if (value === null) {
+        return true
+      }
+
+      return typeof value === 'string' && value.length > 0
+    },
   }
+
   if (!(type in map)) {
-    throw new TypeError('value')
+    throw new TypeError(
+      `valueIsOfType: illegal argument given for type parameter, expected ${Object.keys(
+        map,
+      ).toString()} but got: ${JSON.stringify(type)}`,
+    )
   }
+
   return map[type](value)
 }
 
@@ -115,12 +135,22 @@ export const mergeResponses = (...responses) =>
 /**
  *
  * @param {Array<import('./typings').PutResponse<{}>['details']>} detailsObjects
+ * @returns {import('./typings').PutResponse<{}>['details']}
  */
-const _mergeResponseDetails = (...detailsObjects) =>
-  detailsObjects.reduce((finalDetails, nextDetails) => ({
-    ...finalDetails,
-    ...nextDetails,
-  }))
+const _mergeResponseDetails = (...detailsObjects) => {
+  const finalDetails = {}
+
+  detailsObjects.forEach(dObj => {
+    for (const [key, msgs] of Object.entries(dObj)) {
+      // @ts-ignore
+      if (!finalDetails[key]) finalDetails[key] = []
+      // @ts-ignore
+      finalDetails[key].push(...msgs)
+    }
+  })
+
+  return finalDetails
+}
 
 //==============================================================================
 
@@ -136,12 +166,14 @@ export const isSchema = o => {
 }
 
 /**
+ // @ts-ignore
  * @template T
+ // @ts-ignore
  * @template RT
  * @param {any} leaf
  * @returns {leaf is Leaf<T, RT>}
  */
-export const isSchemaLeaf = leaf =>
+const isSchemaLeaf = leaf =>
   isEdgeLeaf(leaf) || isPrimitiveLeaf(leaf) || isSetLeaf(leaf)
 
 /**
@@ -150,7 +182,7 @@ export const isSchemaLeaf = leaf =>
  * @param {any} leaf
  * @returns {leaf is ReferenceLeaf<T, RT>}
  */
-export const isEdgeLeaf = leaf => {
+const isEdgeLeaf = leaf => {
   if (typeof leaf !== 'object') return false
   if (typeof leaf.type !== 'object') return false
   if (!isSchema(leaf.type)) return false
@@ -163,7 +195,7 @@ export const isEdgeLeaf = leaf => {
  * @param {any} leaf
  * @returns {leaf is NumberLeaf<T>|StringLeaf<T>}
  */
-export const isPrimitiveLeaf = leaf => {
+const isPrimitiveLeaf = leaf => {
   if (typeof leaf !== 'object') return false
   if (typeof leaf.type !== 'string') return false
   if (!['number', 'string'].includes(leaf.type)) return false
@@ -246,9 +278,50 @@ export const getSetLeaves = schema => {
 
 /**
  * @param {Schema<{}>} schema
- * @param {object} openData
+ * @param {Record<string, number|string|null|object>} data
  * @returns {boolean}
  */
-export const isValidOpenData = (schema, openData) => {
-  return schema && openData && Math.random() > 0
+export const conformsToSchema = (schema, data) => {
+  if (typeof data !== 'object') {
+    return false
+  }
+
+  if (Array.isArray(data)) {
+    return false
+  }
+
+  if (data == null) {
+    return false
+  }
+
+  return Object.entries(schema).every(([key, leaf]) => {
+    if (!(key in data)) {
+      return false
+    }
+
+    if (isPrimitiveLeaf(leaf)) {
+      return data[key] === null || valueIsOfType(leaf.type, data[key])
+    }
+
+    if (isEdgeLeaf(leaf)) {
+      return conformsToSchema(leaf.type, data[key])
+    }
+
+    if (isSetLeaf(leaf)) {
+      const isObject = typeof data[key] === 'object'
+      const isNull = data[key] == null
+
+      if (!isObject || isNull) {
+        return false
+      }
+
+      return Object.values(data[key]).every(item =>
+        conformsToSchema(leaf.type[0], item),
+      )
+    }
+
+    console.error(`unknown type of leaf: ${JSON.stringify(leaf)}`)
+
+    return false
+  })
 }
