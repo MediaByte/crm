@@ -4,15 +4,20 @@ import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 //project components
-import Navigation from 'components/Navigation/Navigation.jsx'
+import Navigation from 'components/Navigation/Navigation'
 //styles
-import navStyles from 'components/Navigation/navStyle.js'
+import navStyles from 'components/Navigation/navStyle'
 
 class Page extends React.Component {
   render() {
     const { children, classes, ...navProps } = this.props
     return (
-      <Navigation title={this.props.titleText} classes {...navProps}>
+      <Navigation
+        title={this.props.titleText}
+        classes
+        style={{ backgroundColor: 'red' }}
+        {...navProps}
+      >
         <Typography variant="title" noWrap className={classes.title}>
           {this.props.titleText}
         </Typography>
@@ -22,7 +27,7 @@ class Page extends React.Component {
   }
 }
 
-Navigation.propTypes = {
+Page.propTypes = {
   classes: PropTypes.object.isRequired,
 }
 
