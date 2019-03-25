@@ -66,7 +66,7 @@ export class Node {
     this.subscribers = []
 
     /**
-     * @type {Record<keyof T, SetNode<T[keyof T]>}
+     * @type {Record<keyof T, SetNode<T[keyof T]>>}
      */
     // @ts-ignore
     this.setNodes = {}
