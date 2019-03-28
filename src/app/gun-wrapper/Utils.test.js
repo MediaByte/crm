@@ -5,6 +5,7 @@ describe('valueIsOfType()', () => {
     expect(() => {
       Utils.valueIsOfType('string', '')
       Utils.valueIsOfType('number', 5)
+      Utils.valueIsOfType('boolean', true)
     }).not.toThrow()
 
     expect(() => {

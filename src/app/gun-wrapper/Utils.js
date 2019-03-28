@@ -42,7 +42,7 @@ export const SCHEMA_NAME = Symbol('SCHEMA_NAME')
 
 /**
  *
- * @param {'number'|'number?'|'string'|'string?'} type
+ * @param {'number'|'string'|'boolean'} type
  * @param {any} value
  * @returns {boolean} Returns false for empty strings.
  * @throws {TypeError}
@@ -54,6 +54,9 @@ export const valueIsOfType = (type, value) => {
 
     /** @param {any} value */
     string: value => typeof value === 'string' && value.length > 0,
+
+    /** @param {any} value */
+    boolean: value => typeof value === 'boolean',
   }
 
   if (!(type in map)) {
@@ -186,7 +189,7 @@ const isEdgeLeaf = leaf => {
 const isPrimitiveLeaf = leaf => {
   if (typeof leaf !== 'object') return false
   if (typeof leaf.type !== 'string') return false
-  if (!['number', 'string'].includes(leaf.type)) return false
+  if (!['number', 'string', 'boolean'].includes(leaf.type)) return false
   if (typeof leaf.onChange !== 'function') return false
   return true
 }
