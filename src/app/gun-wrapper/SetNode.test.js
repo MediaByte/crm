@@ -8,8 +8,6 @@ import SetNode from './SetNode'
 
 import { User } from './__mocks__/mockSchema'
 
-const rootGunInstance = Gun().get(Math.random().toString())
-
 const Root = {
   [Utils.SCHEMA_NAME]: 'Root',
   users: {
@@ -31,7 +29,7 @@ let rootNode
 let setNode
 
 beforeEach(() => {
-  rootNode = new Node(Root, rootGunInstance)
+  rootNode = new Node(Root, Gun().get(Math.random().toString()))
   setNode = rootNode.get('users')
 })
 
@@ -130,6 +128,7 @@ it('returns a node of the correct type when getting it through get()', done => {
 })
 
 it('returns a node with the correct cached data when getting it through get()', done => {
+  expect.assertions(1)
   // TODO: find out why it's detecting 2 assertion calls
   // expect.assertions(1)
 
@@ -145,19 +144,28 @@ it('returns a node with the correct cached data when getting it through get()', 
     setTimeout(() => {
       const [anUserKey] = Object.keys(setNode.currentData)
 
+      console.log(`b: ${JSON.stringify(setNode.currentData)}`)
+
       if (typeof anUserKey !== 'string') {
-        console.log(`anUserKey: ${anUserKey}`)
+        console.warn(`anUserKey wasnt string: ${anUserKey}`)
       }
 
       const shouldBeNode = setNode.get(anUserKey)
 
-      if (!(shouldBeNode instanceof Gun)) {
-        console.log('shouldBeNode isnt instance of Gun')
+      if (!(shouldBeNode instanceof Node)) {
+        console.warn('shouldBeNode isnt instance of Node')
+      }
+
+      if (shouldBeNode.currentData.name !== anUser.name) {
+        console.warn(`expectation unfulfilled,
+        shouldBeNode.currentData.name: ${shouldBeNode.currentData.name},
+        anUser.name: ${anUser.name}
+        `)
       }
 
       expect(shouldBeNode.currentData).toEqual(anUser)
 
       done()
-    }, 0)
+    }, 1000)
   })
 })
