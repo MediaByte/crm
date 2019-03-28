@@ -144,8 +144,6 @@ it('returns a node with the correct cached data when getting it through get()', 
     setTimeout(() => {
       const [anUserKey] = Object.keys(setNode.currentData)
 
-      console.log(`b: ${JSON.stringify(setNode.currentData)}`)
-
       if (typeof anUserKey !== 'string') {
         console.warn(`anUserKey wasnt string: ${anUserKey}`)
       }
