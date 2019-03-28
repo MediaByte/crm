@@ -15,6 +15,12 @@ export {} // stop jsdoc comments from merging
  * @typedef {import('./typings').SetLeaf<T>} SetLeaf
  */
 
+/**
+ * @typedef {import('./simple-typings').OnChangeReturn} SimpleOnChangeReturn
+ * @typedef {import('./simple-typings').Schema} SimpleSchema
+ * @typedef {import('./simple-typings').Node} SimpleNode
+ */
+
 export {} // stop jsdoc comments from merging
 
 /**
@@ -28,17 +34,16 @@ export {} // stop jsdoc comments from merging
  */
 export default class SetNode {
   /**
-   * @param {SetLeaf<T>} setSchemaLeaf
+   * @param {Schema} itemSchema
    * @param {object} gunInstance
+   * @param {(nextVal: SimpleNode|null, key?: string) => SimpleOnChangeReturn} setOnChange
    */
-  constructor(setSchemaLeaf, gunInstance) {
-    if (!Utils.isSetLeaf(setSchemaLeaf)) {
-      throw new TypeError('invalid schema leaf given to NodeSet()')
+  constructor(itemSchema, gunInstance, setOnChange) {
+    if (!Utils.isSchema(itemSchema)) {
+      throw new TypeError('invalid schema SetNode()')
     }
 
-    this.setSchemaLeaf = setSchemaLeaf
-
-    this.itemSchema = setSchemaLeaf.type[0]
+    this.itemSchema = itemSchema
 
     this.gunInstance = gunInstance
 
@@ -48,6 +53,8 @@ export default class SetNode {
     this.subscribers = []
 
     this.currentData = {}
+
+    this.setOnChange = setOnChange
   }
 
   /**
@@ -75,7 +82,7 @@ export default class SetNode {
    * @returns {Promise<PutResponse<T>>}
    */
   async set(object) {
-    const res = await this.isValid(object)
+    const res = await this.isValidSet(object)
 
     if (!res.ok) {
       return res
@@ -111,7 +118,12 @@ export default class SetNode {
 
     const gunSubInstance = this.gunInstance.get(setKey)
 
-    const node = new Node(this.itemSchema, gunSubInstance, false)
+    const node = new Node(
+      this.itemSchema,
+      gunSubInstance,
+      false,
+      nextValOrNull => this.setOnChange(nextValOrNull, setKey),
+    )
 
     // why not?
     node.currentData = this.currentData[setKey]
@@ -124,7 +136,7 @@ export default class SetNode {
    * @param {T & { [K in keyof T]?: object}} objectData
    * @returns {Promise<PutResponse<T>>}
    */
-  async isValid(objectData) {
+  async isValidSet(objectData) {
     const errorMap = new Utils.ErrorMap()
 
     for (const key of Object.keys(this.itemSchema)) {
@@ -198,16 +210,12 @@ export default class SetNode {
     // for example, to prevent 2 items with the same value for a property and
     // what not
 
-    const err = await this.setSchemaLeaf.onChange(
-      this.currentData,
-      objectData,
-      undefined,
-    )
+    const err = await this.setOnChange(objectData)
 
-    if (err) {
+    if (Array.isArray(err)) {
       return {
         ok: false,
-        messages: typeof err == 'string' ? [err] : err,
+        messages: err,
         details: {},
       }
     }

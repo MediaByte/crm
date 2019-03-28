@@ -8,6 +8,11 @@ import SetNode from './SetNode'
 // allow self to be undefined for intiial valuez?
 
 /**
+ * @typedef {import('./simple-typings').OnChangeReturn} SimpleOnChangeReturn
+ * @typedef {import('./simple-typings').Node} SimpleNode
+ */
+
+/**
  * @typedef {import('./typings').Leaf<any>} Leaf
  *
  * @typedef {import('./SetNode').default<{}>} SetNode
@@ -36,6 +41,8 @@ import SetNode from './SetNode'
 
 export {} // stop jsdoc comments from merging
 
+const DEFAULT_ON_SET_CHANGE = () => Promise.resolve(false)
+
 /**
  * @template T
  */
@@ -43,8 +50,15 @@ export class Node {
   /**
    * @param {Schema<T>} schema
    * @param {object} gunInstance
+   * @param {boolean=} isRoot
+   * @param {((nextVal: SimpleNode|null) => SimpleOnChangeReturn)=} onSetChange
    */
-  constructor(schema, gunInstance, isRoot = true) {
+  constructor(
+    schema,
+    gunInstance,
+    isRoot = true,
+    onSetChange = DEFAULT_ON_SET_CHANGE,
+  ) {
     if (!Utils.isSchema(schema)) {
       throw new TypeError('invalid schema')
     }
@@ -53,8 +67,21 @@ export class Node {
       throw new TypeError('invalid gunInstance')
     }
 
+    if (isRoot && onSetChange !== DEFAULT_ON_SET_CHANGE) {
+      throw new TypeError(
+        'node cannot be root and not have the default onSetChange() at the same time, root nodes do not belong to any set therefore cannt actually have an onSetChange() attached to them',
+      )
+    }
+
+    if (!isRoot && onSetChange === DEFAULT_ON_SET_CHANGE) {
+      throw new TypeError(
+        'if a node is not root it must have an onChangeSet() provided since non-root nodes always belong to a set',
+      )
+    }
+
     this.schema = schema
     this.gunInstance = gunInstance
+    this.onSetChange = onSetChange
 
     /**
      * @type {T}
@@ -75,7 +102,11 @@ export class Node {
       Utils.getSetLeaves(this.schema),
     )) {
       // @ts-ignore
-      this.setNodes[key] = new SetNode(setLeaf, this.gunInstance.get(key))
+      this.setNodes[key] = new SetNode(
+        setLeaf.type[0],
+        this.gunInstance.get(key),
+        () => Promise.resolve(false),
+      )
     }
 
     this.onOpen = this.onOpen.bind(this)
@@ -364,7 +395,16 @@ export class Node {
 
         // @ts-ignore
         if (!edgeRes.ok) return edgeRes
+      }
 
+      if (hasPrimitives) {
+        primitiveRes = await this.validatePrimitivePut(data)
+
+        // @ts-ignore
+        if (!primitiveRes.ok) return primitiveRes
+      }
+
+      if (hasEdges) {
         edgeRes = await new Promise(resolve => {
           // @ts-ignore
           this.gunInstance.put(data, ack => {
@@ -381,11 +421,6 @@ export class Node {
       }
 
       if (hasPrimitives) {
-        primitiveRes = await this.validatePrimitivePut(data)
-
-        // @ts-ignore
-        if (!primitiveRes.ok) return primitiveRes
-
         primitiveRes = await new Promise(resolve => {
           // @ts-ignore
           this.gunInstance.put(data, ack => {
@@ -396,8 +431,25 @@ export class Node {
             })
           })
         })
+
+        // @ts-ignore
+        if (!primitiveRes.ok) return primitiveRes
       }
 
+      const onSetChangeErr = await this.onSetChange({
+        ...this.currentData,
+        ...data,
+      })
+
+      if (onSetChangeErr) {
+        return {
+          ok: false,
+          messages: onSetChangeErr,
+          details: {},
+        }
+      }
+
+      // TODO: Why did we merge again?
       const finalRes = Utils.mergeResponses(edgeRes, primitiveRes)
 
       // @ts-ignore
@@ -450,9 +502,9 @@ export class Node {
           }
         }
 
-        const err = await subschema.onChange(this.currentData, node.currentData)
+        let err = await subschema.onChange(this.currentData, node.currentData)
 
-        if (err) {
+        if (Array.isArray(err)) {
           // @ts-ignore
           return {
             ok: false,
@@ -460,6 +512,18 @@ export class Node {
             details: {
               [key]: typeof err == 'string' ? [err] : err,
             },
+          }
+        }
+
+        // now check against the owner set's onChange
+
+        err = await this.onSetChange(node.currentData)
+
+        if (err) {
+          return {
+            ok: false,
+            messages: /** @type {string[]} */ (err),
+            details: {},
           }
         }
 
