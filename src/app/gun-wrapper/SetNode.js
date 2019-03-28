@@ -153,12 +153,20 @@ export default class SetNode {
 
       // @ts-ignore
       const isNull = objectData[key] === null
-      const isCorrectType = Utils.valueIsOfType(
-        // @ts-ignore
-        this.itemSchema[key].type,
-        // @ts-ignore
-        objectData[key],
-      )
+
+      // if the prop is not primitive, validations below will handle it
+      let isCorrectType = true
+
+      const isPrimitiveProp = typeof this.itemSchema[key].type === 'string'
+
+      if (isPrimitiveProp) {
+        isCorrectType = Utils.valueIsOfType(
+          // @ts-ignore
+          this.itemSchema[key].type,
+          // @ts-ignore
+          objectData[key],
+        )
+      }
 
       if (!isNull && !isCorrectType) {
         errorMap.puts(key, `wrong data type`)
