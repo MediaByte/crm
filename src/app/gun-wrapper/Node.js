@@ -107,6 +107,8 @@ export class Node {
         this.gunInstance.get(key),
         () => Promise.resolve(false),
       )
+
+      this.currentData[key] = {}
     }
 
     this.onOpen = this.onOpen.bind(this)
