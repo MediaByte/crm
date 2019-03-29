@@ -169,7 +169,7 @@ export default class SetNode {
       }
 
       if (!isNull && !isCorrectType) {
-        errorMap.puts(key, `wrong data type`)
+        errorMap.puts(key, `wrong data type or empty string`)
       }
     }
 
