@@ -75,8 +75,8 @@ export const valueIsOfType = (type, value) => {
  * @returns {string}
  */
 export const reasonToString = reason => {
-  if (typeof reason == 'string') return reason
-  if (typeof reason.message == 'string') return reason.message
+  if (typeof reason === 'string') return reason
+  if (typeof reason.message === 'string') return reason.message
   return 'Unknown error'
 }
 
@@ -152,7 +152,7 @@ const _mergeResponseDetails = (...detailsObjects) => {
 export const isSchema = o => {
   if (typeof o[SCHEMA_NAME] !== 'string') return false
   const leaves = Object.values(o)
-  if (leaves.length == 0) return false
+  if (leaves.length === 0) return false
   return leaves.every(isSchemaLeaf)
 }
 
@@ -281,7 +281,7 @@ export const conformsToSchema = (schema, data) => {
     return false
   }
 
-  if (data == null) {
+  if (data === null || typeof data === 'undefined') {
     return false
   }
 

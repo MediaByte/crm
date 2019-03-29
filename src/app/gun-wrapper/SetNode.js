@@ -93,7 +93,7 @@ export default class SetNode {
       this.gunInstance.set(object, ack => {
         resolve({
           ok: typeof ack.err === 'undefined',
-          messages: typeof ack.err == 'string' ? [ack.err] : [],
+          messages: typeof ack.err === 'string' ? [ack.err] : [],
           details: {},
         })
       })

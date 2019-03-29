@@ -226,7 +226,7 @@ export class Node {
         if (Array.isArray(err) && err.length) errorMap.puts(key, err)
         // don't ignore empty strings just in case
         // @ts-ignore
-        if (typeof err == 'string') errorMap.puts(key, err)
+        if (typeof err === 'string') errorMap.puts(key, err)
 
         return err
       })
@@ -265,7 +265,7 @@ export class Node {
         if (!Utils.valueIsOfType(this.schema[key].type, value)) {
           const msg = `Must be ${
             // @ts-ignore
-            this.schema[key].type == 'number' ? 'a number' : 'text'
+            this.schema[key].type === 'number' ? 'a number' : 'text'
           }`
 
           errorMap.puts(key, msg)
@@ -303,7 +303,7 @@ export class Node {
 
       // ignore empty arrays
       if (Array.isArray(err) && err.length) errorMap.puts(key, err)
-      if (typeof err == 'string') errorMap.puts(key, err)
+      if (typeof err === 'string') errorMap.puts(key, err)
     }
 
     return {
@@ -347,7 +347,7 @@ export class Node {
    */
   async put(data) {
     try {
-      if (size(data) == 0) {
+      if (size(data) === 0) {
         return {
           ok: false,
           messages: ['Expected non empty object passed to node.put()'],
@@ -411,8 +411,8 @@ export class Node {
           // @ts-ignore
           this.gunInstance.put(data, ack => {
             resolve({
-              ok: typeof ack.err == 'undefined',
-              messages: typeof ack.err == 'string' ? [ack.err] : [],
+              ok: typeof ack.err === 'undefined',
+              messages: typeof ack.err === 'string' ? [ack.err] : [],
               details: {},
             })
           })
@@ -427,8 +427,8 @@ export class Node {
           // @ts-ignore
           this.gunInstance.put(data, ack => {
             resolve({
-              ok: typeof ack.err == 'undefined',
-              messages: typeof ack.err == 'string' ? [ack.err] : [],
+              ok: typeof ack.err === 'undefined',
+              messages: typeof ack.err === 'string' ? [ack.err] : [],
               details: {},
             })
           })
@@ -512,7 +512,7 @@ export class Node {
             ok: false,
             messages: [],
             details: {
-              [key]: typeof err == 'string' ? [err] : err,
+              [key]: typeof err === 'string' ? [err] : err,
             },
           }
         }
@@ -533,8 +533,8 @@ export class Node {
           // @ts-ignore
           this.gunInstance.get(key).put(node.gunInstance, ack => {
             resolve({
-              ok: typeof ack.err == 'undefined',
-              messages: typeof ack.err == 'string' ? [ack.err] : [],
+              ok: typeof ack.err === 'undefined',
+              messages: typeof ack.err === 'string' ? [ack.err] : [],
               details: {},
             })
           })
