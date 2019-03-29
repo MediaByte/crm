@@ -88,15 +88,67 @@ export default class SetNode {
       return res
     }
 
-    return new Promise(resolve => {
-      // @ts-ignore
-      this.gunInstance.set(object, ack => {
+    const primitiveData = {}
+    const edgeData = {}
+
+    for (const [k, edgeOrPrimitive] of Object.entries(object)) {
+      if (edgeOrPrimitive instanceof Node) {
+        edgeData[k] = edgeOrPrimitive.gunInstance
+      } else {
+        if (Utils.isObject(edgeOrPrimitive)) {
+          throw new TypeError(
+            'expected props in the object to be passed into SetNode.set() to be either null, primitives or Node instances.',
+          )
+        }
+        primitiveData[k] = edgeOrPrimitive
+      }
+    }
+
+    return new Promise(async resolve => {
+      try {
+        const writes = []
+
+        /** @type {object} */
+        let ref
+
+        writes.push(
+          new Promise(resolve => {
+            ref = this.gunInstance.set(primitiveData, ack => {
+              resolve({
+                ok: typeof ack.err === 'undefined',
+                messages: typeof ack.err === 'string' ? [ack.err] : [],
+                details: {},
+              })
+            })
+          }),
+        )
+
+        for (const [k, edge] of Object.entries(edgeData)) {
+          writes.push(
+            new Promise(resolve => {
+              ref.get(k).put(edge, ack => {
+                resolve({
+                  ok: typeof ack.err === 'undefined',
+                  messages: [],
+                  details: {
+                    [k]: typeof ack.err === 'string' ? [ack.err] : [],
+                  },
+                })
+              })
+            }),
+          )
+        }
+
+        const writeResults = await Promise.all(writes)
+
+        resolve(Utils.mergeResponses(...writeResults))
+      } catch (e) {
         resolve({
-          ok: typeof ack.err === 'undefined',
-          messages: typeof ack.err === 'string' ? [ack.err] : [],
+          ok: false,
+          messages: [Utils.reasonToString(e)],
           details: {},
         })
-      })
+      }
     })
   }
 
