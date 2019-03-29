@@ -38,10 +38,11 @@ import flattenDeep from 'lodash/flattenDeep'
  * @typedef {import('./typings').Schema<T>} Schema
  */
 
+export {} // stop jsdoc comments from merging
+
 export const SCHEMA_NAME = Symbol('SCHEMA_NAME')
 
 /**
- *
  * @param {'number'|'string'|'boolean'} type
  * @param {any} value
  * @returns {boolean} Returns false for empty strings.
@@ -124,7 +125,6 @@ export const mergeResponses = (...responses) =>
   }))
 
 /**
- *
  * @param {Array<import('./typings').PutResponse<{}>['details']>} detailsObjects
  * @returns {import('./typings').PutResponse<{}>['details']}
  */
@@ -315,4 +315,15 @@ export const conformsToSchema = (schema, data) => {
 
     return false
   })
+}
+
+export const isObject = any => {
+  if (typeof any !== 'object') return false
+  if (Array.isArray(any)) return false
+  if (any === null) return false
+  if (typeof any.__proto__ === 'undefined') return false
+  if (any.__proto__.constructor === String) return false
+  if (any.__proto__.constructor === Number) return false
+  if (any.__proto__.constructor === RegExp) return false
+  return true
 }
