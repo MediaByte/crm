@@ -105,7 +105,7 @@ export class Node {
       this.setNodes[key] = new SetNode(
         setLeaf.type[0],
         this.gunInstance.get(key),
-        () => Promise.resolve(false),
+        (nextVal, key) => setLeaf.onChange(this.currentData, nextVal, key),
       )
 
       this.currentData[key] = {}
