@@ -1,3 +1,5 @@
+import size from 'lodash/size'
+
 import * as Utils from './Utils'
 
 /**
@@ -95,10 +97,11 @@ export const NullableBooleanValue = {
 }
 
 /**
- * A value that can be either string, number or boolean. Validation has to be
- * handled above, you'll probably use this in a set. Each prop here is nullable,
- * if you need a nullable type, set the edge itself to null, for consistency
- * purposes, and set the unused props to null.
+ * A value that can be either string, number or boolean or a list of those.
+ * Validation has to be handled above, you'll probably use this in a set. Each
+ * prop for the primitive values is nullable, if you need a nullable type, set
+ * the edge itself to null, for consistency purposes, and set the unused
+ * props to null.
  * @type {Schema}
  */
 export const FreeValue = {
@@ -109,6 +112,20 @@ export const FreeValue = {
       const nextIsNull = nextVal === null
       const othersAreNull =
         self.valueIfNumber === null && self.valueIfString === null
+
+      const multiplesAreEmpty =
+        size(/** @type {object} */ (self.valuesIfMultipleBoolean)) === 0 &&
+        size(/** @type {object} */ (self.valuesIfMultipleNumber)) === 0 &&
+        size(/** @type {object} */ (self.valuesIfMultipleString)) === 0
+
+      // we do this just in case but really this validation has to be done from
+      // the consumer node, as these objects are initialized empty and there
+      // might be pending information to be received from other peers
+      if (!multiplesAreEmpty) {
+        return [
+          'tried to set a value even though a multiple sub-node had values in it',
+        ]
+      }
 
       if (nextIsNull && othersAreNull) {
         return ['at least one value has to be non null']
@@ -141,6 +158,20 @@ export const FreeValue = {
       const othersAreNull =
         self.valueIfBoolean === null && self.valueIfString === null
 
+      const multiplesAreEmpty =
+        size(/** @type {object} */ (self.valuesIfMultipleBoolean)) === 0 &&
+        size(/** @type {object} */ (self.valuesIfMultipleNumber)) === 0 &&
+        size(/** @type {object} */ (self.valuesIfMultipleString)) === 0
+
+      // we do this just in case but really this validation has to be done from
+      // the consumer node, as these objects are initialized empty and there
+      // might be pending information to be received from other peers
+      if (!multiplesAreEmpty) {
+        return [
+          'tried to set a value even though a multiple sub-node had values in it',
+        ]
+      }
+
       if (nextIsNull && othersAreNull) {
         return ['at least one value has to be non null']
       }
@@ -172,6 +203,20 @@ export const FreeValue = {
       const othersAreNull =
         self.valueIfBoolean === null && self.valueIfNumber === null
 
+      const multiplesAreEmpty =
+        size(/** @type {object} */ (self.valuesIfMultipleBoolean)) === 0 &&
+        size(/** @type {object} */ (self.valuesIfMultipleNumber)) === 0 &&
+        size(/** @type {object} */ (self.valuesIfMultipleString)) === 0
+
+      // we do this just in case but really this validation has to be done from
+      // the consumer node, as these objects are initialized empty and there
+      // might be pending information to be received from other peers
+      if (!multiplesAreEmpty) {
+        return [
+          'tried to set a value even though a multiple sub-node had values in it',
+        ]
+      }
+
       if (nextIsNull && othersAreNull) {
         return ['at least one value has to be non null']
       }
@@ -192,6 +237,96 @@ export const FreeValue = {
 
       // hopefully unreachable
       return ['an unknown error occurred, please contact your administrator']
+    },
+  },
+  valuesIfMultipleNumber: {
+    type: [NumberValue],
+    async onChange(self) {
+      // we do this just in case but really this validation has to be done from
+      // the consumer node, as these objects are initialized empty and there
+      // might be pending information to be received from other peers
+      const primitivesAreNull =
+        self.valueIfBoolean === null &&
+        self.valueIfNumber === null &&
+        self.valueIfString === null
+
+      if (!primitivesAreNull) {
+        return [
+          'tried to add a value to a multiple value holder even though one of the primitive value holders was already set to non null',
+        ]
+      }
+
+      const otherMultiplesArePopulated =
+        size(/** @type {object} */ (self.valuesIfMultipleBoolean)) > 0 ||
+        size(/** @type {object} */ (self.valuesIfMultipleString)) > 0
+
+      if (otherMultiplesArePopulated) {
+        return [
+          'tried to add a value to a multiple value holder even though one of the other multiple value holders was already populated',
+        ]
+      }
+
+      return false
+    },
+  },
+  valuesIfMultipleBoolean: {
+    type: [BooleanValue],
+    async onChange(self) {
+      // we do this just in case but really this validation has to be done from
+      // the consumer node, as these objects are initialized empty and there
+      // might be pending information to be received from other peers
+      const primitivesAreNull =
+        self.valueIfBoolean === null &&
+        self.valueIfNumber === null &&
+        self.valueIfString === null
+
+      if (!primitivesAreNull) {
+        return [
+          'tried to add a value to a multiple value holder even though one of the primitive value holders was already set to non null',
+        ]
+      }
+
+      const otherMultiplesArePopulated =
+        size(/** @type {object} */ (self.valuesIfMultipleNumber)) > 0 ||
+        size(/** @type {object} */ (self.valuesIfMultipleString)) > 0
+
+      if (otherMultiplesArePopulated) {
+        return [
+          'tried to add a value to a multiple value holder even though one of the other multiple value holders was already populated',
+        ]
+      }
+
+      return false
+    },
+  },
+  valuesIfMultipleString: {
+    type: [StringValue],
+    async onChange(self) {
+      // we do this just in case but really this validation has to be done from
+      // the consumer node, as these objects are initialized empty and there
+      // might be pending information to be received from other peers
+      const primitivesAreNull =
+        self.valueIfBoolean === null &&
+        self.valueIfNumber === null &&
+        self.valueIfString === null
+
+      if (!primitivesAreNull) {
+        return [
+          'tried to add a value to a multiple value holder even though one of the primitive value holders was already set to non null',
+        ]
+      }
+
+      const otherMultiplesArePopulated =
+        size(/** @type {object} */ (self.valuesIfMultipleBoolean)) > 0 &&
+        size(/** @type {object} */ (self.valuesIfMultipleNumber)) > 0
+
+      if (otherMultiplesArePopulated) {
+        return [
+          'tried to add a value to a multiple value holder even though one of the other multiple value holders was already populated',
+        ]
+      }
+
+      return false
     },
   },
 }

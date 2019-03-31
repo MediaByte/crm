@@ -162,5 +162,122 @@ describe('FreeValue', () => {
         expect(res.length > 0).toBe(true)
       })
     })
+
+    it('rejects an update to a primitive value holder if one of the multiple value holders is populated', async () => {
+      expect.assertions(3)
+
+      const mockSelf = {
+        valueIfBoolean: null,
+        valueIfNumber: null,
+        valueIfString: null,
+        valuesIfMultipleBoolean: {},
+        valuesIfMultipleNumber: {},
+        valuesIfMultipleString: {},
+      }
+
+      const results = await Promise.all([
+        booleanOnChange(mockSelf, Math.random() > 0.5),
+        numberOnChange(mockSelf, Math.random()),
+        valueIfString(mockSelf, Math.random().toString()),
+      ]) // results
+
+      results.forEach(res => {
+        expect(Array.isArray(res)).toBe(false)
+      })
+    })
+
+    it('rejects an add to a multiple value holder if one of the primitive value holders is non-null', async () => {
+      expect.assertions(6)
+
+      const mockSelf = {
+        valueIfBoolean: Math.random() > 0.5,
+        valueIfNumber: null,
+        valueIfString: null,
+        valuesIfMultipleBoolean: {},
+        valuesIfMultipleNumber: {},
+        valuesIfMultipleString: {},
+      }
+
+      const results = await Promise.all([
+        FreeValue.valuesIfMultipleBoolean.onChange(mockSelf, {
+          value: Math.random() > 0.5,
+        }),
+        FreeValue.valuesIfMultipleNumber.onChange(mockSelf, {
+          value: Math.random(),
+        }),
+        FreeValue.valuesIfMultipleString.onChange(mockSelf, {
+          value: Math.random().toString(),
+        }),
+      ])
+
+      results.forEach(res => {
+        if (!Array.isArray(res)) return
+
+        expect(Array.isArray(res)).toBe(true)
+        expect(res.length > 0).toBe(true)
+      })
+    })
+
+    it('rejects an add to a multiple value holder if one of the other multiple value holders is populated ', async () => {
+      expect.assertions(6)
+
+      const baseMockSelf = {
+        valueIfBoolean: Math.random() > 0.5,
+        valueIfNumber: null,
+        valueIfString: null,
+        valuesIfMultipleBoolean: {},
+        valuesIfMultipleNumber: {},
+        valuesIfMultipleString: {},
+      }
+
+      const results = await Promise.all([
+        FreeValue.valuesIfMultipleBoolean.onChange(
+          {
+            ...baseMockSelf,
+            valuesIfMultipleNumber: {
+              [Math.random().toString()]: {
+                value: Math.random(),
+              },
+            },
+          },
+          {
+            value: Math.random() > 0.5,
+          },
+        ),
+        FreeValue.valuesIfMultipleNumber.onChange(
+          {
+            ...baseMockSelf,
+            valuesIfMultipleString: {
+              [Math.random().toString()]: {
+                value: Math.random().toString(),
+              },
+            },
+          },
+          {
+            value: Math.random().toString(),
+          },
+        ),
+        FreeValue.valuesIfMultipleString.onChange(
+          {
+            ...baseMockSelf,
+            valuesIfMultipleBoolean: {
+              [Math.random().toString()]: {
+                value: Math.random() > 0.5,
+              },
+            },
+          },
+          {
+            value: Math.random().toString(),
+          },
+        ),
+      ]) // results
+
+      results.forEach(res => {
+        if (!Array.isArray(res)) return
+
+        expect(Array.isArray(res)).toBe(true)
+        expect(res.length > 0).toBe(true)
+      })
+    })
   })
 })
