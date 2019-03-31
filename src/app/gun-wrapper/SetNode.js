@@ -19,6 +19,7 @@ export {} // stop jsdoc comments from merging
  * @typedef {import('./simple-typings').OnChangeReturn} SimpleOnChangeReturn
  * @typedef {import('./simple-typings').Schema} SimpleSchema
  * @typedef {import('./simple-typings').Node} SimpleNode
+ * @typedef {import('./simple-typings').Response} Response
  */
 
 export {} // stop jsdoc comments from merging
@@ -79,7 +80,7 @@ export default class SetNode {
 
   /**
    * @param {T} object
-   * @returns {Promise<PutResponse<T>>}
+   * @returns {Promise<Response>}
    */
   async set(object) {
     const res = await this.isValidSet(object)
@@ -103,6 +104,11 @@ export default class SetNode {
         primitiveData[k] = edgeOrPrimitive
       }
     }
+
+    // add empty sets to primitive put
+    Object.keys(Utils.getSetLeaves(this.itemSchema)).forEach(k => {
+      primitiveData[k] = {}
+    })
 
     return new Promise(async resolve => {
       try {
@@ -186,30 +192,41 @@ export default class SetNode {
   /**
    * Validates an object according to an schema
    * @param {T & { [K in keyof T]?: object}} objectData
-   * @returns {Promise<PutResponse<T>>}
+   * @returns {Promise<Response>}
    */
   async isValidSet(objectData) {
     const errorMap = new Utils.ErrorMap()
 
     for (const key of Object.keys(this.itemSchema)) {
-      if (!(key in objectData)) {
+      const type = this.itemSchema[key].type
+      const isPrimitiveProp = type === 'string'
+      const isSetProp = Array.isArray(type)
+
+      if (!isSetProp && !(key in objectData)) {
         errorMap.puts(
           key,
           `missing key: ${key} in setNode for ${
             this.itemSchema[Utils.SCHEMA_NAME]
-          }, all keys of the initial value for an object must be initialized to either null, a primitive or a reference to a node`,
+          }, all keys of the initial value for a node (except sub-sets) must be initialized to either null, a primitive or a reference to a node`,
+        )
+
+        continue
+      }
+
+      if (isSetProp && key in objectData) {
+        errorMap.puts(
+          key,
+          `value given for sub-set node, this value must not be initialized as it will be automatically`,
         )
 
         continue
       }
 
       // @ts-ignore
-      const isNull = objectData[key] === null
+      const valueIsNull = objectData[key] === null
 
       // if the prop is not primitive, validations below will handle it
       let isCorrectType = true
-
-      const isPrimitiveProp = typeof this.itemSchema[key].type === 'string'
 
       if (isPrimitiveProp) {
         isCorrectType = Utils.valueIsOfType(
@@ -220,7 +237,7 @@ export default class SetNode {
         )
       }
 
-      if (!isNull && !isCorrectType) {
+      if (!valueIsNull && !isCorrectType) {
         errorMap.puts(key, `wrong data type or empty string`)
       }
     }
@@ -270,7 +287,15 @@ export default class SetNode {
     // for example, to prevent 2 items with the same value for a property and
     // what not
 
-    const err = await this.setOnChange(objectData)
+    const objectDataWithEmptySets = {
+      ...objectData,
+    }
+
+    Object.keys(Utils.getSetLeaves(this.itemSchema)).forEach(k => {
+      objectDataWithEmptySets[k] = {}
+    })
+
+    const err = await this.setOnChange(objectDataWithEmptySets)
 
     if (Array.isArray(err)) {
       return {
