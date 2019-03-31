@@ -67,7 +67,7 @@ export interface SetLeaf {
   onChange(
     ownerNodeSelf: Node,
     nextVal: Node,
-    key: string | undefined,
+    key?: string | undefined,
   ): OnChangeReturn
 }
 
@@ -75,4 +75,10 @@ export type Leaf = PrimitiveLeaf | EdgeLeaf | SetLeaf
 
 export type Schema = { readonly [SCHEMA_NAME]: string } & {
   [K: string]: Leaf
+}
+
+export interface Response {
+  ok: boolean
+  messages: string[]
+  details: Record<string, string[]>
 }
