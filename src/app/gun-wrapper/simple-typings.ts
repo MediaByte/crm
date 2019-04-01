@@ -1,4 +1,5 @@
 import { SCHEMA_NAME } from './Utils'
+import { Node as NodeInstance } from './Node'
 
 export interface WrapperNode {
   currentData: Node
@@ -82,3 +83,18 @@ export interface Response {
   messages: string[]
   details: Record<string, string[]>
 }
+
+interface _OKSetResponse {
+  ok: true
+  messages: string[]
+  details: Record<string, string[]>
+  reference: NodeInstance<{}>
+}
+
+interface _NonOKSetResponse {
+  ok: false
+  messages: string[]
+  details: Record<string, string[]>
+}
+
+export type SetResponse = _OKSetResponse | _NonOKSetResponse
