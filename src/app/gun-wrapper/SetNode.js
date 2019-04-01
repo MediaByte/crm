@@ -20,6 +20,7 @@ export {} // stop jsdoc comments from merging
  * @typedef {import('./simple-typings').Schema} SimpleSchema
  * @typedef {import('./simple-typings').Node} SimpleNode
  * @typedef {import('./simple-typings').Response} Response
+ * @typedef {import('./simple-typings').SetResponse} SetResponse
  */
 
 export {} // stop jsdoc comments from merging
@@ -80,13 +81,13 @@ export default class SetNode {
 
   /**
    * @param {T} object
-   * @returns {Promise<Response>}
+   * @returns {Promise<SetResponse>}
    */
   async set(object) {
-    const res = await this.isValidSet(object)
+    const validationRes = await this.isValidSet(object)
 
-    if (!res.ok) {
-      return res
+    if (!validationRes.ok) {
+      return validationRes
     }
 
     const primitiveData = {}
@@ -115,11 +116,11 @@ export default class SetNode {
         const writes = []
 
         /** @type {object} */
-        let ref
+        let gunRef
 
         writes.push(
           new Promise(resolve => {
-            ref = this.gunInstance.set(primitiveData, ack => {
+            gunRef = this.gunInstance.set(primitiveData, ack => {
               resolve({
                 ok: typeof ack.err === 'undefined',
                 messages: typeof ack.err === 'string' ? [ack.err] : [],
@@ -132,7 +133,7 @@ export default class SetNode {
         for (const [k, edge] of Object.entries(edgeData)) {
           writes.push(
             new Promise(resolve => {
-              ref.get(k).put(edge, ack => {
+              gunRef.get(k).put(edge, ack => {
                 resolve({
                   ok: typeof ack.err === 'undefined',
                   messages: [],
@@ -147,7 +148,20 @@ export default class SetNode {
 
         const writeResults = await Promise.all(writes)
 
-        resolve(Utils.mergeResponses(...writeResults))
+        const res = Utils.mergeResponses(...writeResults)
+
+        const refKey = gunRef._.get
+
+        if (res.ok) {
+          resolve({
+            ...res,
+            reference: new Node(this.itemSchema, gunRef, false, nextValOrNull =>
+              this.setOnChange(nextValOrNull, refKey),
+            ),
+          })
+        } else {
+          resolve(res)
+        }
       } catch (e) {
         resolve({
           ok: false,
