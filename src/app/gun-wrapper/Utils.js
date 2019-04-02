@@ -1,5 +1,11 @@
 // @ts-check
 import flattenDeep from 'lodash/flattenDeep'
+import size from 'lodash/size'
+
+/**
+ * @typedef {import('./simple-typings').LiteralLeaf} LiteralLeaf
+ * @typedef {import('./simple-typings').Schema} SimpleSchema
+ */
 
 /**
  * @template T
@@ -165,7 +171,10 @@ export const isSchema = o => {
  * @returns {leaf is Leaf<T, RT>}
  */
 const isSchemaLeaf = leaf =>
-  isEdgeLeaf(leaf) || isPrimitiveLeaf(leaf) || isSetLeaf(leaf)
+  isEdgeLeaf(leaf) ||
+  isPrimitiveLeaf(leaf) ||
+  isSetLeaf(leaf) ||
+  isLiteralLeaf(leaf)
 
 /**
  * @template T
@@ -176,9 +185,33 @@ const isSchemaLeaf = leaf =>
 const isEdgeLeaf = leaf => {
   if (typeof leaf !== 'object') return false
   if (typeof leaf.type !== 'object') return false
+  if (Array.isArray(leaf.type)) return false
   if (!isSchema(leaf.type)) return false
   if (typeof leaf.onChange !== 'function') return false
   return true
+}
+
+/**
+ * @param {any} leaf
+ * @returns {leaf is LiteralLeaf}
+ */
+export const isLiteralLeaf = leaf => {
+  if (typeof leaf !== 'object') return false
+  if (typeof leaf.onChange !== 'function') return false
+  if (typeof leaf.type !== 'object') return false
+  if (Array.isArray(leaf.type)) return false
+  if (size(leaf.type) !== 1) return false
+  const [key, shouldBeSchema] = Object.entries(leaf.type)[0]
+
+  const schemaName = shouldBeSchema[SCHEMA_NAME]
+
+  if (schemaName !== key) {
+    throw new ReferenceError(`
+      for literal type leaves, the key where the referenced schema is stored must match that schema's name, expected: ${schemaName} but got: ${key}
+    `)
+  }
+
+  return isSchema(shouldBeSchema)
 }
 
 /**
@@ -225,6 +258,37 @@ export const getEdgeLeaves = schema => {
 
   // @ts-ignore
   return o
+}
+
+/**
+ * @param {SimpleSchema} schema
+ * @returns {Record<string, LiteralLeaf>}
+ */
+export const getLiteralLeaves = schema => {
+  /** @type {Record<string, LiteralLeaf>} */
+  const o = {}
+
+  for (const [key, leaf] of Object.entries(schema)) {
+    if (isLiteralLeaf(leaf)) {
+      o[key] = leaf
+    }
+  }
+
+  return o
+}
+
+/**
+ * @param {LiteralLeaf} literalLeaf
+ * @returns {SimpleSchema}
+ */
+export const extractLiteralLeafType = literalLeaf => {
+  if (!isLiteralLeaf(literalLeaf)) {
+    throw new TypeError(
+      'expected a LiteralLeaf to be given to extractLiteralLeafType()',
+    )
+  }
+
+  return Object.values(literalLeaf.type)[0]
 }
 
 /**
@@ -296,6 +360,12 @@ export const conformsToSchema = (schema, data) => {
 
     if (isEdgeLeaf(leaf)) {
       return conformsToSchema(leaf.type, data[key])
+    }
+
+    if (isLiteralLeaf(leaf)) {
+      const type = extractLiteralLeafType(leaf)
+
+      return conformsToSchema(type, data[key])
     }
 
     if (isSetLeaf(leaf)) {
