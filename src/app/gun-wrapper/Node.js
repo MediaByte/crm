@@ -10,11 +10,12 @@ import SetNode from './SetNode'
 /**
  * @typedef {import('./simple-typings').OnChangeReturn} SimpleOnChangeReturn
  * @typedef {import('./simple-typings').Node} SimpleNode
+ * @typedef {import('./simple-typings').Response} Response
+ * @typedef {import('./simple-typings').WrapperNode} WrapperNode
+ * @typedef {import('./simple-typings').ReferenceWrapperNode} ReferenceWrapperNode
  */
 
 /**
- * @typedef {import('./typings').Leaf<any>} Leaf
- *
  * @typedef {import('./SetNode').default<{}>} SetNode
  */
 
@@ -25,12 +26,13 @@ import SetNode from './SetNode'
 
 /**
  * @template T
- * @typedef {import('./typings').PutResponse<T>} PutResponse
+ * @typedef {import('./typings').SetNodes<T>} SetNodes
  */
 
 /**
- * @template T
- * @typedef {import('./typings').SetNodes<T>} SetNodes
+ * @typedef {object} SplitPuts
+ * @prop {Record<string, null>} edgePuts
+ * @prop {SimpleNode} primitivePuts
  */
 
 /*******************************************************************************
@@ -181,7 +183,7 @@ export class Node {
   /**
    * @private
    * @param {object} data
-   * @returns {Promise<PutResponse<T>>}
+   * @returns {Promise<Response>}
    */
   async validateEdgePut(data) {
     /**
@@ -247,8 +249,8 @@ export class Node {
 
   /**
    * @private
-   * @param {Partial<T>} data
-   * @returns {Promise<PutResponse<T>>}
+   * @param {object} data
+   * @returns {Promise<Response>}
    */
   async validatePrimitivePut(data) {
     const errorMap = new Utils.ErrorMap()
@@ -315,8 +317,8 @@ export class Node {
 
   /**
    * @private
-   * @param {Partial<T>} data
-   * @returns {{ edgePuts: Record<string, Node<{}>|null> , primitivePuts: Record<string, string|number|null> }}
+   * @param {SimpleNode} data
+   * @returns {SplitPuts}
    */
   splitPuts(data) {
     const edgePuts = {}
@@ -342,8 +344,8 @@ export class Node {
 
   /**
    * @private
-   * @param {Partial<T>} data
-   * @returns {Promise<PutResponse<T>>}
+   * @param {SimpleNode} data
+   * @returns {Promise<Response>}
    */
   async put(data) {
     try {
@@ -360,6 +362,7 @@ export class Node {
       for (const [key] of Object.entries(data)) {
         const keyIsPrimitive = key in Utils.getPrimitiveLeaves(this.schema)
         const keyIsEdge = key in Utils.getEdgeLeaves(this.schema)
+
         const isValidKey = keyIsEdge || keyIsPrimitive
 
         if (!isValidKey) {
@@ -380,9 +383,9 @@ export class Node {
       const hasEdges = size(edgePuts) > 0
       const hasPrimitives = size(primitivePuts) > 0
 
-      /** @type {import('./typings').PutResponse<{}>} */
+      /** @type {Response} */
       let edgeRes = { ok: true, messages: [], details: {} }
-      /** @type {import('./typings').PutResponse<{}>} */
+      /** @type {Response} */
       let primitiveRes = { ok: true, messages: [], details: {} }
       // It is more probable that an onChange() call for a reference has to
       // take a look at the primitives on its node than an onChange() call for a
@@ -466,9 +469,8 @@ export class Node {
   }
 
   /**
-   * @template K
-   * @param {keyof T} key
-   * @returns {import('./typings').ReferenceNode<T[K]> | SetNode<T[K]>}
+   * @param {string} key
+   * @returns {ReferenceWrapperNode | SetNode<T[K]>}
    */
   get(key) {
     const validKey =
@@ -490,8 +492,8 @@ export class Node {
 
     return {
       /**
-       * @param {Node<T[K]>} node
-       * @returns {Promise<PutResponse<T[K]>>}
+       * @param {WrapperNode} node
+       * @returns {Promise<Response>}
        */
       put: async node => {
         const subschema = Utils.getEdgeLeaves(this.schema)[key]
