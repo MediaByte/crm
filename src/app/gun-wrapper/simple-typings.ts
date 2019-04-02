@@ -103,3 +103,7 @@ interface _NonOKSetResponse {
 }
 
 export type SetResponse = _OKSetResponse | _NonOKSetResponse
+
+export interface ReferenceWrapperNode {
+  put(node: WrapperNode): Promise<Response>
+}
