@@ -80,7 +80,7 @@ export default class SetNode {
   }
 
   /**
-   * @param {T} object
+   * @param {SimpleNode} object
    * @returns {Promise<SetResponse>}
    */
   async set(object) {
@@ -90,25 +90,20 @@ export default class SetNode {
       return validationRes
     }
 
-    const primitiveData = {}
+    const primitiveSetsAndLiteralsData = {}
     const edgeData = {}
 
-    for (const [k, edgeOrPrimitive] of Object.entries(object)) {
-      if (edgeOrPrimitive instanceof Node) {
-        edgeData[k] = edgeOrPrimitive.gunInstance
-      } else {
-        if (Utils.isObject(edgeOrPrimitive)) {
-          throw new TypeError(
-            'expected props in the object to be passed into SetNode.set() to be either null, primitives or Node instances.',
-          )
-        }
-        primitiveData[k] = edgeOrPrimitive
-      }
-    }
+    Object.keys(Utils.getEdgeLeaves(this.itemSchema)).forEach(key => {})
+
+    Object.keys(Utils.getPrimitiveLeaves(this.itemSchema))
+      .concat(Object.keys(Utils.getLiteralLeaves(this.itemSchema)))
+      .forEach(key => {
+        primitiveSetsAndLiteralsData[key] = object[key]
+      })
 
     // add empty sets to primitive put
     Object.keys(Utils.getSetLeaves(this.itemSchema)).forEach(k => {
-      primitiveData[k] = {}
+      primitiveSetsAndLiteralsData[k] = {}
     })
 
     return new Promise(async resolve => {
@@ -120,7 +115,7 @@ export default class SetNode {
 
         writes.push(
           new Promise(resolve => {
-            gunRef = this.gunInstance.set(primitiveData, ack => {
+            gunRef = this.gunInstance.set(primitiveSetsAndLiteralsData, ack => {
               resolve({
                 ok: typeof ack.err === 'undefined',
                 messages: typeof ack.err === 'string' ? [ack.err] : [],
@@ -152,12 +147,23 @@ export default class SetNode {
 
         const refKey = gunRef._.get
 
+        const wrapperRef = new Node(
+          this.itemSchema,
+          gunRef,
+          false,
+          nextValOrNull => this.setOnChange(nextValOrNull, refKey),
+        )
+
+        wrapperRef.currentData = primitiveSetsAndLiteralsData
+
+        Object.entries(edgeData).forEach(([k, n]) => {
+          wrapperRef.currentData[k] = n.currentData
+        })
+
         if (res.ok) {
           resolve({
             ...res,
-            reference: new Node(this.itemSchema, gunRef, false, nextValOrNull =>
-              this.setOnChange(nextValOrNull, refKey),
-            ),
+            reference: wrapperRef,
           })
         } else {
           resolve(res)
@@ -205,18 +211,19 @@ export default class SetNode {
 
   /**
    * Validates an object according to an schema
-   * @param {T & { [K in keyof T]?: object}} objectData
+   * @param {SimpleNode} objectData
    * @returns {Promise<Response>}
    */
   async isValidSet(objectData) {
     const errorMap = new Utils.ErrorMap()
 
-    for (const key of Object.keys(this.itemSchema)) {
-      const type = this.itemSchema[key].type
-      const isPrimitiveProp = type === 'string'
-      const isSetProp = Array.isArray(type)
+    const primitiveLeaves = Utils.getPrimitiveLeaves(this.itemSchema)
+    const literalLeaves = Utils.getLiteralLeaves(this.itemSchema)
+    const edgeLeaves = Utils.getEdgeLeaves(this.itemSchema)
+    const setLeaves = Utils.getSetLeaves(this.itemSchema)
 
-      if (!isSetProp && !(key in objectData)) {
+    Object.entries(primitiveLeaves).forEach(([key, leaf]) => {
+      if (!(key in objectData)) {
         errorMap.puts(
           key,
           `missing key: ${key} in setNode for ${
@@ -224,37 +231,75 @@ export default class SetNode {
           }, all keys of the initial value for a node (except sub-sets) must be initialized to either null, a primitive or a reference to a node`,
         )
 
-        continue
+        return // continue
       }
 
-      if (isSetProp && key in objectData) {
-        errorMap.puts(
-          key,
-          `value given for sub-set node, this value must not be initialized as it will be automatically`,
-        )
+      const value = objectData[key]
 
-        continue
-      }
+      const isNull = value == null
 
-      // @ts-ignore
-      const valueIsNull = objectData[key] === null
+      const isCorrectType = Utils.valueIsOfType(
+        // @ts-ignore
+        leaf.type,
+        // @ts-ignore
+        objectData[key],
+      )
 
-      // if the prop is not primitive, validations below will handle it
-      let isCorrectType = true
-
-      if (isPrimitiveProp) {
-        isCorrectType = Utils.valueIsOfType(
-          // @ts-ignore
-          this.itemSchema[key].type,
-          // @ts-ignore
-          objectData[key],
-        )
-      }
-
-      if (!valueIsNull && !isCorrectType) {
+      if (!isNull && !isCorrectType) {
         errorMap.puts(key, `wrong data type or empty string`)
       }
-    }
+    })
+
+    Object.entries(literalLeaves).forEach(([key, leaf]) => {
+      if (!(key in objectData)) {
+        errorMap.puts(
+          key,
+          `missing key: ${key} in setNode for ${
+            this.itemSchema[Utils.SCHEMA_NAME]
+          }, all keys of the initial value for a node (except sub-sets) must be initialized to either null, a primitive or a reference to a node`,
+        )
+
+        return // continue
+      }
+
+      const literalLeafType = Utils.extractLiteralLeafType(leaf)
+
+      if (!Utils.conformsToSchema(literalLeafType, objectData[key])) {
+        errorMap.puts(
+          key,
+          `wrong data layout for literal given to SetNode.set()`,
+        )
+      }
+    })
+
+    Object.entries(edgeLeaves).forEach(([key, leaf]) => {
+      if (!(key in objectData)) {
+        errorMap.puts(key, 'must initialize to a reference or a null value')
+
+        return // continue
+      }
+
+      const value = objectData[key]
+      const itemSchema = leaf.type
+
+      const valueIsNull = value === null
+      const conformsToSchema = valueIsNull
+        ? true
+        : Utils.conformsToSchema(itemSchema, value.currentData)
+
+      if (!valueIsNull && !conformsToSchema) {
+        errorMap.puts(key, 'wrong node type received for reference')
+      }
+    })
+
+    Object.entries(setLeaves).forEach(([key, leaf]) => {
+      if (key in objectData) {
+        errorMap.puts(
+          key,
+          `value given for sub-set node, this value must not be initialized as it will be automatically be initialized to empty and populated by data from peers`,
+        )
+      }
+    })
 
     if (errorMap.hasErrors) {
       return {
@@ -269,6 +314,8 @@ export default class SetNode {
      */
     const validations = {}
 
+    const setItemSchema = this.itemSchema
+
     // validate the node itself
     for (const key of Object.keys(objectData)) {
       const self = {
@@ -278,7 +325,7 @@ export default class SetNode {
       }
 
       // @ts-ignore
-      validations[key] = this.itemSchema[key].onChange(self, objectData[key])
+      validations[key] = setItemSchema[key].onChange(self, objectData[key])
     }
 
     await Promise.all(Object.values(validations))
@@ -337,7 +384,6 @@ export default class SetNode {
   }
 
   /**
-   *
    * @param {Function=} cb
    * @returns {void}
    */
