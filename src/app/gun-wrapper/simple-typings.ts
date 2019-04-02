@@ -59,6 +59,11 @@ export interface EdgeLeaf {
   onChange(self: SelfNode, nextVal: WrapperNode | null): OnChangeReturn
 }
 
+export interface LiteralLeaf {
+  type: Record<string, Schema>
+  onChange(self: SelfNode, nextVal: Node | null): OnChangeReturn
+}
+
 export interface SetLeaf {
   /**
    * An array of length one containing the pertinent schema for the type of
@@ -72,7 +77,7 @@ export interface SetLeaf {
   ): OnChangeReturn
 }
 
-export type Leaf = PrimitiveLeaf | EdgeLeaf | SetLeaf
+export type Leaf = PrimitiveLeaf | EdgeLeaf | LiteralLeaf | SetLeaf
 
 export type Schema = { readonly [SCHEMA_NAME]: string } & {
   [K: string]: Leaf
