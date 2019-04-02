@@ -95,7 +95,7 @@ export class ErrorMap {
     this.hasErrors = false
 
     /**
-     * @type {Record<keyof T, string[]>}
+     * @type {Record<string, string[]>}
      */
     // @ts-ignore
     this.map = {}
@@ -104,7 +104,7 @@ export class ErrorMap {
   /**
    * Arguments after the first one can be either strings or array of strings.
    * All will be flattened to.
-   * @param {keyof T} key
+   * @param {string} key
    * @returns {void}
    */
   puts(key) {
