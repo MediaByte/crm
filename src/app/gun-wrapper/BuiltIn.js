@@ -330,3 +330,29 @@ export const FreeValue = {
     },
   },
 }
+
+/**
+ * @param {number|null} number
+ * @returns {object}
+ */
+export const createNumberFreeValue = number => ({
+  valueIfBoolean: null,
+  valueIfNumber: number,
+  valueIfString: null,
+  valuesIfMultipleBoolean: {},
+  valuesIfMultipleNumber: {},
+  valuesIfMultipleString: {},
+})
+
+/**
+ * @param {string|null} string
+ * @returns {object}
+ */
+export const createStringFreeValue = string => ({
+  valueIfBoolean: null,
+  valueIfNumber: null,
+  valueIfString: string,
+  valuesIfMultipleBoolean: {},
+  valuesIfMultipleNumber: {},
+  valuesIfMultipleString: {},
+})
