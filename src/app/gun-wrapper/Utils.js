@@ -205,10 +205,15 @@ export const isLiteralLeaf = leaf => {
 
   const schemaName = shouldBeSchema[SCHEMA_NAME]
 
+  // discard edge leaves where the referenced schema has only one prop which
+  // would pass the size filter above. This way we detect that object is an
+  // object that:
+  // 1) Has a property named 'foo'.
+  // 2) the value at that property is an object with a value that can be
+  //    accessed through the SCHEMA_NAME symbol and this value matches the key
+  //    'foo'.
   if (schemaName !== key) {
-    throw new ReferenceError(`
-      for literal type leaves, the key where the referenced schema is stored must match that schema's name, expected: ${schemaName} but got: ${key}
-    `)
+    return false
   }
 
   return isSchema(shouldBeSchema)
