@@ -13,16 +13,13 @@ import SetNode from './SetNode'
  * @typedef {import('./simple-typings').Response} Response
  * @typedef {import('./simple-typings').WrapperNode} WrapperNode
  * @typedef {import('./simple-typings').ReferenceWrapperNode} ReferenceWrapperNode
+ * @typedef {import('./simple-typings').Schema} Schema
  */
 
 /**
  * @typedef {import('./SetNode').default<{}>} SetNode
  */
 
-/**
- * @template T
- * @typedef {import('./typings').Schema<T>} Schema
- */
 
 /**
  * @template T
@@ -51,7 +48,7 @@ const DEFAULT_ON_SET_CHANGE = () => Promise.resolve(false)
  */
 export class Node {
   /**
-   * @param {Schema<T>} schema
+   * @param {Schema} schema
    * @param {object} gunInstance
    * @param {boolean=} isRoot
    * @param {((nextVal: SimpleNode|null) => SimpleOnChangeReturn)=} onSetChange
@@ -736,7 +733,7 @@ export class Node {
 
 /**
  * @template T
- * @param {Schema<T>} schema
+ * @param {Schema} schema
  * @param {object} gunInstance
  * @returns {Record<keyof T, SetNode<{}>>}
  */
