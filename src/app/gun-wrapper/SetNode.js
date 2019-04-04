@@ -27,11 +27,6 @@ export {} // stop jsdoc comments from merging
 
 /**
  * @template T
- * @typedef {import('./typings').PutResponse<T>} PutResponse
- */
-
-/**
- * @template T
  * In charge of creating and storing new nodes.
  */
 export default class SetNode {
@@ -50,7 +45,7 @@ export default class SetNode {
     this.gunInstance = gunInstance
 
     /**
-     * @type {Function[]}
+     * @type {((value: SimpleNode) => void)[]}
      */
     this.subscribers = []
 
@@ -60,12 +55,14 @@ export default class SetNode {
   }
 
   /**
-   * @param {Record<string, T>} nextData
+   * @param {Record<string, SimpleNode>} nextData
    * @returns {void}
    */
   cachePut(nextData) {
     for (const [key, value] of Object.entries(nextData)) {
-      this.currentData[key] = value
+      if (Utils.conformsToSchema(this.itemSchema, value)) {
+        this.currentData[key] = value
+      }
     }
 
     this.notifySubscribers()
@@ -93,7 +90,11 @@ export default class SetNode {
     const primitiveSetsAndLiteralsData = {}
     const edgeData = {}
 
-    Object.keys(Utils.getEdgeLeaves(this.itemSchema)).forEach(key => {})
+    Object.keys(Utils.getEdgeLeaves(this.itemSchema)).forEach(key => {
+      if (!(key in object)) return
+
+      edgeData[key] = object[key].gunInstance
+    })
 
     Object.keys(Utils.getPrimitiveLeaves(this.itemSchema))
       .concat(Object.keys(Utils.getLiteralLeaves(this.itemSchema)))
@@ -222,6 +223,18 @@ export default class SetNode {
     const edgeLeaves = Utils.getEdgeLeaves(this.itemSchema)
     const setLeaves = Utils.getSetLeaves(this.itemSchema)
 
+    Object.keys(objectData).forEach(key => {
+      const isValidKey =
+        key in primitiveLeaves ||
+        key in literalLeaves ||
+        key in edgeLeaves ||
+        key in setLeaves
+
+      if (!isValidKey) {
+        errorMap.puts(key, 'unexpected key')
+      }
+    })
+
     Object.entries(primitiveLeaves).forEach(([key, leaf]) => {
       if (!(key in objectData)) {
         errorMap.puts(
@@ -267,7 +280,11 @@ export default class SetNode {
       if (!Utils.conformsToSchema(literalLeafType, objectData[key])) {
         errorMap.puts(
           key,
-          `wrong data layout for literal given to SetNode.set()`,
+          `wrong data layout for literal given to SetNode.set(), schema: ${JSON.stringify(
+            literalLeafType,
+            null,
+            4,
+          )} -- data: ${JSON.stringify(objectData[key], null, 4)}`,
         )
       }
     })
