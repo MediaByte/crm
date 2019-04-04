@@ -1,6 +1,8 @@
 import * as BuiltIn from './gun-wrapper/BuiltIn'
 import * as Utils from './gun-wrapper/Utils'
 
+const FreeValue = BuiltIn.FreeValue
+
 /**
  * @typedef {import('./gun-wrapper/simple-typings').Schema} Schema
  */
@@ -36,51 +38,6 @@ const User = {
 /**
  * @type {Schema}
  */
-const RecordProp = {
-  [Utils.SCHEMA_NAME]: 'RecordProp',
-  /**
-   * The name of the prop, for example 'phone'. Allows the node owning the
-   * record to identify to which prop the value belongs.
-   */
-  name: {
-    type: 'string',
-    onChange: BuiltIn.nonNullableOnChange,
-  },
-  /**
-   * The value for the prop the name identifies.
-   */
-  value: {
-    type: BuiltIn.FreeValue,
-    onChange: BuiltIn.nullableOnChange,
-  },
-}
-
-/**
- * Pending.
- * @type {Schema}
- */
-const RecordRel = {
-  [Utils.SCHEMA_NAME]: 'RecordRel',
-}
-
-/**
- * @type {Schema}
- */
-const Record = {
-  [Utils.SCHEMA_NAME]: 'Record',
-  props: {
-    type: [RecordProp],
-    // we let the node containing the records to handle this as it has access
-    // to the prop definitionss
-    async onChange() {
-      return false
-    },
-  },
-}
-
-/**
- * @type {Schema}
- */
 const PropTypeParam = {
   [Utils.SCHEMA_NAME]: 'PropTypeParam',
   /**
@@ -102,7 +59,7 @@ const PropTypeParam = {
   type: {
     type: 'string',
     async onChange(_, nextVal) {
-      const dataTypes = ['number', 'string']
+      const dataTypes = ['number', 'string', 'boolean']
 
       if (nextVal == null) {
         return ['type must be defined']
@@ -113,6 +70,20 @@ const PropTypeParam = {
       }
 
       return undefined
+    },
+  },
+  /**
+   * Indicates whether there should be multiple values, picklists for example.
+   */
+  multiple: {
+    type: 'boolean',
+    async onChange(_, nextVal) {
+      // TODO: disallow multiple boolean
+      if (nextVal === null) {
+        return ['must be specified']
+      } else {
+        return false
+      }
     },
   },
 }
@@ -160,12 +131,12 @@ const PropType = {
 const PropDefArgument = {
   [Utils.SCHEMA_NAME]: 'PropDefArgument',
   // akin to a named parameter in a function
-  paramName: {
-    type: 'string',
+  param: {
+    type: PropTypeParam,
     async onChange() {},
   },
-  values: {
-    type: [BuiltIn.StringValue],
+  value: {
+    type: { FreeValue },
     async onChange() {},
   },
 }
@@ -187,6 +158,75 @@ const PropDef = {
     type: [PropDefArgument],
     async onChange() {},
   },
+  helpText: {
+    type: 'string',
+    async onChange() {},
+  },
+}
+
+/**
+ * @type {Schema}
+ */
+const RecordProp = {
+  [Utils.SCHEMA_NAME]: 'RecordProp',
+  /**
+   * The prop definition for which the prop's value is given.
+   */
+  propDef: {
+    type: PropDef,
+    async onChange() {},
+  },
+  /**
+   * The value for the prop the name identifies.
+   */
+  value: {
+    type: { FreeValue },
+    onChange: BuiltIn.nullableOnChange,
+  },
+}
+
+const RecordRel = {
+  [Utils.SCHEMA_NAME]: 'RecordRel',
+  relDefName: {
+    type: 'string',
+    async onChange() {},
+  },
+  relatedRecordKey: {
+    type: 'string',
+    async onChange() {},
+  },
+}
+
+/**
+ * @type {Schema}
+ */
+const Record = {
+  [Utils.SCHEMA_NAME]: 'Record',
+  props: {
+    type: [RecordProp],
+    // we let the node containing the records to handle this as it has access
+    // to the prop definitionss
+    async onChange() {},
+  },
+  relations: {
+    type: [RecordRel],
+    async onChange() {},
+  },
+}
+
+/**
+ * @type {Schema}
+ */
+const RelDef = {
+  [Utils.SCHEMA_NAME]: 'RelDef',
+  name: {
+    type: 'string',
+    async onChange() {},
+  },
+  relatedNodeName: {
+    type: 'string',
+    async onChange() {},
+  },
 }
 
 /**
@@ -206,9 +246,15 @@ const Node = {
     type: [PropDef],
     async onChange() {},
   },
+  relDefs: {
+    type: [RelDef],
+    async onChange() {},
+  },
   records: {
     type: [Record],
-    async onChange() {},
+    async onChange(self) {
+      const relDefs = {}
+    },
   },
 }
 
@@ -219,7 +265,17 @@ export const Root = {
   [Utils.SCHEMA_NAME]: 'Root',
   users: {
     type: [User],
-    async onChange() {},
+    async onChange(_, nextVal, key) {
+      if (typeof key === 'undefined') {
+        if (nextVal.userGroup === null) {
+          return ['user must be assigned user group at creation']
+        } else {
+          return false
+        }
+      } else {
+        return ['not reachable for now']
+      }
+    },
   },
   userGroups: {
     type: [UserGroup],
@@ -227,11 +283,10 @@ export const Root = {
   },
   nodes: {
     type: [Node],
-    async onChange() {},
+    async onChange(self, nextData, key) {
+      console.log(arguments)
+    },
   },
-  /**
-   *
-   */
   propTypes: {
     type: [PropType],
     async onChange(_, __, key) {
