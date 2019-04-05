@@ -50,10 +50,6 @@ class Navigation extends React.Component {
     sidebarOpen: false,
   }
 
-  componentDidMount() {
-    // const { closed } = this.props;
-  }
-
   openSidebar = () => {
     this.setState({
       sidebarOpen: true,
