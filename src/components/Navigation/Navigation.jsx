@@ -60,7 +60,6 @@ class Navigation extends React.Component {
   state = {
     disableUnderline: true,
     value: 0,
-    mobileOpen: false,
     hide: true,
   }
   componentDidMount() {
@@ -71,10 +70,6 @@ class Navigation extends React.Component {
   }
   handleDrawerClose = () => {
     this.props.toggleDrawer(false)
-  }
-
-  handleDrawerToggle = () => {
-    this.setState(state => ({ mobileOpen: !state.mobileOpen }))
   }
 
   handleSearchToggle = () => {
