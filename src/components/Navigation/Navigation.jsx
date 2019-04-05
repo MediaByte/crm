@@ -280,20 +280,6 @@ class Navigation extends React.Component {
               </Hidden>
             </Toolbar>
           </AppBar>
-          {/* <Hidden smUp>
-            <Drawer
-              variant="persistent"
-              open={this.state.mobileOpen}
-              onClose={this.handleDrawerToggle}
-              classes={{
-                paper: classNames(classes.drawerPaper, !this.props.open && classes.drawerPaperClose),
-              }}
-              open={this.state.open}
-            >
-              {renderMenu}
-            </Drawer>
-          </Hidden> */}
-          {/* <Hidden smDown implementation="css"> */}
           <Drawer
             variant="permanent"
             classes={{
