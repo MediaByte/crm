@@ -209,10 +209,7 @@ class Navigation extends React.Component {
           <AppBar
             position="fixed"
             elevation={0}
-            className={classNames(
-              classes.appBar,
-              this.props.open && classes.appBarShift,
-            )}
+            className={classNames(classes.appBar)}
           >
             <Toolbar className={classes.toolbar}>
               {!this.props.open ? (

@@ -83,14 +83,6 @@ const navStyles = theme => ({
     backgroundColor: '#fff',
     borderBottom: '1px solid #eee',
   },
-  appBarShift: {
-    // marginLeft: drawerWidth,
-    // width: `calc(100% - ${drawerWidth}px)`,
-    // transition: theme.transitions.create(['width', 'margin'], {
-    //   easing: theme.transitions.easing.sharp,
-    //   duration: theme.transitions.duration.enteringScreen,
-    // }),
-  },
   menuButton: {
     color: '#0dacc4',
     // marginLeft: 12,
