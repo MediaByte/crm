@@ -62,7 +62,7 @@ class Navigation extends React.Component {
     })
   }
 
-  handleSearchToggle = () => {
+  toggleSearch = () => {
     this.setState(prevState => ({
       hide: !prevState.hide,
     }))
@@ -244,7 +244,7 @@ class Navigation extends React.Component {
                   <Button
                     color="primary"
                     className={classes.button}
-                    onClick={this.handleSearchToggle}
+                    onClick={this.toggleSearch}
                   >
                     Cancel
                   </Button>
@@ -252,7 +252,7 @@ class Navigation extends React.Component {
               )}
               {this.state.hide && (
                 <IconButton color="inherit">
-                  <SearchIcon onClick={this.handleSearchToggle} />
+                  <SearchIcon onClick={this.toggleSearch} />
                 </IconButton>
               )}
               <Hidden smDown>
