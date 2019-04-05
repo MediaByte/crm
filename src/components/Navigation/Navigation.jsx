@@ -41,35 +41,29 @@ import Logo from 'assets/img/crmLogo.png'
 import navStyles from 'components/Navigation/navStyle.js'
 
 //State
-import { connect } from 'react-redux'
-import { drawerState } from 'state/userGroups/actions.js'
-const mapStateToProps = state => {
-  console.log(state)
-  return {
-    open: state.userGroups.open,
-    hide: true,
-  }
-}
-const mapDispatchToProps = dispatch => {
-  return {
-    toggleDrawer: event => dispatch(drawerState(event)),
-  }
-}
 
 class Navigation extends React.Component {
   state = {
     disableUnderline: true,
     value: 0,
     hide: true,
+    sidebarOpen: false,
   }
+
   componentDidMount() {
     // const { closed } = this.props;
   }
-  handleDrawerOpen = () => {
-    this.props.toggleDrawer(true)
+
+  openSidebar = () => {
+    this.setState({
+      sidebarOpen: true,
+    })
   }
-  handleDrawerClose = () => {
-    this.props.toggleDrawer(false)
+
+  closeSidebar = () => {
+    this.setState({
+      sidebarOpen: false,
+    })
   }
 
   handleSearchToggle = () => {
@@ -100,7 +94,7 @@ class Navigation extends React.Component {
 
   render() {
     const { classes, children, component } = this.props
-    const { value } = this.state
+    const { sidebarOpen, value } = this.state
 
     const renderMenu = (
       <div>
@@ -118,7 +112,7 @@ class Navigation extends React.Component {
           </Link>
           <IconButton
             className={classNames(classes.menuButtonMobile)}
-            onClick={this.handleDrawerClose}
+            onClick={this.closeSidebar}
             style={{ color: '#fff' }}
           >
             <MenuIcon />
@@ -207,15 +201,15 @@ class Navigation extends React.Component {
             className={classNames(classes.appBar)}
           >
             <Toolbar className={classes.toolbar}>
-              {!this.props.open ? (
+              {!sidebarOpen ? (
                 this.state.hide && (
                   <IconButton
                     color="inherit"
                     aria-label="Open drawer"
-                    onClick={this.handleDrawerOpen}
+                    onClick={this.openSidebar}
                     className={classNames(
                       classes.menuButton,
-                      this.props.open && classes.hide,
+                      sidebarOpen && classes.hide,
                     )}
                   >
                     <MenuIcon />
@@ -227,7 +221,7 @@ class Navigation extends React.Component {
                     classes.menuButton,
                     classes.menuButtonOpened,
                   )}
-                  onClick={this.handleDrawerClose}
+                  onClick={this.closeSidebar}
                 >
                   <MenuIcon />
                 </IconButton>
@@ -280,7 +274,7 @@ class Navigation extends React.Component {
             classes={{
               paper: classNames(
                 classes.drawerPaper,
-                !this.props.open && classes.drawerPaperClose,
+                !sidebarOpen && classes.drawerPaperClose,
               ),
             }}
             open={this.state.open}
@@ -319,9 +313,4 @@ Navigation.propTypes = {
   classes: PropTypes.object.isRequired,
   theme: PropTypes.object.isRequired,
 }
-export default withStyles(navStyles, { withTheme: true })(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  )(Navigation),
-)
+export default withStyles(navStyles, { withTheme: true })(Navigation)
