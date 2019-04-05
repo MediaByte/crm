@@ -1,7 +1,28 @@
+import startCase from 'lodash/startCase'
+import lowerCase from 'lodash/lowerCase'
+import upperCase from 'lodash/upperCase'
+
 import * as BuiltIn from './gun-wrapper/BuiltIn'
 import * as Utils from './gun-wrapper/Utils'
 
 const FreeValue = BuiltIn.FreeValue
+
+/**
+ *
+ * @param {string} str
+ * @returns {string}
+ */
+const toTitleCase = str => startCase(lowerCase(str))
+
+/**
+ * @param {string} str
+ * @returns {boolean}
+ */
+const strHasNumbers = str => {
+  const numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+
+  return numbers.some(number => str.includes(number))
+}
 
 /**
  * @typedef {import('./gun-wrapper/simple-typings').Schema} Schema
@@ -16,7 +37,17 @@ const UserGroup = {
   [Utils.SCHEMA_NAME]: 'UserGroup',
   name: {
     type: 'string',
-    async onChange() {},
+    async onChange(_, nextVal) {
+      if (nextVal == null) {
+        return ['value must be specified']
+      }
+
+      if (strHasNumbers(nextVal)) {
+        return ['Must not contain numbers']
+      }
+
+      return false
+    },
   },
 }
 
@@ -27,11 +58,27 @@ const User = {
   [Utils.SCHEMA_NAME]: 'User',
   name: {
     type: 'string',
-    async onChange() {},
+    async onChange(_, nextVal) {
+      if (nextVal == null) {
+        return ['value must be specified']
+      }
+
+      if (strHasNumbers(nextVal)) {
+        return ['Must not contain numbers']
+      }
+
+      return false
+    },
   },
   userGroup: {
     type: UserGroup,
-    async onChange() {},
+    async onChange(_, nextVal) {
+      if (nextVal == null) {
+        return ['value must be specified']
+      }
+
+      return false
+    },
   },
 }
 
@@ -49,6 +96,7 @@ const PropTypeParam = {
       if (nextVal == null) {
         return ['value must be specified']
       }
+
       return undefined
     },
   },
@@ -118,7 +166,7 @@ const PropType = {
         return false
       }
 
-      return ['cannot change any proptype data after it exists']
+      return ['Cannot change any proptype data after it exists']
     },
   },
 }
@@ -189,7 +237,7 @@ const RecordRel = {
   [Utils.SCHEMA_NAME]: 'RecordRel',
   relDefName: {
     type: 'string',
-    async onChange() {},
+    onChange: BuiltIn.nonNullableOnChange,
   },
   relatedRecordKey: {
     type: 'string',
@@ -221,11 +269,23 @@ const RelDef = {
   [Utils.SCHEMA_NAME]: 'RelDef',
   name: {
     type: 'string',
-    async onChange() {},
+    async onChange(_, nextVal) {
+      if (nextVal == null) {
+        return ['Must be provided']
+      }
+
+      return false
+    },
   },
   relatedNodeName: {
     type: 'string',
-    async onChange() {},
+    async onChange(_, nextVal) {
+      if (nextVal == null) {
+        return ['Must be provided']
+      }
+
+      return false
+    },
   },
 }
 
@@ -236,11 +296,43 @@ const Node = {
   [Utils.SCHEMA_NAME]: 'Node',
   name: {
     type: 'string',
-    async onChange() {},
+    async onChange(_, nextVal) {
+      if (nextVal == null) {
+        return ['must be defined']
+      }
+
+      const errors = []
+
+      if (upperCase(nextVal) !== nextVal) {
+        errors.push('Must be all-caps')
+      }
+
+      if (strHasNumbers(nextVal)) {
+        errors.push('Must not contain numbers')
+      }
+
+      if (errors.length) {
+        return errors
+      }
+
+      return false
+    },
   },
   label: {
     type: 'string',
-    async onChange() {},
+    async onChange(_, nextVal) {
+      const maxLen = 155
+
+      if (nextVal == null) {
+        return ['Must be provided']
+      }
+
+      if (nextVal.length > 155) {
+        return ['Must not be longer than 155 characters']
+      }
+
+      return false
+    },
   },
   propDefs: {
     type: [PropDef],
@@ -252,9 +344,7 @@ const Node = {
   },
   records: {
     type: [Record],
-    async onChange(self) {
-      const relDefs = {}
-    },
+    async onChange(self, nextVal) {},
   },
 }
 
