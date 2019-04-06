@@ -22,6 +22,7 @@ import BottomNavigationAction from '@material-ui/core/BottomNavigationAction'
 import InputBase from '@material-ui/core/InputBase'
 import Hidden from '@material-ui/core/Hidden'
 import Button from '@material-ui/core/Button'
+import withWidth, { isWidthUp, isWidthDown } from '@material-ui/core/withWidth'
 
 //material ui icons
 import CalendarTodayOutlined from '@material-ui/icons/CalendarTodayOutlined'
@@ -46,8 +47,8 @@ class Navigation extends React.Component {
   state = {
     disableUnderline: true,
     value: 0,
-    hide: true,
     sidebarOpen: false,
+    searchBoxOpen: false,
   }
 
   openSidebar = () => {
@@ -63,8 +64,8 @@ class Navigation extends React.Component {
   }
 
   toggleSearch = () => {
-    this.setState(prevState => ({
-      hide: !prevState.hide,
+    this.setState(({ searchBoxOpen }) => ({
+      searchBoxOpen: !searchBoxOpen,
     }))
   }
 
@@ -89,8 +90,11 @@ class Navigation extends React.Component {
   }
 
   render() {
-    const { classes, children, component } = this.props
-    const { sidebarOpen, value } = this.state
+    const { classes, children, component, width } = this.props
+    const { searchBoxOpen, sidebarOpen, value } = this.state
+
+    const shouldRenderSearchBtn = isWidthDown('md', width) && !searchBoxOpen
+    const shouldRenderTitle = isWidthUp('lg', width) || !searchBoxOpen
 
     const renderMenu = (
       <div>
@@ -198,7 +202,7 @@ class Navigation extends React.Component {
           >
             <Toolbar className={classes.toolbar}>
               {!sidebarOpen ? (
-                this.state.hide && (
+                !this.state.searchBoxOpen && (
                   <IconButton
                     color="inherit"
                     aria-label="Open drawer"
@@ -222,12 +226,12 @@ class Navigation extends React.Component {
                   <MenuIcon />
                 </IconButton>
               )}
-              {this.state.hide && (
+              {shouldRenderTitle && (
                 <Typography variant="title" noWrap className={classes.title}>
                   {this.props.title}
                 </Typography>
               )}
-              {!this.state.hide && (
+              {searchBoxOpen && (
                 <div className={classes.itemSearch}>
                   <div className={classes.search}>
                     <div className={classes.searchIcon}>
@@ -250,7 +254,7 @@ class Navigation extends React.Component {
                   </Button>
                 </div>
               )}
-              {this.state.hide && (
+              {shouldRenderSearchBtn && (
                 <IconButton color="inherit">
                   <SearchIcon onClick={this.toggleSearch} />
                 </IconButton>
@@ -305,8 +309,10 @@ class Navigation extends React.Component {
     )
   }
 }
+
 Navigation.propTypes = {
   classes: PropTypes.object.isRequired,
   theme: PropTypes.object.isRequired,
 }
+
 export default withStyles(navStyles, { withTheme: true })(Navigation)
