@@ -44,11 +44,35 @@ import navStyles from 'components/Navigation/navStyle.js'
 //State
 
 class Navigation extends React.Component {
-  state = {
-    disableUnderline: true,
-    value: 0,
-    sidebarOpen: false,
-    searchBoxOpen: false,
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      disableUnderline: true,
+      value: 0,
+      sidebarOpen: false,
+      searchBoxOpen: isWidthUp('lg', props.width),
+    }
+  }
+
+  componentDidUpdate({ width: prevWidth }) {
+    const { width: newWidth } = this.props
+
+    if (prevWidth === newWidth) return
+
+    const isBigScreen = isWidthUp('lg', newWidth)
+
+    if (isBigScreen) {
+      this.setState({
+        searchBoxOpen: true,
+      })
+    }
+    // if we go from big to small screen close the searchbox
+    else if (this.state.searchBoxOpen) {
+      this.setState({
+        searchBoxOpen: false,
+      })
+    }
   }
 
   openSidebar = () => {
@@ -93,8 +117,25 @@ class Navigation extends React.Component {
     const { classes, children, component, width } = this.props
     const { searchBoxOpen, sidebarOpen, value } = this.state
 
-    const shouldRenderSearchBtn = isWidthDown('md', width) && !searchBoxOpen
-    const shouldRenderTitle = isWidthUp('lg', width) || !searchBoxOpen
+    const isBigScreen = isWidthUp('lg', width)
+
+    const shouldRenderTitle = isBigScreen || !searchBoxOpen
+
+    const shouldRenderMenuButton = (() => {
+      const isBigScreen = isWidthUp('lg', width)
+      const searchBoxClosed = !searchBoxOpen
+
+      // will always be rendered on big screens because both search box
+      // and menu wont overlap
+      if (isBigScreen) return true
+
+      if (sidebarOpen && isBigScreen) return true
+
+      // render on small screens if search box is closed
+      if (searchBoxClosed) return true
+
+      return false
+    })()
 
     const renderMenu = (
       <div>
@@ -201,36 +242,26 @@ class Navigation extends React.Component {
             className={classNames(classes.appBar)}
           >
             <Toolbar className={classes.toolbar}>
-              {!sidebarOpen ? (
-                !this.state.searchBoxOpen && (
-                  <IconButton
-                    color="inherit"
-                    aria-label="Open drawer"
-                    onClick={this.openSidebar}
-                    className={classNames(
-                      classes.menuButton,
-                      sidebarOpen && classes.hide,
-                    )}
-                  >
-                    <MenuIcon />
-                  </IconButton>
-                )
-              ) : (
+              {shouldRenderMenuButton && (
                 <IconButton
+                  color="inherit"
+                  aria-label="Open drawer"
+                  onClick={sidebarOpen ? this.closeSidebar : this.openSidebar}
                   className={classNames(
                     classes.menuButton,
-                    classes.menuButtonOpened,
+                    sidebarOpen && classes.menuButtonOpened,
                   )}
-                  onClick={this.closeSidebar}
                 >
                   <MenuIcon />
                 </IconButton>
               )}
+
               {shouldRenderTitle && (
                 <Typography variant="title" noWrap className={classes.title}>
                   {this.props.title}
                 </Typography>
               )}
+
               {searchBoxOpen && (
                 <div className={classes.itemSearch}>
                   <div className={classes.search}>
@@ -245,20 +276,24 @@ class Navigation extends React.Component {
                       }}
                     />
                   </div>
-                  <Button
-                    color="primary"
-                    className={classes.button}
-                    onClick={this.toggleSearch}
-                  >
-                    Cancel
-                  </Button>
+                  <Hidden lgUp>
+                    <Button
+                      color="primary"
+                      className={classes.button}
+                      onClick={this.toggleSearch}
+                    >
+                      Cancel
+                    </Button>
+                  </Hidden>
                 </div>
               )}
-              {shouldRenderSearchBtn && (
+
+              {!searchBoxOpen && (
                 <IconButton color="inherit">
                   <SearchIcon onClick={this.toggleSearch} />
                 </IconButton>
               )}
+
               <Hidden smDown>
                 <IconButton color="inherit" className={classes.iconHeader}>
                   <CalendarTodayOutlined />
@@ -287,7 +322,7 @@ class Navigation extends React.Component {
             <div style={{ height: '100%' }}>{children}</div>
           </main>
         </div>
-        <Hidden only={['lg', 'xl']}>
+        <Hidden lgUp>
           <BottomNavigation
             value={value}
             onChange={this.handleChange}
@@ -315,4 +350,6 @@ Navigation.propTypes = {
   theme: PropTypes.object.isRequired,
 }
 
-export default withStyles(navStyles, { withTheme: true })(Navigation)
+export default withStyles(navStyles, { withTheme: true })(
+  withWidth()(Navigation),
+)
