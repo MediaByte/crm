@@ -269,6 +269,7 @@ class Navigation extends React.Component {
                       <SearchIcon />
                     </div>
                     <InputBase
+                      autoFocus={!isBigScreen}
                       placeholder="Search..."
                       classes={{
                         root: classes.inputRoot,
