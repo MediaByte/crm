@@ -14,9 +14,6 @@ const navStyles = theme => ({
       fontWeight: '900',
       fontSize: '15px',
     },
-    [theme.breakpoints.down('xs')]: {
-      visibility: 'hidden',
-    },
   },
   iconHeader: {
     marginLeft: '5px',
