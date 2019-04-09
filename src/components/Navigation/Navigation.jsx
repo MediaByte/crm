@@ -114,6 +114,18 @@ class Navigation extends React.Component {
     return <Redirect to={page} />
   }
 
+  onBlurSearchBox = () => {
+    this.setState((_, { width }) => {
+      if (isWidthDown('md', width)) {
+        return {
+          searchBoxOpen: false,
+        }
+      }
+
+      return null
+    })
+  }
+
   render() {
     const { classes, children, component, width } = this.props
     const { searchBoxOpen, sidebarOpen, value } = this.state
@@ -140,7 +152,6 @@ class Navigation extends React.Component {
 
     const renderMenu = (
       <div>
-        {searchBoxOpen && !isBigScreen && <Backdrop open={true} />}
         <div className={classes.toolbar}>
           <Link
             to="/pinecone/dashboard/test@gmail.com"
@@ -265,7 +276,12 @@ class Navigation extends React.Component {
               )}
 
               {searchBoxOpen && (
-                <div className={classes.itemSearch}>
+                <div
+                  className={classNames(
+                    classes.itemSearch,
+                    searchBoxOpen && !isBigScreen && classes.onTopOfBackdrop,
+                  )}
+                >
                   <div className={classes.search}>
                     <div className={classes.searchIcon}>
                       <SearchIcon />
@@ -277,6 +293,7 @@ class Navigation extends React.Component {
                         root: classes.inputRoot,
                         input: classes.inputInput,
                       }}
+                      onBlur={this.onBlurSearchBox}
                     />
                   </div>
                   <Hidden lgUp>
@@ -343,6 +360,9 @@ class Navigation extends React.Component {
             />
           </BottomNavigation>
         </Hidden>
+        {searchBoxOpen && !isBigScreen && (
+          <Backdrop open={true} className={classes.searchBackdrop} />
+        )}
       </div>
     )
   }
