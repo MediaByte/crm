@@ -247,7 +247,7 @@ class Navigation extends React.Component {
     )
 
     return (
-      <div>
+      <React.Fragment>
         <div className={classes.root}>
           <AppBar
             position="fixed"
@@ -363,7 +363,7 @@ class Navigation extends React.Component {
         {searchBoxOpen && !isBigScreen && (
           <Backdrop open={true} className={classes.searchBackdrop} />
         )}
-      </div>
+      </React.Fragment>
     )
   }
 }
