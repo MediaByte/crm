@@ -2,6 +2,9 @@ import { fade } from '@material-ui/core/styles/colorManipulator'
 
 const drawerWidth = 220
 
+/**
+ * @@param {import('@material-ui/core/styles').Theme} theme
+ */
 const navStyles = theme => ({
   title: {
     flexGrow: 1,
