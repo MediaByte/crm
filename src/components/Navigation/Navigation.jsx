@@ -23,6 +23,7 @@ import InputBase from '@material-ui/core/InputBase'
 import Hidden from '@material-ui/core/Hidden'
 import Button from '@material-ui/core/Button'
 import withWidth, { isWidthUp, isWidthDown } from '@material-ui/core/withWidth'
+import Backdrop from '@material-ui/core/Backdrop'
 
 //material ui icons
 import CalendarTodayOutlined from '@material-ui/icons/CalendarTodayOutlined'
@@ -139,6 +140,7 @@ class Navigation extends React.Component {
 
     const renderMenu = (
       <div>
+        {searchBoxOpen && !isBigScreen && <Backdrop open={true} />}
         <div className={classes.toolbar}>
           <Link
             to="/pinecone/dashboard/test@gmail.com"
