@@ -62,7 +62,6 @@ const navStyles = theme => ({
     display: 'flex',
   },
   appBar: {
-    zIndex: theme.zIndex.drawer - 1,
     [theme.breakpoints.up('sm')]: {
       zIndex: theme.zIndex.drawer + 1,
     },
