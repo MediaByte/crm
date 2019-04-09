@@ -297,7 +297,7 @@ class Navigation extends React.Component {
                 </IconButton>
               )}
 
-              <Hidden smDown>
+              <Hidden mdDown>
                 <IconButton color="inherit" className={classes.iconHeader}>
                   <CalendarTodayOutlined />
                 </IconButton>
