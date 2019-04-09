@@ -150,10 +150,7 @@ const navStyles = theme => ({
   toolbar: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'flex-end',
     padding: '0 8px',
-    backgroundColor: 'transparent',
-    // backgroundColor: "#eee",
     ...theme.mixins.toolbar,
   },
   toolbarLink: {
