@@ -58,7 +58,7 @@ const navStyles = theme => ({
   drawerList: {
     color: theme.palette.common.white,
   },
-  root: {
+  appbarAndContentContainer: {
     display: 'flex',
   },
   appBar: {

@@ -11,6 +11,7 @@ import Dashboard from '@material-ui/icons/Dashboard'
 import AppBar from '@material-ui/core/AppBar'
 import Typography from '@material-ui/core/Typography'
 import { withStyles } from '@material-ui/core/styles'
+import Grid from '@material-ui/core/Grid'
 import Drawer from '@material-ui/core/Drawer'
 import Toolbar from '@material-ui/core/Toolbar'
 import List from '@material-ui/core/List'
@@ -248,7 +249,7 @@ class Navigation extends React.Component {
 
     return (
       <React.Fragment>
-        <div className={classes.root}>
+        <Grid className={classes.appbarAndContentContainer}>
           <AppBar
             position="fixed"
             elevation={0}
@@ -341,7 +342,7 @@ class Navigation extends React.Component {
           <main className={classes.children}>
             <div style={{ height: '100%' }}>{children}</div>
           </main>
-        </div>
+        </Grid>
         <Hidden lgUp>
           <BottomNavigation
             value={value}
