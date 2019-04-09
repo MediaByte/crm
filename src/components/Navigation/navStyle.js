@@ -18,9 +18,6 @@ const navStyles = theme => ({
   iconHeader: {
     marginLeft: '5px',
     marginRight: '5px',
-    [theme.breakpoints.down('xs')]: {
-      visibility: 'hidden',
-    },
   },
   dividerLogo: {
     height: '1px',
