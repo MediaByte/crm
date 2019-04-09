@@ -277,12 +277,7 @@ class Navigation extends React.Component {
               )}
 
               {searchBoxOpen && (
-                <div
-                  className={classNames(
-                    classes.itemSearch,
-                    searchBoxOpen && !isBigScreen && classes.onTopOfBackdrop,
-                  )}
-                >
+                <div className={classes.itemSearch}>
                   <div className={classes.search}>
                     <div className={classes.searchIcon}>
                       <SearchIcon />
