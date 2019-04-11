@@ -6,6 +6,9 @@ const drawerWidth = 220
  * @@param {import('@material-ui/core/styles').Theme} theme
  */
 const navStyles = theme => ({
+  hidden: {
+    visibility: 'hidden',
+  },
   title: {
     flexGrow: 1,
     visibility: 'visible',
@@ -156,6 +159,10 @@ const navStyles = theme => ({
     padding: '0 8px',
     ...theme.mixins.toolbar,
   },
+  searchResultsHolder: {
+    position: 'absolute',
+    top: theme.spacing.unit * 6,
+  },
   toolbarLink: {
     display: 'block',
     textAlign: 'center',
@@ -203,6 +210,9 @@ const navStyles = theme => ({
       transform: 'translate(-50%, -50%)',
       width: '90%',
     },
+  },
+  resultsHolder: {
+    position: 'absolute',
   },
   search: {
     position: 'relative',

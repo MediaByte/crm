@@ -25,6 +25,8 @@ import Hidden from '@material-ui/core/Hidden'
 import Button from '@material-ui/core/Button'
 import withWidth, { isWidthUp, isWidthDown } from '@material-ui/core/withWidth'
 import Backdrop from '@material-ui/core/Backdrop'
+import Paper from '@material-ui/core/Paper'
+import Avatar from '@material-ui/core/Avatar'
 
 //material ui icons
 import CalendarTodayOutlined from '@material-ui/icons/CalendarTodayOutlined'
@@ -43,9 +45,47 @@ import Logo from 'assets/img/crmLogo.png'
 //styles
 import navStyles from 'components/Navigation/navStyle.js'
 
+import { nameToIconMap } from 'common/NameToIcon'
+
 //State
 
+/**
+ * @typedef {object} SearchResult
+ * @prop {string} displayText
+ * @prop {string} nodeName
+ * @prop {string=} iconName
+ * @prop {React.Key} key
+ */
+
+/**
+ * @typedef {object} Props
+ * @prop {import('@material-ui/core/styles/createBreakpoints').Breakpoint} width
+ * @prop {((text: string) => void)=} onSearchBoxChange
+ * @prop {(SearchResult[])=} searchResults
+ * @prop {(boolean|null|undefined)=} isLoadingSearchResults
+ */
+
+/**
+ * @typedef {object} State
+ * @prop {boolean} searchBoxOpen
+ * @prop {boolean} searchResultsOpen
+ * @prop {boolean} sidebarOpen
+ * @prop {number} value
+ * @prop {boolean} disableUnderline
+ * @prop {HTMLElement|null} searchResultsAnchor
+ * @prop {boolean} searchBoxFocused
+ * @prop {string} searchBoxCurrentText
+ */
+
+/**
+ * @augments React.Component<Props, State>
+ */
 class Navigation extends React.Component {
+  searchBoxRef = React.createRef()
+
+  /**
+   * @param {Props} props
+   */
   constructor(props) {
     super(props)
 
@@ -54,11 +94,20 @@ class Navigation extends React.Component {
       value: 0,
       sidebarOpen: false,
       searchBoxOpen: isWidthUp('lg', props.width),
+      searchResultsAnchor: null,
+      searchResultsOpen: false,
+      searchBoxFocused: false,
+      searchBoxCurrentText: '',
     }
   }
 
-  componentDidUpdate({ width: prevWidth }) {
-    const { width: newWidth } = this.props
+  /**
+   * @param {Props} prevProps
+   */
+  componentDidUpdate(prevProps) {
+    const prevWidth = prevProps.width
+
+    const newWidth = this.props.width
 
     if (prevWidth === newWidth) return
 
@@ -67,6 +116,7 @@ class Navigation extends React.Component {
     if (isBigScreen) {
       this.setState({
         searchBoxOpen: true,
+        searchResultsOpen: false,
       })
     }
     // if we go from big to small screen close the searchbox
@@ -89,10 +139,27 @@ class Navigation extends React.Component {
     })
   }
 
+  onFocusSearchBox = () => {
+    this.setState({
+      searchResultsOpen: true,
+      searchBoxFocused: true,
+    })
+  }
+
   toggleSearch = () => {
-    this.setState(({ searchBoxOpen }) => ({
-      searchBoxOpen: !searchBoxOpen,
-    }))
+    this.setState(
+      ({ searchBoxOpen }) => ({
+        searchBoxOpen: !searchBoxOpen,
+      }),
+      () => {
+        const isTabletOrSmaller = isWidthDown('md', this.props.width)
+        const searchBoxWasOpened = this.state.searchBoxOpen
+
+        if (isTabletOrSmaller && searchBoxWasOpened) {
+          // this.searchBoxRef.current.focus()
+        }
+      },
+    )
   }
 
   handleChange = (event, value) => {
@@ -117,19 +184,53 @@ class Navigation extends React.Component {
 
   onBlurSearchBox = () => {
     this.setState((_, { width }) => {
-      if (isWidthDown('md', width)) {
+      if (isWidthUp('lg', width)) {
         return {
-          searchBoxOpen: false,
+          searchResultsOpen: false,
+          searchBoxFocused: false,
         }
       }
 
-      return null
+      return {
+        searchBoxFocused: false,
+      }
     })
   }
 
+  /**
+   * @type {import('@material-ui/core/InputBase').InputBaseProps['onChange']}
+   */
+  onChangeSearchBox = e => {
+    const { onSearchBoxChange } = this.props
+
+    this.setState(
+      {
+        searchBoxCurrentText: /** @type {string} */ (e.target.value),
+      },
+      () => {
+        if (onSearchBoxChange) {
+          onSearchBoxChange(this.state.searchBoxCurrentText)
+        }
+      },
+    )
+  }
+
   render() {
-    const { classes, children, component, width } = this.props
-    const { searchBoxOpen, sidebarOpen, value } = this.state
+    const {
+      classes,
+      children,
+      component,
+      isLoadingSearchResults,
+      searchResults,
+      width,
+    } = this.props
+    const {
+      searchBoxFocused,
+      searchBoxOpen,
+      sidebarOpen,
+      value,
+      searchBoxCurrentText,
+    } = this.state
 
     const isBigScreen = isWidthUp('lg', width)
 
@@ -285,17 +386,62 @@ class Navigation extends React.Component {
                     <InputBase
                       autoFocus={!isBigScreen}
                       placeholder="Search..."
+                      inputRef={this.searchBoxRef}
                       classes={{
                         root: classes.inputRoot,
                         input: classes.inputInput,
                       }}
+                      onFocus={this.onFocusSearchBox}
                       onBlur={this.onBlurSearchBox}
+                      onChange={this.onChangeSearchBox}
+                      value={searchBoxCurrentText}
                     />
                   </div>
+
+                  {searchBoxCurrentText && (
+                    <Paper
+                      className={classNames(
+                        classes.searchResultsHolder,
+                        !searchBoxFocused && classes.hidden,
+                      )}
+                    >
+                      {isLoadingSearchResults ? (
+                        <Typography>Show spinner here</Typography>
+                      ) : (
+                        <List>
+                          {searchResults && searchResults.length ? (
+                            searchResults.map(sr => {
+                              const icon = nameToIconMap[sr.iconName || '']
+                              const SRIcon = icon && icon.outlined
+
+                              return (
+                                <ListItem button>
+                                  {SRIcon && (
+                                    <Avatar>
+                                      <SRIcon />
+                                    </Avatar>
+                                  )}
+                                  <ListItemText
+                                    primary={sr.displayText}
+                                    secondary={sr.nodeName}
+                                  />
+                                </ListItem>
+                              )
+                            })
+                          ) : (
+                            <ListItem>
+                              <ListItemText primary="No results found" />
+                            </ListItem>
+                          )}
+                        </List>
+                      )}
+                    </Paper>
+                  )}
+
                   <Hidden lgUp>
                     <Button
-                      color="primary"
                       className={classes.button}
+                      color="primary"
                       onClick={this.toggleSearch}
                     >
                       Cancel
