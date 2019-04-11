@@ -378,75 +378,80 @@ class Navigation extends React.Component {
               )}
 
               {searchBoxOpen && (
-                <div className={classes.itemSearch}>
-                  <div className={classes.search}>
-                    <div className={classes.searchIcon}>
-                      <SearchIcon />
-                    </div>
-                    <InputBase
-                      autoFocus={!isBigScreen}
-                      placeholder="Search..."
-                      inputRef={this.searchBoxRef}
-                      classes={{
-                        root: classes.inputRoot,
-                        input: classes.inputInput,
-                      }}
-                      onFocus={this.onFocusSearchBox}
-                      onBlur={this.onBlurSearchBox}
-                      onChange={this.onChangeSearchBox}
-                      value={searchBoxCurrentText}
-                    />
-                  </div>
-
-                  {searchBoxCurrentText && (
-                    <Paper
-                      className={classNames(
-                        classes.searchResultsHolder,
-                        !searchBoxFocused && classes.hidden,
-                      )}
-                    >
-                      {isLoadingSearchResults ? (
-                        <Typography>Show spinner here</Typography>
-                      ) : (
-                        <List>
-                          {searchResults && searchResults.length ? (
-                            searchResults.map(sr => {
-                              const icon = nameToIconMap[sr.iconName || '']
-                              const SRIcon = icon && icon.outlined
-
-                              return (
-                                <ListItem button>
-                                  {SRIcon && (
-                                    <Avatar>
-                                      <SRIcon />
-                                    </Avatar>
-                                  )}
-                                  <ListItemText
-                                    primary={sr.displayText}
-                                    secondary={sr.nodeName}
-                                  />
-                                </ListItem>
-                              )
-                            })
-                          ) : (
-                            <ListItem>
-                              <ListItemText primary="No results found" />
-                            </ListItem>
-                          )}
-                        </List>
-                      )}
-                    </Paper>
+                <div>
+                  {!isBigScreen && (
+                    <Backdrop open={true} className={classes.searchBackdrop} />
                   )}
+                  <div className={classes.itemSearch}>
+                    <div className={classes.search}>
+                      <div className={classes.searchIcon}>
+                        <SearchIcon />
+                      </div>
+                      <InputBase
+                        autoFocus={!isBigScreen}
+                        placeholder="Search..."
+                        inputRef={this.searchBoxRef}
+                        classes={{
+                          root: classes.inputRoot,
+                          input: classes.inputInput,
+                        }}
+                        onFocus={this.onFocusSearchBox}
+                        onBlur={this.onBlurSearchBox}
+                        onChange={this.onChangeSearchBox}
+                        value={searchBoxCurrentText}
+                      />
+                    </div>
 
-                  <Hidden lgUp>
-                    <Button
-                      className={classes.button}
-                      color="primary"
-                      onClick={this.toggleSearch}
-                    >
-                      Cancel
-                    </Button>
-                  </Hidden>
+                    {searchBoxCurrentText && (
+                      <Paper
+                        className={classNames(
+                          classes.searchResultsHolder,
+                          !searchBoxFocused && classes.hidden,
+                        )}
+                      >
+                        {isLoadingSearchResults ? (
+                          <Typography>Show spinner here</Typography>
+                        ) : (
+                          <List>
+                            {searchResults && searchResults.length ? (
+                              searchResults.map(sr => {
+                                const icon = nameToIconMap[sr.iconName || '']
+                                const SRIcon = icon && icon.outlined
+
+                                return (
+                                  <ListItem button>
+                                    {SRIcon && (
+                                      <Avatar>
+                                        <SRIcon />
+                                      </Avatar>
+                                    )}
+                                    <ListItemText
+                                      primary={sr.displayText}
+                                      secondary={sr.nodeName}
+                                    />
+                                  </ListItem>
+                                )
+                              })
+                            ) : (
+                              <ListItem>
+                                <ListItemText primary="No results found" />
+                              </ListItem>
+                            )}
+                          </List>
+                        )}
+                      </Paper>
+                    )}
+
+                    <Hidden lgUp>
+                      <Button
+                        color="primary"
+                        variant="outlined"
+                        onClick={this.toggleSearch}
+                      >
+                        Cancel
+                      </Button>
+                    </Hidden>
+                  </div>
                 </div>
               )}
 
@@ -502,9 +507,6 @@ class Navigation extends React.Component {
             />
           </BottomNavigation>
         </Hidden>
-        {searchBoxOpen && !isBigScreen && (
-          <Backdrop open={true} className={classes.searchBackdrop} />
-        )}
       </React.Fragment>
     )
   }
