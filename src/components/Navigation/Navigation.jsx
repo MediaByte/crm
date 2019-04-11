@@ -41,6 +41,7 @@ import SearchIcon from '@material-ui/icons/Search'
 
 //projects components
 import NotificationsCenter from 'components/NotificationCenter/NotificationsCenter.js'
+// @ts-ignore
 import Logo from 'assets/img/crmLogo.png'
 //styles
 import navStyles from 'components/Navigation/navStyle.js'
@@ -59,22 +60,25 @@ import { nameToIconMap } from 'common/NameToIcon'
 
 /**
  * @typedef {object} Props
+ * @prop {Classes} classes
+ * @prop {'administration'|'dashboard'} component
  * @prop {import('@material-ui/core/styles/createBreakpoints').Breakpoint} width
  * @prop {((text: string) => void)=} onSearchBoxChange
  * @prop {(SearchResult[])=} searchResults
  * @prop {(boolean|null|undefined)=} isLoadingSearchResults
+ * @prop {string} title
  */
 
 /**
  * @typedef {object} State
  * @prop {boolean} searchBoxOpen
- * @prop {boolean} searchResultsOpen
  * @prop {boolean} sidebarOpen
  * @prop {number} value
  * @prop {boolean} disableUnderline
  * @prop {HTMLElement|null} searchResultsAnchor
  * @prop {boolean} searchBoxFocused
  * @prop {string} searchBoxCurrentText
+ * @prop {boolean} drawerOpen
  */
 
 /**
@@ -89,15 +93,18 @@ class Navigation extends React.Component {
   constructor(props) {
     super(props)
 
+    /**
+     * @type {State}
+     */
     this.state = {
       disableUnderline: true,
       value: 0,
       sidebarOpen: false,
       searchBoxOpen: isWidthUp('lg', props.width),
       searchResultsAnchor: null,
-      searchResultsOpen: false,
       searchBoxFocused: false,
       searchBoxCurrentText: '',
+      drawerOpen: false,
     }
   }
 
@@ -116,7 +123,6 @@ class Navigation extends React.Component {
     if (isBigScreen) {
       this.setState({
         searchBoxOpen: true,
-        searchResultsOpen: false,
       })
     }
     // if we go from big to small screen close the searchbox
@@ -141,7 +147,6 @@ class Navigation extends React.Component {
 
   onFocusSearchBox = () => {
     this.setState({
-      searchResultsOpen: true,
       searchBoxFocused: true,
     })
   }
@@ -162,7 +167,12 @@ class Navigation extends React.Component {
     )
   }
 
-  handleChange = (event, value) => {
+  /**
+   * @param {any} _
+   * @param {number} value
+   * @returns {JSX.Element}
+   */
+  handleChange = (_, value) => {
     console.log('handleChange', value)
     let page
     switch (value) {
@@ -183,17 +193,8 @@ class Navigation extends React.Component {
   }
 
   onBlurSearchBox = () => {
-    this.setState((_, { width }) => {
-      if (isWidthUp('lg', width)) {
-        return {
-          searchResultsOpen: false,
-          searchBoxFocused: false,
-        }
-      }
-
-      return {
-        searchBoxFocused: false,
-      }
+    this.setState({
+      searchBoxFocused: false,
     })
   }
 
@@ -203,9 +204,13 @@ class Navigation extends React.Component {
   onChangeSearchBox = e => {
     const { onSearchBoxChange } = this.props
 
+    /** @type {string} */
+    // @ts-ignore
+    const txt = e.target.value
+
     this.setState(
       {
-        searchBoxCurrentText: /** @type {string} */ (e.target.value),
+        searchBoxCurrentText: txt,
       },
       () => {
         if (onSearchBoxChange) {
@@ -223,8 +228,11 @@ class Navigation extends React.Component {
       isLoadingSearchResults,
       searchResults,
       width,
+      title,
     } = this.props
+
     const {
+      drawerOpen,
       searchBoxFocused,
       searchBoxOpen,
       sidebarOpen,
@@ -282,6 +290,7 @@ class Navigation extends React.Component {
               classes={{ selected: classes.selected }}
               button
               component={props => (
+                // @ts-ignore
                 <NavLink to={`/pinecone/dashboard/test@gmail.com`} {...props} />
               )}
             >
@@ -311,6 +320,7 @@ class Navigation extends React.Component {
               classes={{ selected: classes.selected }}
               button
               component={props => (
+                // @ts-ignore
                 <NavLink to={'/admin/test@gmail.com'} {...props} />
               )}
             >
@@ -373,15 +383,13 @@ class Navigation extends React.Component {
 
               {shouldRenderTitle && (
                 <Typography variant="title" noWrap className={classes.title}>
-                  {this.props.title}
+                  {title}
                 </Typography>
               )}
 
               {searchBoxOpen && (
                 <div>
-                  {!isBigScreen && (
-                    <Backdrop open={true} className={classes.searchBackdrop} />
-                  )}
+                  {!isBigScreen && <Backdrop open={true} />}
                   <div className={classes.itemSearch}>
                     <div className={classes.search}>
                       <div className={classes.searchIcon}>
@@ -479,7 +487,7 @@ class Navigation extends React.Component {
                 !sidebarOpen && classes.drawerPaperClose,
               ),
             }}
-            open={this.state.open}
+            open={drawerOpen}
           >
             {renderMenu}
           </Drawer>
@@ -516,7 +524,13 @@ Navigation.propTypes = {
   classes: PropTypes.object.isRequired,
   theme: PropTypes.object.isRequired,
 }
+/**
+ * @typedef {keyof ReturnType<typeof navStyles>} ClassNames
+ * @typedef {Record<ClassNames, string>} Classes
+ */
 
-export default withStyles(navStyles, { withTheme: true })(
-  withWidth()(Navigation),
-)
+export default withStyles(
+  // Cast: no way to pass in generic arguments in JSDOC+Typescript
+  /** @type {import('@material-ui/core/styles').StyleRulesCallback<ClassNames>} */ (navStyles),
+  // @ts-ignore -_- I don't even know why I have to ignore here
+)(withWidth()(Navigation))
