@@ -121,12 +121,10 @@ export default class NodesAndProps extends React.PureComponent {
   }
 
   render() {
-    const { availableTypes, nodes } = this.props
+    const { nodes } = this.props
     const {
       selectedNodeID,
       showingAddNodeDialog,
-      showingAddRelDialog,
-      showingPropDialog,
       showingEditNodeDialog,
     } = this.state
     const classes = { demo: '' }
@@ -153,59 +151,14 @@ export default class NodesAndProps extends React.PureComponent {
           <EditNodeDialog />
         </Dialog>
 
-        {/* <AddNodeDialog
-          availableIconNames={Object.keys(nameToIconMap)}
-          handleClose={this.toggleAddNodeDialog}
-          handleSave={() => {}}
-          isValidIdentifierValue={() => true}
-          isValidLabelValue={() => true}
-          isValidNameValue={() => true}
-          open={false}
-        />
-
-        <Dialog
-          actionButtonText="SAVE"
-          handleClose={this.toggleAddRelDialog}
-          onClickCloseButton={this.toggleAddRelDialog}
-          open={true}
-          title="Add a Relationship"
-        >
-          <RelationshipForm availableNodeNames={[]} />
-        </Dialog> */}
-
         <Page titleText="Nodes And Properties">
           <Grid
             container
             style={{ backgroundColor: '#fafafa', height: '100%' }}
           >
-            {/* <TitleSubtitleList
-              extractID={extractNodeID}
-              extractTitle={extractNodeName}
-              onClickAdd={this.toggleAddNodeDialog}
-              onClickItem={this.onClickNodeOnList}
-              items={nodes}
-              // TODO: optimize away array literal
-              selectedIDs={(selectedNodeID && [selectedNodeID]) || undefined}
-              showToolbar
-            /> */}
             <Grid item xs={12}>
               <NodeDrawer onclickEditNode={this.toggleEditNodeDialog} />
             </Grid>
-            {/* <Grid item xs={12} className={classes.demo}>
-              {selectedNode && (
-                <NodeOverview
-                  onclickEditNode={this.toggleEditNodeDialog}
-                  identifier={selectedNode.identifier}
-                  iconName={selectedNode.iconName}
-                  label={selectedNode.label}
-                  name={selectedNode.name}
-                  onClickAddProperty={this.onClickAddProperty}
-                  onClickAddRelationship={this.toggleAddRelDialog}
-                  properties={selectedNode.props}
-                  relationships={selectedNode.relationships}
-                />
-              )}
-            </Grid> */}
             <IconButton
               color="secondary"
               className={classes.buttonAdd}

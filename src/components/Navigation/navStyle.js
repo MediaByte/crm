@@ -185,6 +185,7 @@ const navStyles = theme => ({
     padding: theme.spacing.unit * 3,
   },
   children: {
+    background: '#f7f7f7',
     [theme.breakpoints.down('xs')]: {
       position: 'absolute',
       paddingBottom: '20px',
