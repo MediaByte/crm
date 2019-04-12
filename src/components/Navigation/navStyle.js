@@ -2,7 +2,13 @@ import { fade } from '@material-ui/core/styles/colorManipulator'
 
 const drawerWidth = 220
 
+/**
+ * @param {import('@material-ui/core/styles').Theme} theme
+ */
 const navStyles = theme => ({
+  hidden: {
+    visibility: 'hidden',
+  },
   title: {
     flexGrow: 1,
     visibility: 'visible',
@@ -14,16 +20,10 @@ const navStyles = theme => ({
       fontWeight: '900',
       fontSize: '15px',
     },
-    [theme.breakpoints.down('xs')]: {
-      visibility: 'hidden',
-    },
   },
   iconHeader: {
     marginLeft: '5px',
     marginRight: '5px',
-    [theme.breakpoints.down('xs')]: {
-      visibility: 'hidden',
-    },
   },
   dividerLogo: {
     height: '1px',
@@ -64,14 +64,10 @@ const navStyles = theme => ({
   drawerList: {
     color: theme.palette.common.white,
   },
-  root: {
+  appbarAndContentContainer: {
     display: 'flex',
   },
   appBar: {
-    zIndex: theme.zIndex.drawer - 1,
-    [theme.breakpoints.up('sm')]: {
-      zIndex: theme.zIndex.drawer + 1,
-    },
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
@@ -82,14 +78,6 @@ const navStyles = theme => ({
     // boxShadow: "0 0 10px #eee",
     backgroundColor: '#fff',
     borderBottom: '1px solid #eee',
-  },
-  appBarShift: {
-    // marginLeft: drawerWidth,
-    // width: `calc(100% - ${drawerWidth}px)`,
-    // transition: theme.transitions.create(['width', 'margin'], {
-    //   easing: theme.transitions.easing.sharp,
-    //   duration: theme.transitions.duration.enteringScreen,
-    // }),
   },
   menuButton: {
     color: '#0dacc4',
@@ -168,11 +156,12 @@ const navStyles = theme => ({
   toolbar: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'flex-end',
     padding: '0 8px',
-    backgroundColor: 'transparent',
-    // backgroundColor: "#eee",
     ...theme.mixins.toolbar,
+  },
+  searchResultsHolder: {
+    position: 'absolute',
+    top: theme.spacing.unit * 6,
   },
   toolbarLink: {
     display: 'block',
@@ -221,6 +210,9 @@ const navStyles = theme => ({
       transform: 'translate(-50%, -50%)',
       width: '90%',
     },
+  },
+  resultsHolder: {
+    position: 'absolute',
   },
   search: {
     position: 'relative',
