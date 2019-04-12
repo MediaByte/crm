@@ -15,7 +15,7 @@ const styles = theme => ({
     },
     width: '480px',
     borderLeft: '1px solid #eee',
-    background: '#f8f8f8',
+    background: '#fafafa',
   },
   title: {
     color: '#fff',

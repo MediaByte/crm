@@ -152,10 +152,7 @@ export default class NodesAndProps extends React.PureComponent {
         </Dialog>
 
         <Page titleText="Nodes And Properties">
-          <Grid
-            container
-            style={{ backgroundColor: '#fafafa', height: '100%' }}
-          >
+          <Grid container style={{ minHeight: '100%' }}>
             <Grid item xs={12}>
               <NodeDrawer onclickEditNode={this.toggleEditNodeDialog} />
             </Grid>

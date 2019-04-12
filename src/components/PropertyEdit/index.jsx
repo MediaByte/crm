@@ -14,12 +14,6 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight'
 import PropertyIcon from 'components/PropertyDrawer/PropertyIcon'
 
 const styles = {
-  // padding: {
-  //   padding: '15px !important',
-  // },
-  // main: {
-  //   padding: '10px !important',
-  // },
   listItem: {
     background: '#fff',
   },
