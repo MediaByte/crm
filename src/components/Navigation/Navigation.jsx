@@ -303,18 +303,7 @@ class Navigation extends React.Component {
                 style={{ color: '#fff' }}
               />
             </ListItem>
-            <ListItem button>
-              <ListItemIcon className={classes.iconMenu}>
-                <i style={{ fontSize: '23px' }} className="fas fa-tasks" />
-              </ListItemIcon>
-              <ListItemText disableTypography primary="Tasks" />
-            </ListItem>
-            <ListItem button>
-              <ListItemIcon className={classes.iconMenu}>
-                <People />
-              </ListItemIcon>
-              <ListItemText disableTypography primary="People" />
-            </ListItem>
+
             <ListItem
               selected={component === 'administration'}
               classes={{ selected: classes.selected }}
@@ -328,30 +317,6 @@ class Navigation extends React.Component {
                 <Laptop />
               </ListItemIcon>
               <ListItemText disableTypography primary="Administration" />
-            </ListItem>
-            <ListItem button>
-              <ListItemIcon className={classes.iconMenu}>
-                <Event />
-              </ListItemIcon>
-              <ListItemText disableTypography primary="Events" />
-            </ListItem>
-            <ListItem button>
-              <ListItemIcon className={classes.iconMenu}>
-                <AccountBalance />
-              </ListItemIcon>
-              <ListItemText disableTypography primary="Agencies" />
-            </ListItem>
-            <ListItem button>
-              <ListItemIcon className={classes.iconMenu}>
-                <CreditCard />
-              </ListItemIcon>
-              <ListItemText disableTypography primary="Expenses" />
-            </ListItem>
-            <ListItem button>
-              <ListItemIcon className={classes.iconMenu}>
-                <MailOutline />
-              </ListItemIcon>
-              <ListItemText disableTypography primary="Mass Email" />
             </ListItem>
           </List>
         </div>
