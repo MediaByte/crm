@@ -8,8 +8,10 @@ import Icon from '@material-ui/core/Icon'
 import Typography from '@material-ui/core/Typography'
 import GridItem from 'components/Grid/GridItem.jsx'
 import GridContainer from 'components/Grid/GridContainer.jsx'
-import NotificationsOutlined from '@material-ui/icons/NotificationsOutlined'
 
+/**
+ * @param {import('@material-ui/core').Theme} theme
+ */
 const styles = theme => ({
   list: {
     width: 280,
@@ -61,18 +63,24 @@ const styles = theme => ({
     marginLeft: '20px',
   },
 })
-class NotificationsCenter extends React.Component {
-  state = {
-    right: false,
-  }
 
-  toggleDrawer = (side, open) => () => {
-    this.setState({
-      [side]: open,
-    })
-  }
+/**
+ * @typedef {keyof ReturnType<typeof styles>} Classes
+ */
+
+/**
+ * @typedef {object} Props
+ * @prop {Record<Classes, string>} classes
+ * @prop {() => void} onClose
+ * @prop {boolean} open
+ */
+
+/**
+ * @augments React.Component<Props>
+ */
+class NotificationsCenter extends React.Component {
   render() {
-    const { classes } = this.props
+    const { classes, onClose, open } = this.props
 
     const header = (
       <div className={classes.list}>
@@ -116,15 +124,10 @@ class NotificationsCenter extends React.Component {
 
     return (
       <div>
-        {/* <IconButton onClick={this.toggleDrawer('right', true)}> */}
-        <Icon onClick={this.toggleDrawer('right', true)}>
-          <NotificationsOutlined />
-        </Icon>
-        {/* </IconButton> */}
         <Drawer
           anchor="right"
-          open={this.state.right}
-          onClose={this.toggleDrawer('right', false)}
+          open={open}
+          onClose={onClose}
           classes={{
             paper: classes.drawerPaper,
           }}
@@ -144,4 +147,5 @@ NotificationsCenter.propTypes = {
   classes: PropTypes.object.isRequired,
 }
 
+// @ts-ignore
 export default withStyles(styles)(NotificationsCenter)

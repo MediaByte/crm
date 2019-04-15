@@ -38,6 +38,7 @@ import AccountBalance from '@material-ui/icons/AccountBalanceOutlined'
 import CreditCard from '@material-ui/icons/CreditCard'
 import MailOutline from '@material-ui/icons/MailOutline'
 import SearchIcon from '@material-ui/icons/Search'
+import NotificationsOutlined from '@material-ui/icons/NotificationsOutlined'
 
 //projects components
 import NotificationsCenter from 'components/NotificationCenter/NotificationsCenter.js'
@@ -48,7 +49,9 @@ import navStyles from 'components/Navigation/navStyle.js'
 
 import { nameToIconMap } from 'common/NameToIcon'
 
-//State
+const DASHBOARD = 0
+const CALENDAR = 1
+const NOTIFICATIONS = 2
 
 /**
  * @typedef {object} SearchResult
@@ -79,6 +82,7 @@ import { nameToIconMap } from 'common/NameToIcon'
  * @prop {boolean} searchBoxFocused
  * @prop {string} searchBoxCurrentText
  * @prop {boolean} drawerOpen
+ * @prop {boolean} notificationsOpen
  */
 
 /**
@@ -105,6 +109,7 @@ class Navigation extends React.Component {
       searchBoxFocused: false,
       searchBoxCurrentText: '',
       drawerOpen: false,
+      notificationsOpen: false,
     }
   }
 
@@ -167,29 +172,34 @@ class Navigation extends React.Component {
     )
   }
 
+  toggleNotifications = () => {
+    this.setState(({ notificationsOpen }) => ({
+      notificationsOpen: !notificationsOpen,
+    }))
+  }
+
   /**
    * @param {any} _
    * @param {number} value
-   * @returns {JSX.Element}
+   * @returns {JSX.Element|void}
    */
   handleChange = (_, value) => {
-    console.log('handleChange', value)
-    let page
     switch (value) {
-      case 0:
-        page = '/pinecone/dashboard/test@gmail.com'
-        break
-      case 1:
-        page = '/admin/test@gmail.com'
-        break
-      default:
-        page = '/admin/test@gmail.com'
-        break
-    }
-    console.log('page', page)
+      case DASHBOARD:
+        this.setState({ value })
+        return <Redirect to="/pinecone/dashboard/test@gmail.com" />
 
-    this.setState({ value })
-    return <Redirect to={page} />
+      case CALENDAR:
+        this.setState({ value })
+        return <Redirect to="/pinecone/dashboard/test@gmail.com" />
+
+      case NOTIFICATIONS:
+        this.toggleNotifications()
+        break
+
+      default:
+        throw new Error("Shouldn't be reachable")
+    }
   }
 
   onBlurSearchBox = () => {
@@ -238,6 +248,7 @@ class Navigation extends React.Component {
       sidebarOpen,
       value,
       searchBoxCurrentText,
+      notificationsOpen,
     } = this.state
 
     const isBigScreen = isWidthUp('lg', width)
@@ -438,8 +449,12 @@ class Navigation extends React.Component {
                 <IconButton color="inherit" className={classes.iconHeader}>
                   <CalendarTodayOutlined />
                 </IconButton>
-                <IconButton color="inherit" className={classes.iconHeader}>
-                  <NotificationsCenter />
+                <IconButton
+                  color="inherit"
+                  className={classes.iconHeader}
+                  onClick={this.toggleNotifications}
+                >
+                  <NotificationsOutlined />
                 </IconButton>
               </Hidden>
             </Toolbar>
@@ -456,7 +471,6 @@ class Navigation extends React.Component {
           >
             {renderMenu}
           </Drawer>
-          {/* </Hidden> */}
 
           <main className={classes.children}>
             <div style={{ height: '100%' }}>{children}</div>
@@ -476,10 +490,15 @@ class Navigation extends React.Component {
             />
             <BottomNavigationAction
               label="Notifications"
-              icon={<NotificationsCenter />}
+              icon={<NotificationsOutlined />}
             />
           </BottomNavigation>
         </Hidden>
+
+        <NotificationsCenter
+          onClose={this.toggleNotifications}
+          open={notificationsOpen}
+        />
       </React.Fragment>
     )
   }
