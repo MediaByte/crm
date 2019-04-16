@@ -5,6 +5,7 @@ describe('valueIsOfType()', () => {
     expect(() => {
       Utils.valueIsOfType('string', '')
       Utils.valueIsOfType('number', 5)
+      Utils.valueIsOfType('boolean', true)
     }).not.toThrow()
 
     expect(() => {
@@ -89,6 +90,28 @@ describe('isValidSchema()', () => {
       [Utils.SCHEMA_NAME]: 'foo',
       foo: {
         type: SomeSchema,
+        async onChange() {},
+      },
+    }
+
+    const result = Utils.isSchema(withEdge)
+
+    expect(result).toBe(true)
+  })
+
+  it('accepts an schema with a literal leaf', () => {
+    const SomeSchema = {
+      [Utils.SCHEMA_NAME]: 'SomeSchema',
+      baz: {
+        type: 'string',
+        async onChange() {},
+      },
+    }
+
+    const withEdge = {
+      [Utils.SCHEMA_NAME]: 'foo',
+      foo: {
+        type: { SomeSchema },
         async onChange() {},
       },
     }

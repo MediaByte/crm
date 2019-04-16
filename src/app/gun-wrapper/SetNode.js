@@ -15,12 +15,15 @@ export {} // stop jsdoc comments from merging
  * @typedef {import('./typings').SetLeaf<T>} SetLeaf
  */
 
-export {} // stop jsdoc comments from merging
-
 /**
- * @template T
- * @typedef {import('./typings').PutResponse<T>} PutResponse
+ * @typedef {import('./simple-typings').OnChangeReturn} SimpleOnChangeReturn
+ * @typedef {import('./simple-typings').Schema} SimpleSchema
+ * @typedef {import('./simple-typings').Node} SimpleNode
+ * @typedef {import('./simple-typings').Response} Response
+ * @typedef {import('./simple-typings').SetResponse} SetResponse
  */
+
+export {} // stop jsdoc comments from merging
 
 /**
  * @template T
@@ -28,35 +31,38 @@ export {} // stop jsdoc comments from merging
  */
 export default class SetNode {
   /**
-   * @param {SetLeaf<T>} setSchemaLeaf
+   * @param {Schema} itemSchema
    * @param {object} gunInstance
+   * @param {(nextVal: SimpleNode|null, key?: string) => SimpleOnChangeReturn} setOnChange
    */
-  constructor(setSchemaLeaf, gunInstance) {
-    if (!Utils.isSetLeaf(setSchemaLeaf)) {
-      throw new TypeError('invalid schema leaf given to NodeSet()')
+  constructor(itemSchema, gunInstance, setOnChange) {
+    if (!Utils.isSchema(itemSchema)) {
+      throw new TypeError('invalid schema SetNode()')
     }
 
-    this.setSchemaLeaf = setSchemaLeaf
-
-    this.itemSchema = setSchemaLeaf.type[0]
+    this.itemSchema = itemSchema
 
     this.gunInstance = gunInstance
 
     /**
-     * @type {Function[]}
+     * @type {((value: SimpleNode) => void)[]}
      */
     this.subscribers = []
 
     this.currentData = {}
+
+    this.setOnChange = setOnChange
   }
 
   /**
-   * @param {Record<string, T>} nextData
+   * @param {Record<string, SimpleNode>} nextData
    * @returns {void}
    */
   cachePut(nextData) {
     for (const [key, value] of Object.entries(nextData)) {
-      this.currentData[key] = value
+      if (Utils.conformsToSchema(this.itemSchema, value)) {
+        this.currentData[key] = value
+      }
     }
 
     this.notifySubscribers()
@@ -71,25 +77,105 @@ export default class SetNode {
   }
 
   /**
-   * @param {T} object
-   * @returns {Promise<PutResponse<T>>}
+   * @param {SimpleNode} object
+   * @returns {Promise<SetResponse>}
    */
   async set(object) {
-    const res = await this.isValid(object)
+    const validationRes = await this.isValidSet(object)
 
-    if (!res.ok) {
-      return res
+    if (!validationRes.ok) {
+      return validationRes
     }
 
-    return new Promise(resolve => {
-      // @ts-ignore
-      this.gunInstance.set(object, ack => {
+    const primitiveSetsAndLiteralsData = {}
+    const edgeData = {}
+
+    Object.keys(Utils.getEdgeLeaves(this.itemSchema)).forEach(key => {
+      if (!(key in object)) return
+
+      edgeData[key] = object[key].gunInstance
+    })
+
+    Object.keys(Utils.getPrimitiveLeaves(this.itemSchema))
+      .concat(Object.keys(Utils.getLiteralLeaves(this.itemSchema)))
+      .forEach(key => {
+        primitiveSetsAndLiteralsData[key] = object[key]
+      })
+
+    // add empty sets to primitive put
+    Object.keys(Utils.getSetLeaves(this.itemSchema)).forEach(k => {
+      primitiveSetsAndLiteralsData[k] = {}
+    })
+
+    return new Promise(async resolve => {
+      try {
+        const writes = []
+
+        /** @type {object} */
+        let gunRef
+
+        writes.push(
+          new Promise(resolve => {
+            gunRef = this.gunInstance.set(primitiveSetsAndLiteralsData, ack => {
+              resolve({
+                ok: typeof ack.err === 'undefined',
+                messages: typeof ack.err === 'string' ? [ack.err] : [],
+                details: {},
+              })
+            })
+          }),
+        )
+
+        for (const [k, edge] of Object.entries(edgeData)) {
+          writes.push(
+            new Promise(resolve => {
+              gunRef.get(k).put(edge, ack => {
+                resolve({
+                  ok: typeof ack.err === 'undefined',
+                  messages: [],
+                  details: {
+                    [k]: typeof ack.err === 'string' ? [ack.err] : [],
+                  },
+                })
+              })
+            }),
+          )
+        }
+
+        const writeResults = await Promise.all(writes)
+
+        const res = Utils.mergeResponses(...writeResults)
+
+        const refKey = gunRef._.get
+
+        const wrapperRef = new Node(
+          this.itemSchema,
+          gunRef,
+          false,
+          nextValOrNull => this.setOnChange(nextValOrNull, refKey),
+        )
+
+        wrapperRef.currentData = primitiveSetsAndLiteralsData
+
+        Object.entries(edgeData).forEach(([k, n]) => {
+          wrapperRef.currentData[k] = n.currentData
+        })
+
+        if (res.ok) {
+          resolve({
+            ...res,
+            reference: wrapperRef,
+          })
+        } else {
+          resolve(res)
+        }
+      } catch (e) {
         resolve({
-          ok: typeof ack.err === 'undefined',
-          messages: typeof ack.err == 'string' ? [ack.err] : [],
+          ok: false,
+          messages: [Utils.reasonToString(e)],
           details: {},
         })
-      })
+      }
     })
   }
 
@@ -111,7 +197,12 @@ export default class SetNode {
 
     const gunSubInstance = this.gunInstance.get(setKey)
 
-    const node = new Node(this.itemSchema, gunSubInstance, false)
+    const node = new Node(
+      this.itemSchema,
+      gunSubInstance,
+      false,
+      nextValOrNull => this.setOnChange(nextValOrNull, setKey),
+    )
 
     // why not?
     node.currentData = this.currentData[setKey]
@@ -121,37 +212,111 @@ export default class SetNode {
 
   /**
    * Validates an object according to an schema
-   * @param {T & { [K in keyof T]?: object}} objectData
-   * @returns {Promise<PutResponse<T>>}
+   * @param {SimpleNode} objectData
+   * @returns {Promise<Response>}
    */
-  async isValid(objectData) {
+  async isValidSet(objectData) {
     const errorMap = new Utils.ErrorMap()
 
-    for (const key of Object.keys(this.itemSchema)) {
+    const primitiveLeaves = Utils.getPrimitiveLeaves(this.itemSchema)
+    const literalLeaves = Utils.getLiteralLeaves(this.itemSchema)
+    const edgeLeaves = Utils.getEdgeLeaves(this.itemSchema)
+    const setLeaves = Utils.getSetLeaves(this.itemSchema)
+
+    Object.keys(objectData).forEach(key => {
+      const isValidKey =
+        key in primitiveLeaves ||
+        key in literalLeaves ||
+        key in edgeLeaves ||
+        key in setLeaves
+
+      if (!isValidKey) {
+        errorMap.puts(key, 'unexpected key')
+      }
+    })
+
+    Object.entries(primitiveLeaves).forEach(([key, leaf]) => {
       if (!(key in objectData)) {
         errorMap.puts(
           key,
           `missing key: ${key} in setNode for ${
             this.itemSchema[Utils.SCHEMA_NAME]
-          }, all keys of the initial value for an object must be initialized to either null, a primitive or a reference to a node`,
+          }, all keys of the initial value for a node (except sub-sets) must be initialized to either null, a primitive or a reference to a node`,
         )
 
-        continue
+        return // continue
       }
 
-      // @ts-ignore
-      const isNull = objectData[key] === null
+      const value = objectData[key]
+
+      const isNull = value == null
+
       const isCorrectType = Utils.valueIsOfType(
         // @ts-ignore
-        this.itemSchema[key].type,
+        leaf.type,
         // @ts-ignore
         objectData[key],
       )
 
       if (!isNull && !isCorrectType) {
-        errorMap.puts(key, `wrong data type`)
+        errorMap.puts(key, `wrong data type or empty string`)
       }
-    }
+    })
+
+    Object.entries(literalLeaves).forEach(([key, leaf]) => {
+      if (!(key in objectData)) {
+        errorMap.puts(
+          key,
+          `missing key: ${key} in setNode for ${
+            this.itemSchema[Utils.SCHEMA_NAME]
+          }, all keys of the initial value for a node (except sub-sets) must be initialized to either null, a primitive or a reference to a node`,
+        )
+
+        return // continue
+      }
+
+      const literalLeafType = Utils.extractLiteralLeafType(leaf)
+
+      if (!Utils.conformsToSchema(literalLeafType, objectData[key])) {
+        errorMap.puts(
+          key,
+          `wrong data layout for literal given to SetNode.set(), schema: ${JSON.stringify(
+            literalLeafType,
+            null,
+            4,
+          )} -- data: ${JSON.stringify(objectData[key], null, 4)}`,
+        )
+      }
+    })
+
+    Object.entries(edgeLeaves).forEach(([key, leaf]) => {
+      if (!(key in objectData)) {
+        errorMap.puts(key, 'must initialize to a reference or a null value')
+
+        return // continue
+      }
+
+      const value = objectData[key]
+      const itemSchema = leaf.type
+
+      const valueIsNull = value === null
+      const conformsToSchema = valueIsNull
+        ? true
+        : Utils.conformsToSchema(itemSchema, value.currentData)
+
+      if (!valueIsNull && !conformsToSchema) {
+        errorMap.puts(key, 'wrong node type received for reference')
+      }
+    })
+
+    Object.entries(setLeaves).forEach(([key, leaf]) => {
+      if (key in objectData) {
+        errorMap.puts(
+          key,
+          `value given for sub-set node, this value must not be initialized as it will be automatically be initialized to empty and populated by data from peers`,
+        )
+      }
+    })
 
     if (errorMap.hasErrors) {
       return {
@@ -166,6 +331,8 @@ export default class SetNode {
      */
     const validations = {}
 
+    const setItemSchema = this.itemSchema
+
     // validate the node itself
     for (const key of Object.keys(objectData)) {
       const self = {
@@ -175,7 +342,7 @@ export default class SetNode {
       }
 
       // @ts-ignore
-      validations[key] = this.itemSchema[key].onChange(self, objectData[key])
+      validations[key] = setItemSchema[key].onChange(self, objectData[key])
     }
 
     await Promise.all(Object.values(validations))
@@ -198,16 +365,20 @@ export default class SetNode {
     // for example, to prevent 2 items with the same value for a property and
     // what not
 
-    const err = await this.setSchemaLeaf.onChange(
-      this.currentData,
-      objectData,
-      undefined,
-    )
+    const objectDataWithEmptySets = {
+      ...objectData,
+    }
 
-    if (err) {
+    Object.keys(Utils.getSetLeaves(this.itemSchema)).forEach(k => {
+      objectDataWithEmptySets[k] = {}
+    })
+
+    const err = await this.setOnChange(objectDataWithEmptySets)
+
+    if (Array.isArray(err)) {
       return {
         ok: false,
-        messages: typeof err == 'string' ? [err] : err,
+        messages: err,
         details: {},
       }
     }
@@ -230,7 +401,6 @@ export default class SetNode {
   }
 
   /**
-   *
    * @param {Function=} cb
    * @returns {void}
    */

@@ -11,6 +11,7 @@ import Dashboard from '@material-ui/icons/Dashboard'
 import AppBar from '@material-ui/core/AppBar'
 import Typography from '@material-ui/core/Typography'
 import { withStyles } from '@material-ui/core/styles'
+import Grid from '@material-ui/core/Grid'
 import Drawer from '@material-ui/core/Drawer'
 import Toolbar from '@material-ui/core/Toolbar'
 import List from '@material-ui/core/List'
@@ -22,6 +23,10 @@ import BottomNavigationAction from '@material-ui/core/BottomNavigationAction'
 import InputBase from '@material-ui/core/InputBase'
 import Hidden from '@material-ui/core/Hidden'
 import Button from '@material-ui/core/Button'
+import withWidth, { isWidthUp, isWidthDown } from '@material-ui/core/withWidth'
+import Backdrop from '@material-ui/core/Backdrop'
+import Paper from '@material-ui/core/Paper'
+import Avatar from '@material-ui/core/Avatar'
 
 //material ui icons
 import CalendarTodayOutlined from '@material-ui/icons/CalendarTodayOutlined'
@@ -33,79 +38,238 @@ import AccountBalance from '@material-ui/icons/AccountBalanceOutlined'
 import CreditCard from '@material-ui/icons/CreditCard'
 import MailOutline from '@material-ui/icons/MailOutline'
 import SearchIcon from '@material-ui/icons/Search'
+import NotificationsOutlined from '@material-ui/icons/NotificationsOutlined'
 
 //projects components
 import NotificationsCenter from 'components/NotificationCenter/NotificationsCenter.js'
+// @ts-ignore
 import Logo from 'assets/img/crmLogo.png'
 //styles
 import navStyles from 'components/Navigation/navStyle.js'
 
-//State
-import { connect } from 'react-redux'
-import { drawerState } from 'state/userGroups/actions.js'
-const mapStateToProps = state => {
-  console.log(state)
-  return {
-    open: state.userGroups.open,
-    hide: true,
-  }
-}
-const mapDispatchToProps = dispatch => {
-  return {
-    toggleDrawer: event => dispatch(drawerState(event)),
-  }
-}
+import { nameToIconMap } from 'common/NameToIcon'
 
+const DASHBOARD = 0
+const CALENDAR = 1
+const NOTIFICATIONS = 2
+
+/**
+ * @typedef {object} SearchResult
+ * @prop {string} displayText
+ * @prop {string} nodeName
+ * @prop {string=} iconName
+ * @prop {React.Key} key
+ */
+
+/**
+ * @typedef {object} Props
+ * @prop {Classes} classes
+ * @prop {'administration'|'dashboard'} component
+ * @prop {import('@material-ui/core/styles/createBreakpoints').Breakpoint} width
+ * @prop {((text: string) => void)=} onSearchBoxChange
+ * @prop {(SearchResult[])=} searchResults
+ * @prop {(boolean|null|undefined)=} isLoadingSearchResults
+ * @prop {string} title
+ */
+
+/**
+ * @typedef {object} State
+ * @prop {boolean} searchBoxOpen
+ * @prop {boolean} sidebarOpen
+ * @prop {number} value
+ * @prop {boolean} disableUnderline
+ * @prop {HTMLElement|null} searchResultsAnchor
+ * @prop {boolean} searchBoxFocused
+ * @prop {string} searchBoxCurrentText
+ * @prop {boolean} drawerOpen
+ * @prop {boolean} notificationsOpen
+ */
+
+/**
+ * @augments React.Component<Props, State>
+ */
 class Navigation extends React.Component {
-  state = {
-    disableUnderline: true,
-    value: 0,
-    mobileOpen: false,
-    hide: true,
-  }
-  componentDidMount() {
-    // const { closed } = this.props;
-  }
-  handleDrawerOpen = () => {
-    this.props.toggleDrawer(true)
-  }
-  handleDrawerClose = () => {
-    this.props.toggleDrawer(false)
+  searchBoxRef = React.createRef()
+
+  /**
+   * @param {Props} props
+   */
+  constructor(props) {
+    super(props)
+
+    /**
+     * @type {State}
+     */
+    this.state = {
+      disableUnderline: true,
+      value: 0,
+      sidebarOpen: false,
+      searchBoxOpen: isWidthUp('lg', props.width),
+      searchResultsAnchor: null,
+      searchBoxFocused: false,
+      searchBoxCurrentText: '',
+      drawerOpen: false,
+      notificationsOpen: false,
+    }
   }
 
-  handleDrawerToggle = () => {
-    this.setState(state => ({ mobileOpen: !state.mobileOpen }))
+  /**
+   * @param {Props} prevProps
+   */
+  componentDidUpdate(prevProps) {
+    const prevWidth = prevProps.width
+
+    const newWidth = this.props.width
+
+    if (prevWidth === newWidth) return
+
+    const isBigScreen = isWidthUp('lg', newWidth)
+
+    if (isBigScreen) {
+      this.setState({
+        searchBoxOpen: true,
+      })
+    }
+    // if we go from big to small screen close the searchbox
+    else if (this.state.searchBoxOpen) {
+      this.setState({
+        searchBoxOpen: false,
+      })
+    }
   }
 
-  handleSearchToggle = () => {
-    this.setState(prevState => ({
-      hide: !prevState.hide,
+  openSidebar = () => {
+    this.setState({
+      sidebarOpen: true,
+    })
+  }
+
+  closeSidebar = () => {
+    this.setState({
+      sidebarOpen: false,
+    })
+  }
+
+  onFocusSearchBox = () => {
+    this.setState({
+      searchBoxFocused: true,
+    })
+  }
+
+  toggleSearch = () => {
+    this.setState(
+      ({ searchBoxOpen }) => ({
+        searchBoxOpen: !searchBoxOpen,
+      }),
+      () => {
+        const isTabletOrSmaller = isWidthDown('md', this.props.width)
+        const searchBoxWasOpened = this.state.searchBoxOpen
+
+        if (isTabletOrSmaller && searchBoxWasOpened) {
+          // this.searchBoxRef.current.focus()
+        }
+      },
+    )
+  }
+
+  toggleNotifications = () => {
+    this.setState(({ notificationsOpen }) => ({
+      notificationsOpen: !notificationsOpen,
     }))
   }
 
-  handleChange = (event, value) => {
-    console.log('handleChange', value)
-    let page
+  /**
+   * @param {any} _
+   * @param {number} value
+   * @returns {JSX.Element|void}
+   */
+  handleChange = (_, value) => {
     switch (value) {
-      case 0:
-        page = '/pinecone/dashboard/test@gmail.com'
-        break
-      case 1:
-        page = '/admin/test@gmail.com'
-        break
-      default:
-        page = '/admin/test@gmail.com'
-        break
-    }
-    console.log('page', page)
+      case DASHBOARD:
+        this.setState({ value })
+        return <Redirect to="/pinecone/dashboard/test@gmail.com" />
 
-    this.setState({ value })
-    return <Redirect to={page} />
+      case CALENDAR:
+        this.setState({ value })
+        return <Redirect to="/pinecone/dashboard/test@gmail.com" />
+
+      case NOTIFICATIONS:
+        this.toggleNotifications()
+        break
+
+      default:
+        throw new Error("Shouldn't be reachable")
+    }
+  }
+
+  onBlurSearchBox = () => {
+    this.setState({
+      searchBoxFocused: false,
+    })
+  }
+
+  /**
+   * @type {import('@material-ui/core/InputBase').InputBaseProps['onChange']}
+   */
+  onChangeSearchBox = e => {
+    const { onSearchBoxChange } = this.props
+
+    /** @type {string} */
+    // @ts-ignore
+    const txt = e.target.value
+
+    this.setState(
+      {
+        searchBoxCurrentText: txt,
+      },
+      () => {
+        if (onSearchBoxChange) {
+          onSearchBoxChange(this.state.searchBoxCurrentText)
+        }
+      },
+    )
   }
 
   render() {
-    const { classes, children, component } = this.props
-    const { value } = this.state
+    const {
+      classes,
+      children,
+      component,
+      isLoadingSearchResults,
+      searchResults,
+      width,
+      title,
+    } = this.props
+
+    const {
+      drawerOpen,
+      searchBoxFocused,
+      searchBoxOpen,
+      sidebarOpen,
+      value,
+      searchBoxCurrentText,
+      notificationsOpen,
+    } = this.state
+
+    const isBigScreen = isWidthUp('lg', width)
+
+    const shouldRenderTitle = isBigScreen || !searchBoxOpen
+
+    const shouldRenderMenuButton = (() => {
+      const isBigScreen = isWidthUp('lg', width)
+      const searchBoxClosed = !searchBoxOpen
+
+      // will always be rendered on big screens because both search box
+      // and menu wont overlap
+      if (isBigScreen) return true
+
+      if (sidebarOpen && isBigScreen) return true
+
+      // render on small screens if search box is closed
+      if (searchBoxClosed) return true
+
+      return false
+    })()
 
     const renderMenu = (
       <div>
@@ -123,7 +287,7 @@ class Navigation extends React.Component {
           </Link>
           <IconButton
             className={classNames(classes.menuButtonMobile)}
-            onClick={this.handleDrawerClose}
+            onClick={this.closeSidebar}
             style={{ color: '#fff' }}
           >
             <MenuIcon />
@@ -137,6 +301,7 @@ class Navigation extends React.Component {
               classes={{ selected: classes.selected }}
               button
               component={props => (
+                // @ts-ignore
                 <NavLink to={`/pinecone/dashboard/test@gmail.com`} {...props} />
               )}
             >
@@ -149,23 +314,13 @@ class Navigation extends React.Component {
                 style={{ color: '#fff' }}
               />
             </ListItem>
-            <ListItem button>
-              <ListItemIcon className={classes.iconMenu}>
-                <i style={{ fontSize: '23px' }} className="fas fa-tasks" />
-              </ListItemIcon>
-              <ListItemText disableTypography primary="Tasks" />
-            </ListItem>
-            <ListItem button>
-              <ListItemIcon className={classes.iconMenu}>
-                <People />
-              </ListItemIcon>
-              <ListItemText disableTypography primary="People" />
-            </ListItem>
+
             <ListItem
               selected={component === 'administration'}
               classes={{ selected: classes.selected }}
               button
               component={props => (
+                // @ts-ignore
                 <NavLink to={'/admin/test@gmail.com'} {...props} />
               )}
             >
@@ -174,148 +329,154 @@ class Navigation extends React.Component {
               </ListItemIcon>
               <ListItemText disableTypography primary="Administration" />
             </ListItem>
-            <ListItem button>
-              <ListItemIcon className={classes.iconMenu}>
-                <Event />
-              </ListItemIcon>
-              <ListItemText disableTypography primary="Events" />
-            </ListItem>
-            <ListItem button>
-              <ListItemIcon className={classes.iconMenu}>
-                <AccountBalance />
-              </ListItemIcon>
-              <ListItemText disableTypography primary="Agencies" />
-            </ListItem>
-            <ListItem button>
-              <ListItemIcon className={classes.iconMenu}>
-                <CreditCard />
-              </ListItemIcon>
-              <ListItemText disableTypography primary="Expenses" />
-            </ListItem>
-            <ListItem button>
-              <ListItemIcon className={classes.iconMenu}>
-                <MailOutline />
-              </ListItemIcon>
-              <ListItemText disableTypography primary="Mass Email" />
-            </ListItem>
           </List>
         </div>
       </div>
     )
 
     return (
-      <div>
-        <div className={classes.root}>
+      <React.Fragment>
+        <Grid className={classes.appbarAndContentContainer}>
           <AppBar
             position="fixed"
             elevation={0}
-            className={classNames(
-              classes.appBar,
-              this.props.open && classes.appBarShift,
-            )}
+            className={classNames(classes.appBar)}
           >
             <Toolbar className={classes.toolbar}>
-              {!this.props.open ? (
-                this.state.hide && (
-                  <IconButton
-                    color="inherit"
-                    aria-label="Open drawer"
-                    onClick={this.handleDrawerOpen}
-                    className={classNames(
-                      classes.menuButton,
-                      this.props.open && classes.hide,
-                    )}
-                  >
-                    <MenuIcon />
-                  </IconButton>
-                )
-              ) : (
+              {shouldRenderMenuButton && (
                 <IconButton
+                  color="inherit"
+                  aria-label="Open drawer"
+                  onClick={sidebarOpen ? this.closeSidebar : this.openSidebar}
                   className={classNames(
                     classes.menuButton,
-                    classes.menuButtonOpened,
+                    sidebarOpen && classes.menuButtonOpened,
                   )}
-                  onClick={this.handleDrawerClose}
                 >
                   <MenuIcon />
                 </IconButton>
               )}
-              {this.state.hide && (
+
+              {shouldRenderTitle && (
                 <Typography variant="title" noWrap className={classes.title}>
-                  {this.props.title}
+                  {title}
                 </Typography>
               )}
-              {!this.state.hide && (
-                <div className={classes.itemSearch}>
-                  <div className={classes.search}>
-                    <div className={classes.searchIcon}>
-                      <SearchIcon />
+
+              {searchBoxOpen && (
+                <div>
+                  {!isBigScreen && <Backdrop open={true} />}
+                  <div className={classes.itemSearch}>
+                    <div className={classes.search}>
+                      <div className={classes.searchIcon}>
+                        <SearchIcon />
+                      </div>
+                      <InputBase
+                        autoFocus={!isBigScreen}
+                        placeholder="Search..."
+                        inputRef={this.searchBoxRef}
+                        classes={{
+                          root: classes.inputRoot,
+                          input: classes.inputInput,
+                        }}
+                        onFocus={this.onFocusSearchBox}
+                        onBlur={this.onBlurSearchBox}
+                        onChange={this.onChangeSearchBox}
+                        value={searchBoxCurrentText}
+                      />
                     </div>
-                    <InputBase
-                      placeholder="Search…"
-                      classes={{
-                        root: classes.inputRoot,
-                        input: classes.inputInput,
-                      }}
-                    />
+
+                    {searchBoxCurrentText && (
+                      <Paper
+                        className={classNames(
+                          classes.searchResultsHolder,
+                          !searchBoxFocused && classes.hidden,
+                        )}
+                      >
+                        {isLoadingSearchResults ? (
+                          <Typography>Show spinner here</Typography>
+                        ) : (
+                          <List>
+                            {searchResults && searchResults.length ? (
+                              searchResults.map(sr => {
+                                const icon = nameToIconMap[sr.iconName || '']
+                                const SRIcon = icon && icon.outlined
+
+                                return (
+                                  <ListItem button>
+                                    {SRIcon && (
+                                      <Avatar>
+                                        <SRIcon />
+                                      </Avatar>
+                                    )}
+                                    <ListItemText
+                                      primary={sr.displayText}
+                                      secondary={sr.nodeName}
+                                    />
+                                  </ListItem>
+                                )
+                              })
+                            ) : (
+                              <ListItem>
+                                <ListItemText primary="No results found" />
+                              </ListItem>
+                            )}
+                          </List>
+                        )}
+                      </Paper>
+                    )}
+
+                    <Hidden lgUp>
+                      <Button
+                        color="primary"
+                        variant="outlined"
+                        onClick={this.toggleSearch}
+                      >
+                        Cancel
+                      </Button>
+                    </Hidden>
                   </div>
-                  <Button
-                    color="primary"
-                    className={classes.button}
-                    onClick={this.handleSearchToggle}
-                  >
-                    Cancel
-                  </Button>
                 </div>
               )}
-              {this.state.hide && (
+
+              {!searchBoxOpen && (
                 <IconButton color="inherit">
-                  <SearchIcon onClick={this.handleSearchToggle} />
+                  <SearchIcon onClick={this.toggleSearch} />
                 </IconButton>
               )}
-              <Hidden smDown>
+
+              <Hidden mdDown>
                 <IconButton color="inherit" className={classes.iconHeader}>
                   <CalendarTodayOutlined />
                 </IconButton>
-                <IconButton color="inherit" className={classes.iconHeader}>
-                  <NotificationsCenter />
+                <IconButton
+                  color="inherit"
+                  className={classes.iconHeader}
+                  onClick={this.toggleNotifications}
+                >
+                  <NotificationsOutlined />
                 </IconButton>
               </Hidden>
             </Toolbar>
           </AppBar>
-          {/* <Hidden smUp>
-            <Drawer
-              variant="persistent"
-              open={this.state.mobileOpen}
-              onClose={this.handleDrawerToggle}
-              classes={{
-                paper: classNames(classes.drawerPaper, !this.props.open && classes.drawerPaperClose),
-              }}
-              open={this.state.open}
-            >
-              {renderMenu}
-            </Drawer>
-          </Hidden> */}
-          {/* <Hidden smDown implementation="css"> */}
           <Drawer
             variant="permanent"
             classes={{
               paper: classNames(
                 classes.drawerPaper,
-                !this.props.open && classes.drawerPaperClose,
+                !sidebarOpen && classes.drawerPaperClose,
               ),
             }}
-            open={this.state.open}
+            open={drawerOpen}
           >
             {renderMenu}
           </Drawer>
-          {/* </Hidden> */}
 
           <main className={classes.children}>
             <div style={{ height: '100%' }}>{children}</div>
           </main>
-        </div>
-        <Hidden only={['lg', 'xl']}>
+        </Grid>
+        <Hidden lgUp>
           <BottomNavigation
             value={value}
             onChange={this.handleChange}
@@ -329,21 +490,31 @@ class Navigation extends React.Component {
             />
             <BottomNavigationAction
               label="Notifications"
-              icon={<NotificationsCenter />}
+              icon={<NotificationsOutlined />}
             />
           </BottomNavigation>
         </Hidden>
-      </div>
+
+        <NotificationsCenter
+          onClose={this.toggleNotifications}
+          open={notificationsOpen}
+        />
+      </React.Fragment>
     )
   }
 }
+
 Navigation.propTypes = {
   classes: PropTypes.object.isRequired,
   theme: PropTypes.object.isRequired,
 }
-export default withStyles(navStyles, { withTheme: true })(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  )(Navigation),
-)
+/**
+ * @typedef {keyof ReturnType<typeof navStyles>} ClassNames
+ * @typedef {Record<ClassNames, string>} Classes
+ */
+
+export default withStyles(
+  // Cast: no way to pass in generic arguments in JSDOC+Typescript
+  /** @type {import('@material-ui/core/styles').StyleRulesCallback<ClassNames>} */ (navStyles),
+  // @ts-ignore -_- I don't even know why I have to ignore here
+)(withWidth()(Navigation))
