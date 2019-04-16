@@ -8,24 +8,29 @@ import SetNode from './SetNode'
 // allow self to be undefined for intiial valuez?
 
 /**
- * @typedef {import('./typings').Leaf<any>} Leaf
- *
+ * @typedef {import('./simple-typings').OnChangeReturn} SimpleOnChangeReturn
+ * @typedef {import('./simple-typings').Node} SimpleNode
+ * @typedef {import('./simple-typings').Response} Response
+ * @typedef {import('./simple-typings').WrapperNode} WrapperNode
+ * @typedef {import('./simple-typings').ReferenceWrapperNode} ReferenceWrapperNode
+ * @typedef {import('./simple-typings').Schema} Schema
+ */
+
+/**
  * @typedef {import('./SetNode').default<{}>} SetNode
  */
 
-/**
- * @template T
- * @typedef {import('./typings').Schema<T>} Schema
- */
-
-/**
- * @template T
- * @typedef {import('./typings').PutResponse<T>} PutResponse
- */
 
 /**
  * @template T
  * @typedef {import('./typings').SetNodes<T>} SetNodes
+ */
+
+/**
+ * @typedef {object} SplitPuts
+ * @prop {Record<string, null>} edgePuts
+ * @prop {Record<string, SimpleNode|null>} literalPuts
+ * @prop {SimpleNode} primitivePuts
  */
 
 /*******************************************************************************
@@ -36,15 +41,24 @@ import SetNode from './SetNode'
 
 export {} // stop jsdoc comments from merging
 
+const DEFAULT_ON_SET_CHANGE = () => Promise.resolve(false)
+
 /**
  * @template T
  */
 export class Node {
   /**
-   * @param {Schema<T>} schema
+   * @param {Schema} schema
    * @param {object} gunInstance
+   * @param {boolean=} isRoot
+   * @param {((nextVal: SimpleNode|null) => SimpleOnChangeReturn)=} onSetChange
    */
-  constructor(schema, gunInstance, isRoot = true) {
+  constructor(
+    schema,
+    gunInstance,
+    isRoot = true,
+    onSetChange = DEFAULT_ON_SET_CHANGE,
+  ) {
     if (!Utils.isSchema(schema)) {
       throw new TypeError('invalid schema')
     }
@@ -53,8 +67,21 @@ export class Node {
       throw new TypeError('invalid gunInstance')
     }
 
+    if (isRoot && onSetChange !== DEFAULT_ON_SET_CHANGE) {
+      throw new TypeError(
+        'node cannot be root and not have the default onSetChange() at the same time, root nodes do not belong to any set therefore cannt actually have an onSetChange() attached to them',
+      )
+    }
+
+    if (!isRoot && onSetChange === DEFAULT_ON_SET_CHANGE) {
+      throw new TypeError(
+        'if a node is not root it must have an onChangeSet() provided since non-root nodes always belong to a set',
+      )
+    }
+
     this.schema = schema
     this.gunInstance = gunInstance
+    this.onSetChange = onSetChange
 
     /**
      * @type {T}
@@ -66,7 +93,7 @@ export class Node {
     this.subscribers = []
 
     /**
-     * @type {Record<keyof T, SetNode<T[keyof T]>}
+     * @type {Record<string, SetNode<{}>}
      */
     // @ts-ignore
     this.setNodes = {}
@@ -75,14 +102,18 @@ export class Node {
       Utils.getSetLeaves(this.schema),
     )) {
       // @ts-ignore
-      this.setNodes[key] = new SetNode(setLeaf, this.gunInstance.get(key))
+      this.setNodes[key] = new SetNode(
+        setLeaf.type[0],
+        this.gunInstance.get(key),
+        (nextVal, key) => setLeaf.onChange(this.currentData, nextVal, key),
+      )
+
+      this.currentData[key] = {}
     }
 
     this.onOpen = this.onOpen.bind(this)
 
-    if (isRoot) {
-      this.gunInstance.open(this.onOpen)
-    }
+    this.gunInstance.open(this.onOpen)
 
     this.isRoot = isRoot
   }
@@ -98,46 +129,76 @@ export class Node {
     // data is available befor notifying the subscribers
     // TODO: de-duplicate primitive validation logic that also happens to be in
     // Utils.conformsToSchema()
-    if (this.isRoot) {
-      for (const [k, leaf] of Object.entries(this.schema)) {
-        const isPrimitive = leaf.type === 'string' || leaf.type === 'number'
-        const dataReceived = typeof nextData[k] !== 'undefined'
 
-        if (!dataReceived) {
-          continue
+    Object.entries(Utils.getEdgeLeaves(this.schema)).forEach(
+      ([key, edgeLeaf]) => {
+        if (!(key in nextData)) return
+
+        const edgeSchema = edgeLeaf.type
+        const itemReceived = nextData[key]
+
+        if (
+          itemReceived === null ||
+          Utils.conformsToSchema(edgeSchema, itemReceived)
+        ) {
+          this.currentData[key] = itemReceived
         }
+      },
+    )
 
-        if (isPrimitive) {
-          this.currentData[k] = nextData[k]
-        } else {
-          const isObj = typeof nextData[k] === 'object'
-          // sanity check
-          if (!isObj) {
-            continue
+    Object.entries(Utils.getPrimitiveLeaves(this.schema)).forEach(
+      ([key, primitiveLeaf]) => {
+        const { type } = primitiveLeaf
+
+        if (!(key in nextData)) return
+
+        const value = nextData[key]
+
+        if (value === null || Utils.valueIsOfType(type, value)) {
+          this.currentData[key] = value
+        }
+      },
+    )
+
+    Object.entries(Utils.getLiteralLeaves(this.schema)).forEach(
+      ([key, literalLeaf]) => {
+        if (!(key in nextData)) return
+
+        const itemSchema = Utils.extractLiteralLeafType(literalLeaf)
+
+        const value = nextData[key]
+
+        if (!(key in nextData)) return
+
+        if (value === null || Utils.conformsToSchema(itemSchema, value)) {
+          this.currentData[key] = value
+        }
+      },
+    )
+
+    Object.entries(Utils.getSetLeaves(this.schema)).forEach(
+      ([setKey, setLeaf]) => {
+        if (setKey in nextData) {
+          const itemsReceived = nextData[setKey]
+
+          if (typeof itemsReceived !== 'object') {
+            return
           }
 
-          const isSet = Array.isArray(leaf.type)
+          const [setItemSchema] = setLeaf.type
 
-          if (isSet) {
-            const allItemsInSetConform = Object.values(nextData[k]).every(
-              item => Utils.conformsToSchema(leaf.type[0], item),
-            )
-
-            if (allItemsInSetConform) {
-              this.currentData[k] = nextData[k]
-              this.setNodes[k].cachePut(nextData[k])
-            }
-          } else {
-            // it's an edge
-            if (Utils.conformsToSchema(leaf.type, nextData[k])) {
-              this.currentData[k] = nextData[k]
+          for (const [itemKey, item] of Object.entries(itemsReceived)) {
+            if (Utils.conformsToSchema(setItemSchema, item)) {
+              this.currentData[setKey][itemKey] = item
             }
           }
-        }
-      }
 
-      this.subscribers.forEach(cb => cb(this.currentData))
-    }
+          this.setNodes[setKey].cachePut(itemsReceived)
+        }
+      },
+    )
+
+    this.subscribers.forEach(cb => cb(this.currentData))
   }
 
   // uses for putedge:
@@ -148,7 +209,7 @@ export class Node {
   /**
    * @private
    * @param {object} data
-   * @returns {Promise<PutResponse<T>>}
+   * @returns {Promise<Response>}
    */
   async validateEdgePut(data) {
     /**
@@ -193,7 +254,7 @@ export class Node {
         if (Array.isArray(err) && err.length) errorMap.puts(key, err)
         // don't ignore empty strings just in case
         // @ts-ignore
-        if (typeof err == 'string') errorMap.puts(key, err)
+        if (typeof err === 'string') errorMap.puts(key, err)
 
         return err
       })
@@ -214,8 +275,8 @@ export class Node {
 
   /**
    * @private
-   * @param {Partial<T>} data
-   * @returns {Promise<PutResponse<T>>}
+   * @param {object} data
+   * @returns {Promise<Response>}
    */
   async validatePrimitivePut(data) {
     const errorMap = new Utils.ErrorMap()
@@ -232,7 +293,7 @@ export class Node {
         if (!Utils.valueIsOfType(this.schema[key].type, value)) {
           const msg = `Must be ${
             // @ts-ignore
-            this.schema[key].type == 'number' ? 'a number' : 'text'
+            this.schema[key].type === 'number' ? 'a number' : 'text'
           }`
 
           errorMap.puts(key, msg)
@@ -270,7 +331,7 @@ export class Node {
 
       // ignore empty arrays
       if (Array.isArray(err) && err.length) errorMap.puts(key, err)
-      if (typeof err == 'string') errorMap.puts(key, err)
+      if (typeof err === 'string') errorMap.puts(key, err)
     }
 
     return {
@@ -282,39 +343,135 @@ export class Node {
 
   /**
    * @private
-   * @param {Partial<T>} data
-   * @returns {{ edgePuts: Record<string, Node<{}>|null> , primitivePuts: Record<string, string|number|null> }}
+   * @param {Record<string, SimpleNode|null>}
+   * @returns {Promise<Response>}
    */
-  splitPuts(data) {
-    const edgePuts = {}
-    const primitivePuts = {}
+  async validateLiteralPut(data) {
+    const errorMap = new Utils.ErrorMap()
+    const literalLeaves = Utils.getLiteralLeaves(this.schema)
 
-    for (const [key, value] of Object.entries(data)) {
-      if (key in Utils.getEdgeLeaves(this.schema)) {
-        // @ts-ignore
-        edgePuts[key] = value
-      } else {
-        // @ts-ignore
-        primitivePuts[key] = value
+    Object.keys(literalLeaves).forEach(key => {
+      const leafTypeSchema = Utils.extractLiteralLeafType(literalLeaves[key])
+
+      if (!(key in data)) return
+
+      const value = data[key]
+
+      if (value === null) return
+
+      const conformsToSchema = Utils.conformsToSchema(leafTypeSchema, value)
+
+      if (!conformsToSchema) {
+        errorMap.puts(key, `literal at ${key} doesn't conform to schema`)
+      }
+    })
+
+    // we'll do async validations later to enable returning sync validation
+    // quicker if there was an error in there
+
+    if (errorMap.hasErrors) {
+      return {
+        ok: false,
+        messages: [],
+        details: errorMap.map,
       }
     }
 
+    /** @type {([ string , string[] ])[]} */
+    const validations = await Promise.all(
+      Object.keys(literalLeaves).map(async key => {
+        const self = {
+          ...this.currentData, // start with the cached objects
+          ...data, // actually provide the other values on this put() call to
+          // ensure the onChange gets the whole picture.
+          [key]: this.currentData[key], // keep the old value for key we are
+          // updating so onChange() can compare it to the new value if needed.
+        }
+
+        /** @type {string[]} */
+        let err = []
+
+        try {
+          const maybeErr = await literalLeaves[key].onChange(self, data[key])
+
+          if (Array.isArray(maybeErr)) {
+            err = maybeErr
+          }
+        } catch (e) {
+          err = [Utils.reasonToString(e)]
+        }
+
+        /** @type {[ string , string[] ]} */
+        const res = [key, err]
+
+        return res
+      }),
+    )
+
+    validations.forEach(([key, errArr]) => {
+      if (Array.isArray(errArr) && errArr.length) {
+        errorMap.puts(key, errArr)
+      }
+    })
+
     return {
-      // @ts-ignore
+      ok: !errorMap.hasErrors,
+      messages: [],
+      details: errorMap.map,
+    }
+  }
+
+  /**
+   * @private
+   * @param {SimpleNode} data
+   * @returns {SplitPuts}
+   */
+  splitPuts(data) {
+    /** @type {SplitPuts['edgePuts']} */
+    const edgePuts = {}
+    /** @type {SplitPuts['literalPuts']} */
+    const literalPuts = {}
+    /** @type {SplitPuts['primitivePuts']} */
+    const primitivePuts = {}
+
+    Object.keys(Utils.getEdgeLeaves(this.schema)).forEach(key => {
+      if (key in data) {
+        /** @type {null} */
+        // @ts-ignore this gets validated elsewhere
+        const value = data[key]
+
+        edgePuts[key] = value
+      }
+    })
+
+    Object.keys(Utils.getLiteralLeaves(this.schema)).forEach(key => {
+      if (key in data) {
+        // @ts-ignore TODO: I dunno what's going on here
+        literalPuts[key] = data[key]
+      }
+    })
+
+    Object.keys(Utils.getPrimitiveLeaves(this.schema)).forEach(key => {
+      if (key in data) {
+        primitivePuts[key] = data[key]
+      }
+    })
+
+    return {
       edgePuts,
-      // @ts-ignore
+      literalPuts,
       primitivePuts,
     }
   }
 
   /**
    * @private
-   * @param {Partial<T>} data
-   * @returns {Promise<PutResponse<T>>}
+   * @param {SimpleNode} data
+   * @returns {Promise<Response>}
    */
   async put(data) {
     try {
-      if (size(data) == 0) {
+      if (size(data) === 0) {
         return {
           ok: false,
           messages: ['Expected non empty object passed to node.put()'],
@@ -327,14 +484,13 @@ export class Node {
       for (const [key] of Object.entries(data)) {
         const keyIsPrimitive = key in Utils.getPrimitiveLeaves(this.schema)
         const keyIsEdge = key in Utils.getEdgeLeaves(this.schema)
-        const isValidKey = keyIsEdge || keyIsPrimitive
+        const keyIsLiteral = key in Utils.getLiteralLeaves(this.schema)
+        const isValidKey = keyIsEdge || keyIsPrimitive || keyIsLiteral
 
         if (!isValidKey) {
           errorMap.puts(key, 'unexpected key')
         }
       }
-
-      const { edgePuts, primitivePuts } = this.splitPuts(data)
 
       if (errorMap.hasErrors) {
         return {
@@ -344,33 +500,66 @@ export class Node {
         }
       }
 
+      const { edgePuts, literalPuts, primitivePuts } = this.splitPuts(data)
+
       const hasEdges = size(edgePuts) > 0
+      const hasLiterals = size(literalPuts) > 0
       const hasPrimitives = size(primitivePuts) > 0
 
-      /** @type {import('./typings').PutResponse<{}>} */
+      /** @type {Response} */
       let edgeRes = { ok: true, messages: [], details: {} }
-      /** @type {import('./typings').PutResponse<{}>} */
+      /** @type {Response} */
+      let literalRes = { ok: true, messages: [], details: {} }
+      /** @type {Response} */
       let primitiveRes = { ok: true, messages: [], details: {} }
-      // It is more probable that an onChange() call for a reference has to
-      // take a look at the primitives on its node than an onChange() call for a
-      // primitive has to take a look at the references on that node.
+
+      // It is more probable that an onChange() call for a reference has to take
+      // a look at the primitives and literals on its node than an onChange()
+      // call for a primitive has to take a look at the references on that node.
       // Therefore we wait for the edge put's completion before writing
-      // primitives.
-      // we don't have to worry much about calling putEdge first because
-      // putEdge() is only used for nulling out references, so it pretty much
-      // will have an error only if there's an error from gun's part
+      // primitives. we don't have to worry much about calling putEdge first
+      // because putEdge() is only used for nulling out references, so it pretty
+      // much will have an error only if there's an error from gun's part
       if (hasEdges) {
-        edgeRes = await this.validateEdgePut(data)
+        edgeRes = await this.validateEdgePut(edgePuts)
 
         // @ts-ignore
         if (!edgeRes.ok) return edgeRes
+      }
 
+      if (hasLiterals) {
+        literalRes = await this.validateLiteralPut(literalPuts)
+
+        if (!literalRes.ok) return literalRes
+      }
+
+      if (hasPrimitives) {
+        primitiveRes = await this.validatePrimitivePut(primitivePuts)
+
+        // @ts-ignore
+        if (!primitiveRes.ok) return primitiveRes
+      }
+
+      const onSetChangeErr = await this.onSetChange({
+        ...this.currentData,
+        ...data,
+      })
+
+      if (Array.isArray(onSetChangeErr) && onSetChangeErr.length) {
+        return {
+          ok: false,
+          messages: onSetChangeErr,
+          details: {},
+        }
+      }
+
+      if (hasEdges) {
         edgeRes = await new Promise(resolve => {
           // @ts-ignore
-          this.gunInstance.put(data, ack => {
+          this.gunInstance.put(edgePuts, ack => {
             resolve({
-              ok: typeof ack.err == 'undefined',
-              messages: typeof ack.err == 'string' ? [ack.err] : [],
+              ok: typeof ack.err === 'undefined',
+              messages: typeof ack.err === 'string' ? [ack.err] : [],
               details: {},
             })
           })
@@ -380,27 +569,41 @@ export class Node {
         if (!edgeRes.ok) return edgeRes
       }
 
-      if (hasPrimitives) {
-        primitiveRes = await this.validatePrimitivePut(data)
+      if (hasLiterals) {
+        literalRes = await new Promise(resolve => {
+          // @ts-ignore
+          this.gunInstance.put(literalPuts, ack => {
+            resolve({
+              ok: typeof ack.err === 'undefined',
+              messages: typeof ack.err === 'string' ? [ack.err] : [],
+              details: {},
+            })
+          })
+        })
 
         // @ts-ignore
-        if (!primitiveRes.ok) return primitiveRes
+        if (!literalRes.ok) return edgeRes
+      }
 
+      if (hasPrimitives) {
         primitiveRes = await new Promise(resolve => {
           // @ts-ignore
           this.gunInstance.put(data, ack => {
             resolve({
-              ok: typeof ack.err == 'undefined',
-              messages: typeof ack.err == 'string' ? [ack.err] : [],
+              ok: typeof ack.err === 'undefined',
+              messages: typeof ack.err === 'string' ? [ack.err] : [],
               details: {},
             })
           })
         })
+
+        // @ts-ignore
+        if (!primitiveRes.ok) return primitiveRes
       }
 
-      const finalRes = Utils.mergeResponses(edgeRes, primitiveRes)
+      // TODO: Why did we merge again?
+      const finalRes = Utils.mergeResponses(edgeRes, literalRes, primitiveRes)
 
-      // @ts-ignore
       return finalRes
     } catch (e) {
       return {
@@ -412,9 +615,8 @@ export class Node {
   }
 
   /**
-   * @template K
-   * @param {keyof T} key
-   * @returns {import('./typings').ReferenceNode<T[K]> | SetNode<T[K]>}
+   * @param {string} key
+   * @returns {ReferenceWrapperNode | SetNode<{}>}
    */
   get(key) {
     const validKey =
@@ -436,8 +638,8 @@ export class Node {
 
     return {
       /**
-       * @param {Node<T[K]>} node
-       * @returns {Promise<PutResponse<T[K]>>}
+       * @param {WrapperNode} node
+       * @returns {Promise<Response>}
        */
       put: async node => {
         const subschema = Utils.getEdgeLeaves(this.schema)[key]
@@ -450,16 +652,28 @@ export class Node {
           }
         }
 
-        const err = await subschema.onChange(this.currentData, node.currentData)
+        let err = await subschema.onChange(this.currentData, node.currentData)
 
-        if (err) {
+        if (Array.isArray(err)) {
           // @ts-ignore
           return {
             ok: false,
             messages: [],
             details: {
-              [key]: typeof err == 'string' ? [err] : err,
+              [key]: typeof err === 'string' ? [err] : err,
             },
+          }
+        }
+
+        // now check against the owner set's onChange
+
+        err = await this.onSetChange(node.currentData)
+
+        if (err) {
+          return {
+            ok: false,
+            messages: /** @type {string[]} */ (err),
+            details: {},
           }
         }
 
@@ -467,8 +681,8 @@ export class Node {
           // @ts-ignore
           this.gunInstance.get(key).put(node.gunInstance, ack => {
             resolve({
-              ok: typeof ack.err == 'undefined',
-              messages: typeof ack.err == 'string' ? [ack.err] : [],
+              ok: typeof ack.err === 'undefined',
+              messages: typeof ack.err === 'string' ? [ack.err] : [],
               details: {},
             })
           })
@@ -519,7 +733,7 @@ export class Node {
 
 /**
  * @template T
- * @param {Schema<T>} schema
+ * @param {Schema} schema
  * @param {object} gunInstance
  * @returns {Record<keyof T, SetNode<{}>>}
  */

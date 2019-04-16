@@ -111,6 +111,57 @@ it('accepts strings for string puts', async () => {
   expect(res.ok).toBe(true)
 })
 
+it('accepts literals for literal puts', done => {
+  expect.assertions(1)
+
+  const Address = {
+    [Utils.SCHEMA_NAME]: 'Address',
+    city: {
+      type: 'string',
+      async onChange() {},
+    },
+    zip: {
+      type: 'number',
+      async onChange() {},
+    },
+  }
+
+  const ExampleSchema = {
+    [Utils.SCHEMA_NAME]: 'ExampleSchema',
+    address: {
+      type: { Address },
+      async onChange() {},
+    },
+  }
+
+  const addressPut = {
+    address: {
+      city: 'NY',
+      zip: 11001,
+    },
+  }
+
+  const myNode = new Node(ExampleSchema, Gun().get(Math.random()))
+
+  let firstCall = true
+  myNode.on(d => {
+    if (firstCall) {
+      firstCall = false
+      return
+    }
+
+    expect(d).toEqual(addressPut)
+
+    done()
+  })
+
+  myNode.put(addressPut).then(res => {
+    if (!res.ok) {
+      console.warn(res)
+    }
+  })
+})
+
 it("disallows puts for keys that don't exist in the schema", async () => {
   expect.assertions(2)
 
@@ -122,32 +173,6 @@ it("disallows puts for keys that don't exist in the schema", async () => {
 
   expect(res.ok).toBe(false)
   expect(res.details[key]).toBeTruthy()
-})
-
-it('calls a subscription when updating a primitive in the node', done => {
-  expect.assertions(1)
-
-  const data = {
-    companyName: 'theCompany',
-  }
-
-  let firstCall = true
-
-  const subscription = jest.fn(dataReceived => {
-    // avoid failing the test via the initial subscription call
-    if (firstCall) {
-      firstCall = false
-      return
-    }
-    expect(dataReceived).toEqual(data)
-    done()
-  })
-
-  node.on(subscription)
-
-  node.put(data)
-
-  expect(subscription)
 })
 
 it('returns a non-ok response if a node of the wrong type given to an edge', async () => {
@@ -164,6 +189,39 @@ it('returns a non-ok response if a node of the wrong type given to an edge', asy
   } catch (e) {
     console.log(Utils.reasonToString(e))
   }
+})
+
+it('calls a subscription when updating a primitive in a node', done => {
+  expect.assertions(2)
+
+  const data = {
+    companyName: 'theCompany',
+  }
+
+  let firstCall = true
+
+  const subscription = dataReceived => {
+    // avoid failing the test via the initial subscription call
+    if (firstCall) {
+      firstCall = false
+      expect(dataReceived).toEqual({
+        cars: {},
+        users: {},
+      })
+      return
+    }
+
+    expect(dataReceived).toEqual({
+      ...data,
+      cars: {},
+      users: {},
+    })
+    done()
+  }
+
+  node.on(subscription)
+
+  node.put(data)
 })
 
 it('calls a subscription when updating an edge in the node', done => {
@@ -220,30 +278,84 @@ it('calls a subscription when updating an edge in the node', done => {
   })
 })
 
-it('calls a subscription when updating a set inside the node', done => {
+it('calls a subscription when updating a set inside a node', done => {
   expect.assertions(1)
+
   const set = node.get('users')
 
-  const data = {
+  const anUserData = {
     name: Math.random().toString(),
   }
 
   let firstCall = true
+
   const subscription = nextData => {
     // avoid failing the test via the initial subscription call
     if (firstCall) {
       firstCall = false
       return
     }
-    expect(Object.values(nextData.users)).toContainEqual(data)
+
+    expect(Object.values(nextData.users)).toContainEqual(anUserData)
+
     done()
   }
 
   node.on(subscription)
 
-  set.set(data).then(res => {
+  set.set(anUserData).then(res => {
     if (!res.ok) {
       console.log(res)
+    }
+  })
+})
+
+it('calls a subscription when updating a literal', done => {
+  expect.assertions(1)
+
+  const Address = {
+    [Utils.SCHEMA_NAME]: 'Address',
+    city: {
+      type: 'string',
+      async onChange() {},
+    },
+    zip: {
+      type: 'number',
+      async onChange() {},
+    },
+  }
+
+  const ExampleSchema = {
+    [Utils.SCHEMA_NAME]: 'ExampleSchema',
+    address: {
+      type: { Address },
+      async onChange() {},
+    },
+  }
+
+  const data = {
+    address: {
+      city: 'NY',
+      zip: 11001,
+    },
+  }
+
+  const myNode = new Node(ExampleSchema, Gun().get(Math.random()))
+
+  let firstCall = true
+  myNode.on(d => {
+    if (firstCall) {
+      firstCall = false
+      return
+    }
+    expect(d).toEqual(data)
+
+    done()
+  })
+
+  myNode.put(data).then(res => {
+    if (!res.ok) {
+      console.warn(res)
     }
   })
 })
