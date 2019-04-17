@@ -1,82 +1,120 @@
 import React from 'react'
 
 import Grid from '@material-ui/core/Grid'
+import IconButton from '@material-ui/core/IconButton'
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemAvatar from '@material-ui/core/ListItemAvatar'
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
+import ListItemText from '@material-ui/core/ListItemText'
+import { withStyles } from '@material-ui/core/styles'
+
+import AddIcon from '@material-ui/icons/Add'
+import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline'
+import EditOutlineIcon from '@material-ui/icons/EditOutlined'
 
 import Dialog from 'components/Dialog'
+import EditNodeDialog from 'components/EditNodeDialog'
 import Page from 'views/Page/Page.jsx'
 import PropForm from 'components/PropForm'
-import IconButton from '@material-ui/core/IconButton'
-import AddIcon from '@material-ui/icons/Add'
-import NodeDrawer from 'components/NodeDrawer/NodeDrawer'
-import EditNodeDialog from 'components/EditNodeDialog'
+import PropertyDrawer from 'components/PropertyDrawer'
 
-// const style = theme => ({
-//   buttonAdd: {
-// position: 'absolute',
-// bottom: '40px',
-// right: '50px',
-// backgroundColor: '#f34930',
-// color: '#fff',
-// transition:
-//   'background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
-// boxShadow:
-//   '0px 3px 5px -1px rgba(0,0,0,0.2), 0px 6px 10px 0px rgba(0,0,0,0.14), 0px 1px 18px 0px rgba(0,0,0,0.12)',
-//   },
-// })
-
+import { nodes } from 'app'
 /**
- * Placeholder while the model shape clears up.
- * @typedef {object} NodeProp
- * @prop {string} name
- * @prop {string} type
- * @prop {(() => void)=} onClickAddProperty
+ * @typedef {import('app/typings').Node} Node
  */
 
 /**
- * Placeholder while the model shape clears up.
- * @typedef {object} NodeRelationship
- * @prop {string} iconName
- * @prop {string} name
- * @prop {string} relatedNodeName
+ * @param {import('@material-ui/core/styles').Theme} theme
  */
+const styles = theme => ({
+  addButton: {
+    backgroundColor: '#f34930',
+    bottom: '40px',
+    boxShadow:
+      '0px 3px 5px -1px rgba(0,0,0,0.2), 0px 6px 10px 0px rgba(0,0,0,0.14), 0px 1px 18px 0px rgba(0,0,0,0.12)',
+    color: '#fff',
+    position: 'absolute',
+    right: '50px',
+    transition:
+      'background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
+  },
+  card: {
+    margin: theme.spacing.unit,
+    marginRight: theme.spacing.unit,
+    padding: '20px 5px',
+    backgroundColor: theme.palette.background.paper,
+  },
+  itemOption: {
+    display: 'flex !important',
+    flexDirection: 'column !important',
+    right: '10px !important',
+  },
+  listItem: {
+    paddingLeft: '15px',
+  },
+  pointerCursor: {
+    cursor: 'pointer',
+  },
+  root: {
+    margin: theme.spacing.unit,
+    marginTop: theme.spacing.unit * 4,
+    width: 'auto',
+    [theme.breakpoints.down('xs')]: {
+      marginTop: theme.spacing.unit * 2,
+    },
+  },
+  smallIconButton: {},
+})
 
 /**
- * Placeholder while the model shape clears up.
- * @typedef {object} Node
- * @prop {string} iconName
- * @prop {number} id
- * @prop {string} identifier
- * @prop {string} label
- * @prop {string} name
- * @prop {NodeProp[]} props
- * @prop {NodeRelationship[]} relationships
+ * @typedef {keyof ReturnType<typeof styles>} Classes
  */
 
 /**
  * @typedef {object} Props
- * @prop {string[]} availableTypes
- * @prop {Node[]} nodes
+ * @prop {Record<Classes, string>} classes
  */
 
 /**
  * @typedef {object} State
- * @prop {number|null} selectedNodeID
+ * @prop {Record<string, Node>} nodes
+ * @prop {string|null} selectedNodeID
  * @prop {boolean} showingAddNodeDialog
  * @prop {boolean} showingAddRelDialog
+ * @prop {boolean} showingEditNodeDialog
  * @prop {boolean} showingPropDialog
  */
 
 /**
- * @augments React.PureComponent<Props, State, never>
+ * @augments React.Component<Props, State>
  */
-
-export default class NodesAndProps extends React.PureComponent {
+class NodesAndProps extends React.Component {
   /** @type {State} */
   state = {
+    nodes: {},
     selectedNodeID: null,
     showingAddNodeDialog: false,
     showingAddRelDialog: false,
+    showingEditNodeDialog: false,
     showingPropDialog: false,
+  }
+
+  componentDidMount() {
+    nodes.on(this.onUpdate)
+  }
+
+  /**
+   * @param {Record<string, Node>} nodes
+   */
+  onUpdate = nodes => {
+    this.setState({
+      nodes,
+    })
+  }
+
+  componentWillUnmount() {
+    nodes.off(this.onUpdate)
   }
 
   handleClosePropForm = () => {
@@ -93,15 +131,20 @@ export default class NodesAndProps extends React.PureComponent {
   }
 
   /**
-   * @private
-   * @param {number} id
+   * @param {string} id
    */
-  onClickNodeOnList = id => {
+  onClickNode = id => {
     this.setState({
       selectedNodeID: id,
     })
   }
 
+  onClickEditNode = e => {
+    console.log('onClickEditNode')
+    console.log(e)
+  }
+
+  /** @private */
   toggleAddNodeDialog = () => {
     this.setState(({ showingAddNodeDialog }) => ({
       showingAddNodeDialog: !showingAddNodeDialog,
@@ -114,24 +157,33 @@ export default class NodesAndProps extends React.PureComponent {
       showingAddRelDialog: !showingAddRelDialog,
     }))
   }
+
+  /** @private */
   toggleEditNodeDialog = () => {
     this.setState(({ showingEditNodeDialog }) => ({
       showingEditNodeDialog: !showingEditNodeDialog,
     }))
   }
 
+  /** @private */
+  handleClosePropsDrawer = () => {
+    this.setState({
+      selectedNodeID: null,
+    })
+  }
+
   render() {
-    const { nodes } = this.props
+    const { classes } = this.props
     const {
+      nodes,
       selectedNodeID,
       showingAddNodeDialog,
       showingEditNodeDialog,
     } = this.state
-    const classes = { demo: '' }
 
     const selectedNode =
-      typeof selectedNodeID === 'number' &&
-      nodes.filter(node => node.id === selectedNodeID)[0]
+      typeof selectedNodeID === 'string' &&
+      Object.entries(nodes).filter(([id]) => id === selectedNodeID)[0][1]
 
     return (
       <React.Fragment>
@@ -152,24 +204,65 @@ export default class NodesAndProps extends React.PureComponent {
         </Dialog>
 
         <Page titleText="Nodes And Properties">
-          <Grid container style={{ minHeight: '100%' }}>
-            <Grid item xs={12}>
-              <NodeDrawer onclickEditNode={this.toggleEditNodeDialog} />
-            </Grid>
+          <Grid container className={classes.root}>
+            {selectedNode && (
+              <PropertyDrawer
+                open
+                propertyItems={Object.entries(selectedNode.propDefs).map(
+                  ([id, propDef]) => ({
+                    ...propDef,
+                    _: {
+                      '#': id,
+                    },
+                  }),
+                )}
+                handleClose={this.handleClosePropsDrawer}
+              />
+            )}
+
+            {Object.entries(nodes).map(([id, node]) => (
+              <Grid
+                className={classes.pointerCursor}
+                item
+                xs={12}
+                md={3}
+                key={id}
+                onClick={() => {
+                  this.onClickNode(id)
+                }}
+              >
+                <List className={classes.card}>
+                  <ListItem className={classes.listItem}>
+                    <ListItemAvatar>
+                      <DeleteOutlineIcon />
+                    </ListItemAvatar>
+
+                    <ListItemText primary={node.label} secondary={node.name} />
+
+                    <ListItemSecondaryAction className={classes.itemOption}>
+                      <IconButton
+                        aria-label="Edit"
+                        className={classes.smallIconButton}
+                        onClick={this.onClickEditNode}
+                      >
+                        <EditOutlineIcon />
+                      </IconButton>
+                      <IconButton
+                        aria-label="Delete"
+                        color="secondary"
+                        className={classes.smallIconButton}
+                      >
+                        <DeleteOutlineIcon />
+                      </IconButton>
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                </List>
+              </Grid>
+            ))}
+
             <IconButton
               color="secondary"
-              className={classes.buttonAdd}
-              style={{
-                position: 'absolute',
-                bottom: '40px',
-                right: '50px',
-                backgroundColor: '#f34930',
-                color: '#fff',
-                transition:
-                  'background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
-                boxShadow:
-                  '0px 3px 5px -1px rgba(0,0,0,0.2), 0px 6px 10px 0px rgba(0,0,0,0.14), 0px 1px 18px 0px rgba(0,0,0,0.12)',
-              }}
+              className={classes.addButton}
               onClick={() => {
                 this.setState(state => ({
                   showingAddNodeDialog: !state.showingAddNodeDialog,
@@ -185,8 +278,4 @@ export default class NodesAndProps extends React.PureComponent {
   }
 }
 
-/** @param {Node} node */
-const extractNodeID = node => node.id
-
-/** @param {Node} node */
-const extractNodeName = node => node.name
+export default withStyles(styles)(NodesAndProps)
