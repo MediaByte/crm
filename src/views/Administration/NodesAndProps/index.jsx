@@ -14,7 +14,6 @@ import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline'
 import EditOutlineIcon from '@material-ui/icons/EditOutlined'
 
 import Dialog from 'components/Dialog'
-import EditNodeDialog from 'components/EditNodeDialog'
 import Page from 'views/Page/Page.jsx'
 import PropForm from 'components/PropForm'
 import PropertyDrawer from 'components/PropertyDrawer'
@@ -78,11 +77,14 @@ const styles = theme => ({
 
 /**
  * @typedef {object} State
+ * @prop {string|null} deactivatingNodeID
+ * @prop {string|null} editingNodeID Non-null when editing a node's icon or
+ * label.
  * @prop {Record<string, Node>} nodes
- * @prop {string|null} selectedNodeID
+ * @prop {string|null} selectedNodeID Non-null when editing a node's property
+ * definitions or relationships definitions.
  * @prop {boolean} showingAddNodeDialog
  * @prop {boolean} showingAddRelDialog
- * @prop {boolean} showingEditNodeDialog
  * @prop {boolean} showingPropDialog
  */
 
@@ -92,11 +94,12 @@ const styles = theme => ({
 class NodesAndProps extends React.Component {
   /** @type {State} */
   state = {
+    deactivatingNodeID: null,
+    editingNodeID: null,
     nodes: {},
     selectedNodeID: null,
     showingAddNodeDialog: false,
     showingAddRelDialog: false,
-    showingEditNodeDialog: false,
     showingPropDialog: false,
   }
 
@@ -139,11 +142,6 @@ class NodesAndProps extends React.Component {
     })
   }
 
-  onClickEditNode = e => {
-    console.log('onClickEditNode')
-    console.log(e)
-  }
-
   /** @private */
   toggleAddNodeDialog = () => {
     this.setState(({ showingAddNodeDialog }) => ({
@@ -158,11 +156,42 @@ class NodesAndProps extends React.Component {
     }))
   }
 
-  /** @private */
-  toggleEditNodeDialog = () => {
-    this.setState(({ showingEditNodeDialog }) => ({
-      showingEditNodeDialog: !showingEditNodeDialog,
-    }))
+  /**
+   * @private
+   * @param {string} id
+   */
+  editNode = id => {
+    this.setState({
+      editingNodeID: id,
+    })
+  }
+
+  /**
+   * @private
+   */
+  stopEditingNode = () => {
+    this.setState({
+      editingNodeID: null,
+    })
+  }
+
+  /**
+   * @private
+   * @param {string} id
+   */
+  deactivateNode = id => {
+    this.setState({
+      deactivatingNodeID: id,
+    })
+  }
+
+  /**
+   * @private
+   */
+  stopDeactivatingNode = () => {
+    this.setState({
+      deactivatingNodeID: null,
+    })
   }
 
   /** @private */
@@ -175,10 +204,11 @@ class NodesAndProps extends React.Component {
   render() {
     const { classes } = this.props
     const {
+      editingNodeID,
+      deactivatingNodeID,
       nodes,
       selectedNodeID,
       showingAddNodeDialog,
-      showingEditNodeDialog,
     } = this.state
 
     const selectedNode =
@@ -196,11 +226,19 @@ class NodesAndProps extends React.Component {
         </Dialog>
 
         <Dialog
-          open={showingEditNodeDialog}
+          open={editingNodeID !== null}
           title="Edit Node"
-          handleClose={this.toggleEditNodeDialog}
+          handleClose={this.stopEditingNode}
         >
-          <EditNodeDialog />
+          Edit node dialog
+        </Dialog>
+
+        <Dialog
+          open={deactivatingNodeID !== null}
+          title="Edit Node"
+          handleClose={this.stopDeactivatingNode}
+        >
+          Deactivating node dialog
         </Dialog>
 
         <Page titleText="Nodes And Properties">
@@ -227,6 +265,7 @@ class NodesAndProps extends React.Component {
                 xs={12}
                 md={3}
                 key={id}
+                // TODO: fix callback in render()
                 onClick={() => {
                   this.onClickNode(id)
                 }}
@@ -243,7 +282,11 @@ class NodesAndProps extends React.Component {
                       <IconButton
                         aria-label="Edit"
                         className={classes.smallIconButton}
-                        onClick={this.onClickEditNode}
+                        // TODO: fix callback in render()
+                        onClick={e => {
+                          e.stopPropagation()
+                          this.editNode(id)
+                        }}
                       >
                         <EditOutlineIcon />
                       </IconButton>
@@ -251,6 +294,10 @@ class NodesAndProps extends React.Component {
                         aria-label="Delete"
                         color="secondary"
                         className={classes.smallIconButton}
+                        onClick={e => {
+                          e.stopPropagation()
+                          this.deactivateNode(id)
+                        }}
                       >
                         <DeleteOutlineIcon />
                       </IconButton>
@@ -278,4 +325,7 @@ class NodesAndProps extends React.Component {
   }
 }
 
-export default withStyles(styles)(NodesAndProps)
+export default withStyles(
+  // Cast: no way to pass in generic arguments in JSDOC+Typescript
+  /** @type {import('@material-ui/core/styles').StyleRulesCallback<Classes>} */ (styles),
+)(NodesAndProps)
