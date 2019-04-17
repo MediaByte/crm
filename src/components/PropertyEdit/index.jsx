@@ -11,7 +11,7 @@ import {
   Typography,
 } from '@material-ui/core'
 import ChevronRightIcon from '@material-ui/icons/ChevronRight'
-import PropertyIcon from 'components/PropertyDrawer/PropertyIcon'
+import PcIcon from '../PcIcon'
 
 const styles = {
   listItem: {
@@ -22,6 +22,7 @@ const styles = {
 class PropertyEdit extends Component {
   state = {
     checked: [],
+    editing: 'Icon',
   }
 
   handleToggle = value => {
@@ -30,7 +31,7 @@ class PropertyEdit extends Component {
     const valueIndex = checked.indexOf(value)
 
     if (valueIndex !== -1) {
-      checked.slice(valueIndex, 1)
+      checked.splice(valueIndex, 1)
     } else {
       checked.push(value)
     }
@@ -51,7 +52,7 @@ class PropertyEdit extends Component {
           <ListItemSecondaryAction>
             <Grid container alignItems="center">
               <Typography color="textSecondary" />
-              <ChevronRightIcon fontSize="small" />
+              <ChevronRightIcon color="disabled" fontSize="small" />
             </Grid>
           </ListItemSecondaryAction>
         </ListItem>
@@ -63,7 +64,7 @@ class PropertyEdit extends Component {
           <ListItemSecondaryAction>
             <Grid container alignItems="center">
               <Typography color="textSecondary">155</Typography>
-              <ChevronRightIcon fontSize="small" />
+              <ChevronRightIcon color="disabled" fontSize="small" />
             </Grid>
           </ListItemSecondaryAction>
         </ListItem>
@@ -76,7 +77,7 @@ class PropertyEdit extends Component {
             secondary="Prifix, First Name, LastName, Suffix"
           />
           <ListItemSecondaryAction>
-            <ChevronRightIcon fontSize="small" />
+            <ChevronRightIcon color="disabled" fontSize="small" />
           </ListItemSecondaryAction>
         </ListItem>
       )
@@ -87,7 +88,7 @@ class PropertyEdit extends Component {
           <ListItemSecondaryAction>
             <Grid container alignItems="center">
               <Typography color="textSecondary">24 Hour</Typography>
-              <ChevronRightIcon fontSize="small" />
+              <ChevronRightIcon color="disabled" fontSize="small" />
             </Grid>
           </ListItemSecondaryAction>
         </ListItem>
@@ -99,7 +100,7 @@ class PropertyEdit extends Component {
           <ListItemSecondaryAction>
             <Grid container alignItems="center">
               <Typography color="textSecondary">USD</Typography>
-              <ChevronRightIcon fontSize="small" />
+              <ChevronRightIcon color="disabled" fontSize="small" />
             </Grid>
           </ListItemSecondaryAction>
         </ListItem>
@@ -123,7 +124,7 @@ class PropertyEdit extends Component {
               <ListItemSecondaryAction>
                 <Grid container alignItems="center">
                   <Typography color="textSecondary">2</Typography>
-                  <ChevronRightIcon fontSize="small" />
+                  <ChevronRightIcon color="disabled" fontSize="small" />
                 </Grid>
               </ListItemSecondaryAction>
             </ListItem>
@@ -139,7 +140,7 @@ class PropertyEdit extends Component {
               <ListItemSecondaryAction>
                 <Grid container alignItems="center">
                   <Typography color="textSecondary">5</Typography>
-                  <ChevronRightIcon fontSize="small" />
+                  <ChevronRightIcon color="disabled" fontSize="small" />
                 </Grid>
               </ListItemSecondaryAction>
             </ListItem>
@@ -156,7 +157,7 @@ class PropertyEdit extends Component {
                 <Typography color="textSecondary">
                   https://www.pudahealth.org
                 </Typography>
-                <ChevronRightIcon fontSize="small" />
+                <ChevronRightIcon color="disabled" fontSize="small" />
               </Grid>
             </ListItemSecondaryAction>
           </ListItem>
@@ -167,7 +168,7 @@ class PropertyEdit extends Component {
                 <Typography color="textSecondary">
                   DuHuge Health Department
                 </Typography>
-                <ChevronRightIcon fontSize="small" />
+                <ChevronRightIcon color="disabled" fontSize="small" />
               </Grid>
             </ListItemSecondaryAction>
           </ListItem>
@@ -199,7 +200,7 @@ class PropertyEdit extends Component {
                   <Typography color="textSecondary">
                     {editItem.label}
                   </Typography>
-                  <ChevronRightIcon fontSize="small" />
+                  <ChevronRightIcon color="disabled" fontSize="small" />
                 </Grid>
               </ListItemSecondaryAction>
             </ListItem>
@@ -212,7 +213,7 @@ class PropertyEdit extends Component {
               <ListItemSecondaryAction>
                 <Grid container alignItems="center">
                   <Typography color="textSecondary">Enabled</Typography>
-                  <ChevronRightIcon fontSize="small" />
+                  <ChevronRightIcon color="disabled" fontSize="small" />
                 </Grid>
               </ListItemSecondaryAction>
             </ListItem>
@@ -256,9 +257,13 @@ class PropertyEdit extends Component {
           </List>
           <List subheader={<ListSubheader disableSticky>Icon</ListSubheader>}>
             <ListItem className={classes.listItem} button>
-              <PropertyIcon type={editItem.type} fontSize="large" />
+              <PcIcon
+                name={editItem.iconName}
+                theme="outlined"
+                fontSize="large"
+              />
               <ListItemSecondaryAction>
-                <ChevronRightIcon fontSize="small" />
+                <ChevronRightIcon color="disabled" fontSize="small" />
               </ListItemSecondaryAction>
             </ListItem>
           </List>

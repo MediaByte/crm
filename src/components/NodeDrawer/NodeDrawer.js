@@ -14,9 +14,9 @@ import {
   ListItemText,
 } from '@material-ui/core'
 
+import PcIcon from '../PcIcon'
 import { propertyItems } from './mocks'
 import PropertyDrawer from '../PropertyDrawer'
-import PropertyIcon from '../PropertyDrawer/PropertyIcon'
 
 const styles = ({ custom: { smallIconButton }, ...theme }) => ({
   root: {
@@ -146,7 +146,7 @@ class NodeDrawer extends React.Component {
               <List className={classes.card}>
                 <ListItem className={classes.listItem}>
                   <ListItemAvatar>
-                    <PropertyIcon type={item.type} />
+                    <PcIcon name={item.iconName} theme="outlined" />
                   </ListItemAvatar>
                   <ListItemText
                     onClick={this.handleDrawerOpen}

@@ -28,7 +28,6 @@ import Add from '@material-ui/icons/Add'
 
 import TitleShortTextTuple from 'components/TitleShortTextTuple'
 import { nameToIconMap } from 'common/NameToIcon'
-// import { typeToIconName, typeToReadableName } from 'common/PropTypeToMetadata'
 
 /**
  * @typedef {object} Props

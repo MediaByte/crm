@@ -2,27 +2,13 @@ import React from 'react'
 
 import Grid from '@material-ui/core/Grid'
 
-import Dialog from 'components/Dialog'
 import Page from 'views/Page/Page.jsx'
 import PropForm from 'components/PropForm'
 import IconButton from '@material-ui/core/IconButton'
 import AddIcon from '@material-ui/icons/Add'
 import NodeDrawer from 'components/NodeDrawer/NodeDrawer'
 import EditNodeDialog from 'components/EditNodeDialog'
-
-// const style = theme => ({
-//   buttonAdd: {
-// position: 'absolute',
-// bottom: '40px',
-// right: '50px',
-// backgroundColor: '#f34930',
-// color: '#fff',
-// transition:
-//   'background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
-// boxShadow:
-//   '0px 3px 5px -1px rgba(0,0,0,0.2), 0px 6px 10px 0px rgba(0,0,0,0.14), 0px 1px 18px 0px rgba(0,0,0,0.12)',
-//   },
-// })
+import PcDialog from 'components/PcDialog'
 
 /**
  * Placeholder while the model shape clears up.
@@ -103,53 +89,40 @@ export default class NodesAndProps extends React.PureComponent {
   }
 
   toggleAddNodeDialog = () => {
-    this.setState(({ showingAddNodeDialog }) => ({
-      showingAddNodeDialog: !showingAddNodeDialog,
-    }))
+    this.setState({ showingAddNodeDialog: this.state.showingAddNodeDialog })
   }
 
   /** @private */
   toggleAddRelDialog = () => {
-    this.setState(({ showingAddRelDialog }) => ({
-      showingAddRelDialog: !showingAddRelDialog,
-    }))
+    this.setState({ showingAddRelDialog: !this.state.showingAddRelDialog })
   }
   toggleEditNodeDialog = () => {
-    this.setState(({ showingEditNodeDialog }) => ({
-      showingEditNodeDialog: !showingEditNodeDialog,
-    }))
+    this.setState({ showingEditNodeDialog: !this.state.showingEditNodeDialog })
   }
 
   render() {
-    const { nodes } = this.props
-    const {
-      selectedNodeID,
-      showingAddNodeDialog,
-      showingEditNodeDialog,
-    } = this.state
+    const { showingAddNodeDialog, showingEditNodeDialog } = this.state
     const classes = { demo: '' }
-
-    const selectedNode =
-      typeof selectedNodeID === 'number' &&
-      nodes.filter(node => node.id === selectedNodeID)[0]
 
     return (
       <React.Fragment>
-        <Dialog
+        <PcDialog
           open={showingAddNodeDialog}
           title="Add a Node"
           handleClose={this.toggleAddNodeDialog}
+          handleSave={() => {}}
         >
           <PropForm availableTypes={[]} />
-        </Dialog>
+        </PcDialog>
 
-        <Dialog
+        <PcDialog
           open={showingEditNodeDialog}
           title="Edit Node"
           handleClose={this.toggleEditNodeDialog}
+          handleSave={() => {}}
         >
           <EditNodeDialog />
-        </Dialog>
+        </PcDialog>
 
         <Page titleText="Nodes And Properties">
           <Grid container style={{ minHeight: '100%' }}>
@@ -184,9 +157,3 @@ export default class NodesAndProps extends React.PureComponent {
     )
   }
 }
-
-/** @param {Node} node */
-const extractNodeID = node => node.id
-
-/** @param {Node} node */
-const extractNodeName = node => node.name

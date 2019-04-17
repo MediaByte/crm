@@ -14,7 +14,7 @@ import {
   withStyles,
 } from '@material-ui/core'
 
-import PropertyIcon from './PropertyIcon'
+import PcIcon from '../PcIcon'
 
 const styles = ({ custom: { smallIconButton } }) => ({
   smallIconButton,
@@ -40,7 +40,7 @@ const PropertyList = ({
     {propertyItems.map((item, index) => (
       <Fragment key={item.id}>
         <ListItem className={classes.listItem}>
-          <PropertyIcon type={item.type} />
+          <PcIcon name={item.iconName} theme="outlined" />
           <ListItemText primary={item.label} secondary={item.name} />
           <ListItemSecondaryAction>
             {unusedList ? (
@@ -74,7 +74,7 @@ const PropertyList = ({
         </ListItem>
         {index !== propertyItems.length - 1 && (
           <li>
-            <Divider inset />
+            <Divider />
           </li>
         )}
       </Fragment>

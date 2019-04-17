@@ -1,7 +1,7 @@
 import React from 'react'
 import ReorderIcon from '@material-ui/icons/Reorder'
 
-import PropertyIcon from './PropertyIcon'
+import PcIcon from '../PcIcon'
 import {
   SortableContainer,
   SortableElement,
@@ -9,7 +9,7 @@ import {
 } from 'react-sortable-hoc'
 import { Typography, Grid, Divider } from '@material-ui/core'
 
-const DragHandle = SortableHandle(() => <ReorderIcon />)
+const DragHandle = SortableHandle(() => <ReorderIcon color="disabled" />)
 /**
  * React sortable hoc doesn't work well with libraries that depend on parent component
  * had to create list and list item from scratch
@@ -17,7 +17,7 @@ const DragHandle = SortableHandle(() => <ReorderIcon />)
 const devideInset = '60px'
 const styles = {
   itemRoot: {
-    zIndex: 100000,
+    zIndex: 100000, // add this to fix bug with react-sortable-hoc
     width: '100%',
   },
   item: {
@@ -39,7 +39,7 @@ const styles = {
 const ReorderItem = ({ item }) => (
   <div style={styles.itemRoot}>
     <Grid style={styles.item} container alignItems="center">
-      <PropertyIcon type={item.type} />
+      <PcIcon name={item.iconName} theme="outlined" />
       <div style={styles.itemInfo}>
         <Typography variant="inherit">{item.name}</Typography>
         <Typography component="span" color="textSecondary">
@@ -48,7 +48,7 @@ const ReorderItem = ({ item }) => (
       </div>
       <DragHandle />
     </Grid>
-    <Divider inset />
+    <Divider />
   </div>
 )
 

@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import NavigateBack from '@material-ui/icons/ChevronLeft'
 import CompareArrowsIcon from '@material-ui/icons/CompareArrows'
 import {
@@ -17,8 +17,8 @@ import PcDrawer from '../PcDrawer'
 import PropertyList from './PropertyList'
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline'
 import PropertyEdit from '../PropertyEdit'
-import PropForm from '../PropForm'
-import AddPropertyDialog from 'components/AddPropertDialog'
+import AddPropertyForm from '../AddPropertyForm'
+import PcDialog from 'components/PcDialog'
 
 const styles = theme => ({
   main: {
@@ -93,7 +93,9 @@ class PropertyDrawer extends Component {
   }
 
   toggleAddPropertyDialog = () => {
-    this.setState({ isAddPropertyDialogOpen: true })
+    this.setState({
+      isAddPropertyDialogOpen: !this.state.isAddPropertyDialogOpen,
+    })
   }
 
   finishEdit = () => {
@@ -124,6 +126,7 @@ class PropertyDrawer extends Component {
     } else if (editingItem) {
       return 'Edit Property'
     }
+    return null
   }
 
   render() {
@@ -166,29 +169,31 @@ class PropertyDrawer extends Component {
         }
         title={this.renderTitle()}
       >
-        <AddPropertyDialog
+        <PcDialog
           handleSave={() => {}}
           open={isAddPropertyDialogOpen}
           title="Add a Property"
           handleClose={this.toggleAddPropertyDialog}
         >
-          <PropForm availableTypes={[]} />
-        </AddPropertyDialog>
+          <AddPropertyForm availableTypes={[]} />
+        </PcDialog>
         <div className={classes.main}>
           {editingItem ? (
             <PropertyEdit editItem={editingItem} />
           ) : (
             <div>
-              <Tabs
-                fullWidth
-                value={tab}
-                onChange={this.handleChange}
-                indicatorColor="primary"
-                textColor="primary"
-              >
-                <Tab label="Properties" />
-                <Tab label="Relationships" />
-              </Tabs>
+              {!isReordering && (
+                <Tabs
+                  fullWidth
+                  value={tab}
+                  onChange={this.handleChange}
+                  indicatorColor="primary"
+                  textColor="primary"
+                >
+                  <Tab label="Properties" />
+                  <Tab label="Relationships" />
+                </Tabs>
+              )}
 
               <Toolbar>
                 <div className={classes.grow} />
@@ -214,24 +219,26 @@ class PropertyDrawer extends Component {
                   onSortEnd={this.handleOrderChange}
                 />
               ) : (
-                <PropertyList
-                  onEdit={this.handleEdit}
-                  onDelete={this.handleDelete}
-                  propertyItems={usedPropertyItems}
-                />
+                <Fragment>
+                  <PropertyList
+                    onEdit={this.handleEdit}
+                    onDelete={this.handleDelete}
+                    propertyItems={usedPropertyItems}
+                  />
+                  <IconButton
+                    onClick={this.toggleAddPropertyDialog}
+                    aria-label="Plus"
+                  >
+                    <AddCircleOutlineIcon fontSize="small" color="primary" />
+                  </IconButton>
+                  <PropertyList
+                    subheader="Unused Properties"
+                    unusedList
+                    propertyItems={unusedPropertyItems}
+                    onRevertUnused={this.handleRevertUnused}
+                  />
+                </Fragment>
               )}
-              <IconButton
-                onClick={this.toggleAddPropertyDialog}
-                aria-label="Plus"
-              >
-                <AddCircleOutlineIcon fontSize="small" color="primary" />
-              </IconButton>
-              <PropertyList
-                subheader="Unused Properties"
-                unusedList
-                propertyItems={unusedPropertyItems}
-                onRevertUnused={this.handleRevertUnused}
-              />
             </div>
           )}
         </div>
