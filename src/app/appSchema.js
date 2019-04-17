@@ -210,6 +210,10 @@ const PropDef = {
     type: 'string',
     async onChange() {},
   },
+  iconName: {
+    type: 'string',
+    async onChange() {},
+  },
 }
 
 /**
@@ -345,6 +349,10 @@ const Node = {
   records: {
     type: [Record],
     async onChange(self, nextVal) {},
+  },
+  iconName: {
+    type: 'string',
+    async onChange() {},
   },
 }
 
