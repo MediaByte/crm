@@ -135,7 +135,7 @@ export const propertyItems = [
   {
     iconName: 'attach_money',
     id: 16,
-    unused: true,
+    unused: false,
     name: 'amet',
     label: 'amet',
     type: 'currency',

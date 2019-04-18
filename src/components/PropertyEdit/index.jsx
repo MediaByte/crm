@@ -1,28 +1,13 @@
 import React, { Component, Fragment } from 'react'
-import {
-  Grid,
-  List,
-  ListItem,
-  ListSubheader,
-  ListItemSecondaryAction,
-  ListItemText,
-  withStyles,
-  Switch,
-  Typography,
-} from '@material-ui/core'
-import ChevronRightIcon from '@material-ui/icons/ChevronRight'
-import PcIcon from '../PcIcon'
-
-const styles = {
-  listItem: {
-    background: '#fff',
-  },
-}
+import { Grid, List, ListSubheader, Typography } from '@material-ui/core'
+import PropertyEditParam from '../PropertyEditParam'
+import PropertyEditBooleanItem from './PropertyEditBooleanItem'
+import PropertyEditSimpleItem from './PropertyEditSimpleItem'
 
 class PropertyEdit extends Component {
   state = {
     checked: [],
-    editing: 'Icon',
+    editingParam: '',
   }
 
   handleToggle = value => {
@@ -42,68 +27,47 @@ class PropertyEdit extends Component {
   renderAppearanceItems = () => {
     const {
       editItem: { type },
-      classes,
     } = this.props
 
     if (type === 'picklist' || type === 'phone') {
       return (
-        <ListItem className={classes.listItem} button>
-          <ListItemText primary="Options" secondary="Yes, No" />
-          <ListItemSecondaryAction>
-            <Grid container alignItems="center">
-              <Typography color="textSecondary" />
-              <ChevronRightIcon color="disabled" fontSize="small" />
-            </Grid>
-          </ListItemSecondaryAction>
-        </ListItem>
+        <PropertyEditSimpleItem
+          primaryText="Options"
+          secondaryText="Yes, No"
+          onClick={() => this.setState({ editingParam: 'options' })}
+        />
       )
     } else if (type === 'textfield') {
       return (
-        <ListItem className={classes.listItem} button>
-          <ListItemText primary="Character Limit" />
-          <ListItemSecondaryAction>
-            <Grid container alignItems="center">
-              <Typography color="textSecondary">155</Typography>
-              <ChevronRightIcon color="disabled" fontSize="small" />
-            </Grid>
-          </ListItemSecondaryAction>
-        </ListItem>
+        <PropertyEditSimpleItem
+          primaryText="Character Limit"
+          actionText="155"
+          onClick={() => this.setState({ editingParam: 'string' })}
+        />
       )
     } else if (type === 'name' || type === 'address' || type === 'multiline') {
       return (
-        <ListItem className={classes.listItem} button>
-          <ListItemText
-            primary="Display Fields"
-            secondary="Prifix, First Name, LastName, Suffix"
-          />
-          <ListItemSecondaryAction>
-            <ChevronRightIcon color="disabled" fontSize="small" />
-          </ListItemSecondaryAction>
-        </ListItem>
+        <PropertyEditSimpleItem
+          primaryText="Display Fields"
+          secondaryText="Prifix, First Name, LastName, Suffix"
+          onClick={() => this.setState({ editingParam: 'displayfields' })}
+        />
       )
     } else if (type === 'time') {
       return (
-        <ListItem className={classes.listItem} button>
-          <ListItemText primary="Format" />
-          <ListItemSecondaryAction>
-            <Grid container alignItems="center">
-              <Typography color="textSecondary">24 Hour</Typography>
-              <ChevronRightIcon color="disabled" fontSize="small" />
-            </Grid>
-          </ListItemSecondaryAction>
-        </ListItem>
+        <PropertyEditSimpleItem
+          primaryText="Format"
+          actionText="155"
+          onClick={() => this.setState({ editingParam: 'string' })}
+        />
       )
     } else if (type === 'currency') {
       return (
-        <ListItem className={classes.listItem} button>
-          <ListItemText primary="Type" />
-          <ListItemSecondaryAction>
-            <Grid container alignItems="center">
-              <Typography color="textSecondary">USD</Typography>
-              <ChevronRightIcon color="disabled" fontSize="small" />
-            </Grid>
-          </ListItemSecondaryAction>
-        </ListItem>
+        <PropertyEditSimpleItem
+          primaryText="Type"
+          actionText="USD"
+          onClick={() => this.setState({ editingParam: 'optionsstatic' })}
+        />
       )
     }
     return ''
@@ -112,22 +76,17 @@ class PropertyEdit extends Component {
   renderAdditionalEdits = () => {
     const {
       editItem: { type },
-      classes,
     } = this.props
 
     if (type === 'decimal' || type === 'percent' || type === 'currency') {
       return (
         <Fragment>
           <List>
-            <ListItem className={classes.listItem} button>
-              <ListItemText primary="Digits After Decimal" />
-              <ListItemSecondaryAction>
-                <Grid container alignItems="center">
-                  <Typography color="textSecondary">2</Typography>
-                  <ChevronRightIcon color="disabled" fontSize="small" />
-                </Grid>
-              </ListItemSecondaryAction>
-            </ListItem>
+            <PropertyEditSimpleItem
+              primaryText="Digits After Decimal"
+              actionText="2"
+              onClick={() => this.setState({ editingParam: 'string' })}
+            />
             <li>
               <Typography align="center" variant="body1" color="textSecondary">
                 This property will appear in Universal Search results
@@ -135,43 +94,27 @@ class PropertyEdit extends Component {
             </li>
           </List>
           <List>
-            <ListItem className={classes.listItem} button>
-              <ListItemText primary="Maximum Digits" />
-              <ListItemSecondaryAction>
-                <Grid container alignItems="center">
-                  <Typography color="textSecondary">5</Typography>
-                  <ChevronRightIcon color="disabled" fontSize="small" />
-                </Grid>
-              </ListItemSecondaryAction>
-            </ListItem>
+            <PropertyEditSimpleItem
+              primaryText="Maximum Digits"
+              actionText="5"
+              onClick={() => this.setState({ editingParam: 'string' })}
+            />
           </List>
         </Fragment>
       )
     } else if (type === 'http') {
       return (
         <List>
-          <ListItem className={classes.listItem} button>
-            <ListItemText primary="URL" />
-            <ListItemSecondaryAction>
-              <Grid container alignItems="center">
-                <Typography color="textSecondary">
-                  https://www.pudahealth.org
-                </Typography>
-                <ChevronRightIcon color="disabled" fontSize="small" />
-              </Grid>
-            </ListItemSecondaryAction>
-          </ListItem>
-          <ListItem className={classes.listItem} button>
-            <ListItemText primary="Display" />
-            <ListItemSecondaryAction>
-              <Grid container alignItems="center">
-                <Typography color="textSecondary">
-                  DuHuge Health Department
-                </Typography>
-                <ChevronRightIcon color="disabled" fontSize="small" />
-              </Grid>
-            </ListItemSecondaryAction>
-          </ListItem>
+          <PropertyEditSimpleItem
+            primaryText="URL"
+            actionText="https://www.pudahealth.org"
+            onClick={() => this.setState({ editingParam: 'string' })}
+          />
+          <PropertyEditSimpleItem
+            primaryText="Display"
+            actionText="DuHuge Health Department"
+            onClick={() => this.setState({ editingParam: 'string' })}
+          />
         </List>
       )
     }
@@ -179,98 +122,66 @@ class PropertyEdit extends Component {
   }
 
   render() {
-    const { classes, editItem } = this.props
-    const { checked } = this.state
+    const { editItem } = this.props
+    const { checked, editingParam } = this.state
 
     return (
       <div style={{ padding: '20px' }}>
-        <Grid
-          container
-          direction="column"
-          spacing={40}
-          className={classes.main}
-        >
-          <List
-            subheader={<ListSubheader disableSticky>APPEARANCE</ListSubheader>}
-          >
-            <ListItem className={classes.listItem} button>
-              <ListItemText primary="Label" />
-              <ListItemSecondaryAction>
-                <Grid container alignItems="center">
-                  <Typography color="textSecondary">
-                    {editItem.label}
-                  </Typography>
-                  <ChevronRightIcon color="disabled" fontSize="small" />
-                </Grid>
-              </ListItemSecondaryAction>
-            </ListItem>
-            {this.renderAppearanceItems()}
-          </List>
-
-          <List>
-            <ListItem className={classes.listItem} button>
-              <ListItemText primary="Help Text" />
-              <ListItemSecondaryAction>
-                <Grid container alignItems="center">
-                  <Typography color="textSecondary">Enabled</Typography>
-                  <ChevronRightIcon color="disabled" fontSize="small" />
-                </Grid>
-              </ListItemSecondaryAction>
-            </ListItem>
-          </List>
-
-          {this.renderAdditionalEdits()}
-
-          <List>
-            <ListItem className={classes.listItem}>
-              <ListItemText primary="Required" />
-              <ListItemSecondaryAction>
-                <Switch
-                  color="primary"
-                  onChange={() => this.handleToggle('required')}
-                  checked={checked.includes('required')}
-                />
-              </ListItemSecondaryAction>
-            </ListItem>
-            <li>
-              <Typography align="center" variant="body1" color="textSecondary">
-                Users will not be able to save if this property is empty
-              </Typography>
-            </li>
-          </List>
-          <List>
-            <ListItem className={classes.listItem}>
-              <ListItemText primary="Index" />
-              <ListItemSecondaryAction>
-                <Switch
-                  color="primary"
-                  onChange={() => this.handleToggle('index')}
-                  checked={checked.includes('index')}
-                />
-              </ListItemSecondaryAction>
-            </ListItem>
-            <li>
-              <Typography align="center" variant="body1" color="textSecondary">
-                This property will appear in Universal Search results
-              </Typography>
-            </li>
-          </List>
-          <List subheader={<ListSubheader disableSticky>Icon</ListSubheader>}>
-            <ListItem className={classes.listItem} button>
-              <PcIcon
-                name={editItem.iconName}
-                theme="outlined"
-                fontSize="large"
+        {editingParam.length ? (
+          <PropertyEditParam editItem={editItem} editingParam={editingParam} />
+        ) : (
+          <Grid container direction="column" spacing={40}>
+            <List
+              subheader={
+                <ListSubheader disableSticky>APPEARANCE</ListSubheader>
+              }
+            >
+              <PropertyEditSimpleItem
+                primaryText="Label"
+                actionText="elit"
+                onClick={() => this.setState({ editingParam: 'string' })}
+                divider
               />
-              <ListItemSecondaryAction>
-                <ChevronRightIcon color="disabled" fontSize="small" />
-              </ListItemSecondaryAction>
-            </ListItem>
-          </List>
-        </Grid>
+              {this.renderAppearanceItems()}
+            </List>
+
+            <List>
+              <PropertyEditSimpleItem
+                primaryText="Help Text"
+                actionText="enabled"
+                onClick={() => this.setState({ editingParam: 'helptext' })}
+              />
+            </List>
+
+            {this.renderAdditionalEdits()}
+
+            <PropertyEditBooleanItem
+              primaryText="Required"
+              helpText="Users will not be able to save if this property is empty"
+              helpTextChecked="Users wll be able to save if this property is empty"
+              onChange={() => this.handleToggle('required')}
+              checked={checked.includes('required')}
+            />
+
+            <PropertyEditBooleanItem
+              primaryText="Index"
+              helpText="This property will appear in Universal Search results"
+              helpTextChecked="This property will appear in Universal Search results when checked"
+              onChange={() => this.handleToggle('index')}
+              checked={checked.includes('index')}
+            />
+
+            <List subheader={<ListSubheader disableSticky>ICON</ListSubheader>}>
+              <PropertyEditSimpleItem
+                iconName={editItem.iconName}
+                onClick={() => this.setState({ editingParam: 'icon' })}
+              />
+            </List>
+          </Grid>
+        )}
       </div>
     )
   }
 }
 
-export default withStyles(styles)(PropertyEdit)
+export default PropertyEdit

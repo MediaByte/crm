@@ -107,6 +107,10 @@ import AttachMoneyFilled from '@material-ui/icons/AttachMoney'
 import AttachMoneyOutlined from '@material-ui/icons/AttachMoneyOutlined'
 import AttachMoneyTwoTone from '@material-ui/icons/AttachMoneyTwoTone'
 
+import DoneFilled from '@material-ui/icons/Done'
+import DoneOutlined from '@material-ui/icons/DoneOutlined'
+import DoneTwoTone from '@material-ui/icons/DoneTwoTone'
+
 /**
  * @typedef {object} IconTriple
  * @prop {IconComponent} filled
@@ -248,5 +252,10 @@ export const nameToIconMap = {
     filled: AttachMoneyFilled,
     outlined: AttachMoneyOutlined,
     twoTone: AttachMoneyTwoTone,
+  },
+  done: {
+    filled: DoneFilled,
+    outlined: DoneOutlined,
+    twoTone: DoneTwoTone,
   },
 }
