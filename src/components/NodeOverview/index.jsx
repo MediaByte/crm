@@ -24,8 +24,6 @@ import HomeIcon from '@material-ui/icons/Home'
 import TagFacesIcon from '@material-ui/icons/TagFaces'
 import AddIcon from '@material-ui/icons/Add'
 
-import Add from '@material-ui/icons/Add'
-
 import TitleShortTextTuple from 'components/TitleShortTextTuple'
 import { nameToIconMap } from 'common/NameToIcon'
 
@@ -268,7 +266,6 @@ class NodeOverview extends React.PureComponent {
         <IconButton
           onClick={this.toggleAddNodeDialog}
           color="secondary"
-          className={classes.buttonAdd}
           style={{
             position: 'absolute',
             bottom: '40px',

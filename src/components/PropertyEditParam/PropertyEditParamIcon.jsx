@@ -21,7 +21,8 @@ const styles = {
     color: '#fff',
   },
 }
-const PropertyEditParamIcon = ({ editItem, classes }) => {
+
+const PropertyEditParamIcon = ({ activePropDef, classes, onPick }) => {
   return (
     <Grid container direction="column" spacing={40}>
       <Grid item alignContent="flex-end">
@@ -33,7 +34,7 @@ const PropertyEditParamIcon = ({ editItem, classes }) => {
         <Paper>
           <Grid container>
             {Object.keys(nameToIconMap).map(iconName =>
-              editItem.iconName === iconName ? (
+              activePropDef.iconName === iconName ? (
                 <IconButton>
                   <Badge
                     classes={{ badge: classes.badge }}
@@ -56,7 +57,7 @@ const PropertyEditParamIcon = ({ editItem, classes }) => {
                   </Badge>
                 </IconButton>
               ) : (
-                <IconButton>
+                <IconButton onClick={onPick}>
                   <PcIcon
                     fontSize="large"
                     name={iconName}

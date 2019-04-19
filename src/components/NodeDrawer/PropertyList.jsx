@@ -24,7 +24,7 @@ const styles = ({ custom: { smallIconButton } }) => ({
 })
 
 const PropertyList = ({
-  propertyItems,
+  propDefs,
   classes,
   onEdit,
   onDelete,
@@ -37,7 +37,7 @@ const PropertyList = ({
       subheader && <ListSubheader component="div">{subheader}</ListSubheader>
     }
   >
-    {propertyItems.map((item, index) => (
+    {propDefs.map((item, index) => (
       <Fragment key={item.id}>
         <ListItem className={classes.listItem}>
           <PcIcon name={item.iconName} theme="outlined" />
@@ -72,7 +72,7 @@ const PropertyList = ({
             )}
           </ListItemSecondaryAction>
         </ListItem>
-        {index !== propertyItems.length - 1 && (
+        {index !== propDefs.length - 1 && (
           <li>
             <Divider />
           </li>

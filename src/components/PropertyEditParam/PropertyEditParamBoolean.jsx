@@ -8,22 +8,30 @@ const styles = {
   },
 }
 
-const PropertyEditParamBoolean = ({ editItem, classes, booleanInfo }) => {
+const PropertyEditParamBoolean = ({
+  name,
+  helpText,
+  booleanInfo,
+  onToggle,
+  classes,
+}) => {
   return (
     <Grid container direction="column" spacing={40}>
       <Grid item alignContent="flex-end">
         <PropertyEditBooleanItem
-          primaryText="Help Text"
-          helpText="Help Text displays quick blurb to users"
-          onChange={() => {}}
+          primaryText={name}
+          helpText={helpText}
+          onChange={onToggle}
           checked={true}
         />
       </Grid>
-      <Grid item>
-        <Paper className={classes.booleanInfoContainer}>
-          <Typography>{booleanInfo}</Typography>
-        </Paper>
-      </Grid>
+      {booleanInfo && (
+        <Grid item>
+          <Paper className={classes.booleanInfoContainer}>
+            <Typography>{booleanInfo}</Typography>
+          </Paper>
+        </Grid>
+      )}
     </Grid>
   )
 }

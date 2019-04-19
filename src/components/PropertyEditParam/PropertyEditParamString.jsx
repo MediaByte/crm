@@ -1,14 +1,5 @@
 import React from 'react'
-import {
-  Grid,
-  List,
-  ListItemText,
-  IconButton,
-  ListItem,
-  ListItemSecondaryAction,
-  Paper,
-  withStyles,
-} from '@material-ui/core'
+import { Grid, List, Paper, withStyles, TextField } from '@material-ui/core'
 import { Close } from '@material-ui/icons'
 
 const styles = {
@@ -17,19 +8,12 @@ const styles = {
   },
 }
 
-const PropertyEditParamString = ({ editItem, classes, onClear }) => {
+const PropertyEditParamString = ({ value, classes, onChange, type }) => {
   return (
     <Grid container direction="column" spacing={40} className={classes.root}>
       <List>
-        <Paper square>
-          <ListItem>
-            <ListItemText primary="Label" />
-            <ListItemSecondaryAction>
-              <IconButton onClick={onClear}>
-                <Close />
-              </IconButton>
-            </ListItemSecondaryAction>
-          </ListItem>
+        <Paper>
+          <TextField onChange={onChange} value={value} fullWidth type={type} />
         </Paper>
       </List>
     </Grid>

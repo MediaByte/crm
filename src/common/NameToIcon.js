@@ -111,6 +111,14 @@ import DoneFilled from '@material-ui/icons/Done'
 import DoneOutlined from '@material-ui/icons/DoneOutlined'
 import DoneTwoTone from '@material-ui/icons/DoneTwoTone'
 
+import EditFilled from '@material-ui/icons/Edit'
+import EditOutlined from '@material-ui/icons/EditOutlined'
+import EditTwoTone from '@material-ui/icons/EditTwoTone'
+
+import DeleteFilled from '@material-ui/icons/Delete'
+import DeleteOutlined from '@material-ui/icons/DeleteOutlined'
+import DeleteTwoTone from '@material-ui/icons/DeleteTwoTone'
+
 /**
  * @typedef {object} IconTriple
  * @prop {IconComponent} filled
@@ -257,5 +265,15 @@ export const nameToIconMap = {
     filled: DoneFilled,
     outlined: DoneOutlined,
     twoTone: DoneTwoTone,
+  },
+  edit: {
+    filled: EditFilled,
+    outlined: EditOutlined,
+    twoTone: EditTwoTone,
+  },
+  delete: {
+    filled: DeleteFilled,
+    outlined: DeleteOutlined,
+    twoTone: DeleteTwoTone,
   },
 }

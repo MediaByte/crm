@@ -47,7 +47,7 @@ const ReorderItem = ({ item, onRemove, onPick, picked, devider }) => (
               <RadioButtonUnchecked />
             )}
           </IconButton>
-          <Typography>{item.name}</Typography>
+          <Typography>{item.label}</Typography>
         </Grid>
       </Grid>
       <Grid item>
@@ -71,10 +71,10 @@ const ReorderList = ({ reorderItems, onSortEnd }) => (
   <SortableList onSortEnd={onSortEnd} useDragHandle>
     {reorderItems.map((item, index) => (
       <SortableItem
-        key={item.id}
+        key={item.name}
         index={index}
         item={item}
-        picked={item.id === 2}
+        picked={item.name === 'home'}
         onRemove={() => {}}
         onPick={() => {}}
         devider={index !== reorderItems.length - 1}
@@ -83,9 +83,7 @@ const ReorderList = ({ reorderItems, onSortEnd }) => (
   </SortableList>
 )
 
-const sampleOptions = [{ id: 1, name: 'Home' }, { id: 2, name: 'Mobile' }]
-
-const PropertyEditParamOptions = ({ editItem, classes }) => {
+const PropertyEditParamOptions = ({ options, onSortEnd, classes, onPick }) => {
   return (
     <Grid container direction="column" spacing={40}>
       <Grid item alignContent="flex-end">
@@ -94,8 +92,8 @@ const PropertyEditParamOptions = ({ editItem, classes }) => {
         </Typography>
       </Grid>
       <Grid item>
-        <ReorderList reorderItems={sampleOptions} onSortEnd={() => {}} />
-        <IconButton onClick={() => {}} aria-label="Plus">
+        <ReorderList reorderItems={options} onSortEnd={onSortEnd} />
+        <IconButton onClick={onPick} aria-label="Plus">
           <AddCircleOutline fontSize="small" color="primary" />
         </IconButton>
       </Grid>

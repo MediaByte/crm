@@ -19,6 +19,8 @@ import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline'
 import PropertyEdit from '../PropertyEdit'
 import AddPropertyForm from '../AddPropertyForm'
 import PcDialog from 'components/PcDialog'
+import { nodes } from 'views/Administration/NodesAndProps/mock'
+import AddRelationshipForm from 'components/AddRelationshipForm'
 
 const styles = theme => ({
   main: {
@@ -41,10 +43,13 @@ const styles = theme => ({
 class PropertyDrawer extends Component {
   state = {
     tab: 0,
-    editingItem: null,
+    activePropDef: null,
+    activeRelationship: null,
+    activeArgumentId: null,
     isReordering: false,
     reorderedItems: [],
     isAddPropertyDialogOpen: false,
+    isAddRelationshipDialogOpen: false,
   }
 
   handleChange = (event, value) => {
@@ -52,7 +57,21 @@ class PropertyDrawer extends Component {
   }
 
   handleEdit = item => {
-    this.setState({ editingItem: item })
+    if (this.state.tab) {
+      this.setState({ activeRelationship: item })
+    } else {
+      this.setState({ activePropDef: item })
+    }
+  }
+
+  handleToggleArgument = () => {}
+
+  handleEditArgument = id => {
+    this.setState({ activeArgumentId: id })
+  }
+
+  leaveEditArgument = () => {
+    this.setState({ activeArgumentId: null })
   }
 
   handleDelete = id => {
@@ -60,11 +79,13 @@ class PropertyDrawer extends Component {
   }
 
   handleShowReorder = () => {
-    const usedPropertyItems = this.props.propertyItems.filter(p => !p.unused)
+    const { propDefs, relationships } = this.props
+    const items = this.state.tab ? relationships : propDefs
+    const reorderedItems = items.filter(item => !item.unused)
 
     this.setState({
       isReordering: true,
-      reorderedItems: usedPropertyItems,
+      reorderedItems,
     })
   }
 
@@ -98,60 +119,87 @@ class PropertyDrawer extends Component {
     })
   }
 
+  toggleAddRelationshipDialog = () => {
+    this.setState({
+      isAddRelationshipDialogOpen: !this.state.isAddRelationshipDialogOpen,
+    })
+  }
+
   finishEdit = () => {
-    this.setState({ editingItem: null })
+    if (this.state.tab) {
+      this.setState({ activeRelationship: null })
+    } else {
+      this.setState({ activePropDef: null })
+    }
   }
 
   handleCancel = () => {
-    const { isReordering, editingItem } = this.state
+    const { isReordering, activePropDef } = this.state
 
     if (isReordering) return this.finishReorder()
-    if (editingItem) return this.finishEdit()
+    if (activePropDef) return this.finishEdit()
   }
 
   handleEditSave = () => {}
 
   handleSave = () => {
-    const { isReordering, editingItem } = this.state
+    const { isReordering, activePropDef } = this.state
 
     if (isReordering) return this.handleReorderSave()
-    if (editingItem) return this.handleEditSave()
+    if (activePropDef) return this.handleEditSave()
   }
 
   renderTitle = () => {
-    const { isReordering, editingItem } = this.state
+    const { isReordering, activePropDef, activeArgumentId } = this.state
+    const { selectedNodeId } = this.props
+    const selectedNode = nodes.find(node => node._['#'] === selectedNodeId)
 
-    if (!isReordering && !editingItem) {
-      return 'Property Drawer'
-    } else if (editingItem) {
-      return 'Edit Property'
+    if (!isReordering && !activePropDef && selectedNode) {
+      return selectedNode.name
+    } else if (activePropDef) {
+      if (activeArgumentId) {
+        if (activeArgumentId === 'icon') return 'Icon'
+
+        return activePropDef.arguments[activeArgumentId].param.name
+      }
+      return activePropDef.name
     }
     return null
   }
 
   render() {
-    const { open, propertyItems, classes, handleClose } = this.props
+    const {
+      selectedNodeId,
+      propDefs,
+      classes,
+      handleClose,
+      relationships,
+    } = this.props
     const {
       tab,
       isReordering,
       reorderedItems,
-      editingItem,
+      activePropDef,
       isAddPropertyDialogOpen,
+      isAddRelationshipDialogOpen,
+      activeArgumentId,
     } = this.state
-    const usedPropertyItems = this.props.propertyItems.filter(p => !p.unused)
-    const unusedPropertyItems = propertyItems.filter(p => p.unused)
+
+    const items = tab ? relationships : propDefs
+    const usedItems = items.filter(p => !p.unused)
+    const unusedItems = items.filter(p => p.unused)
 
     return (
       <PcDrawer
-        open={open}
+        open={selectedNodeId}
         leftAction={
-          isReordering || editingItem ? (
+          isReordering || (activePropDef && !activeArgumentId) ? (
             <Button className={classes.menuButton} onClick={this.handleCancel}>
               Cancel
             </Button>
           ) : (
             <IconButton
-              onClick={handleClose}
+              onClick={activeArgumentId ? this.leaveEditArgument : handleClose}
               className={classes.menuButton}
               aria-label="ChevronLeft"
               disableRipple
@@ -161,7 +209,7 @@ class PropertyDrawer extends Component {
           )
         }
         rightAction={
-          (isReordering || editingItem) && (
+          (isReordering || (activePropDef && !activeArgumentId)) && (
             <Button className={classes.menuButton} onClick={this.handleSave}>
               Save
             </Button>
@@ -171,15 +219,28 @@ class PropertyDrawer extends Component {
       >
         <PcDialog
           handleSave={() => {}}
+          open={isAddRelationshipDialogOpen}
+          title="Add Relationship"
+          handleClose={this.toggleAddRelationshipDialog}
+        >
+          <AddPropertyForm availableTypes={[]} />
+        </PcDialog>
+        <PcDialog
+          handleSave={() => {}}
           open={isAddPropertyDialogOpen}
           title="Add a Property"
           handleClose={this.toggleAddPropertyDialog}
         >
-          <AddPropertyForm availableTypes={[]} />
+          <AddRelationshipForm availableTypes={[]} />
         </PcDialog>
         <div className={classes.main}>
-          {editingItem ? (
-            <PropertyEdit editItem={editingItem} />
+          {activePropDef ? (
+            <PropertyEdit
+              activePropDef={activePropDef}
+              activeArgumentId={activeArgumentId}
+              handleEditArgument={this.handleEditArgument}
+              handleToggleArgument={this.handleToggleArgument}
+            />
           ) : (
             <div>
               {!isReordering && (
@@ -223,7 +284,7 @@ class PropertyDrawer extends Component {
                   <PropertyList
                     onEdit={this.handleEdit}
                     onDelete={this.handleDelete}
-                    propertyItems={usedPropertyItems}
+                    propDefs={usedItems}
                   />
                   <IconButton
                     onClick={this.toggleAddPropertyDialog}
@@ -231,12 +292,16 @@ class PropertyDrawer extends Component {
                   >
                     <AddCircleOutlineIcon fontSize="small" color="primary" />
                   </IconButton>
-                  <PropertyList
-                    subheader="Unused Properties"
-                    unusedList
-                    propertyItems={unusedPropertyItems}
-                    onRevertUnused={this.handleRevertUnused}
-                  />
+                  {!!unusedItems.length && (
+                    <PropertyList
+                      subheader={`Unused ${
+                        tab ? 'Relationships' : 'Properties'
+                      }`}
+                      unusedList
+                      propDefs={unusedItems}
+                      onRevertUnused={this.handleRevertUnused}
+                    />
+                  )}
                 </Fragment>
               )}
             </div>

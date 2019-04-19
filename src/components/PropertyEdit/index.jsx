@@ -1,134 +1,60 @@
-import React, { Component, Fragment } from 'react'
-import { Grid, List, ListSubheader, Typography } from '@material-ui/core'
+import React, { Component } from 'react'
+import { Grid, List, ListSubheader } from '@material-ui/core'
 import PropertyEditParam from '../PropertyEditParam'
 import PropertyEditBooleanItem from './PropertyEditBooleanItem'
 import PropertyEditSimpleItem from './PropertyEditSimpleItem'
 
 class PropertyEdit extends Component {
-  state = {
-    checked: [],
-    editingParam: '',
+  showSecondaryText = argument => {
+    const { param } = argument
+
+    if (!param.multiple) return null
+    return null
+
+    // switch (param.type) {
+    //   case 'string':
+    //     return value.valueIfString
+    //   case 'number':
+    //     return value.valueIfNumber
+    //   case 'boolean':
+    //     return value.valueIfboolean
+    //   default:
+    //     return ''
+    // }
   }
 
-  handleToggle = value => {
-    const { checked: checkedState } = this.state
-    const checked = [...checkedState]
-    const valueIndex = checked.indexOf(value)
+  showArgumentValue = argument => {
+    const { param, value } = argument
 
-    if (valueIndex !== -1) {
-      checked.splice(valueIndex, 1)
-    } else {
-      checked.push(value)
+    if (param.multiple) return null
+
+    switch (param.type) {
+      case 'string':
+        return value.valueIfString
+      case 'number':
+        return value.valueIfNumber
+      case 'boolean':
+        return value.valueIfboolean
+      default:
+        return ''
     }
-
-    this.setState({ checked })
-  }
-
-  renderAppearanceItems = () => {
-    const {
-      editItem: { type },
-    } = this.props
-
-    if (type === 'picklist' || type === 'phone') {
-      return (
-        <PropertyEditSimpleItem
-          primaryText="Options"
-          secondaryText="Yes, No"
-          onClick={() => this.setState({ editingParam: 'options' })}
-        />
-      )
-    } else if (type === 'textfield') {
-      return (
-        <PropertyEditSimpleItem
-          primaryText="Character Limit"
-          actionText="155"
-          onClick={() => this.setState({ editingParam: 'string' })}
-        />
-      )
-    } else if (type === 'name' || type === 'address' || type === 'multiline') {
-      return (
-        <PropertyEditSimpleItem
-          primaryText="Display Fields"
-          secondaryText="Prifix, First Name, LastName, Suffix"
-          onClick={() => this.setState({ editingParam: 'displayfields' })}
-        />
-      )
-    } else if (type === 'time') {
-      return (
-        <PropertyEditSimpleItem
-          primaryText="Format"
-          actionText="155"
-          onClick={() => this.setState({ editingParam: 'string' })}
-        />
-      )
-    } else if (type === 'currency') {
-      return (
-        <PropertyEditSimpleItem
-          primaryText="Type"
-          actionText="USD"
-          onClick={() => this.setState({ editingParam: 'optionsstatic' })}
-        />
-      )
-    }
-    return ''
-  }
-
-  renderAdditionalEdits = () => {
-    const {
-      editItem: { type },
-    } = this.props
-
-    if (type === 'decimal' || type === 'percent' || type === 'currency') {
-      return (
-        <Fragment>
-          <List>
-            <PropertyEditSimpleItem
-              primaryText="Digits After Decimal"
-              actionText="2"
-              onClick={() => this.setState({ editingParam: 'string' })}
-            />
-            <li>
-              <Typography align="center" variant="body1" color="textSecondary">
-                This property will appear in Universal Search results
-              </Typography>
-            </li>
-          </List>
-          <List>
-            <PropertyEditSimpleItem
-              primaryText="Maximum Digits"
-              actionText="5"
-              onClick={() => this.setState({ editingParam: 'string' })}
-            />
-          </List>
-        </Fragment>
-      )
-    } else if (type === 'http') {
-      return (
-        <List>
-          <PropertyEditSimpleItem
-            primaryText="URL"
-            actionText="https://www.pudahealth.org"
-            onClick={() => this.setState({ editingParam: 'string' })}
-          />
-          <PropertyEditSimpleItem
-            primaryText="Display"
-            actionText="DuHuge Health Department"
-            onClick={() => this.setState({ editingParam: 'string' })}
-          />
-        </List>
-      )
-    }
-    return ''
   }
 
   render() {
-    const { editItem } = this.props
-    const { checked, editingParam } = this.state
+    const {
+      activePropDef,
+      activeArgumentId,
+      handleToggleArgument,
+      handleEditArgument,
+    } = this.props
 
     return (
       <div style={{ padding: '20px' }}>
-        {editingParam.length ? (
-          <PropertyEditParam editItem={editItem} editingParam={editingParam} />
+        {activeArgumentId ? (
+          <PropertyEditParam
+            activePropDef={activePropDef}
+            activeArgumentId={activeArgumentId}
+          />
         ) : (
           <Grid container direction="column" spacing={40}>
             <List
@@ -136,45 +62,43 @@ class PropertyEdit extends Component {
                 <ListSubheader disableSticky>APPEARANCE</ListSubheader>
               }
             >
-              <PropertyEditSimpleItem
-                primaryText="Label"
-                actionText="elit"
-                onClick={() => this.setState({ editingParam: 'string' })}
-                divider
-              />
-              {this.renderAppearanceItems()}
+              {activePropDef.arguments &&
+                Object.entries(activePropDef.arguments).map(
+                  ([key, argument], index, list) => {
+                    const { param } = argument
+                    return (
+                      <PropertyEditSimpleItem
+                        primaryText={param.name}
+                        secondaryText={this.showSecondaryText(argument)}
+                        actionText={this.showArgumentValue(argument)}
+                        onClick={() => handleEditArgument(key)}
+                        divider={index + 1 !== list.length}
+                      />
+                    )
+                  },
+                )}
             </List>
-
-            <List>
-              <PropertyEditSimpleItem
-                primaryText="Help Text"
-                actionText="enabled"
-                onClick={() => this.setState({ editingParam: 'helptext' })}
-              />
-            </List>
-
-            {this.renderAdditionalEdits()}
 
             <PropertyEditBooleanItem
               primaryText="Required"
               helpText="Users will not be able to save if this property is empty"
               helpTextChecked="Users wll be able to save if this property is empty"
-              onChange={() => this.handleToggle('required')}
-              checked={checked.includes('required')}
+              onChange={() => handleToggleArgument('required')}
+              checked={activePropDef.required}
             />
 
             <PropertyEditBooleanItem
               primaryText="Index"
               helpText="This property will appear in Universal Search results"
               helpTextChecked="This property will appear in Universal Search results when checked"
-              onChange={() => this.handleToggle('index')}
-              checked={checked.includes('index')}
+              onChange={() => handleToggleArgument('index')}
+              checked={activePropDef.index}
             />
 
             <List subheader={<ListSubheader disableSticky>ICON</ListSubheader>}>
               <PropertyEditSimpleItem
-                iconName={editItem.iconName}
-                onClick={() => this.setState({ editingParam: 'icon' })}
+                iconName={activePropDef.iconName}
+                onClick={() => handleEditArgument('icon')}
               />
             </List>
           </Grid>

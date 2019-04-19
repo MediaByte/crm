@@ -1,14 +1,25 @@
 import React from 'react'
 
-import Grid from '@material-ui/core/Grid'
+import {
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  ListItemSecondaryAction,
+  Grid,
+  withStyles,
+} from '@material-ui/core'
 
 import Page from 'views/Page/Page.jsx'
 import PropForm from 'components/PropForm'
 import IconButton from '@material-ui/core/IconButton'
 import AddIcon from '@material-ui/icons/Add'
-import NodeDrawer from 'components/NodeDrawer/NodeDrawer'
 import EditNodeDialog from 'components/EditNodeDialog'
 import PcDialog from 'components/PcDialog'
+import PcIcon from 'components/PcIcon'
+import styles from './styles'
+import { nodes, propDefs, relationships } from './mock.js'
+import NodeDrawer from 'components/NodeDrawer'
 
 /**
  * Placeholder while the model shape clears up.
@@ -46,63 +57,46 @@ import PcDialog from 'components/PcDialog'
 
 /**
  * @typedef {object} State
- * @prop {number|null} selectedNodeID
+ * @prop {number} selectedNodeId
  * @prop {boolean} showingAddNodeDialog
- * @prop {boolean} showingAddRelDialog
- * @prop {boolean} showingPropDialog
+ * @prop {number} editingNodeId
  */
 
 /**
  * @augments React.PureComponent<Props, State, never>
  */
 
-export default class NodesAndProps extends React.PureComponent {
+class NodesAndProps extends React.PureComponent {
   /** @type {State} */
   state = {
-    selectedNodeID: null,
+    selectedNodeId: 0,
     showingAddNodeDialog: false,
-    showingAddRelDialog: false,
-    showingPropDialog: false,
-  }
-
-  handleClosePropForm = () => {
-    this.setState({
-      showingPropDialog: false,
-    })
-  }
-
-  /** @private */
-  onClickAddProperty = () => {
-    this.setState({
-      showingPropDialog: true,
-    })
-  }
-
-  /**
-   * @private
-   * @param {number} id
-   */
-  onClickNodeOnList = id => {
-    this.setState({
-      selectedNodeID: id,
-    })
+    editingNodeId: 0,
   }
 
   toggleAddNodeDialog = () => {
-    this.setState({ showingAddNodeDialog: this.state.showingAddNodeDialog })
+    this.setState({ showingAddNodeDialog: !this.state.showingAddNodeDialog })
   }
 
-  /** @private */
-  toggleAddRelDialog = () => {
-    this.setState({ showingAddRelDialog: !this.state.showingAddRelDialog })
+  handleEditNode = id => {
+    this.setState({ editingNodeId: id })
   }
-  toggleEditNodeDialog = () => {
-    this.setState({ showingEditNodeDialog: !this.state.showingEditNodeDialog })
+
+  handleEditNodeClose = () => {
+    this.setState({ editingNodeId: 0 })
+  }
+
+  handleNodeClick = id => {
+    this.setState({ selectedNodeId: id })
+  }
+
+  handleNodeDrawerClose = () => {
+    this.setState({ selectedNodeId: 0 })
   }
 
   render() {
-    const { showingAddNodeDialog, showingEditNodeDialog } = this.state
-    const classes = { demo: '' }
+    const { showingAddNodeDialog, editingNodeId, selectedNodeId } = this.state
+    const { classes } = this.props
 
     return (
       <React.Fragment>
@@ -116,38 +110,63 @@ export default class NodesAndProps extends React.PureComponent {
         </PcDialog>
 
         <PcDialog
-          open={showingEditNodeDialog}
+          open={editingNodeId}
           title="Edit Node"
-          handleClose={this.toggleEditNodeDialog}
+          handleClose={this.handleEditNodeClose}
           handleSave={() => {}}
         >
           <EditNodeDialog />
         </PcDialog>
 
+        <NodeDrawer
+          selectedNodeId={selectedNodeId}
+          relationships={relationships}
+          propDefs={propDefs}
+          handleClose={this.handleNodeDrawerClose}
+        />
+
         <Page titleText="Nodes And Properties">
           <Grid container style={{ minHeight: '100%' }}>
             <Grid item xs={12}>
-              <NodeDrawer onclickEditNode={this.toggleEditNodeDialog} />
+              <Grid container className={classes.root}>
+                {nodes.map(item => (
+                  <Grid item xs={12} md={3} key={item._['#']}>
+                    <List className={classes.card}>
+                      <ListItem className={classes.listItem}>
+                        <ListItemAvatar>
+                          <PcIcon name={item.iconName} theme="outlined" />
+                        </ListItemAvatar>
+                        <ListItemText
+                          onClick={() => this.handleNodeClick(item._['#'])}
+                          primary={item.name}
+                          secondary={item.label}
+                        />
+                        <ListItemSecondaryAction className={classes.itemOption}>
+                          <IconButton
+                            aria-label="Edit"
+                            className={classes.smallIconButton}
+                            onClick={() => this.handleEditNode(item._['#'])}
+                          >
+                            <PcIcon name="edit" theme="outlined" />
+                          </IconButton>
+                          <IconButton
+                            aria-label="Delete"
+                            color="secondary"
+                            className={classes.smallIconButton}
+                          >
+                            <PcIcon name="delete" theme="outlined" />
+                          </IconButton>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                    </List>
+                  </Grid>
+                ))}
+              </Grid>
             </Grid>
             <IconButton
               color="secondary"
-              className={classes.buttonAdd}
-              style={{
-                position: 'absolute',
-                bottom: '40px',
-                right: '50px',
-                backgroundColor: '#f34930',
-                color: '#fff',
-                transition:
-                  'background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
-                boxShadow:
-                  '0px 3px 5px -1px rgba(0,0,0,0.2), 0px 6px 10px 0px rgba(0,0,0,0.14), 0px 1px 18px 0px rgba(0,0,0,0.12)',
-              }}
-              onClick={() => {
-                this.setState(state => ({
-                  showingAddNodeDialog: !state.showingAddNodeDialog,
-                }))
-              }}
+              className={classes.addButton}
+              onClick={this.toggleAddNodeDialog}
             >
               <AddIcon />
             </IconButton>
@@ -157,3 +176,5 @@ export default class NodesAndProps extends React.PureComponent {
     )
   }
 }
+
+export default withStyles(styles)(NodesAndProps)
