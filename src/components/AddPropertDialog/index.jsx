@@ -7,8 +7,23 @@ import {
   DialogActions,
 } from '@material-ui/core'
 
+/**
+ * @typedef {object} Props
+ * @prop {boolean=} disableCancelButton
+ * @prop {boolean=} disableSaveButton
+ * @prop {() => void} handleClose
+ * @prop {() => void} handleSave
+ * @prop {string} title
+ * @prop {boolean} open
+ */
+
+/**
+ * @type {React.SFC<Props>}
+ */
 const AddPropertyDialog = ({
   children,
+  disableCancelButton,
+  disableSaveButton,
   handleClose,
   handleSave,
   title,
@@ -22,10 +37,14 @@ const AddPropertyDialog = ({
     <DialogTitle id="add-property-dialog-title">{title}</DialogTitle>
     <DialogContent>{children}</DialogContent>
     <DialogActions>
-      <Button onClick={handleClose} color="primary">
+      <Button
+        onClick={handleClose}
+        color="primary"
+        disabled={disableCancelButton}
+      >
         Cancel
       </Button>
-      <Button onClick={handleSave} color="primary" disabled>
+      <Button onClick={handleSave} color="primary" disabled={disableSaveButton}>
         Save
       </Button>
     </DialogActions>
