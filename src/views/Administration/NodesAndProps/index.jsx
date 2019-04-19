@@ -1,5 +1,7 @@
 import React from 'react'
 
+import toUpper from 'lodash/toUpper'
+
 import Grid from '@material-ui/core/Grid'
 import IconButton from '@material-ui/core/IconButton'
 import List from '@material-ui/core/List'
@@ -7,18 +9,24 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import ListItemText from '@material-ui/core/ListItemText'
+import Snackbar from '@material-ui/core/Snackbar'
 import { withStyles } from '@material-ui/core/styles'
 
 import AddIcon from '@material-ui/icons/Add'
+import CloseIcon from '@material-ui/icons/Close'
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline'
 import EditOutlineIcon from '@material-ui/icons/EditOutlined'
 
-import Dialog from 'components/Dialog'
+import AddNodeForm from 'components/AddNodeForm'
+import Dialog from 'components/AddPropertDialog'
+import Messages from 'components/Messages'
+import OverlaySpinner from 'components/OverlaySpinner'
 import Page from 'views/Page/Page.jsx'
-import PropForm from 'components/PropForm'
 import PropertyDrawer from 'components/PropertyDrawer'
 
 import { nodes } from 'app'
+
+import { Node } from 'app/validators'
 /**
  * @typedef {import('app/typings').Node} Node
  */
@@ -64,6 +72,9 @@ const styles = theme => ({
     },
   },
   smallIconButton: {},
+  spinner: {
+    position: 'absolute',
+  },
 })
 
 /**
@@ -76,16 +87,29 @@ const styles = theme => ({
  */
 
 /**
+ * @typedef {object} AddNodeFormData
+ * @prop {string|null} currentLabelErrorMessage
+ * @prop {string} currentLabelValue
+ * @prop {string|null} currentNameErrorMessage
+ * @prop {string} currentNameValue
+ * @prop {Record<'name'|'label', string[]|undefined>|null} detailsIfError
+ * @prop {string[]|null} messagesIfError
+ */
+
+/**
  * @typedef {object} State
+ * @prop {AddNodeFormData} addNodeFormData
  * @prop {string|null} deactivatingNodeID
  * @prop {string|null} editingNodeID Non-null when editing a node's icon or
  * label.
  * @prop {Record<string, Node>} nodes
+ * @prop {boolean} savingNode
  * @prop {string|null} selectedNodeID Non-null when editing a node's property
  * definitions or relationships definitions.
  * @prop {boolean} showingAddNodeDialog
  * @prop {boolean} showingAddRelDialog
  * @prop {boolean} showingPropDialog
+ * @prop {string|null} snackbarMessage
  */
 
 /**
@@ -94,13 +118,75 @@ const styles = theme => ({
 class NodesAndProps extends React.Component {
   /** @type {State} */
   state = {
+    addNodeFormData: {
+      currentLabelErrorMessage: null,
+      currentLabelValue: '',
+      currentNameErrorMessage: null,
+      currentNameValue: '',
+      detailsIfError: null,
+      messagesIfError: null,
+    },
     deactivatingNodeID: null,
     editingNodeID: null,
     nodes: {},
+    savingNode: false,
     selectedNodeID: null,
     showingAddNodeDialog: false,
     showingAddRelDialog: false,
     showingPropDialog: false,
+    snackbarMessage: null,
+  }
+
+  /**
+   * @private
+   * @param {string} nextLabelValue
+   */
+  addNodeFormOnLabelChange = nextLabelValue => {
+    /**
+     * @type {string}
+     */
+    let err
+
+    try {
+      Node.isValidLabel(nextLabelValue)
+    } catch (e) {
+      err = e.message
+    }
+
+    this.setState(({ addNodeFormData }) => ({
+      addNodeFormData: {
+        ...addNodeFormData,
+        currentLabelValue: nextLabelValue,
+        currentLabelErrorMessage: err || null,
+      },
+    }))
+  }
+
+  /**
+   * @private
+   * @param {string} nextNameValue
+   */
+  addNodeFormOnNameChange = nextNameValue => {
+    /**
+     * @type {string}
+     */
+    let err
+
+    nextNameValue = toUpper(nextNameValue)
+
+    try {
+      Node.isValidName(nextNameValue)
+    } catch (e) {
+      err = e.message
+    }
+
+    this.setState(({ addNodeFormData }) => ({
+      addNodeFormData: {
+        ...addNodeFormData,
+        currentNameValue: nextNameValue,
+        currentNameErrorMessage: err || null,
+      },
+    }))
   }
 
   componentDidMount() {
@@ -116,10 +202,18 @@ class NodesAndProps extends React.Component {
     })
   }
 
+  closeSnackbar = () => {
+    this.setState({
+      snackbarMessage: null,
+    })
+  }
+
+  /** @private */
   componentWillUnmount() {
     nodes.off(this.onUpdate)
   }
 
+  /** @private */
   handleClosePropForm = () => {
     this.setState({
       showingPropDialog: false,
@@ -201,15 +295,116 @@ class NodesAndProps extends React.Component {
     })
   }
 
+  handleAddNode = () => {
+    this.setState(
+      {
+        savingNode: true,
+      },
+      () => {
+        const {
+          addNodeFormData: { currentLabelValue, currentNameValue },
+        } = this.state
+
+        nodes
+          .set({
+            iconName: null,
+            label: currentLabelValue,
+            name: currentNameValue,
+          })
+          .then(res => {
+            if (res.ok) {
+              this.setState({
+                addNodeFormData: {
+                  currentLabelErrorMessage: null,
+                  currentLabelValue: '',
+                  currentNameErrorMessage: null,
+                  currentNameValue: '',
+                  detailsIfError: null,
+                  messagesIfError: null,
+                },
+                snackbarMessage: 'Node created sucessfully',
+                showingAddNodeDialog: false,
+              })
+            } else {
+              Object.entries(res.details).forEach(([key, detail]) => {
+                if (detail.length === 0) {
+                  console.warn('unexpectedly received detail of length 0')
+                  return
+                }
+
+                if (key === 'label') {
+                  const [msg] = detail
+
+                  this.setState(({ addNodeFormData }) => ({
+                    addNodeFormData: {
+                      ...addNodeFormData,
+                      currentLabelErrorMessage: msg,
+                    },
+                  }))
+                } else if (key === 'name') {
+                  const [msg] = detail
+
+                  this.setState(({ addNodeFormData }) => ({
+                    addNodeFormData: {
+                      ...addNodeFormData,
+                      currentNameErrorMessage: msg,
+                    },
+                  }))
+                } else {
+                  console.warn(
+                    `received unexpected key in details of response: ${key}`,
+                  )
+                }
+              })
+
+              if (res.messages.length > 0) {
+                this.setState(({ addNodeFormData }) => ({
+                  addNodeFormData: {
+                    ...addNodeFormData,
+                    messagesIfError: res.messages,
+                  },
+                }))
+              }
+            }
+          })
+          .catch(e => {
+            /** @type {string} */
+            const msg = typeof e === 'string' ? e : e.message
+
+            this.setState(({ addNodeFormData }) => ({
+              addNodeFormData: {
+                ...addNodeFormData,
+                messagesIfError: [msg],
+              },
+            }))
+          })
+          .finally(() => {
+            this.setState({
+              savingNode: false,
+            })
+          })
+      },
+    )
+  }
+
   render() {
     const { classes } = this.props
     const {
+      addNodeFormData,
       editingNodeID,
       deactivatingNodeID,
       nodes,
+      savingNode,
       selectedNodeID,
       showingAddNodeDialog,
+      snackbarMessage,
     } = this.state
+
+    const validAddNodeFormData =
+      addNodeFormData.currentLabelErrorMessage === null &&
+      addNodeFormData.currentLabelValue.length > 0 &&
+      addNodeFormData.currentNameErrorMessage === null &&
+      addNodeFormData.currentNameValue.length > 0
 
     const selectedNode =
       typeof selectedNodeID === 'string' &&
@@ -217,12 +412,42 @@ class NodesAndProps extends React.Component {
 
     return (
       <React.Fragment>
+        <Snackbar
+          autoHideDuration={2000}
+          message={<span>{snackbarMessage}</span>}
+          open={!!snackbarMessage}
+          onClose={this.closeSnackbar}
+          action={[
+            <IconButton
+              key="close"
+              aria-label="Close"
+              color="inherit"
+              className={classes.close}
+              onClick={this.handleClose}
+            >
+              <CloseIcon />
+            </IconButton>,
+          ]}
+        />
         <Dialog
           open={showingAddNodeDialog}
           title="Add a Node"
           handleClose={this.toggleAddNodeDialog}
+          handleSave={this.handleAddNode}
+          disableSaveButton={!validAddNodeFormData || savingNode}
         >
-          <PropForm availableTypes={[]} />
+          <OverlaySpinner showSpinner={savingNode}>
+            <AddNodeForm
+              {...addNodeFormData}
+              onLabelChange={this.addNodeFormOnLabelChange}
+              onNameChange={this.addNodeFormOnNameChange}
+              disableLabelInput={savingNode}
+              disableNameInput={savingNode}
+            />
+            {addNodeFormData.messagesIfError && (
+              <Messages messages={addNodeFormData.messagesIfError} />
+            )}
+          </OverlaySpinner>
         </Dialog>
 
         <Dialog
