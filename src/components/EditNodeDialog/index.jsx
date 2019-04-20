@@ -5,12 +5,6 @@ import TextField from '@material-ui/core/TextField'
 
 class EditNodeDialog extends React.Component {
   render() {
-    const bodyDialogAddNode = {
-      padding: '25px',
-    }
-    const TextFieldMt = {
-      marginTop: '15px',
-    }
     return (
       <Grid
         alignContent="center"
@@ -18,10 +12,10 @@ class EditNodeDialog extends React.Component {
         container
         direction="column"
         justify="center"
-        style={bodyDialogAddNode}
       >
         <TextField
           fullWidth
+          margin="dense"
           id="add-prop-form-name-field" // required for Accessibility
           label="Name"
           name="name"
@@ -30,11 +24,11 @@ class EditNodeDialog extends React.Component {
 
         <TextField
           fullWidth
+          margin="dense"
           id="add-prop-form-label-field" // required for Accessibility
           label="Label"
           name="label" // for accessibility only
           required
-          style={TextFieldMt}
         />
       </Grid>
     )

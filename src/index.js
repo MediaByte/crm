@@ -25,10 +25,21 @@ const theme = createMuiTheme({
   typography: {
     fontFamily: '"Montserrat", "Helvetica", "Arial", sans-serif',
     fontSize: 13,
+    h3: {
+      fontSize: '0.8rem',
+    },
   },
   palette: {
     primary: {
       main: '#0dacc4',
+    },
+    text: {
+      primary: '#333',
+    },
+  },
+  custom: {
+    smallIconButton: {
+      padding: '5px !important',
     },
   },
 })

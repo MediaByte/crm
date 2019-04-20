@@ -1,28 +1,25 @@
 import React from 'react'
 
-import Grid from '@material-ui/core/Grid'
+import {
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  ListItemSecondaryAction,
+  Grid,
+  withStyles,
+} from '@material-ui/core'
 
-import Dialog from 'components/Dialog'
 import Page from 'views/Page/Page.jsx'
 import PropForm from 'components/PropForm'
 import IconButton from '@material-ui/core/IconButton'
 import AddIcon from '@material-ui/icons/Add'
-import NodeDrawer from 'components/NodeDrawer/NodeDrawer'
 import EditNodeDialog from 'components/EditNodeDialog'
-
-// const style = theme => ({
-//   buttonAdd: {
-// position: 'absolute',
-// bottom: '40px',
-// right: '50px',
-// backgroundColor: '#f34930',
-// color: '#fff',
-// transition:
-//   'background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
-// boxShadow:
-//   '0px 3px 5px -1px rgba(0,0,0,0.2), 0px 6px 10px 0px rgba(0,0,0,0.14), 0px 1px 18px 0px rgba(0,0,0,0.12)',
-//   },
-// })
+import PcDialog from 'components/PcDialog'
+import PcIcon from 'components/PcIcon'
+import styles from './styles'
+import { nodes, propDefs, relationships } from './mock.js'
+import NodeDrawer from 'components/NodeDrawer'
 
 /**
  * Placeholder while the model shape clears up.
@@ -60,171 +57,116 @@ import EditNodeDialog from 'components/EditNodeDialog'
 
 /**
  * @typedef {object} State
- * @prop {number|null} selectedNodeID
+ * @prop {number} selectedNodeId
  * @prop {boolean} showingAddNodeDialog
- * @prop {boolean} showingAddRelDialog
- * @prop {boolean} showingPropDialog
+ * @prop {number} editingNodeId
  */
 
 /**
  * @augments React.PureComponent<Props, State, never>
  */
 
-export default class NodesAndProps extends React.PureComponent {
+class NodesAndProps extends React.PureComponent {
   /** @type {State} */
   state = {
-    selectedNodeID: null,
+    selectedNodeId: 0,
     showingAddNodeDialog: false,
-    showingAddRelDialog: false,
-    showingPropDialog: false,
-  }
-
-  handleClosePropForm = () => {
-    this.setState({
-      showingPropDialog: false,
-    })
-  }
-
-  /** @private */
-  onClickAddProperty = () => {
-    this.setState({
-      showingPropDialog: true,
-    })
-  }
-
-  /**
-   * @private
-   * @param {number} id
-   */
-  onClickNodeOnList = id => {
-    this.setState({
-      selectedNodeID: id,
-    })
+    editingNodeId: 0,
   }
 
   toggleAddNodeDialog = () => {
-    this.setState(({ showingAddNodeDialog }) => ({
-      showingAddNodeDialog: !showingAddNodeDialog,
-    }))
+    this.setState({ showingAddNodeDialog: !this.state.showingAddNodeDialog })
   }
 
-  /** @private */
-  toggleAddRelDialog = () => {
-    this.setState(({ showingAddRelDialog }) => ({
-      showingAddRelDialog: !showingAddRelDialog,
-    }))
+  handleEditNode = id => {
+    this.setState({ editingNodeId: id })
   }
-  toggleEditNodeDialog = () => {
-    this.setState(({ showingEditNodeDialog }) => ({
-      showingEditNodeDialog: !showingEditNodeDialog,
-    }))
+
+  handleEditNodeClose = () => {
+    this.setState({ editingNodeId: 0 })
+  }
+
+  handleNodeClick = id => {
+    this.setState({ selectedNodeId: id })
+  }
+
+  handleNodeDrawerClose = () => {
+    this.setState({ selectedNodeId: 0 })
   }
 
   render() {
-    const { availableTypes, nodes } = this.props
-    const {
-      selectedNodeID,
-      showingAddNodeDialog,
-      showingAddRelDialog,
-      showingPropDialog,
-      showingEditNodeDialog,
-    } = this.state
-    const classes = { demo: '' }
-
-    const selectedNode =
-      typeof selectedNodeID === 'number' &&
-      nodes.filter(node => node.id === selectedNodeID)[0]
+    const { showingAddNodeDialog, editingNodeId, selectedNodeId } = this.state
+    const { classes } = this.props
 
     return (
       <React.Fragment>
-        <Dialog
+        <PcDialog
           open={showingAddNodeDialog}
           title="Add a Node"
           handleClose={this.toggleAddNodeDialog}
+          handleSave={() => {}}
         >
           <PropForm availableTypes={[]} />
-        </Dialog>
+        </PcDialog>
 
-        <Dialog
-          open={showingEditNodeDialog}
+        <PcDialog
+          open={editingNodeId}
           title="Edit Node"
-          handleClose={this.toggleEditNodeDialog}
+          handleClose={this.handleEditNodeClose}
+          handleSave={() => {}}
         >
           <EditNodeDialog />
-        </Dialog>
+        </PcDialog>
 
-        {/* <AddNodeDialog
-          availableIconNames={Object.keys(nameToIconMap)}
-          handleClose={this.toggleAddNodeDialog}
-          handleSave={() => {}}
-          isValidIdentifierValue={() => true}
-          isValidLabelValue={() => true}
-          isValidNameValue={() => true}
-          open={false}
+        <NodeDrawer
+          selectedNodeId={selectedNodeId}
+          relationships={relationships}
+          propDefs={propDefs}
+          handleClose={this.handleNodeDrawerClose}
         />
 
-        <Dialog
-          actionButtonText="SAVE"
-          handleClose={this.toggleAddRelDialog}
-          onClickCloseButton={this.toggleAddRelDialog}
-          open={true}
-          title="Add a Relationship"
-        >
-          <RelationshipForm availableNodeNames={[]} />
-        </Dialog> */}
-
         <Page titleText="Nodes And Properties">
-          <Grid
-            container
-            style={{ backgroundColor: '#fafafa', height: '100%' }}
-          >
-            {/* <TitleSubtitleList
-              extractID={extractNodeID}
-              extractTitle={extractNodeName}
-              onClickAdd={this.toggleAddNodeDialog}
-              onClickItem={this.onClickNodeOnList}
-              items={nodes}
-              // TODO: optimize away array literal
-              selectedIDs={(selectedNodeID && [selectedNodeID]) || undefined}
-              showToolbar
-            /> */}
+          <Grid container style={{ minHeight: '100%' }}>
             <Grid item xs={12}>
-              <NodeDrawer onclickEditNode={this.toggleEditNodeDialog} />
+              <Grid container className={classes.root}>
+                {nodes.map(item => (
+                  <Grid item xs={12} md={3} key={item._['#']}>
+                    <List className={classes.card}>
+                      <ListItem className={classes.listItem}>
+                        <ListItemAvatar>
+                          <PcIcon name={item.iconName} theme="outlined" />
+                        </ListItemAvatar>
+                        <ListItemText
+                          onClick={() => this.handleNodeClick(item._['#'])}
+                          primary={item.name}
+                          secondary={item.label}
+                        />
+                        <ListItemSecondaryAction className={classes.itemOption}>
+                          <IconButton
+                            aria-label="Edit"
+                            className={classes.smallIconButton}
+                            onClick={() => this.handleEditNode(item._['#'])}
+                          >
+                            <PcIcon name="edit" theme="outlined" />
+                          </IconButton>
+                          <IconButton
+                            aria-label="Delete"
+                            color="secondary"
+                            className={classes.smallIconButton}
+                          >
+                            <PcIcon name="delete" theme="outlined" />
+                          </IconButton>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                    </List>
+                  </Grid>
+                ))}
+              </Grid>
             </Grid>
-            {/* <Grid item xs={12} className={classes.demo}>
-              {selectedNode && (
-                <NodeOverview
-                  onclickEditNode={this.toggleEditNodeDialog}
-                  identifier={selectedNode.identifier}
-                  iconName={selectedNode.iconName}
-                  label={selectedNode.label}
-                  name={selectedNode.name}
-                  onClickAddProperty={this.onClickAddProperty}
-                  onClickAddRelationship={this.toggleAddRelDialog}
-                  properties={selectedNode.props}
-                  relationships={selectedNode.relationships}
-                />
-              )}
-            </Grid> */}
             <IconButton
               color="secondary"
-              className={classes.buttonAdd}
-              style={{
-                position: 'absolute',
-                bottom: '40px',
-                right: '50px',
-                backgroundColor: '#f34930',
-                color: '#fff',
-                transition:
-                  'background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
-                boxShadow:
-                  '0px 3px 5px -1px rgba(0,0,0,0.2), 0px 6px 10px 0px rgba(0,0,0,0.14), 0px 1px 18px 0px rgba(0,0,0,0.12)',
-              }}
-              onClick={() => {
-                this.setState(state => ({
-                  showingAddNodeDialog: !state.showingAddNodeDialog,
-                }))
-              }}
+              className={classes.addButton}
+              onClick={this.toggleAddNodeDialog}
             >
               <AddIcon />
             </IconButton>
@@ -235,8 +177,4 @@ export default class NodesAndProps extends React.PureComponent {
   }
 }
 
-/** @param {Node} node */
-const extractNodeID = node => node.id
-
-/** @param {Node} node */
-const extractNodeName = node => node.name
+export default withStyles(styles)(NodesAndProps)

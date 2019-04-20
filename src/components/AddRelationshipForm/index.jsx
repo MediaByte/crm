@@ -1,24 +1,22 @@
 // remember, it is possible to have properties with no user defined icon.
 import React from 'react'
 
-import Grid from '@material-ui/core/Grid'
-import InputAdornment from '@material-ui/core/InputAdornment'
-import TextField from '@material-ui/core/TextField'
-import Tooltip from '@material-ui/core/Tooltip'
-/**
- * @typedef {import('@material-ui/core/SvgIcon').SvgIconProps} SvgIconProps
- * @typedef {import('@material-ui/core/TextField').TextFieldProps} TextFieldProps
- * @typedef {import('@material-ui/core').Theme} Theme
- */
-/**
- * @template K
- * @typedef {import('@material-ui/core/styles').StyleRulesCallback<K>} StyleRulesCallback
- */
-
+import {
+  Grid,
+  InputAdornment,
+  TextField,
+  Tooltip,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  withStyles,
+} from '@material-ui/core'
 import ErrorOutline from '@material-ui/icons/ErrorOutline'
 
 import { isAZ, isSpace } from 'common/utils'
-import { withStyles } from '@material-ui/core'
+import PcIcon from '../PcIcon'
+import { nodes } from 'views/Administration/NodesAndProps/mock'
 
 const styles = {
   menuIcon: {
@@ -117,7 +115,7 @@ const labelFieldInputProps = {
  * @prop {string} selectedType Selected prop type. Empty string means no
  * type is selected.
  * @prop {boolean} tooltipEnabled
- * @prop {string} type
+ * @prop {string} selectedNode
  */
 
 /**
@@ -128,7 +126,7 @@ const labelFieldInputProps = {
 /**
  * @augments React.PureComponent<Props, State>
  */
-class PropForm extends React.PureComponent {
+class AddPropertyForm extends React.PureComponent {
   /**
    * @param {Props} props
    */
@@ -171,7 +169,7 @@ class PropForm extends React.PureComponent {
       selectedType: availableTypes[0] || '',
       tooltipEnabled:
         typeof initialTooltipValue === 'string' && initialTooltipValue !== '',
-      type: '',
+      selectedNode: '',
     }
   }
 
@@ -287,8 +285,8 @@ class PropForm extends React.PureComponent {
     }
   }
 
-  handleTypeChange = event => {
-    this.setState({ type: event.target.value })
+  handleNodeChange = event => {
+    this.setState({ selectedNode: event.target.value })
   }
   /**
    * @private
@@ -364,6 +362,27 @@ class PropForm extends React.PureComponent {
           required
           value={currentLabelValue}
         />
+
+        <FormControl fullWidth margin="dense">
+          <InputLabel htmlFor="node">Node</InputLabel>
+          <Select
+            value={this.state.selectedNode}
+            onChange={this.handleNodeChange}
+            inputProps={{
+              name: 'node',
+              id: 'node',
+            }}
+          >
+            {nodes.map(node => (
+              <MenuItem value={node._['#']} key={node._['#']}>
+                <span className={classes.menuIcon}>
+                  <PcIcon name={node.iconName} theme="outlined" />
+                </span>
+                {node.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
       </Grid>
     )
   }
@@ -373,4 +392,4 @@ class PropForm extends React.PureComponent {
  * @type {React.CSSProperties}
  */
 
-export default withStyles(styles)(PropForm)
+export default withStyles(styles)(AddPropertyForm)
