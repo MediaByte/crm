@@ -1,14 +1,10 @@
 // remember, it is possible to have properties with no user defined icon.
 import React from 'react'
 
-import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Grid from '@material-ui/core/Grid'
-import IconButton from '@material-ui/core/IconButton'
 import InputAdornment from '@material-ui/core/InputAdornment'
-import Switch from '@material-ui/core/Switch'
 import TextField from '@material-ui/core/TextField'
 import Tooltip from '@material-ui/core/Tooltip'
-import Typography from '@material-ui/core/Typography'
 /**
  * @typedef {import('@material-ui/core/SvgIcon').SvgIconProps} SvgIconProps
  * @typedef {import('@material-ui/core/TextField').TextFieldProps} TextFieldProps
@@ -20,33 +16,28 @@ import Typography from '@material-ui/core/Typography'
  */
 
 import ErrorOutline from '@material-ui/icons/ErrorOutline'
-import HelpOutline from '@material-ui/icons/HelpOutline'
 
-import { nameToIconMap } from 'common/NameToIcon'
-import { typeToIconName, typeToReadableName } from 'common/PropTypeToMetadata'
 import { isAZ, isSpace } from 'common/utils'
 
-import IconTextDropDown from '../IconTextDropDown'
+import { propertyTypes } from '../NodeDrawer/mocks'
+import PropertyIcon from '../PropertyDrawer/PropertyIcon'
+import {
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  withStyles,
+} from '@material-ui/core'
+
+const styles = {
+  menuIcon: {
+    padding: '0 15px 0 5px',
+  },
+}
 
 const NAME_FIELD_HELPER_TEXT = 'Only letters (a-z, A-Z) are allowed'
 const ONLY_LETTERS_AND_SPACES_HELPER_TEXT =
   'Only letters (a-z, A-Z) and spaces are allowed'
-
-/**
- * @param {string} propType
- * @returns {import('../IconTextDropDown').Item}
- */
-const propTypeToDropDownItem = propType => {
-  const icon =
-    nameToIconMap[typeToIconName[propType]] &&
-    nameToIconMap[typeToIconName[propType]].filled
-
-  return {
-    icon,
-    readableText: typeToReadableName[propType],
-    value: propType,
-  }
-}
 
 /**
  * @type {TextFieldProps['InputProps']}
@@ -135,6 +126,7 @@ const labelFieldInputProps = {
  * @prop {string} selectedType Selected prop type. Empty string means no
  * type is selected.
  * @prop {boolean} tooltipEnabled
+ * @prop {string} type
  */
 
 /**
@@ -145,7 +137,7 @@ const labelFieldInputProps = {
 /**
  * @augments React.PureComponent<Props, State>
  */
-export default class PropForm extends React.PureComponent {
+class PropForm extends React.PureComponent {
   /**
    * @param {Props} props
    */
@@ -188,6 +180,7 @@ export default class PropForm extends React.PureComponent {
       selectedType: availableTypes[0] || '',
       tooltipEnabled:
         typeof initialTooltipValue === 'string' && initialTooltipValue !== '',
+      type: '',
     }
   }
 
@@ -206,7 +199,7 @@ export default class PropForm extends React.PureComponent {
     // this type is obtained from the 'availableTypes' prop, if by any chance
     // this array is empty, this will be null.
     type: string|null
-   }
+   }  
    ```
    * @returns {FormData}
    */
@@ -303,6 +296,9 @@ export default class PropForm extends React.PureComponent {
     }
   }
 
+  handleTypeChange = event => {
+    this.setState({ type: event.target.value })
+  }
   /**
    * @private
    * @type {import('@material-ui/core/Switch').SwitchProps['onChange']}
@@ -335,23 +331,12 @@ export default class PropForm extends React.PureComponent {
 
   render() {
     const {
-      availableTypes,
-      hideTypeSelection,
-      onClickSelectIcon,
-      selectedIcon: SelectedIcon,
-    } = this.props
-    const {
       currentLabelValue,
       currentNameValue,
-      currentTooltipValue,
       invalidLabelCharAttempt,
       invalidNameCharAttempt,
-      invalidTooltipCharAttempt,
-      selectedType,
-      tooltipEnabled,
     } = this.state
-
-    const showTypeSelection = !hideTypeSelection
+    const { classes } = this.props
 
     return (
       <Grid
@@ -389,82 +374,35 @@ export default class PropForm extends React.PureComponent {
           style={TextFieldMt}
         />
 
-        {/* <Grid>
-          <FormControlLabel
-            control={
-              <Switch
-                checked={tooltipEnabled}
-                onChange={this.onTooltipSwitchChange}
-              />
-            }
-            label="Enable tooltip for this property."
-          />
-
-          <IconButton>
-            <HelpOutline />
-          </IconButton>
-        </Grid> */}
-
-        {/* {tooltipEnabled && (
-          <TextField
-            fullWidth
-            helperText={
-              invalidTooltipCharAttempt && ONLY_LETTERS_AND_SPACES_HELPER_TEXT
-            }
-            id="add-prop-form-tooltip-field" // required for Accessibility
-            label="Tooltip"
-            name="tooltip" // for accessibility only
-            onChange={this.onTooltipChange}
-            required
-            value={currentTooltipValue}
-          />
-        )} */}
-
-        {/* <Grid>
-          {SelectedIcon ? (
-            <div onClick={onClickSelectIcon} style={iconSelectionStyle}>
-              <SelectedIcon style={iconStyle} />
-            </div>
-          ) : (
-            <div onClick={onClickSelectIcon} style={noIconSelectedStyle}>
-              <Typography align="center" color="primary" variant="subtitle2">
-                Click/tap here to select an icon for this property
-              </Typography>
-            </div>
-          )}
-
-          {showTypeSelection && (
-            <IconTextDropDown
-              emptyValueText=""
-              items={availableTypes.map(propTypeToDropDownItem)}
-              onValueChange={this.onTypeChange}
-              selectedValue={selectedType}
-            />
-          )}
-        </Grid> */}
+        <FormControl fullWidth>
+          <InputLabel htmlFor="type">Type</InputLabel>
+          <Select
+            value={this.state.type}
+            onChange={this.handleTypeChange}
+            inputProps={{
+              name: 'type',
+              id: 'type',
+            }}
+          >
+            {propertyTypes.map(({ value, label }) => (
+              <MenuItem value={value} key={value}>
+                <span className={classes.menuIcon}>
+                  <PropertyIcon fontSize="small" type={value} />
+                </span>
+                {label}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
       </Grid>
     )
   }
 }
 
-const ICON_AREA_DIMENSIONS = 96
-
 /**
  * @type {React.CSSProperties}
  */
-const iconSelectionStyle = {
-  alignContent: 'center',
-  alignItems: 'center',
-  display: 'flex',
-  borderColor: '#CCC',
-  borderRadius: 25,
-  borderStyle: 'solid',
-  borderWidth: 4,
-  cursor: 'pointer',
-  justifyContent: 'center',
-  width: ICON_AREA_DIMENSIONS,
-  height: ICON_AREA_DIMENSIONS,
-}
+
 const bodyDialogAddNode = {
   padding: '25px',
 }
@@ -472,18 +410,4 @@ const TextFieldMt = {
   marginTop: '15px',
 }
 
-/**
- * @type {React.CSSProperties}
- */
-const noIconSelectedStyle = {
-  ...iconSelectionStyle,
-  borderStyle: 'dashed',
-}
-
-/**
- * @type {React.CSSProperties}
- */
-const iconStyle = {
-  width: ICON_AREA_DIMENSIONS,
-  height: ICON_AREA_DIMENSIONS,
-}
+export default withStyles(styles)(PropForm)
