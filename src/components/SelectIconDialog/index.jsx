@@ -26,9 +26,9 @@ import { withStyles } from '@material-ui/core/styles'
 
 import DialogAppBar from '../DialogAppBar'
 
-import SelectableIcon from './SelectableIcon'
+import SelectableIcon from '../SelectableIcon'
 /**
- * @typedef {import('./SelectableIcon').Props} SelectableIconProps
+ * @typedef {import('../SelectableIcon').Props} SelectableIconProps
  */
 
 /**
