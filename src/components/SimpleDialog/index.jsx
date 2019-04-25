@@ -9,12 +9,17 @@ import {
 
 /**
  * @typedef {object} Props
+ * @prop {string=} actionButtonText (Optional)
+ * @prop {boolean=} disableActionButton (Optional) Alias for `disableSaveButton`
  * @prop {boolean=} disableCancelButton
  * @prop {boolean=} disableSaveButton
- * @prop {() => void} handleClose
- * @prop {() => void} handleSave
- * @prop {string} title
+ * @prop {(() => void)=} handleAction Invoked when the action button is clicked
+ * on.
+ * @prop {(() => void)=} handleClose (Optional)
+ * @prop {(() => void)=} handleSave (Optional) Alias for the `handleAction`
+ * prop.
  * @prop {boolean} open
+ * @prop {string} title
  */
 
 /**
@@ -23,9 +28,12 @@ import {
 export default class SimpleDialog extends React.PureComponent {
   render() {
     const {
+      actionButtonText,
       children,
+      disableActionButton,
       disableCancelButton,
       disableSaveButton,
+      handleAction,
       handleClose,
       handleSave,
       title,
@@ -49,11 +57,11 @@ export default class SimpleDialog extends React.PureComponent {
             Cancel
           </Button>
           <Button
-            onClick={handleSave}
+            onClick={handleAction || handleSave}
             color="primary"
-            disabled={disableSaveButton}
+            disabled={disableActionButton || disableSaveButton}
           >
-            Save
+            {actionButtonText || 'Save'}
           </Button>
         </DialogActions>
       </Dialog>
