@@ -19,10 +19,13 @@ import EditOutlineIcon from '@material-ui/icons/EditOutlined'
 
 import AddNodeForm from 'components/AddNodeForm'
 import Dialog from 'components/SimpleDialog'
+import IconSelector from 'components/IconSelector'
 import Messages from 'components/Messages'
 import OverlaySpinner from 'components/OverlaySpinner'
 import Page from 'views/Page/Page.jsx'
 import PropertyDrawer from 'components/PropertyDrawer'
+
+import { nameToIconMap } from 'common/NameToIcon'
 
 import { nodes } from 'app'
 
@@ -30,6 +33,28 @@ import { Node } from 'app/validators'
 /**
  * @typedef {import('app/typings').Node} Node
  */
+
+const availableIcons = Object.values(nameToIconMap).map(
+  iconTriple => iconTriple.filled,
+)
+const availableIconNames = Object.keys(nameToIconMap)
+
+const BLANK_ADD_NODE_FORM_DATA = Object.freeze({
+  currentlySelectedIconName: null,
+  currentLabelErrorMessage: null,
+  currentLabelValue: '',
+  currentNameErrorMessage: null,
+  currentNameValue: '',
+  detailsIfError: null,
+  messagesIfError: null,
+})
+
+const INITIAL_ADD_NODE_FLOW = Object.freeze({
+  currentlySelectedIconName: null,
+  savingNode: false,
+  selectingIcon: false,
+  showingAddNodeDialog: false,
+})
 
 /**
  * @param {import('@material-ui/core/styles').Theme} theme
@@ -84,6 +109,15 @@ const styles = theme => ({
 /**
  * @typedef {object} Props
  * @prop {Record<Classes, string>} classes
+ *
+ */
+
+/**
+ * @typedef {object} AddNodeFlow
+ * @prop {string|null} currentlySelectedIconName
+ * @prop {boolean} savingNode
+ * @prop {boolean} selectingIcon
+ * @prop {boolean} showingAddNodeDialog
  */
 
 /**
@@ -98,15 +132,15 @@ const styles = theme => ({
 
 /**
  * @typedef {object} State
+ * @prop {AddNodeFlow} addNodeFlow
  * @prop {AddNodeFormData} addNodeFormData
  * @prop {string|null} deactivatingNodeID
  * @prop {string|null} editingNodeID Non-null when editing a node's icon or
  * label.
  * @prop {Record<string, Node>} nodes
- * @prop {boolean} savingNode
  * @prop {string|null} selectedNodeID Non-null when editing a node's property
  * definitions or relationships definitions.
- * @prop {boolean} showingAddNodeDialog
+ *
  * @prop {boolean} showingAddRelDialog
  * @prop {boolean} showingPropDialog
  * @prop {string|null} snackbarMessage
@@ -118,20 +152,17 @@ const styles = theme => ({
 class NodesAndProps extends React.Component {
   /** @type {State} */
   state = {
-    addNodeFormData: {
-      currentLabelErrorMessage: null,
-      currentLabelValue: '',
-      currentNameErrorMessage: null,
-      currentNameValue: '',
-      detailsIfError: null,
-      messagesIfError: null,
+    addNodeFlow: {
+      currentlySelectedIconName: null,
+      savingNode: false,
+      selectingIcon: false,
+      showingAddNodeDialog: false,
     },
+    addNodeFormData: BLANK_ADD_NODE_FORM_DATA,
     deactivatingNodeID: null,
     editingNodeID: null,
     nodes: {},
-    savingNode: false,
     selectedNodeID: null,
-    showingAddNodeDialog: false,
     showingAddRelDialog: false,
     showingPropDialog: false,
     snackbarMessage: null,
@@ -238,8 +269,11 @@ class NodesAndProps extends React.Component {
 
   /** @private */
   toggleAddNodeDialog = () => {
-    this.setState(({ showingAddNodeDialog }) => ({
-      showingAddNodeDialog: !showingAddNodeDialog,
+    this.setState(({ addNodeFlow }) => ({
+      addNodeFlow: {
+        ...addNodeFlow,
+        showingAddNodeDialog: !addNodeFlow.showingAddNodeDialog,
+      },
     }))
   }
 
@@ -295,35 +329,43 @@ class NodesAndProps extends React.Component {
     })
   }
 
+  handleAddNodeAction = () => {
+    if (this.state.addNodeFlow.selectingIcon) {
+      this.handleAddNode()
+    } else {
+      this.setState(({ addNodeFlow }) => ({
+        addNodeFlow: {
+          ...addNodeFlow,
+          selectingIcon: true,
+        },
+      }))
+    }
+  }
+
   handleAddNode = () => {
     this.setState(
-      {
-        savingNode: true,
-      },
+      ({ addNodeFlow }) => ({
+        addNodeFlow: {
+          ...addNodeFlow,
+          selectingIcon: false,
+          savingNode: true,
+        },
+      }),
       () => {
-        const {
-          addNodeFormData: { currentLabelValue, currentNameValue },
-        } = this.state
+        const { addNodeFlow, addNodeFormData } = this.state
 
         nodes
           .set({
-            iconName: null,
-            label: currentLabelValue,
-            name: currentNameValue,
+            iconName: addNodeFlow.currentlySelectedIconName,
+            label: addNodeFormData.currentLabelValue,
+            name: addNodeFormData.currentNameValue,
           })
           .then(res => {
             if (res.ok) {
               this.setState({
-                addNodeFormData: {
-                  currentLabelErrorMessage: null,
-                  currentLabelValue: '',
-                  currentNameErrorMessage: null,
-                  currentNameValue: '',
-                  detailsIfError: null,
-                  messagesIfError: null,
-                },
+                addNodeFlow: INITIAL_ADD_NODE_FLOW,
+                addNodeFormData: BLANK_ADD_NODE_FORM_DATA,
                 snackbarMessage: 'Node created sucessfully',
-                showingAddNodeDialog: false,
               })
             } else {
               Object.entries(res.details).forEach(([key, detail]) => {
@@ -335,7 +377,11 @@ class NodesAndProps extends React.Component {
                 if (key === 'label') {
                   const [msg] = detail
 
-                  this.setState(({ addNodeFormData }) => ({
+                  this.setState(({ addNodeFlow, addNodeFormData }) => ({
+                    addNodeFlow: {
+                      ...addNodeFlow,
+                      savingNode: false,
+                    },
                     addNodeFormData: {
                       ...addNodeFormData,
                       currentLabelErrorMessage: msg,
@@ -344,10 +390,27 @@ class NodesAndProps extends React.Component {
                 } else if (key === 'name') {
                   const [msg] = detail
 
-                  this.setState(({ addNodeFormData }) => ({
+                  this.setState(({ addNodeFlow, addNodeFormData }) => ({
+                    addNodeFlow: {
+                      ...addNodeFlow,
+                      savingNode: false,
+                    },
                     addNodeFormData: {
                       ...addNodeFormData,
                       currentNameErrorMessage: msg,
+                    },
+                  }))
+                } else if (key === 'iconName') {
+                  const [msg] = detail
+
+                  this.setState(({ addNodeFlow, addNodeFormData }) => ({
+                    addNodeFlow: {
+                      ...addNodeFlow,
+                      savingNode: false,
+                    },
+                    addNodeFormData: {
+                      ...addNodeFormData,
+                      messagesIfError: [msg],
                     },
                   }))
                 } else {
@@ -378,25 +441,52 @@ class NodesAndProps extends React.Component {
               },
             }))
           })
-          .finally(() => {
-            this.setState({
-              savingNode: false,
-            })
-          })
       },
     )
+  }
+
+  /**
+   * @private
+   * @param {number} i
+   */
+  addNodeOnClickIcon = i => {
+    this.setState(({ addNodeFlow }) => {
+      const name = availableIconNames[i]
+
+      if (name === addNodeFlow.currentlySelectedIconName) {
+        return {
+          addNodeFlow: {
+            ...addNodeFlow,
+            currentlySelectedIconName: null,
+          },
+        }
+      }
+
+      return {
+        addNodeFlow: {
+          ...addNodeFlow,
+          currentlySelectedIconName: name,
+        },
+      }
+    })
+  }
+
+  closeAddNodeDialog = () => {
+    this.setState({
+      addNodeFlow: INITIAL_ADD_NODE_FLOW,
+      addNodeFormData: BLANK_ADD_NODE_FORM_DATA,
+    })
   }
 
   render() {
     const { classes } = this.props
     const {
+      addNodeFlow,
       addNodeFormData,
       editingNodeID,
       deactivatingNodeID,
       nodes,
-      savingNode,
       selectedNodeID,
-      showingAddNodeDialog,
       snackbarMessage,
     } = this.state
 
@@ -405,10 +495,16 @@ class NodesAndProps extends React.Component {
       addNodeFormData.currentLabelValue.length > 0 &&
       addNodeFormData.currentNameErrorMessage === null &&
       addNodeFormData.currentNameValue.length > 0
+    addNodeFlow.currentlySelectedIconName !== null
 
     const selectedNode =
       typeof selectedNodeID === 'string' &&
       Object.entries(nodes).filter(([id]) => id === selectedNodeID)[0][1]
+
+    const selectedIconIdx =
+      addNodeFlow.currentlySelectedIconName === null
+        ? null
+        : availableIconNames.indexOf(addNodeFlow.currentlySelectedIconName)
 
     return (
       <React.Fragment>
@@ -429,23 +525,44 @@ class NodesAndProps extends React.Component {
             </IconButton>,
           ]}
         />
+
         <Dialog
-          open={showingAddNodeDialog}
-          title="Add a Node"
-          handleClose={this.toggleAddNodeDialog}
-          handleSave={this.handleAddNode}
-          disableSaveButton={!validAddNodeFormData || savingNode}
+          actionButtonText={addNodeFlow.selectingIcon ? 'Save' : 'Next'}
+          disableActionButton={
+            !validAddNodeFormData ||
+            addNodeFlow.savingNode ||
+            (addNodeFlow.currentlySelectedIconName === null &&
+              addNodeFlow.selectingIcon)
+          }
+          handleAction={this.handleAddNodeAction}
+          handleClose={this.closeAddNodeDialog}
+          open={addNodeFlow.showingAddNodeDialog}
+          title={
+            addNodeFlow.selectingIcon
+              ? 'Select an Icon for the Node'
+              : 'Add a Node'
+          }
         >
-          <OverlaySpinner showSpinner={savingNode}>
-            <AddNodeForm
-              {...addNodeFormData}
-              onLabelChange={this.addNodeFormOnLabelChange}
-              onNameChange={this.addNodeFormOnNameChange}
-              disableLabelInput={savingNode}
-              disableNameInput={savingNode}
-            />
-            {addNodeFormData.messagesIfError && (
-              <Messages messages={addNodeFormData.messagesIfError} />
+          <OverlaySpinner showSpinner={addNodeFlow.savingNode}>
+            {addNodeFlow.selectingIcon ? (
+              <IconSelector
+                icons={availableIcons}
+                onClickIcon={this.addNodeOnClickIcon}
+                selectedIconIdx={selectedIconIdx}
+              />
+            ) : (
+              <React.Fragment>
+                <AddNodeForm
+                  {...addNodeFormData}
+                  onLabelChange={this.addNodeFormOnLabelChange}
+                  onNameChange={this.addNodeFormOnNameChange}
+                  disableLabelInput={addNodeFlow.savingNode}
+                  disableNameInput={addNodeFlow.savingNode}
+                />
+                {addNodeFormData.messagesIfError && (
+                  <Messages messages={addNodeFormData.messagesIfError} />
+                )}
+              </React.Fragment>
             )}
           </OverlaySpinner>
         </Dialog>
@@ -537,7 +654,11 @@ class NodesAndProps extends React.Component {
               className={classes.addButton}
               onClick={() => {
                 this.setState(state => ({
-                  showingAddNodeDialog: !state.showingAddNodeDialog,
+                  addNodeFlow: {
+                    // TODO FIX THIS
+                    ...this.state.addNodeFlow,
+                    showingAddNodeDialog: true,
+                  },
                 }))
               }}
             >
