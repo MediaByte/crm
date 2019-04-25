@@ -18,7 +18,7 @@ import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline'
 import EditOutlineIcon from '@material-ui/icons/EditOutlined'
 
 import AddNodeForm from 'components/AddNodeForm'
-import Dialog from 'components/AddPropertDialog'
+import Dialog from 'components/SimpleDialog'
 import Messages from 'components/Messages'
 import OverlaySpinner from 'components/OverlaySpinner'
 import Page from 'views/Page/Page.jsx'

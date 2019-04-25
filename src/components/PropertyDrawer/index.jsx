@@ -18,7 +18,7 @@ import PropertyList from './PropertyList'
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline'
 import PropertyEdit from '../PropertyEdit'
 import PropForm from '../PropForm'
-import AddPropertyDialog from 'components/AddPropertDialog'
+import AddPropertyDialog from 'components/SimpleDialog'
 
 const styles = theme => ({
   main: {
