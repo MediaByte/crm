@@ -19,6 +19,7 @@ import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline'
 import PropertyEdit from '../PropertyEdit'
 import PropForm from '../PropForm'
 import AddPropertyDialog from 'components/SimpleDialog'
+import OptionsEditor from 'components/OptionsEditor'
 
 const styles = theme => ({
   main: {
@@ -160,7 +161,8 @@ class PropertyDrawer extends Component {
         </AddPropertyDialog>
         <div className={classes.main}>
           {editingItem ? (
-            <PropertyEdit editItem={editingItem} />
+            // <PropertyEdit editItem={editingItem} />
+            <OptionsEditor />
           ) : (
             <div>
               <Tabs
