@@ -37,17 +37,17 @@ const PropertyList = ({
       subheader && <ListSubheader component="div">{subheader}</ListSubheader>
     }
   >
-    {propertyItems.map((item, index) => (
-      <Fragment key={item.id}>
+    {propertyItems.map(({ id, label, name, icon: Icon }, index) => (
+      <Fragment key={id}>
         <ListItem className={classes.listItem}>
-          <PropertyIcon type={item.type} />
-          <ListItemText primary={item.label} secondary={item.name} />
+          <Icon />
+          <ListItemText primary={label} secondary={name} />
           <ListItemSecondaryAction>
             {unusedList ? (
               <IconButton
                 aria-label="History"
                 className={classes.smallIconButton}
-                onClick={() => onRevertUnused(item.id)}
+                onClick={() => onRevertUnused(id)}
               >
                 <HistoryIcon />
               </IconButton>
@@ -56,7 +56,7 @@ const PropertyList = ({
                 <IconButton
                   aria-label="Edit"
                   className={classes.smallIconButton}
-                  onClick={() => onEdit(item)}
+                  onClick={() => onEdit()}
                 >
                   <EditOutlinedIcon />
                 </IconButton>
@@ -64,7 +64,7 @@ const PropertyList = ({
                   aria-label="Delete"
                   color="secondary"
                   className={classes.smallIconButton}
-                  onClick={() => onDelete(item.id)}
+                  onClick={() => onDelete(id)}
                 >
                   <DeleteOutlineIcon />
                 </IconButton>

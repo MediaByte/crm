@@ -126,26 +126,24 @@ class OptionsEditor extends PureComponent {
     } = this.props
 
     return (
-      <div style={{ padding: '20px' }}>
-        <Grid container direction="column" spacing={40}>
-          <Grid item alignContent="flex-end">
-            <Typography align="center">
-              Selected Icon will appear next to the property
-            </Typography>
-          </Grid>
-          <Grid item>
-            <ReorderList
-              reorderItems={options}
-              onSortEnd={onSortEnd}
-              onClickDelete={onClickDelete}
-              checkedCheckboxIndex={checkedCheckboxIndex}
-            />
-            <IconButton onClick={onClickAdd} aria-label="Plus">
-              <AddCircleOutline fontSize="small" color="primary" />
-            </IconButton>
-          </Grid>
+      <Grid container direction="column" spacing={40}>
+        <Grid item alignContent="flex-end">
+          <Typography align="center">
+            Selected Icon will appear next to the property
+          </Typography>
         </Grid>
-      </div>
+        <Grid item>
+          <ReorderList
+            reorderItems={options}
+            onSortEnd={onSortEnd}
+            onClickDelete={onClickDelete}
+            checkedCheckboxIndex={checkedCheckboxIndex}
+          />
+          <IconButton onClick={onClickAdd} aria-label="Plus">
+            <AddCircleOutline fontSize="small" color="primary" />
+          </IconButton>
+        </Grid>
+      </Grid>
     )
   }
 }
