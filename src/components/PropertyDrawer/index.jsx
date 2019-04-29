@@ -17,8 +17,8 @@ import PcDrawer from '../PcDrawer'
 import PropertyList from './PropertyList'
 import PropForm from '../PropForm'
 import AddPropertyDialog from 'components/SimpleDialog'
-import OptionsEditor from 'components/OptionsEditor'
-// import PropDefEditor from '../PropDefEditor'
+// import OptionsEditor from 'components/OptionsEditor'
+import PropDefEditor from '../PropDefEditor'
 
 const styles = theme => ({
   main: {
@@ -176,8 +176,8 @@ class PropertyDrawer extends Component {
         </AddPropertyDialog>
         <div className={classes.main}>
           {editingProperty ? (
-            // <PropertyEdit editItem={editingProperty} />
-            <OptionsEditor />
+            // <OptionsEditor />
+            <PropDefEditor />
           ) : (
             <div>
               <Tabs
