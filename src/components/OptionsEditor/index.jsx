@@ -1,9 +1,14 @@
 import React, { PureComponent } from 'react'
-import { Grid, Typography, Divider, IconButton } from '@material-ui/core'
+import {
+  Grid,
+  Typography,
+  Divider,
+  IconButton,
+  Radio,
+  Checkbox,
+} from '@material-ui/core'
 import {
   RemoveCircleOutline,
-  RadioButtonChecked,
-  RadioButtonUnchecked,
   Reorder,
   AddCircleOutline,
 } from '@material-ui/icons'
@@ -30,7 +35,13 @@ const styles = {
   },
 }
 
-const ReorderItem = ({ displayValue, onClickDelete, checked, devider }) => (
+const ReorderItem = ({
+  displayValue,
+  onClickDelete,
+  checked,
+  devider,
+  showCheckboxes,
+}) => (
   <div style={styles.itemRoot}>
     <Grid
       style={styles.item}
@@ -40,13 +51,21 @@ const ReorderItem = ({ displayValue, onClickDelete, checked, devider }) => (
     >
       <Grid item>
         <Grid container alignItems="center">
-          <IconButton onClick={() => {}}>
-            {checked ? (
-              <RadioButtonChecked color="primary" />
-            ) : (
-              <RadioButtonUnchecked />
-            )}
-          </IconButton>
+          {showCheckboxes ? (
+            <Checkbox
+              checked={checked}
+              onChange={() => {}}
+              value={displayValue}
+              color="primary"
+            />
+          ) : (
+            <Radio
+              color="primary"
+              checked={checked}
+              onChange={() => {}}
+              value={displayValue}
+            />
+          )}
           <Typography>{displayValue}</Typography>
         </Grid>
       </Grid>
@@ -72,12 +91,14 @@ const ReorderList = ({
   onSortEnd,
   onClickDelete,
   checkedCheckboxIndex,
+  showCheckboxes,
 }) => (
   <SortableList onSortEnd={onSortEnd} useDragHandle>
     {reorderItems.map(({ displayValue }, index) => (
       <SortableItem
         onClickDelete={onClickDelete}
         checked={checkedCheckboxIndex === index}
+        showCheckboxes={showCheckboxes}
         key={displayValue}
         index={index}
         displayValue={displayValue}
@@ -122,7 +143,7 @@ class OptionsEditor extends PureComponent {
       onClickDelete,
       onSortEnd,
       // onClickSave,
-      // showCheckboxes
+      showCheckboxes,
     } = this.props
 
     return (
@@ -138,6 +159,7 @@ class OptionsEditor extends PureComponent {
             onSortEnd={onSortEnd}
             onClickDelete={onClickDelete}
             checkedCheckboxIndex={checkedCheckboxIndex}
+            showCheckboxes={showCheckboxes}
           />
           <IconButton onClick={onClickAdd} aria-label="Plus">
             <AddCircleOutline fontSize="small" color="primary" />
