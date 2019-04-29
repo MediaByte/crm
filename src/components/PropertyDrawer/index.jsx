@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline'
 import NavigateBack from '@material-ui/icons/ChevronLeft'
 import CompareArrowsIcon from '@material-ui/icons/CompareArrows'
 import {
@@ -10,16 +11,14 @@ import {
   Tooltip,
   Button,
 } from '@material-ui/core'
-import { arrayMove } from '../../common/utils'
 
 import ReorderList from '../PropDefsOverview/ReorderList'
 import PcDrawer from '../PcDrawer'
 import PropertyList from './PropertyList'
-import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline'
-import PropertyEdit from '../PropertyEdit'
 import PropForm from '../PropForm'
 import AddPropertyDialog from 'components/SimpleDialog'
 import OptionsEditor from 'components/OptionsEditor'
+// import PropDefEditor from '../PropDefEditor'
 
 const styles = theme => ({
   main: {
@@ -42,7 +41,7 @@ const styles = theme => ({
 class PropertyDrawer extends Component {
   state = {
     tab: 0,
-    editingItem: null,
+    editingProperty: 'id',
     isReordering: false,
     reorderedItems: [],
     isAddPropertyDialogOpen: false,
@@ -53,7 +52,7 @@ class PropertyDrawer extends Component {
   }
 
   handleEdit = item => {
-    this.setState({ editingItem: item })
+    this.setState({ editingProperty: item })
   }
 
   handleDelete = id => {
@@ -98,31 +97,31 @@ class PropertyDrawer extends Component {
   }
 
   finishEdit = () => {
-    this.setState({ editingItem: null })
+    this.setState({ editingProperty: null })
   }
 
   handleCancel = () => {
-    const { isReordering, editingItem } = this.state
+    const { isReordering, editingProperty } = this.state
 
     if (isReordering) return this.finishReorder()
-    if (editingItem) return this.finishEdit()
+    if (editingProperty) return this.finishEdit()
   }
 
   handleEditSave = () => {}
 
   handleSave = () => {
-    const { isReordering, editingItem } = this.state
+    const { isReordering, editingProperty } = this.state
 
     if (isReordering) return this.handleReorderSave()
-    if (editingItem) return this.handleEditSave()
+    if (editingProperty) return this.handleEditSave()
   }
 
   renderTitle = () => {
-    const { isReordering, editingItem } = this.state
+    const { isReordering, editingProperty } = this.state
 
-    if (!isReordering && !editingItem) {
-      return 'Property Drawer'
-    } else if (editingItem) {
+    if (!isReordering && !editingProperty) {
+      return 'People'
+    } else if (editingProperty) {
       return 'Edit Property'
     }
   }
@@ -133,7 +132,7 @@ class PropertyDrawer extends Component {
       tab,
       isReordering,
       reorderedItems,
-      editingItem,
+      editingProperty,
       isAddPropertyDialogOpen,
     } = this.state
     const usedPropertyItems = this.props.propertyItems.filter(p => !p.unused)
@@ -142,8 +141,24 @@ class PropertyDrawer extends Component {
     return (
       <PcDrawer
         open={open}
+        leftAction={
+          isReordering || editingProperty ? (
+            <Button className={classes.menuButton} onClick={this.handleCancel}>
+              Cancel
+            </Button>
+          ) : (
+            <IconButton
+              onClick={handleClose}
+              className={classes.menuButton}
+              aria-label="ChevronLeft"
+              disableRipple
+            >
+              <NavigateBack />
+            </IconButton>
+          )
+        }
         rightAction={
-          (isReordering || editingItem) && (
+          (isReordering || editingProperty) && (
             <Button className={classes.menuButton} onClick={this.handleSave}>
               Save
             </Button>
@@ -160,8 +175,8 @@ class PropertyDrawer extends Component {
           <PropForm availableTypes={[]} />
         </AddPropertyDialog>
         <div className={classes.main}>
-          {editingItem ? (
-            // <PropertyEdit editItem={editingItem} />
+          {editingProperty ? (
+            // <PropertyEdit editItem={editingProperty} />
             <OptionsEditor />
           ) : (
             <div>
