@@ -6,6 +6,8 @@ import {
   IconButton,
   Radio,
   Checkbox,
+  TextField,
+  Button,
 } from '@material-ui/core'
 import {
   RemoveCircleOutline,
@@ -109,7 +111,7 @@ const ReorderList = ({
 )
 
 const optionsEditorSamplePropsA = {
-  addingOption: false,
+  addingOption: true,
   checkedCheckboxIndex: 1,
   currentValueForAddingOption: '',
   options: [
@@ -134,11 +136,11 @@ const optionsEditorSamplePropsA = {
 class OptionsEditor extends PureComponent {
   render() {
     const {
-      // addingOption,
+      addingOption,
       checkedCheckboxIndex,
-      // currentValueForAddingOption,
+      currentValueForAddingOption,
       options,
-      // onChangeAddingOptionText,
+      onChangeAddingOptionText,
       onClickAdd,
       onClickDelete,
       onSortEnd,
@@ -162,9 +164,26 @@ class OptionsEditor extends PureComponent {
               checkedCheckboxIndex={checkedCheckboxIndex}
               showCheckboxes={showCheckboxes}
             />
-            <IconButton onClick={onClickAdd} aria-label="Plus">
-              <AddCircleOutline fontSize="small" color="primary" />
-            </IconButton>
+            {addingOption ? (
+              <Grid container alignItems="center">
+                <Grid item style={{ flex: 1 }}>
+                  <TextField
+                    id="name"
+                    fullWidth
+                    value={currentValueForAddingOption}
+                    onChange={onChangeAddingOptionText}
+                    margin="normal"
+                  />
+                </Grid>
+                <Grid item>
+                  <Button color="primary">Save</Button>
+                </Grid>
+              </Grid>
+            ) : (
+              <IconButton onClick={onClickAdd} aria-label="Plus">
+                <AddCircleOutline fontSize="small" color="primary" />
+              </IconButton>
+            )}
           </Grid>
         </Grid>
       </div>
