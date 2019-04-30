@@ -48,14 +48,15 @@ export interface PropDefArgument extends Soulful {
 export interface PropertyDefinition extends Soulful {
   arguments: Record<string, PropDefArgument>
   helpText: string
-  iconName: string | null
+  iconName: string
   name: string
   propType: PropertyType
+  unused: boolean
 }
 
 export interface Node {
   name: string
-  iconName: string | null
+  iconName: string
   label: string
   propDefs: Record<string, PropertyDefinition>
 }

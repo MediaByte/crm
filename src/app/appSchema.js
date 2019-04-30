@@ -1,18 +1,9 @@
-import startCase from 'lodash/startCase'
-import lowerCase from 'lodash/lowerCase'
 import upperCase from 'lodash/upperCase'
 
 import * as BuiltIn from './gun-wrapper/BuiltIn'
 import * as Utils from './gun-wrapper/Utils'
 
 const FreeValue = BuiltIn.FreeValue
-
-/**
- *
- * @param {string} str
- * @returns {string}
- */
-const toTitleCase = str => startCase(lowerCase(str))
 
 /**
  * @param {string} str
@@ -194,14 +185,6 @@ const PropDefArgument = {
  */
 const PropDef = {
   [Utils.SCHEMA_NAME]: 'PropDef',
-  name: {
-    type: 'string',
-    async onChange() {},
-  },
-  propType: {
-    type: PropType,
-    async onChange() {},
-  },
   arguments: {
     type: [PropDefArgument],
     async onChange() {},
@@ -212,6 +195,18 @@ const PropDef = {
   },
   iconName: {
     type: 'string',
+    async onChange() {},
+  },
+  label: {
+    type: 'string',
+    async onChange() {},
+  },
+  name: {
+    type: 'string',
+    async onChange() {},
+  },
+  propType: {
+    type: PropType,
     async onChange() {},
   },
 }
@@ -325,8 +320,6 @@ const Node = {
   label: {
     type: 'string',
     async onChange(_, nextVal) {
-      const maxLen = 155
-
       if (nextVal == null) {
         return ['Must be provided']
       }
