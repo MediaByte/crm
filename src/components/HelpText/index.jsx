@@ -13,7 +13,7 @@ import {
 
 const styles = {
   padding20: {
-    padding: '20px',
+    padding: '15px',
   },
   listItem: {
     background: '#fff',
