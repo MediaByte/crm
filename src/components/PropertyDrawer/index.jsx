@@ -12,7 +12,7 @@ import {
 } from '@material-ui/core'
 import { arrayMove } from '../../common/utils'
 
-import ReorderList from './ReorderList'
+import ReorderList from '../PropDefsOverview/ReorderList'
 import PcDrawer from '../PcDrawer'
 import PropertyList from './PropertyList'
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline'
@@ -141,22 +141,6 @@ class PropertyDrawer extends Component {
     return (
       <PcDrawer
         open={open}
-        leftAction={
-          isReordering || editingItem ? (
-            <Button className={classes.menuButton} onClick={this.handleCancel}>
-              Cancel
-            </Button>
-          ) : (
-            <IconButton
-              onClick={handleClose}
-              className={classes.menuButton}
-              aria-label="ChevronLeft"
-              disableRipple
-            >
-              <NavigateBack />
-            </IconButton>
-          )
-        }
         rightAction={
           (isReordering || editingItem) && (
             <Button className={classes.menuButton} onClick={this.handleSave}>

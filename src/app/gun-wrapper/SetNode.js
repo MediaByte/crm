@@ -25,10 +25,6 @@ export {} // stop jsdoc comments from merging
 
 export {} // stop jsdoc comments from merging
 
-/**
- * @template T
- * In charge of creating and storing new nodes.
- */
 export default class SetNode {
   /**
    * @param {Schema} itemSchema
