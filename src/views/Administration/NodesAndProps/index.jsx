@@ -32,6 +32,8 @@ import { typeToReadableName } from 'common/PropTypeToMetadata'
 
 import { nodes as nodesNode, propTypes as propTypesNode } from 'app'
 
+import * as Utils from 'common/utils'
+
 import {
   Node as NodeValidator,
   PropDef as PropDefValidator,
@@ -241,6 +243,13 @@ class NodesAndProps extends React.Component {
     let err
 
     nextNameValue = toUpper(nextNameValue)
+
+    const chars = nextNameValue.split('')
+
+    // only allow A-Z
+    if (!chars.every(Utils.isAZUpper)) {
+      return
+    }
 
     try {
       NodeValidator.isValidName(nextNameValue)
