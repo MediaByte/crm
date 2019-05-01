@@ -779,29 +779,6 @@ class NodesAndProps extends React.Component {
       addNodeFormData.currentNameErrorMessage === null &&
       addNodeFormData.currentNameValue.length > 0
 
-    console.log(
-      `addNodeFormData.currentLabelValue.length > 0   :  ${addNodeFormData
-        .currentLabelValue.length > 0}`,
-    )
-    console.log(
-      `addNodeFormData.currentNameErrorMessage === null   :  ${addNodeFormData.currentNameErrorMessage ===
-        null}`,
-    )
-    console.log(
-      `addNodeFormData.currentNameValue.length > 0   :  ${addNodeFormData
-        .currentNameValue.length > 0}`,
-    )
-    console.log(
-      `addNodeFlow.currentlySelectedIconName !== null  :  ${addNodeFlow.currentlySelectedIconName !==
-        null}`,
-    )
-    console.log(
-      `addNodeFormData.currentLabelErrorMessage === null: ${addNodeFormData.currentLabelErrorMessage ===
-        null}`,
-    )
-
-    console.log(`validAddNodeFormData: ${validAddNodeFormData}`)
-
     const selectedNode =
       typeof selectedNodeID === 'string' && nodes[selectedNodeID]
 
