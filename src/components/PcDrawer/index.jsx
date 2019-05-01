@@ -49,7 +49,11 @@ const PcDrawer = ({
               {leftAction && leftAction}
             </Grid>
             <Grid item xs={6}>
-              <Typography align="center" className={classes.title} variant="h3">
+              <Typography
+                align="center"
+                className={classes.title}
+                variant="title"
+              >
                 {title}
               </Typography>
             </Grid>

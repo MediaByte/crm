@@ -42,7 +42,7 @@ import Logo from 'assets/img/crmLogo.png'
 import navStyles from 'components/Navigation/navStyle.js'
 
 import { nameToIconMap } from 'common/NameToIcon'
-import { ArrowBack, Clear } from '@material-ui/icons'
+import { ArrowBack, Clear, ChevronLeft } from '@material-ui/icons'
 import { InputAdornment, Dialog, CircularProgress } from '@material-ui/core'
 
 const DASHBOARD = 0
@@ -404,8 +404,8 @@ class Navigation extends React.Component {
                         justify="space-between"
                         alignItems="center"
                       >
-                        <IconButton color="inherit" onClick={this.toggleSearch}>
-                          <ArrowBack />
+                        <IconButton onClick={this.toggleSearch}>
+                          <ChevronLeft />
                         </IconButton>
                         <Grid item style={{ flex: 1 }}>
                           <InputBase
@@ -416,13 +416,15 @@ class Navigation extends React.Component {
                             placeholder="Search..."
                             inputRef={this.mobileSearchInputRef}
                             endAdornment={
-                              !!searchBoxCurrentText.length && (
-                                <InputAdornment position="start">
+                              <InputAdornment position="start">
+                                {searchBoxCurrentText.length ? (
                                   <IconButton onClick={this.clearSearch}>
                                     <Clear />
                                   </IconButton>
-                                </InputAdornment>
-                              )
+                                ) : (
+                                  <SearchIcon color="disabled" />
+                                )}
+                              </InputAdornment>
                             }
                           />
                         </Grid>
@@ -465,17 +467,16 @@ class Navigation extends React.Component {
                   )}
                 </Dialog>
 
-                <IconButton color="inherit" onClick={this.toggleSearch}>
+                <IconButton onClick={this.toggleSearch}>
                   <SearchIcon />
                 </IconButton>
               </Hidden>
 
               <Hidden smDown>
-                <IconButton color="inherit" className={classes.iconHeader}>
+                <IconButton className={classes.iconHeader}>
                   <CalendarTodayOutlined />
                 </IconButton>
                 <IconButton
-                  color="inherit"
                   className={classes.iconHeader}
                   onClick={this.toggleNotifications}
                 >
