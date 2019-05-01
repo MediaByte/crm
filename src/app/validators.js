@@ -47,5 +47,13 @@ export const PropDef = {
    * @throws {TypeError} Check the error's message for relevant information
    * @returns {void}
    */
-  isValidLabel: label => {},
+  isValidLabel: label => {
+    if (label.length === 0) {
+      throw new TypeError('Must have a label')
+    }
+
+    if (label.length > 155) {
+      throw new TypeError('Must be shorter than 156 characters long')
+    }
+  },
 }
