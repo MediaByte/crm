@@ -18,26 +18,34 @@ import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline'
 import EditOutlineIcon from '@material-ui/icons/EditOutlined'
 
 import AddNodeForm from 'components/AddNodeForm'
+import AddPropForm from 'components/AddPropForm'
 import Dialog from 'components/SimpleDialog'
 import IconSelector from 'components/IconSelector'
 import Messages from 'components/Messages'
 import OverlaySpinner from 'components/OverlaySpinner'
 import Page from 'views/Page/Page.jsx'
-import PropertyDrawer from 'components/PropertyDrawer'
+import PcDrawer from 'components/PcDrawer'
+import PropDefsOverview from 'components/PropDefsOverview'
 
 import { nameToIconMap } from 'common/NameToIcon'
+import { typeToReadableName } from 'common/PropTypeToMetadata'
 
-import { nodes } from 'app'
+import { nodes as nodesNode, propTypes as propTypesNode } from 'app'
 
-import { Node } from 'app/validators'
+import {
+  Node as NodeValidator,
+  PropDef as PropDefValidator,
+} from 'app/validators'
 /**
+ * @typedef {import('app/gun-wrapper/SetNode').default} SetNode
  * @typedef {import('app/typings').Node} Node
+ * @typedef {import('app/typings').PropertyType} PropType
  */
 
-const availableIcons = Object.values(nameToIconMap).map(
+const AVAILABLE_ICONS = Object.values(nameToIconMap).map(
   iconTriple => iconTriple.filled,
 )
-const availableIconNames = Object.keys(nameToIconMap)
+const AVAILABLE_ICON_NAMES = Object.keys(nameToIconMap)
 
 const BLANK_ADD_NODE_FORM_DATA = Object.freeze({
   currentlySelectedIconName: null,
@@ -54,6 +62,19 @@ const INITIAL_ADD_NODE_FLOW = Object.freeze({
   savingNode: false,
   selectingIcon: false,
   showingAddNodeDialog: false,
+})
+
+/** @type {AddPropFlow} */
+const INITIAL_ADD_PROP_FLOW = Object.freeze({
+  currentlySelectedIconName: null,
+  dialogOpen: false,
+  labelError: null,
+  labelValue: '',
+  nameError: null,
+  nameValue: '',
+  typeValue: '',
+  saving: false,
+  selectingIcon: false,
 })
 
 /**
@@ -121,6 +142,19 @@ const styles = theme => ({
  */
 
 /**
+ * @typedef {object} AddPropFlow
+ * @prop {string|null} currentlySelectedIconName
+ * @prop {boolean} dialogOpen
+ * @prop {string|null} labelError
+ * @prop {string} labelValue
+ * @prop {string|null} nameError
+ * @prop {string} nameValue
+ * @prop {string} typeValue
+ * @prop {boolean} saving
+ * @prop {boolean} selectingIcon
+ */
+
+/**
  * @typedef {object} AddNodeFormData
  * @prop {string|null} currentLabelErrorMessage
  * @prop {string} currentLabelValue
@@ -133,14 +167,15 @@ const styles = theme => ({
 /**
  * @typedef {object} State
  * @prop {AddNodeFlow} addNodeFlow
+ * @prop {AddPropFlow} addPropFlow
  * @prop {AddNodeFormData} addNodeFormData
  * @prop {string|null} deactivatingNodeID
  * @prop {string|null} editingNodeID Non-null when editing a node's icon or
  * label.
  * @prop {Record<string, Node>} nodes
+ * @prop {Record<string, PropType>} propTypes
  * @prop {string|null} selectedNodeID Non-null when editing a node's property
  * definitions or relationships definitions.
- *
  * @prop {boolean} showingAddRelDialog
  * @prop {boolean} showingPropDialog
  * @prop {string|null} snackbarMessage
@@ -158,10 +193,12 @@ class NodesAndProps extends React.Component {
       selectingIcon: false,
       showingAddNodeDialog: false,
     },
+    addPropFlow: INITIAL_ADD_PROP_FLOW,
     addNodeFormData: BLANK_ADD_NODE_FORM_DATA,
     deactivatingNodeID: null,
     editingNodeID: null,
     nodes: {},
+    propTypes: {},
     selectedNodeID: null,
     showingAddRelDialog: false,
     showingPropDialog: false,
@@ -179,7 +216,7 @@ class NodesAndProps extends React.Component {
     let err
 
     try {
-      Node.isValidLabel(nextLabelValue)
+      NodeValidator.isValidLabel(nextLabelValue)
     } catch (e) {
       err = e.message
     }
@@ -206,7 +243,7 @@ class NodesAndProps extends React.Component {
     nextNameValue = toUpper(nextNameValue)
 
     try {
-      Node.isValidName(nextNameValue)
+      NodeValidator.isValidName(nextNameValue)
     } catch (e) {
       err = e.message
     }
@@ -220,16 +257,238 @@ class NodesAndProps extends React.Component {
     }))
   }
 
+  /**
+   * @private
+   * @param {string} nextLabelValue
+   */
+  addPropFormOnLabelChange = nextLabelValue => {
+    this.setState(({ addPropFlow }) => ({
+      addPropFlow: {
+        ...addPropFlow,
+        labelValue: nextLabelValue,
+      },
+    }))
+  }
+
+  /**
+   * @private
+   * @param {string} nextNameValue
+   */
+  addPropFormOnNameChange = nextNameValue => {
+    /**
+     * @type {string}
+     */
+    let err
+
+    nextNameValue = toUpper(nextNameValue)
+
+    try {
+      PropDefValidator.isValidName(nextNameValue)
+    } catch (e) {
+      err = e.message
+    }
+
+    this.setState(({ addPropFlow }) => ({
+      addPropFlow: {
+        ...addPropFlow,
+        nameError: err || null,
+        nameValue: nextNameValue,
+      },
+    }))
+  }
+
+  /**
+   * @private
+   * @param {string} nextType
+   */
+  addPropFormOnTypeChange = nextType => {
+    this.setState(({ addPropFlow }) => ({
+      addPropFlow: {
+        ...addPropFlow,
+        typeValue: nextType,
+      },
+    }))
+  }
+
+  addPropFlowOnClickAction = () => {
+    this.setState(
+      ({ addPropFlow }) => {
+        if (addPropFlow.saving) {
+          console.assert('shouldnt be reachable')
+          return null
+        }
+
+        if (addPropFlow.selectingIcon) {
+          return {
+            addPropFlow: {
+              ...addPropFlow,
+              selectingIcon: false,
+              saving: true,
+            },
+          }
+        } else {
+          return {
+            addPropFlow: {
+              ...addPropFlow,
+              selectingIcon: true,
+            },
+          }
+        }
+      },
+      () => {
+        if (this.state.addPropFlow.saving) {
+          this.addPropFlowHandleSave()
+        }
+      },
+    )
+  }
+
+  addPropFlowHandleSave = () => {
+    // this method is supposed to be called in a setState callback
+    // to ensure we are looking at updated state
+    const { addPropFlow, selectedNodeID } = this.state
+
+    if (!addPropFlow.saving) {
+      console.warn(
+        'addPropFlowHandleSave called without state.addPropflow.saving being true, aborting',
+      )
+      return
+    }
+
+    const propTypeNode = (() => {
+      let key
+
+      for (const [propTypeKey, propType] of Object.entries(
+        propTypesNode.currentData,
+      )) {
+        if (propType.name === addPropFlow.typeValue) {
+          key = propTypeKey
+          break
+        }
+      }
+
+      if (typeof key === 'undefined') {
+        console.error('expected key to be defined')
+      }
+
+      // CAST: Guaranteed tp be defined since the add prop flow takes the nanes
+      // of the props from the prop types node.
+      return propTypesNode.get(/** @type {string} */ (key))
+    })()
+
+    /**
+     * @type {SetNode}
+     */
+    const propDefs = nodesNode
+      .get(/** @type {string} */ (selectedNodeID))
+      .get('propDefs')
+
+    propDefs
+      .set({
+        helpText: null,
+        iconName: addPropFlow.currentlySelectedIconName,
+        label: addPropFlow.labelValue,
+        name: addPropFlow.nameValue,
+        propType: propTypeNode,
+      })
+      .then(res => {
+        if (res.ok) {
+          this.setState({
+            addPropFlow: INITIAL_ADD_PROP_FLOW,
+            snackbarMessage: 'Property added correctly',
+          })
+        } else {
+          Object.entries(res.details).forEach(([key, detail]) => {
+            if (detail.length === 0) {
+              console.warn('unexpectedly received detail of length 0')
+              return
+            }
+
+            const [msg] = detail
+
+            if (key === 'label') {
+              this.setState(({ addPropFlow }) => ({
+                addPropFlow: {
+                  ...addPropFlow,
+                  labelError: msg,
+                  saving: false,
+                },
+              }))
+            } else if (key === 'name') {
+              this.setState(({ addPropFlow }) => ({
+                addPropFlow: {
+                  ...addPropFlow,
+                  nameError: msg,
+                  saving: false,
+                },
+              }))
+            } else {
+              console.warn(
+                `received unexpected key in details of response: ${key}`,
+              )
+            }
+          })
+        }
+      })
+      .catch(e => {
+        /** @type {string} */
+        const msg = typeof e === 'string' ? e : e.message
+
+        this.setState(({ addNodeFormData }) => ({
+          addNodeFormData: {
+            ...addNodeFormData,
+            messagesIfError: [msg],
+          },
+        }))
+      })
+  }
+
+  /**
+   * @private
+   * @param {number} i
+   */
+  addPropFlowOnClickIcon = i => {
+    this.setState(({ addPropFlow }) => {
+      const name = AVAILABLE_ICON_NAMES[i]
+
+      if (name === addPropFlow.currentlySelectedIconName) {
+        return {
+          addPropFlow: {
+            ...addPropFlow,
+            currentlySelectedIconName: null,
+          },
+        }
+      }
+
+      return {
+        addPropFlow: {
+          ...addPropFlow,
+          currentlySelectedIconName: name,
+        },
+      }
+    })
+  }
+
   componentDidMount() {
-    nodes.on(this.onUpdate)
+    nodesNode.on(this.onNodesUpdate)
+    propTypesNode.on(this.onPropTypesUpdate)
   }
 
   /**
    * @param {Record<string, Node>} nodes
    */
-  onUpdate = nodes => {
+  onNodesUpdate = nodes => {
     this.setState({
       nodes,
+    })
+  }
+
+  /**
+   * @param {Record<string, PropType>} propTypes
+   */
+  onPropTypesUpdate = propTypes => {
+    this.setState({
+      propTypes,
     })
   }
 
@@ -241,7 +500,8 @@ class NodesAndProps extends React.Component {
 
   /** @private */
   componentWillUnmount() {
-    nodes.off(this.onUpdate)
+    nodesNode.off(this.onNodesUpdate)
+    propTypesNode.off(this.onPropTypesUpdate)
   }
 
   /** @private */
@@ -354,7 +614,7 @@ class NodesAndProps extends React.Component {
       () => {
         const { addNodeFlow, addNodeFormData } = this.state
 
-        nodes
+        nodesNode
           .set({
             iconName: addNodeFlow.currentlySelectedIconName,
             label: addNodeFormData.currentLabelValue,
@@ -451,7 +711,7 @@ class NodesAndProps extends React.Component {
    */
   addNodeOnClickIcon = i => {
     this.setState(({ addNodeFlow }) => {
-      const name = availableIconNames[i]
+      const name = AVAILABLE_ICON_NAMES[i]
 
       if (name === addNodeFlow.currentlySelectedIconName) {
         return {
@@ -478,14 +738,37 @@ class NodesAndProps extends React.Component {
     })
   }
 
+  unselectNode = () => {
+    this.setState({
+      selectedNodeID: null,
+    })
+  }
+
+  toggleAddPropDialog = () => {
+    this.setState(({ addPropFlow }) => {
+      if (addPropFlow.saving) {
+        return null
+      }
+
+      return {
+        addPropFlow: {
+          ...INITIAL_ADD_PROP_FLOW,
+          dialogOpen: !addPropFlow.dialogOpen,
+        },
+      }
+    })
+  }
+
   render() {
     const { classes } = this.props
     const {
       addNodeFlow,
+      addPropFlow,
       addNodeFormData,
       editingNodeID,
       deactivatingNodeID,
       nodes,
+      propTypes,
       selectedNodeID,
       snackbarMessage,
     } = this.state
@@ -495,16 +778,42 @@ class NodesAndProps extends React.Component {
       addNodeFormData.currentLabelValue.length > 0 &&
       addNodeFormData.currentNameErrorMessage === null &&
       addNodeFormData.currentNameValue.length > 0
-    addNodeFlow.currentlySelectedIconName !== null
+
+    console.log(
+      `addNodeFormData.currentLabelValue.length > 0   :  ${addNodeFormData
+        .currentLabelValue.length > 0}`,
+    )
+    console.log(
+      `addNodeFormData.currentNameErrorMessage === null   :  ${addNodeFormData.currentNameErrorMessage ===
+        null}`,
+    )
+    console.log(
+      `addNodeFormData.currentNameValue.length > 0   :  ${addNodeFormData
+        .currentNameValue.length > 0}`,
+    )
+    console.log(
+      `addNodeFlow.currentlySelectedIconName !== null  :  ${addNodeFlow.currentlySelectedIconName !==
+        null}`,
+    )
+    console.log(
+      `addNodeFormData.currentLabelErrorMessage === null: ${addNodeFormData.currentLabelErrorMessage ===
+        null}`,
+    )
+
+    console.log(`validAddNodeFormData: ${validAddNodeFormData}`)
 
     const selectedNode =
-      typeof selectedNodeID === 'string' &&
-      Object.entries(nodes).filter(([id]) => id === selectedNodeID)[0][1]
+      typeof selectedNodeID === 'string' && nodes[selectedNodeID]
 
-    const selectedIconIdx =
+    const addNodeSelectedIconIdx =
       addNodeFlow.currentlySelectedIconName === null
         ? null
-        : availableIconNames.indexOf(addNodeFlow.currentlySelectedIconName)
+        : AVAILABLE_ICON_NAMES.indexOf(addNodeFlow.currentlySelectedIconName)
+
+    const addPropFlowSelectedIconIdx =
+      addPropFlow.currentlySelectedIconName === null
+        ? null
+        : AVAILABLE_ICON_NAMES.indexOf(addPropFlow.currentlySelectedIconName)
 
     return (
       <React.Fragment>
@@ -518,13 +827,82 @@ class NodesAndProps extends React.Component {
               key="close"
               aria-label="Close"
               color="inherit"
-              className={classes.close}
-              onClick={this.handleClose}
+              onClick={this.closeSnackbar}
             >
               <CloseIcon />
             </IconButton>,
           ]}
         />
+
+        {selectedNode && (
+          <PcDrawer
+            leftButtonOnClick={this.unselectNode}
+            title={selectedNode.label}
+            open
+          >
+            {/* TODO: Replace with new dialog */}
+            <Dialog
+              actionButtonText={addPropFlow.selectingIcon ? 'Save' : 'Next'}
+              disableActionButton={
+                addPropFlow.saving ||
+                (addPropFlow.currentlySelectedIconName === null &&
+                  addPropFlow.selectingIcon) ||
+                !!addPropFlow.labelError ||
+                !!addPropFlow.nameError ||
+                addPropFlow.labelValue.length === 0 ||
+                addPropFlow.nameValue.length === 0 ||
+                addPropFlow.typeValue === ''
+              }
+              disableCancelButton={addPropFlow.saving}
+              handleClose={this.toggleAddPropDialog}
+              handleAction={this.addPropFlowOnClickAction}
+              open={addPropFlow.dialogOpen}
+              title={`Add a Property to Node ${selectedNode.label}`}
+            >
+              <OverlaySpinner showSpinner={addPropFlow.saving}>
+                {addPropFlow.selectingIcon ? (
+                  <IconSelector
+                    icons={AVAILABLE_ICONS}
+                    onClickIcon={this.addPropFlowOnClickIcon}
+                    selectedIconIdx={addPropFlowSelectedIconIdx}
+                  />
+                ) : (
+                  <AddPropForm
+                    availableTypes={Object.values(propTypes).map(pt => pt.name)}
+                    disableLabelInput={addPropFlow.saving}
+                    disableNameInput={addPropFlow.saving}
+                    disableTypeSelection={addPropFlow.saving}
+                    labelValue={addPropFlow.labelValue}
+                    labelErrorMessage={addPropFlow.labelError}
+                    nameErrorMessage={addPropFlow.nameError}
+                    nameValue={addPropFlow.nameValue}
+                    typeValue={addPropFlow.typeValue}
+                    onLabelChange={this.addPropFormOnLabelChange}
+                    onNameChange={this.addPropFormOnNameChange}
+                    onTypeChange={this.addPropFormOnTypeChange}
+                  />
+                )}
+              </OverlaySpinner>
+            </Dialog>
+
+            <PropDefsOverview
+              onClickAdd={this.toggleAddPropDialog}
+              propDefs={Object.entries(selectedNode.propDefs).map(
+                ([id, propDef]) => ({
+                  id,
+                  icon: nameToIconMap[propDef.iconName]
+                    ? nameToIconMap[propDef.iconName].filled
+                    : null,
+                  name: propDef.name,
+                  typeName:
+                    typeToReadableName[propDef.propType.name] ||
+                    propDef.propType.name,
+                  unused: propDef.unused,
+                }),
+              )}
+            />
+          </PcDrawer>
+        )}
 
         <Dialog
           actionButtonText={addNodeFlow.selectingIcon ? 'Save' : 'Next'}
@@ -534,6 +912,7 @@ class NodesAndProps extends React.Component {
             (addNodeFlow.currentlySelectedIconName === null &&
               addNodeFlow.selectingIcon)
           }
+          disableCancelButton={addNodeFlow.savingNode}
           handleAction={this.handleAddNodeAction}
           handleClose={this.closeAddNodeDialog}
           open={addNodeFlow.showingAddNodeDialog}
@@ -546,9 +925,9 @@ class NodesAndProps extends React.Component {
           <OverlaySpinner showSpinner={addNodeFlow.savingNode}>
             {addNodeFlow.selectingIcon ? (
               <IconSelector
-                icons={availableIcons}
+                icons={AVAILABLE_ICONS}
                 onClickIcon={this.addNodeOnClickIcon}
-                selectedIconIdx={selectedIconIdx}
+                selectedIconIdx={addNodeSelectedIconIdx}
               />
             ) : (
               <React.Fragment>
@@ -585,21 +964,6 @@ class NodesAndProps extends React.Component {
 
         <Page titleText="Nodes And Properties">
           <Grid container className={classes.root}>
-            {selectedNode && (
-              <PropertyDrawer
-                open
-                propertyItems={Object.entries(selectedNode.propDefs).map(
-                  ([id, propDef]) => ({
-                    ...propDef,
-                    _: {
-                      '#': id,
-                    },
-                  }),
-                )}
-                handleClose={this.handleClosePropsDrawer}
-              />
-            )}
-
             {Object.entries(nodes).map(([id, node]) => (
               <Grid
                 className={classes.pointerCursor}
