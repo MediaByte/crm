@@ -28,7 +28,7 @@ const styles = {
  */
 const nameFieldInputProps = {
   endAdornment: (
-    <Tooltip title="Lorem Ipsum Dolor">
+    <Tooltip title="Node name is a machine readable name that will be used for records, exporting, etc...">
       <InputAdornment position="end">
         <ErrorOutline color="primary" />
       </InputAdornment>
@@ -41,7 +41,7 @@ const nameFieldInputProps = {
  */
 const labelFieldInputProps = {
   endAdornment: (
-    <Tooltip title="The label is LOREM IPSUM DOLOR">
+    <Tooltip title="Labels are free form and display in the sidebar for navigation and the header of the node">
       <InputAdornment position="end">
         <ErrorOutline color="primary" />
       </InputAdornment>
