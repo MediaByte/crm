@@ -111,7 +111,9 @@ class AddNodeForm extends React.PureComponent {
           disabled={disableNameInput}
           InputProps={nameFieldInputProps}
           fullWidth
-          helperText={currentNameErrorMessage}
+          helperText={
+            currentNameErrorMessage || 'Node Names must be alphanumeric'
+          }
           id="add-node-dialog-name-field" // required for Accessibility
           label="Name"
           name="name"
