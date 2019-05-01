@@ -188,10 +188,6 @@ const navStyles = theme => ({
       height: '100vh',
       overflowX: 'hidden',
     },
-    // flexGrow: 1,
-    // backgroundColor: theme.palette.background.default,
-    // padding: theme.spacing.unit * 3,
-    // minWidth: 0,
   },
   imgLogo: {
     margin: '0 auto',
@@ -220,16 +216,11 @@ const navStyles = theme => ({
     marginRight: '15px',
     borderRadius: theme.shape.borderRadius,
     backgroundColor: fade('#f6f6f6', 1),
+    marginLeft: theme.spacing.unit,
+    width: 'auto',
+    display: 'block',
     '&:hover': {
       backgroundColor: fade('#eee', 1),
-    },
-    marginLeft: 0,
-    width: '100%',
-    display: 'block',
-    [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing.unit,
-      width: 'auto',
-      display: 'block',
     },
   },
   searchIcon: {
@@ -254,12 +245,9 @@ const navStyles = theme => ({
     paddingBottom: theme.spacing.unit,
     paddingLeft: theme.spacing.unit * 10,
     transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      width: 120,
-      '&:focus': {
-        width: 200,
-      },
+    width: 120,
+    '&:focus': {
+      width: 200,
     },
   },
   active: {
@@ -276,11 +264,6 @@ const navStyles = theme => ({
   bottom: {
     display: 'flex',
     width: '100%',
-    // minHeight: '100vh',
-    // flexDirection: 'column',
-    // [theme.breakpoints.up('sm')]: {
-    //   display: 'none',
-    // },
     borderTop: '1px solid #eee',
     position: 'fixed',
     bottom: '0',
