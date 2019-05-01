@@ -893,11 +893,7 @@ class NodesAndProps extends React.Component {
           handleAction={this.handleAddNodeAction}
           handleClose={this.closeAddNodeDialog}
           open={addNodeFlow.showingAddNodeDialog}
-          title={
-            addNodeFlow.selectingIcon
-              ? 'Select an Icon for the Node'
-              : 'Add a Node'
-          }
+          title={addNodeFlow.selectingIcon ? 'Select Icon' : 'AddNode'}
         >
           <OverlaySpinner showSpinner={addNodeFlow.savingNode}>
             {addNodeFlow.selectingIcon ? (
