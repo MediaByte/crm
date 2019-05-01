@@ -22,21 +22,7 @@ export const Node = {
    * @throws {TypeError} Check the error's message for relevant information
    * @returns {void}
    */
-  isValidLabel: label => {
-    const chars = label.split('')
-
-    if (chars.length === 0) {
-      throw new TypeError('Must have a label')
-    }
-
-    const isAlphanumericalWithSpaces = chars.every(
-      char => Utils.isAZ(char) || Utils.isSpace(char) || Utils.isNumber(char),
-    )
-
-    if (!isAlphanumericalWithSpaces) {
-      throw new TypeError('Must be only letters, spaces and numbers')
-    }
-  },
+  isValidLabel: label => {},
 }
 
 export const PropDef = {
@@ -61,19 +47,5 @@ export const PropDef = {
    * @throws {TypeError} Check the error's message for relevant information
    * @returns {void}
    */
-  isValidLabel: label => {
-    const chars = label.split('')
-
-    if (chars.length === 0) {
-      throw new TypeError('Must have a label')
-    }
-
-    const isAlphanumericalWithSpaces = chars.every(
-      char => Utils.isAZ(char) || Utils.isSpace(char) || Utils.isNumber(char),
-    )
-
-    if (!isAlphanumericalWithSpaces) {
-      throw new TypeError('Must be only letters, spaces and numbers')
-    }
-  },
+  isValidLabel: label => {},
 }
