@@ -145,7 +145,7 @@ class AddNodeForm extends React.PureComponent {
  * @type {React.CSSProperties}
  */
 const bodyDialogAddNode = {
-  padding: '25px',
+  padding: '0px',
 }
 /**
  * @type {React.CSSProperties}
