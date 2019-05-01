@@ -24,7 +24,6 @@ import InputBase from '@material-ui/core/InputBase'
 import Hidden from '@material-ui/core/Hidden'
 import Button from '@material-ui/core/Button'
 import withWidth, { isWidthUp, isWidthDown } from '@material-ui/core/withWidth'
-import Backdrop from '@material-ui/core/Backdrop'
 import Paper from '@material-ui/core/Paper'
 import Avatar from '@material-ui/core/Avatar'
 
@@ -99,7 +98,7 @@ class Navigation extends React.Component {
       disableUnderline: true,
       value: 0,
       sidebarOpen: false,
-      searchBoxOpen: isWidthUp('lg', props.width),
+      searchBoxOpen: isWidthUp('md', props.width),
       searchResultsAnchor: null,
       searchBoxFocused: false,
       searchBoxCurrentText: '',
@@ -118,7 +117,7 @@ class Navigation extends React.Component {
 
     if (prevWidth === newWidth) return
 
-    const isBigScreen = isWidthUp('lg', newWidth)
+    const isBigScreen = isWidthUp('md', newWidth)
 
     if (isBigScreen) {
       this.setState({
@@ -133,16 +132,8 @@ class Navigation extends React.Component {
     }
   }
 
-  openSidebar = () => {
-    this.setState({
-      sidebarOpen: true,
-    })
-  }
-
-  closeSidebar = () => {
-    this.setState({
-      sidebarOpen: false,
-    })
+  toggleSidebar = () => {
+    this.setState({ sidebarOpen: !this.state.sidebarOpen })
   }
 
   onFocusSearchBox = () => {
@@ -246,12 +237,12 @@ class Navigation extends React.Component {
       notificationsOpen,
     } = this.state
 
-    const isBigScreen = isWidthUp('lg', width)
+    const isBigScreen = isWidthUp('md', width)
 
     const shouldRenderTitle = isBigScreen || !searchBoxOpen
 
     const shouldRenderMenuButton = (() => {
-      const isBigScreen = isWidthUp('lg', width)
+      const isBigScreen = isWidthUp('md', width)
       const searchBoxClosed = !searchBoxOpen
 
       // will always be rendered on big screens because both search box
@@ -282,7 +273,7 @@ class Navigation extends React.Component {
           </Link>
           <IconButton
             className={classNames(classes.menuButtonMobile)}
-            onClick={this.closeSidebar}
+            onClick={this.toggleSidebar}
             style={{ color: '#fff' }}
           >
             <MenuIcon />
@@ -342,7 +333,7 @@ class Navigation extends React.Component {
                 <IconButton
                   color="inherit"
                   aria-label="Open drawer"
-                  onClick={sidebarOpen ? this.closeSidebar : this.openSidebar}
+                  onClick={this.toggleSidebar}
                   className={classNames(
                     classes.menuButton,
                     sidebarOpen && classes.menuButtonOpened,
@@ -360,7 +351,6 @@ class Navigation extends React.Component {
 
               {searchBoxOpen && (
                 <div>
-                  {!isBigScreen && <Backdrop open={true} />}
                   <div className={classes.itemSearch}>
                     <div className={classes.search}>
                       <div className={classes.searchIcon}>
@@ -369,6 +359,7 @@ class Navigation extends React.Component {
                       <InputBase
                         autoFocus={!isBigScreen}
                         placeholder="Search..."
+                        type="search"
                         inputRef={this.searchBoxRef}
                         classes={{
                           root: classes.inputRoot,
@@ -383,6 +374,7 @@ class Navigation extends React.Component {
 
                     {searchBoxCurrentText && (
                       <Paper
+                        elevation={2}
                         className={classNames(
                           classes.searchResultsHolder,
                           !searchBoxFocused && classes.hidden,
@@ -421,7 +413,7 @@ class Navigation extends React.Component {
                       </Paper>
                     )}
 
-                    <Hidden lgUp>
+                    <Hidden mdUp>
                       <Button
                         color="primary"
                         variant="outlined"
@@ -440,7 +432,7 @@ class Navigation extends React.Component {
                 </IconButton>
               )}
 
-              <Hidden mdDown>
+              <Hidden smDown>
                 <IconButton color="inherit" className={classes.iconHeader}>
                   <CalendarTodayOutlined />
                 </IconButton>
@@ -471,7 +463,7 @@ class Navigation extends React.Component {
             <div style={{ height: '100%' }}>{children}</div>
           </main>
         </Grid>
-        <Hidden lgUp>
+        <Hidden mdUp>
           <BottomNavigation
             value={value}
             onChange={this.handleChange}
