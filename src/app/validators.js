@@ -14,7 +14,7 @@ export const Node = {
     }
 
     if (!chars.every(Utils.isAZUpper)) {
-      throw new TypeError('Must be all-caps')
+      throw new TypeError('Must be all-caps from a to z')
     }
   },
   /**
