@@ -237,33 +237,43 @@ class NodesAndProps extends React.Component {
    * @param {string} nextNameValue
    */
   addNodeFormOnNameChange = nextNameValue => {
-    /**
-     * @type {string}
-     */
-    let err
+    this.setState(({ addNodeFormData, nodes: stateNodes }) => {
+      /**
+       * @type {string}
+       */
+      let err
 
-    nextNameValue = toUpper(nextNameValue)
+      nextNameValue = toUpper(nextNameValue)
 
-    const chars = nextNameValue.split('')
+      const chars = nextNameValue.split('')
 
-    // only allow A-Z
-    if (!chars.every(Utils.isAZUpper)) {
-      return
-    }
+      const nodes = Object.values(stateNodes)
 
-    try {
-      NodeValidator.isValidName(nextNameValue)
-    } catch (e) {
-      err = e.message
-    }
+      // only allow A-Z
+      if (!chars.every(Utils.isAZUpper)) {
+        return null
+      }
 
-    this.setState(({ addNodeFormData }) => ({
-      addNodeFormData: {
-        ...addNodeFormData,
-        currentNameValue: nextNameValue,
-        currentNameErrorMessage: err || null,
-      },
-    }))
+      try {
+        NodeValidator.isValidName(nextNameValue)
+      } catch (e) {
+        err = e.message
+      }
+
+      nodes.forEach(node => {
+        if (node.name === nextNameValue) {
+          err = 'There already exists a node with this name'
+        }
+      })
+
+      return {
+        addNodeFormData: {
+          ...addNodeFormData,
+          currentNameValue: nextNameValue,
+          currentNameErrorMessage: err || null,
+        },
+      }
+    })
   }
 
   /**
