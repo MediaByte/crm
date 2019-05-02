@@ -693,10 +693,7 @@ class NodesAndProps extends React.Component {
               this.setState(({ addNodeFormData }) => ({
                 addNodeFormData: {
                   ...addNodeFormData,
-                  messagesIfError: [
-                    ...(addNodeFormData.messagesIfError || []),
-                    ...newAddNodeFormData.messagesIfError,
-                  ],
+                  ...newAddNodeFormData,
                 },
               }))
             }
