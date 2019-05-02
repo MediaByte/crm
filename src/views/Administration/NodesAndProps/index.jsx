@@ -640,6 +640,7 @@ class NodesAndProps extends React.Component {
             name: addNodeFormData.currentNameValue,
           })
           .then(res => {
+            console.log(res)
             if (res.ok) {
               this.setState({
                 addNodeFlow: INITIAL_ADD_NODE_FLOW,
@@ -685,7 +686,6 @@ class NodesAndProps extends React.Component {
                   this.setState(({ addNodeFlow, addNodeFormData }) => ({
                     addNodeFlow: {
                       ...addNodeFlow,
-                      savingNode: false,
                     },
                     addNodeFormData: {
                       ...addNodeFormData,
@@ -717,6 +717,14 @@ class NodesAndProps extends React.Component {
               addNodeFormData: {
                 ...addNodeFormData,
                 messagesIfError: [msg],
+              },
+            }))
+          })
+          .finally(() => {
+            this.setState(({ addNodeFlow }) => ({
+              addNodeFlow: {
+                ...addNodeFlow,
+                savingNode: false,
               },
             }))
           })
