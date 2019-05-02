@@ -49,6 +49,7 @@ const AVAILABLE_ICONS = Object.values(nameToIconMap).map(
 )
 const AVAILABLE_ICON_NAMES = Object.keys(nameToIconMap)
 
+/** @type {AddNodeFormData} */
 const BLANK_ADD_NODE_FORM_DATA = Object.freeze({
   currentlySelectedIconName: null,
   currentLabelErrorMessage: null,
@@ -59,6 +60,7 @@ const BLANK_ADD_NODE_FORM_DATA = Object.freeze({
   messagesIfError: null,
 })
 
+/** @type {AddNodeFlow} */
 const INITIAL_ADD_NODE_FLOW = Object.freeze({
   currentlySelectedIconName: null,
   savingNode: false,
@@ -640,7 +642,6 @@ class NodesAndProps extends React.Component {
             name: addNodeFormData.currentNameValue,
           })
           .then(res => {
-            console.log(res)
             if (res.ok) {
               this.setState({
                 addNodeFlow: INITIAL_ADD_NODE_FLOW,
@@ -648,6 +649,17 @@ class NodesAndProps extends React.Component {
                 snackbarMessage: 'Node created sucessfully',
               })
             } else {
+              const newAddNodeFormData = {
+                /** @type {string|null} */
+                currentLabelErrorMessage: null,
+                /** @type {string|null} */
+                currentNameErrorMessage: null,
+                /**
+                 * @type {string[]}
+                 */
+                messagesIfError: [],
+              }
+
               Object.entries(res.details).forEach(([key, detail]) => {
                 if (detail.length === 0) {
                   console.warn('unexpectedly received detail of length 0')
@@ -657,41 +669,15 @@ class NodesAndProps extends React.Component {
                 if (key === 'label') {
                   const [msg] = detail
 
-                  this.setState(({ addNodeFlow, addNodeFormData }) => ({
-                    addNodeFlow: {
-                      ...addNodeFlow,
-                      savingNode: false,
-                    },
-                    addNodeFormData: {
-                      ...addNodeFormData,
-                      currentLabelErrorMessage: msg,
-                    },
-                  }))
+                  newAddNodeFormData.currentLabelErrorMessage = msg
                 } else if (key === 'name') {
                   const [msg] = detail
 
-                  this.setState(({ addNodeFlow, addNodeFormData }) => ({
-                    addNodeFlow: {
-                      ...addNodeFlow,
-                      savingNode: false,
-                    },
-                    addNodeFormData: {
-                      ...addNodeFormData,
-                      currentNameErrorMessage: msg,
-                    },
-                  }))
+                  newAddNodeFormData.currentNameErrorMessage = msg
                 } else if (key === 'iconName') {
                   const [msg] = detail
 
-                  this.setState(({ addNodeFlow, addNodeFormData }) => ({
-                    addNodeFlow: {
-                      ...addNodeFlow,
-                    },
-                    addNodeFormData: {
-                      ...addNodeFormData,
-                      messagesIfError: [msg],
-                    },
-                  }))
+                  newAddNodeFormData.messagesIfError.push(msg)
                 } else {
                   console.warn(
                     `received unexpected key in details of response: ${key}`,
@@ -700,13 +686,15 @@ class NodesAndProps extends React.Component {
               })
 
               if (res.messages.length > 0) {
-                this.setState(({ addNodeFormData }) => ({
-                  addNodeFormData: {
-                    ...addNodeFormData,
-                    messagesIfError: res.messages,
-                  },
-                }))
+                newAddNodeFormData.messagesIfError.push(...res.messages)
               }
+
+              this.setState(({ addNodeFormData }) => ({
+                addNodeFormData: {
+                  ...addNodeFormData,
+                  ...newAddNodeFormData,
+                },
+              }))
             }
           })
           .catch(e => {
@@ -932,7 +920,14 @@ class NodesAndProps extends React.Component {
             ) : (
               <React.Fragment>
                 <AddNodeForm
-                  {...addNodeFormData}
+                  currentLabelErrorMessage={
+                    addNodeFormData.currentLabelErrorMessage
+                  }
+                  currentLabelValue={addNodeFormData.currentLabelValue}
+                  currentNameErrorMessage={
+                    addNodeFormData.currentNameErrorMessage
+                  }
+                  currentNameValue={addNodeFormData.currentNameValue}
                   onLabelChange={this.addNodeFormOnLabelChange}
                   onNameChange={this.addNodeFormOnNameChange}
                   disableLabelInput={addNodeFlow.savingNode}

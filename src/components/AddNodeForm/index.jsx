@@ -51,7 +51,7 @@ const labelFieldInputProps = {
 
 /**
  * @typedef {object} Props
- * @prop {(string|undefined)=} currentLabelvalue (Optional)
+ * @prop {(string|undefined)=} currentLabelValue (Optional)
  * @prop {(string|undefined|null)=} currentLabelErrorMessage (Optional)
  * @prop {(string|undefined)=} currentNameValue (Optional)
  * @prop {(string|undefined|null)=} currentNameErrorMessage (Optional)
@@ -90,7 +90,7 @@ class AddNodeForm extends React.PureComponent {
   render() {
     const {
       currentLabelErrorMessage,
-      currentLabelvalue,
+      currentLabelValue,
       currentNameErrorMessage,
       currentNameValue,
       disableLabelInput,
@@ -135,7 +135,7 @@ class AddNodeForm extends React.PureComponent {
           // @ts-ignore
           onChange={this.onLabelChange}
           required
-          value={currentLabelvalue}
+          value={currentLabelValue}
           style={TextFieldMt}
         />
       </Grid>
