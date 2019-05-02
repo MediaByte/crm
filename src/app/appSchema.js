@@ -381,7 +381,22 @@ export const Root = {
   nodes: {
     type: [Node],
     async onChange(self, nextData, key) {
-      console.log(arguments)
+      // @ts-ignore
+      const nodes = Object.entries(self.nodes)
+
+      const errors = []
+
+      for (const [existingNodeKey, node] of nodes) {
+        if (key !== existingNodeKey && node.name === nextData.name) {
+          errors.push('There already exists a node with that name')
+        }
+      }
+
+      if (errors.length) {
+        return errors
+      }
+
+      return false
     },
   },
   propTypes: {
