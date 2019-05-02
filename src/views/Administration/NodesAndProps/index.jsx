@@ -49,6 +49,7 @@ const AVAILABLE_ICONS = Object.values(nameToIconMap).map(
 )
 const AVAILABLE_ICON_NAMES = Object.keys(nameToIconMap)
 
+/** @type {AddNodeFormData} */
 const BLANK_ADD_NODE_FORM_DATA = Object.freeze({
   currentlySelectedIconName: null,
   currentLabelErrorMessage: null,
@@ -59,6 +60,7 @@ const BLANK_ADD_NODE_FORM_DATA = Object.freeze({
   messagesIfError: null,
 })
 
+/** @type {AddNodeFlow} */
 const INITIAL_ADD_NODE_FLOW = Object.freeze({
   currentlySelectedIconName: null,
   savingNode: false,
