@@ -1,4 +1,4 @@
-import upperCase from 'lodash/upperCase'
+import * as Val from './validators'
 
 import * as BuiltIn from './gun-wrapper/BuiltIn'
 import * as Utils from './gun-wrapper/Utils'
@@ -297,17 +297,15 @@ const Node = {
     type: 'string',
     async onChange(_, nextVal) {
       if (nextVal == null) {
-        return ['must be defined']
+        return ['Must have a name']
       }
 
       const errors = []
 
-      if (upperCase(nextVal) !== nextVal) {
-        errors.push('Must be all-caps')
-      }
-
-      if (strHasNumbers(nextVal)) {
-        errors.push('Must not contain numbers')
+      try {
+        Val.Node.isValidName(nextVal)
+      } catch (e) {
+        errors.push(e.message)
       }
 
       if (errors.length) {
@@ -321,11 +319,19 @@ const Node = {
     type: 'string',
     async onChange(_, nextVal) {
       if (nextVal == null) {
-        return ['Must be provided']
+        return ['Must have a label']
       }
 
-      if (nextVal.length > 155) {
-        return ['Must not be longer than 155 characters']
+      const errors = []
+
+      try {
+        Val.Node.isValidLabel(nextVal)
+      } catch (e) {
+        errors.push(e.message)
+      }
+
+      if (errors.length) {
+        return errors
       }
 
       return false
@@ -375,7 +381,22 @@ export const Root = {
   nodes: {
     type: [Node],
     async onChange(self, nextData, key) {
-      console.log(arguments)
+      // @ts-ignore
+      const nodes = Object.entries(self.nodes)
+
+      const errors = []
+
+      for (const [existingNodeKey, node] of nodes) {
+        if (key !== existingNodeKey && node.name === nextData.name) {
+          errors.push('There already exists a node with that name')
+        }
+      }
+
+      if (errors.length) {
+        return errors
+      }
+
+      return false
     },
   },
   propTypes: {

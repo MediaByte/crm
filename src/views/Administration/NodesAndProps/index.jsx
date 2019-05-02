@@ -32,6 +32,8 @@ import { typeToReadableName } from 'common/PropTypeToMetadata'
 
 import { nodes as nodesNode, propTypes as propTypesNode } from 'app'
 
+import * as Utils from 'common/utils'
+
 import {
   Node as NodeValidator,
   PropDef as PropDefValidator,
@@ -235,26 +237,43 @@ class NodesAndProps extends React.Component {
    * @param {string} nextNameValue
    */
   addNodeFormOnNameChange = nextNameValue => {
-    /**
-     * @type {string}
-     */
-    let err
+    this.setState(({ addNodeFormData, nodes: stateNodes }) => {
+      /**
+       * @type {string}
+       */
+      let err
 
-    nextNameValue = toUpper(nextNameValue)
+      nextNameValue = toUpper(nextNameValue)
 
-    try {
-      NodeValidator.isValidName(nextNameValue)
-    } catch (e) {
-      err = e.message
-    }
+      const chars = nextNameValue.split('')
 
-    this.setState(({ addNodeFormData }) => ({
-      addNodeFormData: {
-        ...addNodeFormData,
-        currentNameValue: nextNameValue,
-        currentNameErrorMessage: err || null,
-      },
-    }))
+      const nodes = Object.values(stateNodes)
+
+      // only allow A-Z
+      if (!chars.every(Utils.isAZUpper)) {
+        return null
+      }
+
+      try {
+        NodeValidator.isValidName(nextNameValue)
+      } catch (e) {
+        err = e.message
+      }
+
+      nodes.forEach(node => {
+        if (node.name === nextNameValue) {
+          err = 'There already exists a node with this name'
+        }
+      })
+
+      return {
+        addNodeFormData: {
+          ...addNodeFormData,
+          currentNameValue: nextNameValue,
+          currentNameErrorMessage: err || null,
+        },
+      }
+    })
   }
 
   /**
@@ -621,6 +640,7 @@ class NodesAndProps extends React.Component {
             name: addNodeFormData.currentNameValue,
           })
           .then(res => {
+            console.log(res)
             if (res.ok) {
               this.setState({
                 addNodeFlow: INITIAL_ADD_NODE_FLOW,
@@ -666,7 +686,6 @@ class NodesAndProps extends React.Component {
                   this.setState(({ addNodeFlow, addNodeFormData }) => ({
                     addNodeFlow: {
                       ...addNodeFlow,
-                      savingNode: false,
                     },
                     addNodeFormData: {
                       ...addNodeFormData,
@@ -698,6 +717,14 @@ class NodesAndProps extends React.Component {
               addNodeFormData: {
                 ...addNodeFormData,
                 messagesIfError: [msg],
+              },
+            }))
+          })
+          .finally(() => {
+            this.setState(({ addNodeFlow }) => ({
+              addNodeFlow: {
+                ...addNodeFlow,
+                savingNode: false,
               },
             }))
           })
@@ -778,29 +805,6 @@ class NodesAndProps extends React.Component {
       addNodeFormData.currentLabelValue.length > 0 &&
       addNodeFormData.currentNameErrorMessage === null &&
       addNodeFormData.currentNameValue.length > 0
-
-    console.log(
-      `addNodeFormData.currentLabelValue.length > 0   :  ${addNodeFormData
-        .currentLabelValue.length > 0}`,
-    )
-    console.log(
-      `addNodeFormData.currentNameErrorMessage === null   :  ${addNodeFormData.currentNameErrorMessage ===
-        null}`,
-    )
-    console.log(
-      `addNodeFormData.currentNameValue.length > 0   :  ${addNodeFormData
-        .currentNameValue.length > 0}`,
-    )
-    console.log(
-      `addNodeFlow.currentlySelectedIconName !== null  :  ${addNodeFlow.currentlySelectedIconName !==
-        null}`,
-    )
-    console.log(
-      `addNodeFormData.currentLabelErrorMessage === null: ${addNodeFormData.currentLabelErrorMessage ===
-        null}`,
-    )
-
-    console.log(`validAddNodeFormData: ${validAddNodeFormData}`)
 
     const selectedNode =
       typeof selectedNodeID === 'string' && nodes[selectedNodeID]
@@ -916,11 +920,7 @@ class NodesAndProps extends React.Component {
           handleAction={this.handleAddNodeAction}
           handleClose={this.closeAddNodeDialog}
           open={addNodeFlow.showingAddNodeDialog}
-          title={
-            addNodeFlow.selectingIcon
-              ? 'Select an Icon for the Node'
-              : 'Add a Node'
-          }
+          title={addNodeFlow.selectingIcon ? 'Select Icon' : 'AddNode'}
         >
           <OverlaySpinner showSpinner={addNodeFlow.savingNode}>
             {addNodeFlow.selectingIcon ? (
