@@ -920,7 +920,14 @@ class NodesAndProps extends React.Component {
             ) : (
               <React.Fragment>
                 <AddNodeForm
-                  {...addNodeFormData}
+                  currentLabelErrorMessage={
+                    addNodeFormData.currentLabelErrorMessage
+                  }
+                  currentLabelValue={addNodeFormData.currentLabelValue}
+                  currentNameErrorMessage={
+                    addNodeFormData.currentNameErrorMessage
+                  }
+                  currentNameValue={addNodeFormData.currentNameValue}
                   onLabelChange={this.addNodeFormOnLabelChange}
                   onNameChange={this.addNodeFormOnNameChange}
                   disableLabelInput={addNodeFlow.savingNode}
