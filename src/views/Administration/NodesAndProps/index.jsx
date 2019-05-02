@@ -642,7 +642,6 @@ class NodesAndProps extends React.Component {
             name: addNodeFormData.currentNameValue,
           })
           .then(res => {
-            console.log(res)
             if (res.ok) {
               this.setState({
                 addNodeFlow: INITIAL_ADD_NODE_FLOW,
