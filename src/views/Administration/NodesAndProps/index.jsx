@@ -41,7 +41,14 @@ import {
   Node as NodeValidator,
   PropDef as PropDefValidator,
 } from 'app/validators'
-
+import {
+  Card,
+  CardActions,
+  CardActionArea,
+  CardHeader,
+  Avatar,
+} from '@material-ui/core'
+import { AddCircleOutline, HistoryOutlined } from '@material-ui/icons'
 /**
  * @typedef {import('app/gun-wrapper/SetNode').default} SetNode
  * @typedef {import('app/typings').Node} Node
@@ -116,21 +123,12 @@ const INITIAL_EDIT_NODE_FLOW = {
  */
 const styles = theme => ({
   addButton: {
-    backgroundColor: '#f34930',
-    bottom: '40px',
-    boxShadow:
-      '0px 3px 5px -1px rgba(0,0,0,0.2), 0px 6px 10px 0px rgba(0,0,0,0.14), 0px 1px 18px 0px rgba(0,0,0,0.12)',
-    color: '#fff',
+    bottom: '55px',
     position: 'absolute',
     right: '50px',
-    transition:
-      'background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
   },
-  card: {
-    margin: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
-    padding: '20px 5px',
-    backgroundColor: theme.palette.background.paper,
+  toRight: {
+    marginLeft: 'auto',
   },
   itemOption: {
     display: 'flex !important',
@@ -146,6 +144,10 @@ const styles = theme => ({
   },
   pointerCursor: {
     cursor: 'pointer',
+  },
+  nodesContainer: {
+    paddingBottom: '30px',
+    paddingTop: '10px',
   },
   root: {
     margin: theme.spacing.unit,
@@ -1294,10 +1296,9 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
 */}
 
         <Page titleText="Nodes And Properties">
-          <Grid container className={classes.root}>
-            {Object.entries(nodes)
-              .filter(([_, node]) => node.active)
-              .map(([id, node]) => (
+          <div className={classes.root}>
+            <Grid container className={classes.nodesContainer}>
+              {Object.entries(nodes).map(([id, node]) => (
                 <Grid
                   className={classes.pointerCursor}
                   item
@@ -1309,42 +1310,32 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
                     this.onClickNode(id)
                   }}
                 >
-                  <List className={classes.card}>
-                    <ListItem className={classes.listItem}>
-                      <ListItemAvatar>
-                        <DeleteOutlineIcon />
-                      </ListItemAvatar>
-
-                      <ListItemText
-                        primary={node.label}
-                        secondary={node.name}
+                  <Card>
+                    <CardActionArea>
+                      <CardHeader
+                        avatar={
+                          <Avatar aria-label="icon">
+                            <EditOutlineIcon />
+                          </Avatar>
+                        }
+                        title={node.label}
+                        subheader={node.name}
                       />
-
-                      <ListItemSecondaryAction className={classes.itemOption}>
-                        <IconButton
-                          aria-label="Edit"
-                          className={classes.smallIconButton}
-                          // TODO: fix callback in render()
-                          onClick={e => {
-                            e.stopPropagation()
-                            this.editNodeFlowOnClickEditNode(id)
-                          }}
-                        >
-                          <EditOutlineIcon />
-                        </IconButton>
-                      </ListItemSecondaryAction>
-                    </ListItem>
-                  </List>
+                    </CardActionArea>
+                    <CardActions>
+                      <IconButton className={classes.toRight}>
+                        <EditOutlineIcon />
+                      </IconButton>
+                    </CardActions>
+                  </Card>
                 </Grid>
               ))}
-
-            <Grid item>
-              <Typography>UNUSED NODES</Typography>
             </Grid>
 
-            {Object.entries(nodes)
-              .filter(([_, node]) => !node.active)
-              .map(([id, node]) => (
+            <Typography variant="subtitle1">UNUSED NODES</Typography>
+
+            <Grid container className={classes.nodesContainer}>
+              {Object.entries(nodes).map(([id, node]) => (
                 <Grid
                   className={classes.pointerCursor}
                   item
@@ -1356,40 +1347,32 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
                     this.onClickNode(id)
                   }}
                 >
-                  <List className={classes.card}>
-                    <ListItem className={classes.listItem}>
-                      <ListItemAvatar>
-                        <DeleteOutlineIcon />
-                      </ListItemAvatar>
-
-                      <ListItemText
-                        primary={node.label}
-                        secondary={node.name}
+                  <Card>
+                    <CardActionArea>
+                      <CardHeader
+                        avatar={
+                          <Avatar aria-label="icon">
+                            <EditOutlineIcon />
+                          </Avatar>
+                        }
+                        title={node.label}
+                        subheader={node.name}
                       />
-
-                      <ListItemSecondaryAction className={classes.itemOption}>
-                        <IconButton
-                          aria-label="Edit"
-                          className={classes.smallIconButton}
-                          // TODO: fix callback in render()
-                          onClick={e => {
-                            e.stopPropagation()
-                            this.editNodeFlowOnClickEditNode(id)
-                          }}
-                        >
-                          <EditOutlineIcon />
-                        </IconButton>
-                      </ListItemSecondaryAction>
-                    </ListItem>
-                  </List>
+                    </CardActionArea>
+                    <CardActions>
+                      <IconButton className={classes.toRight}>
+                        <HistoryOutlined />
+                      </IconButton>
+                    </CardActions>
+                  </Card>
                 </Grid>
               ))}
+            </Grid>
 
             <IconButton
-              color="secondary"
               className={classes.addButton}
               onClick={() => {
-                this.setState(state => ({
+                this.setState(() => ({
                   addNodeFlow: {
                     // TODO FIX THIS
                     ...this.state.addNodeFlow,
@@ -1397,10 +1380,11 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
                   },
                 }))
               }}
+              aria-label="Plus"
             >
-              <AddIcon />
+              <AddCircleOutline fontSize="small" color="primary" />
             </IconButton>
-          </Grid>
+          </div>
         </Page>
       </React.Fragment>
     )
