@@ -1,4 +1,5 @@
 import React from 'react'
+
 import {
   Typography,
   withStyles,
@@ -16,10 +17,16 @@ const styles = {
   },
 }
 
+const primaryTypographyPropsIfRed = {
+  color: 'error',
+}
+
 /**
  * @typedef {object} Props
  * @prop {Record<keyof typeof styles, string>} classes
  * @prop {string} primaryText
+ * @prop {boolean=} primaryTextRed (Optional) Makes the button's primary text
+ * red, this is useful for using it as a delete button for example.
  * @prop {string=} secondaryText
  * @prop {boolean=} secTextAtBottom
  * @prop {(() => void)=} onClick
@@ -33,6 +40,7 @@ class DrawerButton extends React.PureComponent {
     const {
       classes,
       primaryText,
+      primaryTextRed,
       secondaryText,
       secTextAtBottom,
       onClick,
@@ -41,6 +49,10 @@ class DrawerButton extends React.PureComponent {
     return (
       <ListItem className={classes.listItem} button onClick={onClick}>
         <ListItemText
+          // @ts-ignore
+          primaryTypographyProps={
+            primaryTextRed ? primaryTypographyPropsIfRed : undefined
+          }
           primary={primaryText}
           secondary={secTextAtBottom && secondaryText}
         />
