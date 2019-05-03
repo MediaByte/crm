@@ -19,7 +19,7 @@ import EditOutlineIcon from '@material-ui/icons/EditOutlined'
 
 import AddNodeForm from 'components/AddNodeForm'
 import AddPropForm from 'components/AddPropForm'
-import Dialog from 'components/SimpleDialog'
+import Dialog from 'components/Dialog'
 import IconSelector from 'components/IconSelector'
 import Messages from 'components/Messages'
 import OverlaySpinner from 'components/OverlaySpinner'
@@ -236,6 +236,19 @@ class NodesAndProps extends React.Component {
 
   /**
    * @private
+   */
+  addNodeFlowOnClickLeftAction = () => {
+    this.setState(({ addNodeFlow }) => ({
+      addNodeFlow: {
+        ...addNodeFlow,
+        selectingIcon: false,
+        currentlySelectedIconName: null,
+      },
+    }))
+  }
+
+  /**
+   * @private
    * @param {string} nextNameValue
    */
   addNodeFormOnNameChange = nextNameValue => {
@@ -362,6 +375,20 @@ class NodesAndProps extends React.Component {
         }
       },
     )
+  }
+
+  addPropFlowOnClickLeftACtion = () => {
+    if (this.state.addPropFlow.selectingIcon) {
+      this.setState(({ addPropFlow }) => ({
+        addPropFlow: {
+          ...addPropFlow,
+          currentlySelectedIconName: null,
+          selectingIcon: false,
+        },
+      }))
+    } else {
+      this.toggleAddPropDialog()
+    }
   }
 
   addPropFlowHandleSave = () => {
@@ -834,8 +861,10 @@ class NodesAndProps extends React.Component {
           >
             {/* TODO: Replace with new dialog */}
             <Dialog
-              actionButtonText={addPropFlow.selectingIcon ? 'Save' : 'Next'}
-              disableActionButton={
+              rightActionButtonText={
+                addPropFlow.selectingIcon ? 'Save' : 'Next'
+              }
+              disableRightActionButton={
                 addPropFlow.saving ||
                 (addPropFlow.currentlySelectedIconName === null &&
                   addPropFlow.selectingIcon) ||
@@ -845,9 +874,12 @@ class NodesAndProps extends React.Component {
                 addPropFlow.nameValue.length === 0 ||
                 addPropFlow.typeValue === ''
               }
-              disableCancelButton={addPropFlow.saving}
+              disableLeftActionButton={addPropFlow.saving}
+              onClickLeftActionButton={this.addPropFlowOnClickLeftACtion}
               handleClose={this.toggleAddPropDialog}
-              handleAction={this.addPropFlowOnClickAction}
+              onClickRightActionButton={this.addPropFlowOnClickAction}
+              showBackArrow={addPropFlow.selectingIcon}
+              showCloseButton={!addPropFlow.selectingIcon}
               open={addPropFlow.dialogOpen}
               title={`Add a Property to Node ${selectedNode.label}`}
             >
@@ -897,17 +929,23 @@ class NodesAndProps extends React.Component {
         )}
 
         <Dialog
-          actionButtonText={addNodeFlow.selectingIcon ? 'Save' : 'Next'}
-          disableActionButton={
+          disableLeftActionButton={addNodeFlow.savingNode}
+          disableRightActionButton={
             !validAddNodeFormData ||
             addNodeFlow.savingNode ||
             (addNodeFlow.currentlySelectedIconName === null &&
               addNodeFlow.selectingIcon)
           }
-          disableCancelButton={addNodeFlow.savingNode}
-          handleAction={this.handleAddNodeAction}
+          onClickRightActionButton={this.handleAddNodeAction}
+          onClickLeftActionButton={
+            (addNodeFlow.selectingIcon && this.addNodeFlowOnClickLeftAction) ||
+            undefined
+          }
           handleClose={this.closeAddNodeDialog}
+          showBackArrow={addNodeFlow.selectingIcon}
+          showCloseButton={!addNodeFlow.selectingIcon}
           open={addNodeFlow.showingAddNodeDialog}
+          rightActionButtonText={addNodeFlow.selectingIcon ? 'Save' : 'Next'}
           title={addNodeFlow.selectingIcon ? 'Select Icon' : 'Add Node'}
         >
           <OverlaySpinner showSpinner={addNodeFlow.savingNode}>
