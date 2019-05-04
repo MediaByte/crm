@@ -18,8 +18,10 @@ import CheckCircle from '@material-ui/icons/CheckCircle'
  * @typedef {object} Props
  * @prop {boolean=} big (Optional) If passed in, set the icon to a bigger (1.5x)
  * size.
- * @prop {React.ReactElement<SvgIconProps>} children The icon to be rendered.
+ * @prop {React.ReactElement<SvgIconProps>=} children The icon to be rendered.
  * @prop {Record<ClassNames, string>} classes
+ * @prop {React.ComponentType<SvgIconProps>=} icon (Optional) Use this prop
+ * instead of the children prop to prevent re-renders.
  * @prop {IconButtonProps['onClick']=} onClick
  * @prop {boolean=} selected
  */
@@ -33,17 +35,22 @@ class SelectableIcon extends React.PureComponent {
       big,
       children,
       classes,
+      icon: Icon,
       onClick,
       selected,
       ...restProps
     } = this.props
 
-    const icon = React.cloneElement(children, {
-      // shouldn't produce unnecesary re-renders since it's an string
-      // that is, if shouldComponentUpdate inside MuI's IconButton is
-      // well-implemented
-      className: big ? classes.bigIcon : classes.icon,
-    })
+    const icon = children ? (
+      React.cloneElement(children, {
+        // shouldn't produce unnecesary re-renders since it's an string
+        // that is, if shouldComponentUpdate inside MuI's IconButton is
+        // well-implemented
+        className: big ? classes.bigIcon : classes.icon,
+      })
+    ) : Icon ? (
+      <Icon className={big ? classes.bigIcon : classes.icon} />
+    ) : null
 
     return (
       <div className={(selected && classes.selectedWrapper) || undefined}>
