@@ -4,6 +4,7 @@ import {
   Typography,
   withStyles,
   ListItem,
+  ListItemIcon,
   ListItemText,
   ListItemSecondaryAction,
   Grid,
@@ -24,6 +25,7 @@ const primaryTypographyPropsIfRed = {
 /**
  * @typedef {object} Props
  * @prop {Record<keyof typeof styles, string>} classes
+ * @prop {React.ComponentType<import('@material-ui/core/SvgIcon').SvgIconProps>=} icon
  * @prop {string} primaryText
  * @prop {boolean=} primaryTextRed (Optional) Makes the button's primary text
  * red, this is useful for using it as a delete button for example.
@@ -39,6 +41,7 @@ class DrawerButton extends React.PureComponent {
   render() {
     const {
       classes,
+      icon: Icon,
       primaryText,
       primaryTextRed,
       secondaryText,
@@ -48,6 +51,12 @@ class DrawerButton extends React.PureComponent {
 
     return (
       <ListItem className={classes.listItem} button onClick={onClick}>
+        {Icon && (
+          <ListItemIcon>
+            <Icon />
+          </ListItemIcon>
+        )}
+
         <ListItemText
           // @ts-ignore
           primaryTypographyProps={
@@ -56,6 +65,7 @@ class DrawerButton extends React.PureComponent {
           primary={primaryText}
           secondary={secTextAtBottom && secondaryText}
         />
+
         <ListItemSecondaryAction>
           {!secTextAtBottom && secondaryText ? (
             <Grid container alignItems="center">
