@@ -32,15 +32,14 @@ export default class IconSelector extends React.PureComponent {
 
     return (
       <Grid container spacing={0}>
-        {icons.map((Icon, i) => (
+        {icons.map((icon, i) => (
           <Grid item key={i}>
             <SelectableIcon
               selected={i === selectedIconIdx}
               data-i={i}
               onClick={this.onClick}
-            >
-              <Icon />
-            </SelectableIcon>
+              icon={icon}
+            />
           </Grid>
         ))}
       </Grid>
