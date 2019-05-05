@@ -28,8 +28,6 @@ export default class NodeEditor extends React.PureComponent {
       onClickLabel,
     } = this.props
 
-    console.log(`label: ${label}`)
-
     return (
       <Grid alignContent="center" direction="column" container>
         <Typography>
