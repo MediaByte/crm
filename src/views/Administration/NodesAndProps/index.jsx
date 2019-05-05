@@ -590,7 +590,6 @@ class NodesAndProps extends React.Component {
           editNodeFlow: {
             ...editNodeFlow,
             editingLabel: false,
-            editingLabelCurrentValue: '',
           },
         }
       }
@@ -612,15 +611,12 @@ class NodesAndProps extends React.Component {
         })
         .then(res => {
           console.log(res)
-          this.forceUpdate()
         })
 
-      this.setState(({ editNodeFlow, nodes }) => ({
+      this.setState(({ editNodeFlow }) => ({
         editNodeFlow: {
           ...editNodeFlow,
           editingLabel: false,
-          editingLabelCurrentValue:
-            nodes[/** @type {string} */ (editNodeFlow.editingNodeID)].label,
         },
       }))
     }
@@ -630,12 +626,10 @@ class NodesAndProps extends React.Component {
    * @param {string} id
    */
   editNodeFlowOnClickEditNode = id => {
-    this.setState(({ editNodeFlow, nodes }) => ({
+    this.setState(({ editNodeFlow }) => ({
       editNodeFlow: {
         ...editNodeFlow,
-        currentlySelectedIconName: nodes[id].iconName,
         editingNodeID: id,
-        editingLabelCurrentValue: nodes[id].label,
       },
     }))
   }
@@ -656,18 +650,22 @@ class NodesAndProps extends React.Component {
   }
 
   editNodeFlowOnClickIconBtn = () => {
-    this.setState(({ editNodeFlow }) => ({
+    this.setState(({ editNodeFlow, nodes }) => ({
       editNodeFlow: {
         ...editNodeFlow,
+        currentlySelectedIconName:
+          nodes[/** @type {string} */ (editNodeFlow.editingNodeID)].iconName,
         editingIcon: true,
       },
     }))
   }
 
   editNodeFlowOnClickLabel = () => {
-    this.setState(({ editNodeFlow }) => ({
+    this.setState(({ editNodeFlow, nodes }) => ({
       editNodeFlow: {
         ...editNodeFlow,
+        editingLabelCurrentValue:
+          nodes[/** @type {string} */ (editNodeFlow.editingNodeID)].label,
         editingLabel: true,
       },
     }))
