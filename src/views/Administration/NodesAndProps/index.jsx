@@ -1207,6 +1207,7 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
           rightActionButtonText="confirm"
           title="DEACTIVATE"
           open={editNodeFlow.deactivating}
+          rightActionButtonColorRed
         >
           here longer information about what deactivating a node entails
         </Dialog>
