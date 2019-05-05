@@ -620,6 +620,27 @@ class NodesAndProps extends React.Component {
         },
       }))
     }
+
+    if (editNodeFlow.editingIcon) {
+      const { editNodeFlow } = this.state
+
+      nodesNode
+        .get(/** @type {string} */ (editNodeFlow.editingNodeID))
+        .put({
+          iconName:
+            /** @type {string} */ (editNodeFlow.currentlySelectedIconName),
+        })
+        .then(res => {
+          console.log(res)
+        })
+
+      this.setState(({ editNodeFlow }) => ({
+        editNodeFlow: {
+          ...editNodeFlow,
+          editingIcon: false,
+        },
+      }))
+    }
   }
 
   /**
