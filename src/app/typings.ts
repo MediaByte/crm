@@ -5,7 +5,7 @@ interface Soulful {
 }
 
 export interface Node extends Soulful {
-  iconName: string | null
+  iconName: string
   label: string
   name: string
 }
