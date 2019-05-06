@@ -571,7 +571,20 @@ class NodesAndProps extends React.Component {
 
   editNodeFlowOnClickChangeIcon = () => {}
 
-  editNodeFlowOnClickConfirmDeactivate = () => {}
+  editNodeFlowOnClickConfirmDeactivate = () => {
+    nodesNode
+      .get(/** @type {string} */ (this.state.editNodeFlow.editingNodeID))
+      .put({
+        active: false,
+      })
+      .then(res => {
+        console.log(res)
+      })
+
+    this.setState({
+      editNodeFlow: INITIAL_EDIT_NODE_FLOW,
+    })
+  }
 
   editNodeFlowOnClickDrawerBtnLeft = () => {
     this.setState(({ editNodeFlow }) => {
@@ -1208,6 +1221,7 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
           rightActionButtonText="confirm"
           title="DEACTIVATE"
           open={editNodeFlow.deactivating}
+          onClickRightActionButton={this.editNodeFlowOnClickConfirmDeactivate}
           rightActionButtonColorRed
         >
           here longer information about what deactivating a node entails
@@ -1244,10 +1258,7 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
                       <DeleteOutlineIcon />
                     </ListItemAvatar>
 
-                    <ListItemText
-                      primary={node.label}
-                      secondary={node.name}
-                    />
+                    <ListItemText primary={node.label} secondary={node.name} />
 
                     <ListItemSecondaryAction className={classes.itemOption}>
                       <IconButton
@@ -1261,7 +1272,6 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
                       >
                         <EditOutlineIcon />
                       </IconButton>
-                      
                     </ListItemSecondaryAction>
                   </ListItem>
                 </List>
