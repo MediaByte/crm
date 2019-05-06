@@ -55,6 +55,7 @@ export interface PropertyDefinition extends Soulful {
 }
 
 export interface Node {
+  active: boolean
   name: string
   iconName: string
   label: string

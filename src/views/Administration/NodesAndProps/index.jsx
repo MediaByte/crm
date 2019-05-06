@@ -825,6 +825,7 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
             iconName: addNodeFlow.currentlySelectedIconName,
             label: addNodeFormData.currentLabelValue,
             name: addNodeFormData.currentNameValue,
+            active: true,
           })
           .then(res => {
             if (res.ok) {
