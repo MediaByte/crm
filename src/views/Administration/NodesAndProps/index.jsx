@@ -1244,7 +1244,10 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
                       <DeleteOutlineIcon />
                     </ListItemAvatar>
 
-                    <ListItemText primary={node.label} secondary={node.name} />
+                    <ListItemText
+                      primary={node.label}
+                      secondary={node.name}
+                    />
 
                     <ListItemSecondaryAction className={classes.itemOption}>
                       <IconButton
@@ -1258,17 +1261,7 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
                       >
                         <EditOutlineIcon />
                       </IconButton>
-                      <IconButton
-                        aria-label="Delete"
-                        color="secondary"
-                        className={classes.smallIconButton}
-                        onClick={e => {
-                          e.stopPropagation()
-                          this.deactivateNode(id)
-                        }}
-                      >
-                        <DeleteOutlineIcon />
-                      </IconButton>
+                      
                     </ListItemSecondaryAction>
                   </ListItem>
                 </List>
