@@ -11,6 +11,7 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import ListItemText from '@material-ui/core/ListItemText'
 import Snackbar from '@material-ui/core/Snackbar'
 import TextField from '@material-ui/core/TextField'
+import Typography from '@material-ui/core/Typography'
 import { withStyles } from '@material-ui/core/styles'
 
 import AddIcon from '@material-ui/icons/Add'
@@ -1240,43 +1241,81 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
 
         <Page titleText="Nodes And Properties">
           <Grid container className={classes.root}>
-            {Object.entries(nodes).map(([id, node]) => (
-              <Grid
-                className={classes.pointerCursor}
-                item
-                xs={12}
-                md={3}
-                key={id}
-                // TODO: fix callback in render()
-                onClick={() => {
-                  this.onClickNode(id)
-                }}
-              >
-                <List className={classes.card}>
-                  <ListItem className={classes.listItem}>
-                    <ListItemAvatar>
-                      <DeleteOutlineIcon />
-                    </ListItemAvatar>
+            {Object.entries(nodes)
+              .filter(([_, node]) => node.active)
+              .map(([id, node]) => (
+                <Grid
+                  className={classes.pointerCursor}
+                  item
+                  xs={12}
+                  md={3}
+                  key={id}
+                  // TODO: fix callback in render()
+                  onClick={() => {
+                    this.onClickNode(id)
+                  }}
+                >
+                  <List className={classes.card}>
+                    <ListItem className={classes.listItem}>
+                      <ListItemAvatar>
+                        <DeleteOutlineIcon />
+                      </ListItemAvatar>
 
-                    <ListItemText primary={node.label} secondary={node.name} />
+                      <ListItemText
+                        primary={node.label}
+                        secondary={node.name}
+                      />
 
-                    <ListItemSecondaryAction className={classes.itemOption}>
-                      <IconButton
-                        aria-label="Edit"
-                        className={classes.smallIconButton}
-                        // TODO: fix callback in render()
-                        onClick={e => {
-                          e.stopPropagation()
-                          this.editNodeFlowOnClickEditNode(id)
-                        }}
-                      >
-                        <EditOutlineIcon />
-                      </IconButton>
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                </List>
-              </Grid>
-            ))}
+                      <ListItemSecondaryAction className={classes.itemOption}>
+                        <IconButton
+                          aria-label="Edit"
+                          className={classes.smallIconButton}
+                          // TODO: fix callback in render()
+                          onClick={e => {
+                            e.stopPropagation()
+                            this.editNodeFlowOnClickEditNode(id)
+                          }}
+                        >
+                          <EditOutlineIcon />
+                        </IconButton>
+                      </ListItemSecondaryAction>
+                    </ListItem>
+                  </List>
+                </Grid>
+              ))}
+
+            <Grid item>
+              <Typography>Deactivated Nodes</Typography>
+            </Grid>
+
+            {Object.entries(nodes)
+              .filter(([_, node]) => !node.active)
+              .map(([id, node]) => (
+                <Grid
+                  className={classes.pointerCursor}
+                  item
+                  xs={12}
+                  md={3}
+                  key={id}
+                  // TODO: fix callback in render()
+                  onClick={() => {
+                    this.onClickNode(id)
+                  }}
+                >
+                  <List className={classes.card}>
+                    <ListItem className={classes.listItem}>
+                      <ListItemAvatar>
+                        <DeleteOutlineIcon />
+                      </ListItemAvatar>
+
+                      <ListItemText
+                        primary={node.label}
+                        secondary={node.name}
+                      />
+                    </ListItem>
+                  </List>
+                </Grid>
+              ))}
 
             <IconButton
               color="secondary"
