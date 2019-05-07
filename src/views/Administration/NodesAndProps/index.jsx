@@ -93,6 +93,7 @@ const INITIAL_EDIT_NODE_FLOW = {
   editingLabel: false,
   editingLabelCurrentValue: '',
   editingNodeID: null,
+  reactivating: false,
 }
 
 /**
@@ -191,6 +192,7 @@ const styles = theme => ({
  * @prop {string} editingLabelCurrentValue
  * @prop {string|null} editingNodeID Non-null when editing a node's icon or
  * label, etc.
+ * @prop {boolean} reactivating
  */
 
 /**
@@ -587,6 +589,21 @@ class NodesAndProps extends React.Component {
     })
   }
 
+  editNodeFlowOnClickConfirmReactivate = () => {
+    nodesNode
+      .get(/** @type {string} */ (this.state.editNodeFlow.editingNodeID))
+      .put({
+        active: true,
+      })
+      .then(res => {
+        console.log(res)
+      })
+
+    this.setState({
+      editNodeFlow: INITIAL_EDIT_NODE_FLOW,
+    })
+  }
+
   editNodeFlowOnClickDrawerBtnLeft = () => {
     this.setState(({ editNodeFlow }) => {
       if (editNodeFlow.editingIcon) {
@@ -711,6 +728,15 @@ class NodesAndProps extends React.Component {
       editNodeFlow: {
         ...editNodeFlow,
         deactivating: !editNodeFlow.deactivating,
+      },
+    }))
+  }
+
+  editNodeFlowToggleReactivate = () => {
+    this.setState(({ editNodeFlow }) => ({
+      editNodeFlow: {
+        ...editNodeFlow,
+        reactivating: !editNodeFlow.reactivating,
       },
     }))
   }
@@ -1191,10 +1217,12 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
                 onClickDeactivate={this.editNodeFlowToggleDeactivate}
                 onClickIcon={this.editNodeFlowOnClickIconBtn}
                 onClickLabel={this.editNodeFlowOnClickLabel}
+                onClickReactivate={this.editNodeFlowToggleReactivate}
                 icon={
                   nameToIconMap[nodes[editNodeFlow.editingNodeID].iconName]
                     .outlined
                 }
+                isNodeActive={nodes[editNodeFlow.editingNodeID].active}
                 label={nodes[editNodeFlow.editingNodeID].label}
               />
             )}
@@ -1226,6 +1254,18 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
           rightActionButtonColorRed
         >
           here longer information about what deactivating a node entails
+        </Dialog>
+
+        <Dialog
+          handleClose={this.editNodeFlowToggleReactivate}
+          showCloseButton
+          rightActionButtonText="confirm"
+          title="REACTIVATE"
+          open={editNodeFlow.reactivating}
+          onClickRightActionButton={this.editNodeFlowOnClickConfirmReactivate}
+          rightActionButtonColorPrimary
+        >
+          here longer information about what REACTIVATING a node entails
         </Dialog>
 
         {/*
@@ -1312,6 +1352,20 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
                         primary={node.label}
                         secondary={node.name}
                       />
+
+                      <ListItemSecondaryAction className={classes.itemOption}>
+                        <IconButton
+                          aria-label="Edit"
+                          className={classes.smallIconButton}
+                          // TODO: fix callback in render()
+                          onClick={e => {
+                            e.stopPropagation()
+                            this.editNodeFlowOnClickEditNode(id)
+                          }}
+                        >
+                          <EditOutlineIcon />
+                        </IconButton>
+                      </ListItemSecondaryAction>
                     </ListItem>
                   </List>
                 </Grid>
