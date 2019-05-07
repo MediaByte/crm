@@ -1285,7 +1285,7 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
               ))}
 
             <Grid item>
-              <Typography>Deactivated Nodes</Typography>
+              <Typography>UNUSED NODES</Typography>
             </Grid>
 
             {Object.entries(nodes)
