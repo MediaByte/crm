@@ -26,7 +26,7 @@ const primaryTypographyPropsIfRed = {
  * @typedef {object} Props
  * @prop {Record<keyof typeof styles, string>} classes
  * @prop {React.ComponentType<import('@material-ui/core/SvgIcon').SvgIconProps>=} icon
- * @prop {string} primaryText
+ * @prop {string=} primaryText (Optional)
  * @prop {boolean=} primaryTextRed (Optional) Makes the button's primary text
  * red, this is useful for using it as a delete button for example.
  * @prop {string=} secondaryText
