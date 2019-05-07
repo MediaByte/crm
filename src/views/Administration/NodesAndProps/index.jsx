@@ -567,12 +567,6 @@ class NodesAndProps extends React.Component {
     }))
   }
 
-  /**
-   *
-   */
-  editNodeFlowOnClickCancelDeactivate = () => {}
-
-  editNodeFlowOnClickChangeIcon = () => {}
 
   editNodeFlowOnClickConfirmDeactivate = () => {
     nodesNode
