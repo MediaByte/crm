@@ -67,14 +67,6 @@ export default class NodeEditor extends React.PureComponent {
         </List>
 
         <Grid item style={alignSelfCenter}>
-          <Typography>
-            {isNodeActive
-              ? 'Deactivating a node bla bla bla bla bla bla bla...'
-              : 'Reactivating a node bla bla bla bla'}
-          </Typography>
-        </Grid>
-
-        <Grid item style={alignSelfCenter}>
           <Button
             color={isNodeActive ? 'secondary' : 'primary'}
             onClick={isNodeActive ? onClickDeactivate : onClickReactivate}
