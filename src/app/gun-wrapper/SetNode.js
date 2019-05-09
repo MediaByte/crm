@@ -3,24 +3,22 @@ import * as Utils from './Utils'
 
 import { Node } from './Node'
 
-/**
- * @typedef {import('./typings').OnChangeReturn} OnChangeReturn
- * @typedef {import('./typings').Schema} Schema
- */
-
 export {} // stop jsdoc comments from merging
 
 /**
- * @template T
- * @typedef {import('./typings').SetLeaf<T>} SetLeaf
- */
-
-/**
- * @typedef {import('./simple-typings').OnChangeReturn} SimpleOnChangeReturn
- * @typedef {import('./simple-typings').Schema} SimpleSchema
- * @typedef {import('./simple-typings').Node} SimpleNode
+ * @typedef {import('./simple-typings').Schema} Schema
+ * @typedef {import('./simple-typings').Data} Data
  * @typedef {import('./simple-typings').Response} Response
+ * @typedef {import('./simple-typings').GunCallback} GunCallback
  * @typedef {import('./simple-typings').SetResponse} SetResponse
+ * @typedef {import('./simple-typings').WrapperNode} WrapperNode
+ * @typedef {import('./simple-typings').WrapperSetNode} WrapperSetNode
+ * @typedef {import('./simple-typings').OnChangeReturn} OnChangeReturn
+ * @typedef {import('./simple-typings').Listener} Listener
+ * @typedef {import('./simple-typings').ValidPut} ValidPut
+ * @typedef {import('./simple-typings').Primitive} Primitive
+ * @typedef {import('./simple-typings').Literal} Literal
+ * @typedef {import('./simple-typings').ValidSetPut} ValidSetPut
  */
 
 export {} // stop jsdoc comments from merging
@@ -29,29 +27,40 @@ export default class SetNode {
   /**
    * @param {Schema} itemSchema
    * @param {object} gunInstance
-   * @param {(nextVal: SimpleNode|null, key?: string) => SimpleOnChangeReturn} setOnChange
+   * @param {(nextVal: Data, key?: string) => OnChangeReturn} setOnChange
    */
   constructor(itemSchema, gunInstance, setOnChange) {
     if (!Utils.isSchema(itemSchema)) {
       throw new TypeError('invalid schema SetNode()')
     }
 
+    /**
+     * @private
+     */
     this.itemSchema = itemSchema
 
     this.gunInstance = gunInstance
 
     /**
-     * @type {((value: SimpleNode) => void)[]}
+     * @type {Listener[]}
      */
     this.subscribers = []
 
+    /**
+     * @type {Record<string, Data>}
+     */
     this.currentData = {}
 
     this.setOnChange = setOnChange
+
+    /** @type {WrapperSetNode} */
+    const instance = this
+    instance
   }
 
   /**
-   * @param {Record<string, SimpleNode>} nextData
+   * @protected
+   * @param {Record<string, Data>} nextData
    * @returns {void}
    */
   cachePut(nextData) {
@@ -73,29 +82,43 @@ export default class SetNode {
   }
 
   /**
-   * @param {SimpleNode} object
+   * @param {ValidSetPut} object
    * @returns {Promise<SetResponse>}
    */
   async set(object) {
     const validationRes = await this.isValidSet(object)
 
+    // need to do it this way otherwise typescript borks out
     if (!validationRes.ok) {
-      return validationRes
+      return {
+        ok: false,
+        details: validationRes.details,
+        messages: validationRes.messages,
+      }
     }
 
+    /**
+     * @type {Record<string, Primitive|Literal|null|{}>}
+     */
     const primitiveSetsAndLiteralsData = {}
+
+    /**
+     * @type {Record<string, object|null>}
+     */
     const edgeData = {}
 
     Object.keys(Utils.getEdgeLeaves(this.itemSchema)).forEach(key => {
-      if (!(key in object)) return
-
-      edgeData[key] = object[key].gunInstance
+      // CAST: Already validated in isValidSet()
+      const value = /** @type {WrapperNode|null}  */ (object[key])
+      edgeData[key] = value === null ? null : value.gunInstance
     })
 
     Object.keys(Utils.getPrimitiveLeaves(this.itemSchema))
       .concat(Object.keys(Utils.getLiteralLeaves(this.itemSchema)))
       .forEach(key => {
-        primitiveSetsAndLiteralsData[key] = object[key]
+        // CAST: Already validated in isValidSet()
+        primitiveSetsAndLiteralsData[key] =
+          /** @typedef {Primitive|Literal|null} */ object[key]
       })
 
     // add empty sets to primitive put
@@ -112,28 +135,34 @@ export default class SetNode {
 
         writes.push(
           new Promise(resolve => {
-            gunRef = this.gunInstance.set(primitiveSetsAndLiteralsData, ack => {
-              resolve({
-                ok: typeof ack.err === 'undefined',
-                messages: typeof ack.err === 'string' ? [ack.err] : [],
-                details: {},
-              })
-            })
+            gunRef = this.gunInstance.set(
+              primitiveSetsAndLiteralsData,
+              /** @type {GunCallback} */ (ack => {
+                resolve({
+                  ok: typeof ack.err === 'undefined',
+                  messages: typeof ack.err === 'string' ? [ack.err] : [],
+                  details: {},
+                })
+              }),
+            )
           }),
         )
 
         for (const [k, edge] of Object.entries(edgeData)) {
           writes.push(
             new Promise(resolve => {
-              gunRef.get(k).put(edge, ack => {
-                resolve({
-                  ok: typeof ack.err === 'undefined',
-                  messages: [],
-                  details: {
-                    [k]: typeof ack.err === 'string' ? [ack.err] : [],
-                  },
-                })
-              })
+              gunRef.get(k).put(
+                edge,
+                /** @type {GunCallback} */ (ack => {
+                  resolve({
+                    ok: typeof ack.err === 'undefined',
+                    messages: [],
+                    details: {
+                      [k]: typeof ack.err === 'string' ? [ack.err] : [],
+                    },
+                  })
+                }),
+              )
             }),
           )
         }
@@ -160,10 +189,14 @@ export default class SetNode {
         if (res.ok) {
           resolve({
             ...res,
+            ok: true, // typescript borks out otherwise
             reference: wrapperRef,
           })
         } else {
-          resolve(res)
+          resolve({
+            ...res,
+            ok: false,
+          })
         }
       } catch (e) {
         resolve({
@@ -208,7 +241,7 @@ export default class SetNode {
 
   /**
    * Validates an object according to an schema
-   * @param {SimpleNode} objectData
+   * @param {ValidSetPut} objectData
    * @returns {Promise<Response>}
    */
   async isValidSet(objectData) {
@@ -293,19 +326,29 @@ export default class SetNode {
       }
 
       const value = objectData[key]
+
+      //  @ts-ignore stupid instanceof typescript rule
+      if (value !== null || !(value instanceof Node)) {
+        errorMap.puts(key, 'must initialize to a reference or a null value')
+      }
+
       const itemSchema = leaf.type
 
-      const valueIsNull = value === null
-      const conformsToSchema = valueIsNull
-        ? true
-        : Utils.conformsToSchema(itemSchema, value.currentData)
+      const conformsToSchema =
+        value === null
+          ? true
+          : Utils.conformsToSchema(
+              itemSchema,
+              // CAST: we already verify above that this is an instance of Node
+              /** @type {WrapperNode} */ (value).currentData,
+            )
 
-      if (!valueIsNull && !conformsToSchema) {
+      if (!value === null && !conformsToSchema) {
         errorMap.puts(key, 'wrong node type received for reference')
       }
     })
 
-    Object.entries(setLeaves).forEach(([key, leaf]) => {
+    Object.entries(setLeaves).forEach(([key]) => {
       if (key in objectData) {
         errorMap.puts(
           key,
@@ -323,7 +366,7 @@ export default class SetNode {
     }
 
     /**
-     * @type {Partial<Record<keyof T, Promise<OnChangeReturn>>}
+     * @type {Record<string, OnChangeReturn>}
      */
     const validations = {}
 
@@ -369,7 +412,23 @@ export default class SetNode {
       objectDataWithEmptySets[k] = {}
     })
 
-    const err = await this.setOnChange(objectDataWithEmptySets)
+    /**
+     * @type {Data}
+     */
+    const objForValidation = {}
+
+    for (const [key, value] of Object.entries(objectDataWithEmptySets)) {
+      if (key in edgeLeaves) {
+        // CAST: Already validated in isValidSet()
+        objForValidation[key] =
+          value === null ? null : /** @type {WrapperNode} */ (value).currentData
+      } else {
+        // @ts-ignore Can't figure out this cast
+        objForValidation[key] = value
+      }
+    }
+
+    const err = await this.setOnChange(objForValidation)
 
     if (Array.isArray(err)) {
       return {
@@ -387,7 +446,7 @@ export default class SetNode {
   } // isValid()
 
   /**
-   * @param {Function} cb
+   * @param {Listener} cb
    * @returns {void}
    */
   on(cb) {
@@ -397,7 +456,7 @@ export default class SetNode {
   }
 
   /**
-   * @param {Function=} cb
+   * @param {Listener} cb
    * @returns {void}
    */
   off(cb) {

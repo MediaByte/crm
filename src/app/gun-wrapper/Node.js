@@ -9,28 +9,22 @@ import SetNode from './SetNode'
 
 /**
  * @typedef {import('./simple-typings').OnChangeReturn} SimpleOnChangeReturn
- * @typedef {import('./simple-typings').Node} SimpleNode
+ * @typedef {import('./simple-typings').Data} Data
  * @typedef {import('./simple-typings').Response} Response
  * @typedef {import('./simple-typings').WrapperNode} WrapperNode
- * @typedef {import('./simple-typings').ReferenceWrapperNode} ReferenceWrapperNode
- * @typedef {import('./simple-typings').Schema} Schema
- */
-
-/**
- * @typedef {import('./SetNode').default<{}>} SetNode
- */
-
-
-/**
- * @template T
- * @typedef {import('./typings').SetNodes<T>} SetNodes
+ * @typedef {import('./simple-typings').WrapperReferenceNode} WrapperReferenceNode
+ * @typedef {import('./simple-typings').WrapperSetNode} WrapperSetNode
+ * @typedef {import('./simple-typings').Schema} Schema'
+ * @typedef {import('./simple-typings').Listener} Listener
+ * @typedef {import('./simple-typings').Literal} Literal
+ * @typedef {import('./simple-typings').Primitive} Primitive
  */
 
 /**
  * @typedef {object} SplitPuts
- * @prop {Record<string, null>} edgePuts
- * @prop {Record<string, SimpleNode|null>} literalPuts
- * @prop {SimpleNode} primitivePuts
+ * @prop {Record<string, WrapperNode|null>} edgePuts
+ * @prop {Record<string, Literal|null>} literalPuts
+ * @prop {Record<string, Primitive|null>} primitivePuts
  */
 
 /*******************************************************************************
@@ -43,15 +37,12 @@ export {} // stop jsdoc comments from merging
 
 const DEFAULT_ON_SET_CHANGE = () => Promise.resolve(false)
 
-/**
- * @template T
- */
 export class Node {
   /**
    * @param {Schema} schema
    * @param {object} gunInstance
    * @param {boolean=} isRoot
-   * @param {((nextVal: SimpleNode|null) => SimpleOnChangeReturn)=} onSetChange
+   * @param {((nextVal: Data) => SimpleOnChangeReturn)=} onSetChange
    */
   constructor(
     schema,
@@ -84,16 +75,15 @@ export class Node {
     this.onSetChange = onSetChange
 
     /**
-     * @type {T}
+     * @type {Data}
      */
-    // @ts-ignore
     this.currentData = {}
 
-    /** @type {Function[]} */
+    /** @type {Listener[]} */
     this.subscribers = []
 
     /**
-     * @type {Record<string, SetNode<{}>}
+     * @type {Record<string, WrapperSetNode>}
      */
     // @ts-ignore
     this.setNodes = {}
@@ -116,6 +106,12 @@ export class Node {
     this.gunInstance.open(this.onOpen)
 
     this.isRoot = isRoot
+
+    /**
+     * @type {WrapperNode}
+     */
+    const instance = this
+    instance
   }
 
   /**
@@ -179,6 +175,9 @@ export class Node {
     Object.entries(Utils.getSetLeaves(this.schema)).forEach(
       ([setKey, setLeaf]) => {
         if (setKey in nextData) {
+          /**
+           * @type {Record<string, Data>}
+           */
           const itemsReceived = nextData[setKey]
 
           if (typeof itemsReceived !== 'object') {
@@ -189,7 +188,12 @@ export class Node {
 
           for (const [itemKey, item] of Object.entries(itemsReceived)) {
             if (Utils.conformsToSchema(setItemSchema, item)) {
-              this.currentData[setKey][itemKey] = item
+              // CAST: This gets set in
+              const set = /** @type {Record<string, Data>} */ (this.currentData[
+                setKey
+              ])
+
+              set[itemKey] = item
             }
           }
 
@@ -212,9 +216,6 @@ export class Node {
    * @returns {Promise<Response>}
    */
   async validateEdgePut(data) {
-    /**
-     * @type {Utils.ErrorMap<T>}
-     */
     const errorMap = new Utils.ErrorMap()
 
     for (const [key, value] of Object.entries(data)) {
@@ -343,7 +344,7 @@ export class Node {
 
   /**
    * @private
-   * @param {Record<string, SimpleNode|null>}
+   * @param {Record<string, Literal|null>} data
    * @returns {Promise<Response>}
    */
   async validateLiteralPut(data) {
@@ -423,7 +424,7 @@ export class Node {
 
   /**
    * @private
-   * @param {SimpleNode} data
+   * @param {Data} data
    * @returns {SplitPuts}
    */
   splitPuts(data) {
@@ -436,9 +437,7 @@ export class Node {
 
     Object.keys(Utils.getEdgeLeaves(this.schema)).forEach(key => {
       if (key in data) {
-        /** @type {null} */
-        // @ts-ignore this gets validated elsewhere
-        const value = data[key]
+        const value = /** @type {WrapperNode|null} */ (data[key])
 
         edgePuts[key] = value
       }
@@ -446,14 +445,15 @@ export class Node {
 
     Object.keys(Utils.getLiteralLeaves(this.schema)).forEach(key => {
       if (key in data) {
-        // @ts-ignore TODO: I dunno what's going on here
-        literalPuts[key] = data[key]
+        literalPuts[key] = /** @type {Literal|null} */ (data[key])
       }
     })
 
     Object.keys(Utils.getPrimitiveLeaves(this.schema)).forEach(key => {
       if (key in data) {
-        primitivePuts[key] = data[key]
+        // CAST: If it corresponds to a primitive key, it should hopefully be
+        // an actual primitive or null, this however gets validated elsewhere.
+        primitivePuts[key] = /** @type {Primitive|null} */ (data[key])
       }
     })
 
@@ -466,7 +466,7 @@ export class Node {
 
   /**
    * @private
-   * @param {SimpleNode} data
+   * @param {Data} data
    * @returns {Promise<Response>}
    */
   async put(data) {
@@ -616,7 +616,7 @@ export class Node {
 
   /**
    * @param {string} key
-   * @returns {ReferenceWrapperNode | SetNode<{}>}
+   * @returns {WrapperReferenceNode | WrapperSetNode}
    */
   get(key) {
     const validKey =
@@ -696,7 +696,45 @@ export class Node {
   }
 
   /**
-   * @param {Function} cb
+   * Helps avoid the union type returned by get().
+   * @param {string} edgeKey
+   * @throws {ReferenceError} A runtimne check is performed to ensure the key
+   * supplied belongs to an edge, if it doesn't, this error is thrown.
+   * @returns {WrapperReferenceNode}
+   */
+  getEdge(edgeKey) {
+    const edgeKeys = Object.keys(Utils.getEdgeLeaves(this.schema))
+
+    if (!edgeKeys.includes(edgeKey)) {
+      throw new ReferenceError(
+        `Invalid key supplied to Node.prototype.getEdge(), expected a key belonging to en edge of this node, one of these: ${edgeKeys} but got: ${edgeKey}`,
+      )
+    }
+
+    return /** @type {WrapperReferenceNode} */ (this.get(edgeKey))
+  }
+
+  /**
+   * Helps avoid the union type returned by get().
+   * @param {string} setKey
+   * @throws {ReferenceError} A runtimne check is performed to ensure the key
+   * supplied belongs to a set, if it doesn't, this error is thrown.
+   * @returns {WrapperSetNode}
+   */
+  getSet(setKey) {
+    const setKeys = Object.keys(Utils.getSetLeaves(this.schema))
+
+    if (!setKeys.includes(setKey)) {
+      throw new ReferenceError(
+        `Invalid key supplied to Node.prototype.getSet(), expected a key belonging to a set child, one of these: ${setKeys} but got: ${setKey}`,
+      )
+    }
+
+    return /** @type {WrapperSetNode} */ (this.get(setKey))
+  }
+
+  /**
+   * @param {Listener} cb
    * @returns {void}
    */
   on(cb) {
@@ -706,7 +744,7 @@ export class Node {
   }
 
   /**
-   * @param {Function=} cb
+   * @param {Listener=} cb
    * @returns {void}
    */
   off(cb) {
@@ -729,22 +767,4 @@ export class Node {
       resolve(this.currentData)
     })
   }
-}
-
-/**
- * @template T
- * @param {Schema} schema
- * @param {object} gunInstance
- * @returns {Record<keyof T, SetNode<{}>>}
- */
-export const getSetNodes = (schema, gunInstance) => {
-  const setNodes = {}
-
-  for (const [key, setLeaf] of Object.entries(Utils.getSetLeaves(schema))) {
-    // @ts-ignore
-    setNodes[key] = new SetNode(setLeaf, gunInstance.get(key))
-  }
-
-  // @ts-ignore
-  return setNodes
 }

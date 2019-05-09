@@ -3,45 +3,14 @@ import flattenDeep from 'lodash/flattenDeep'
 import size from 'lodash/size'
 
 /**
+ * @typedef {import('./simple-typings').Schema} Schema
+ * @typedef {import('./simple-typings').Leaf} Leaf
  * @typedef {import('./simple-typings').LiteralLeaf} LiteralLeaf
  * @typedef {import('./simple-typings').Schema} SimpleSchema
- */
-
-/**
- * @template T
- * @typedef {import('./typings').SetNodes<T>} SetNodes
- */
-
-/**
- * @template T
- * @typedef {import('./typings').StringLeaf<T>} StringLeaf
- */
-
-/**
- * @template T
- * @typedef {import('./typings').NumberLeaf<T>} NumberLeaf
- */
-
-/**
- * @template T
- * @template RT
- * @typedef {import('./typings').ReferenceLeaf<T, RT>} ReferenceLeaf
- */
-
-/**
- * @template T
- * @typedef {import('./typings').SetLeaf<T>} SetLeaf
- */
-
-/**
- * @template T
- * @template RT
- * @typedef {import('./typings').Leaf<T, RT>} Leaf
- */
-
-/**
- * @template T
- * @typedef {import('./typings').Schema<T>} Schema
+ * @typedef {import('./simple-typings').EdgeLeaf} EdgeLeaf
+ * @typedef {import('./simple-typings').PrimitiveLeaf} PrimitiveLeaf
+ * @typedef {import('./simple-typings').SetLeaf} SetLeaf
+ * @typedef {import('./simple-typings').Response} Response
  */
 
 export {} // stop jsdoc comments from merging
@@ -87,9 +56,6 @@ export const reasonToString = reason => {
   return 'Unknown error'
 }
 
-/**
- * @template T
- */
 export class ErrorMap {
   constructor() {
     this.hasErrors = false
@@ -97,7 +63,6 @@ export class ErrorMap {
     /**
      * @type {Record<string, string[]>}
      */
-    // @ts-ignore
     this.map = {}
   }
 
@@ -120,8 +85,8 @@ export class ErrorMap {
 }
 
 /**
- * @param {import('./typings').PutResponse<{}>[]} responses
- * @returns {import('./typings').PutResponse<{}>}
+ * @param {Response[]} responses
+ * @returns {Response}
  */
 export const mergeResponses = (...responses) =>
   responses.reduce((finalRes, nextRes) => ({
@@ -131,10 +96,13 @@ export const mergeResponses = (...responses) =>
   }))
 
 /**
- * @param {Array<import('./typings').PutResponse<{}>['details']>} detailsObjects
- * @returns {import('./typings').PutResponse<{}>['details']}
+ * @param {Array<Response['details']>} detailsObjects
+ * @returns {Response['details']}
  */
 const _mergeResponseDetails = (...detailsObjects) => {
+  /**
+   * @type {Response['details']}
+   */
   const finalDetails = {}
 
   detailsObjects.forEach(dObj => {
@@ -163,12 +131,8 @@ export const isSchema = o => {
 }
 
 /**
- // @ts-ignore
- * @template T
- // @ts-ignore
- * @template RT
  * @param {any} leaf
- * @returns {leaf is Leaf<T, RT>}
+ * @returns {leaf is Leaf}
  */
 const isSchemaLeaf = leaf =>
   isEdgeLeaf(leaf) ||
@@ -177,10 +141,8 @@ const isSchemaLeaf = leaf =>
   isLiteralLeaf(leaf)
 
 /**
- * @template T
- * @template RT
  * @param {any} leaf
- * @returns {leaf is ReferenceLeaf<T, RT>}
+ * @returns {leaf is EdgeLeaf}
  */
 const isEdgeLeaf = leaf => {
   if (typeof leaf !== 'object') return false
@@ -220,9 +182,8 @@ export const isLiteralLeaf = leaf => {
 }
 
 /**
- * @template T
  * @param {any} leaf
- * @returns {leaf is NumberLeaf<T>|StringLeaf<T>}
+ * @returns {leaf is PrimitiveLeaf}
  */
 const isPrimitiveLeaf = leaf => {
   if (typeof leaf !== 'object') return false
@@ -233,9 +194,8 @@ const isPrimitiveLeaf = leaf => {
 }
 
 /**
- * @template T
  * @param {any} leaf
- * @returns {leaf is SetLeaf<T>}
+ * @returns {leaf is SetLeaf}
  */
 export const isSetLeaf = leaf => {
   if (typeof leaf !== 'object') return false
@@ -247,21 +207,21 @@ export const isSetLeaf = leaf => {
 }
 
 /**
- * @template T
- * @param {Schema<T>} schema
- * @returns {Record<keyof T, ReferenceLeaf<{}, {}>> }
+ * @param {Schema} schema
+ * @returns {Record<string, EdgeLeaf>}
  */
 export const getEdgeLeaves = schema => {
+  /**
+   * @type {Record<string, EdgeLeaf>}
+   */
   const o = {}
 
   for (const [key, leaf] of Object.entries(schema)) {
     if (isEdgeLeaf(leaf)) {
-      // @ts-ignore
       o[key] = leaf
     }
   }
 
-  // @ts-ignore
   return o
 }
 
@@ -297,32 +257,29 @@ export const extractLiteralLeafType = literalLeaf => {
 }
 
 /**
- * @template T
- * @param {Schema<T>} schema
- * @returns {Record<keyof T, StringLeaf<T> | NumberLeaf<T>>}
+ * @param {Schema} schema
+ * @returns {Record<string, PrimitiveLeaf>}
  */
 export const getPrimitiveLeaves = schema => {
+  /** @type {Record<string, PrimitiveLeaf>} */
   const o = {}
 
   for (const [key, leaf] of Object.entries(schema)) {
     if (isPrimitiveLeaf(leaf)) {
-      // @ts-ignore
       o[key] = leaf
     }
   }
 
-  // @ts-ignore
   return o
 }
 
 /**
- * @template T
- * @param {Schema<T>} schema
- * @returns {Record<keyof T, SetLeaf<any>>}
+ * @param {Schema} schema
+ * @returns {Record<string, SetLeaf>}
  */
 export const getSetLeaves = schema => {
   /**
-   * @type {Record<string, SetLeaf<any>>}
+   * @type {Record<string, SetLeaf>}
    */
   const o = {}
 
@@ -332,25 +289,24 @@ export const getSetLeaves = schema => {
     }
   }
 
-  // @ts-ignore
   return o
 }
 
 /**
- * @param {Schema<{}>} schema
- * @param {Record<string, number|string|null|object>} data
+ * @param {Schema} schema
+ * @param {any} data
  * @returns {boolean}
  */
 export const conformsToSchema = (schema, data) => {
+  if (data === null || typeof data === 'undefined') {
+    return false
+  }
+
   if (typeof data !== 'object') {
     return false
   }
 
   if (Array.isArray(data)) {
-    return false
-  }
-
-  if (data === null || typeof data === 'undefined') {
     return false
   }
 
@@ -390,15 +346,4 @@ export const conformsToSchema = (schema, data) => {
 
     return false
   })
-}
-
-export const isObject = any => {
-  if (typeof any !== 'object') return false
-  if (Array.isArray(any)) return false
-  if (any === null) return false
-  if (typeof any.__proto__ === 'undefined') return false
-  if (any.__proto__.constructor === String) return false
-  if (any.__proto__.constructor === Number) return false
-  if (any.__proto__.constructor === RegExp) return false
-  return true
 }

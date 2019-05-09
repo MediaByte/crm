@@ -1,67 +1,97 @@
 import { SCHEMA_NAME } from './Utils'
 import { Node as NodeInstance } from './Node'
 
+export interface Ack {
+  err: string | undefined
+}
+
+export type GunCallback = (ack: Ack) => void
+
+export type Primitive = boolean | string | number
+
+export type Literal = Record<string, Primitive | null>
+
+export type ValidPut = Record<string, Primitive | Literal | null>
+
+export type ValidSetPut = Record<
+  string,
+  Primitive | Literal | WrapperNode | null
+>
+
+export interface WrapperReferenceNode {
+  put(ref: WrapperNode | null): Promise<Response>
+}
+
+export interface WrapperSetNode {
+  currentData: Data
+  gunInstance: object
+
+  cachePut(data: Data): void
+
+  get(key: string): WrapperNode
+
+  set(data: ValidSetPut): Promise<SetResponse>
+}
+
 export interface WrapperNode {
-  currentData: Node
+  currentData: Data
+  gunInstance: object
   schema: Schema
+
+  get(key: string): WrapperReferenceNode | WrapperSetNode
+
+  put(data: ValidPut): Promise<Response>
+
+  on(listener: Listener): void
 }
 
-export interface Node {
-  [K: string]: ValidNodeValue
+export interface Data {
+  [K: string]: ValidDataValue
 }
 
-/**
- * A node value is passed in as undefined to the onChange function on initiation
- * through SetNode.set().
- */
-export type ValidNodeValue = number | string | null | boolean | Node
+export type ValidDataValue = Primitive | null | Data
 
-/**
- * The data type for the self parameter of the onChange() method for leafs.
- * A value for a prop is undefined when the data is being initialized through
- * `SetNode.set()`.
- */
-export interface SelfNode {
-  [K: string]: ValidNodeValue | undefined
-}
-
-/**
- *
- */
-export interface SetSelf {
-  [K: string]: Node
-}
+export type Listener = (data: Data) => void
 
 export type OnChangeReturn = Promise<undefined | string[] | void | boolean>
 
 export interface StringPrimitiveLeaf {
   type: 'string'
-  onChange(self: SelfNode, nextVal: string | null): OnChangeReturn
+  onChange(
+    self: Record<string, Data | undefined>,
+    nextVal: string | null,
+  ): OnChangeReturn
 }
 
 export interface NumberPrimitiveLeaf {
   type: 'number'
-  onChange(self: SelfNode, nextVal: number | null): OnChangeReturn
+  onChange(
+    self: Record<string, Data | undefined>,
+    nextVal: number | null,
+  ): OnChangeReturn
 }
 
 export interface BooleanPrimitiveLeaf {
   type: 'boolean'
-  onChange(self: SelfNode, nextVal: boolean | null): OnChangeReturn
+  onChange(
+    self: Record<string, Data | undefined>,
+    nextVal: boolean | null,
+  ): OnChangeReturn
 }
 
 export type PrimitiveLeaf =
-  | StringPrimitiveLeaf
-  | NumberPrimitiveLeaf
   | BooleanPrimitiveLeaf
+  | NumberPrimitiveLeaf
+  | StringPrimitiveLeaf
 
 export interface EdgeLeaf {
   type: Schema
-  onChange(self: SelfNode, nextVal: WrapperNode | null): OnChangeReturn
+  onChange(self: Data, nextVal: Data | null): OnChangeReturn
 }
 
 export interface LiteralLeaf {
   type: Record<string, Schema>
-  onChange(self: SelfNode, nextVal: Node | null): OnChangeReturn
+  onChange(self: Data, nextVal: Literal | null): OnChangeReturn
 }
 
 export interface SetLeaf {
@@ -71,8 +101,8 @@ export interface SetLeaf {
    */
   type: Array<Schema>
   onChange(
-    ownerNodeSelf: Node,
-    nextVal: Node,
+    ownerNodeSelf: Data,
+    nextVal: Data,
     key?: string | undefined,
   ): OnChangeReturn
 }
@@ -93,7 +123,7 @@ interface _OKSetResponse {
   ok: true
   messages: string[]
   details: Record<string, string[]>
-  reference: NodeInstance<{}>
+  reference: NodeInstance
 }
 
 interface _NonOKSetResponse {
@@ -103,7 +133,3 @@ interface _NonOKSetResponse {
 }
 
 export type SetResponse = _OKSetResponse | _NonOKSetResponse
-
-export interface ReferenceWrapperNode {
-  put(node: WrapperNode): Promise<Response>
-}
