@@ -41,8 +41,10 @@ const styles = theme => ({
   },
   leftActionButton: { position: 'absolute', left: -1 },
   newTitle: {
-    margin: '0 auto',
-    left: '70px',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    left: 0,
+    right: 0,
     position: 'absolute',
     width: '75%',
     fontWeight: 'bold',
