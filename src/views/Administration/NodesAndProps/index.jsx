@@ -1372,17 +1372,6 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
                             subheader={node.name}
                           />
                         </CardActionArea>
-                        <CardActions>
-                          <IconButton
-                            className={classes.toRight}
-                            onClick={e => {
-                              e.stopPropagation()
-                              this.editNodeFlowOnClickEditNode(id)
-                            }}
-                          >
-                            <EditOutlineIcon />
-                          </IconButton>
-                        </CardActions>
                       </Card>
                     </Grid>
                   )
@@ -1431,17 +1420,6 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
                           subheader={node.name}
                         />
                       </CardActionArea>
-                      <CardActions>
-                        <IconButton
-                          className={classes.toRight}
-                          onClick={e => {
-                            e.stopPropagation()
-                            this.editNodeFlowOnClickEditNode(id)
-                          }}
-                        >
-                          <HistoryOutlined />
-                        </IconButton>
-                      </CardActions>
                     </Card>
                   </Grid>
                 )
