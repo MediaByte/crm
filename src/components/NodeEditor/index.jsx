@@ -40,18 +40,11 @@ export default class NodeEditor extends React.PureComponent {
 
     return (
       <Grid
-        alignContent="center"
+        alignContent="stretch"
         container
         direction="column"
         justify="flex-start"
       >
-        <Grid item>
-          <Typography>
-            You can only change a node's label but not the name. The label is a
-            free form bla bla bla
-          </Typography>
-        </Grid>
-
         <List>
           <DrawerButton
             onClick={onClickLabel}
