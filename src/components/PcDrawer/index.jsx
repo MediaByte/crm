@@ -123,7 +123,7 @@ class PcDrawer extends React.PureComponent {
         open={open}
       >
         <Grid container direction="column">
-          <AppBar position="static">
+          <AppBar position="sticky">
             <Toolbar>
               <Grid container justify="space-between" alignItems="center">
                 <Grid item xs>
