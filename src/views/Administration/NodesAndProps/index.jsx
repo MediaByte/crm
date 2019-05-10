@@ -334,7 +334,7 @@ class NodesAndProps extends React.Component {
 
       nodes.forEach(node => {
         if (node.name === nextNameValue) {
-          err = 'There already exists a node with this name'
+          err = 'There is already a node with this name'
         }
       })
 

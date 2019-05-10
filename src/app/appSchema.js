@@ -316,6 +316,8 @@ const Node = {
         return errors
       }
 
+      // 'There is already a node with this name'
+
       return false
     },
   },
