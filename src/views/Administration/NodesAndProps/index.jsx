@@ -116,11 +116,6 @@ const INITIAL_EDIT_NODE_FLOW = {
  * @param {import('@material-ui/core/styles').Theme} theme
  */
 const styles = theme => ({
-  addButton: {
-    bottom: '55px',
-    position: 'absolute',
-    right: '50px',
-  },
   toRight: {
     marginLeft: 'auto',
   },
@@ -248,6 +243,29 @@ class NodesAndProps extends React.Component {
     snackbarMessage: null,
   }
 
+  /*
+        db         88888888ba,    88888888ba,       888b      88    ,ad8888ba,    88888888ba,    88888888888  
+       d88b        88      `"8b   88      `"8b      8888b     88   d8"'    `"8b   88      `"8b   88           
+      d8'`8b       88        `8b  88        `8b     88 `8b    88  d8'        `8b  88        `8b  88                 d8'  `8b      88         88  88         88     88  `8b   88  88          88  88         88  88aaaaa      
+    d8YaaaaY8b     88         88  88         88     88   `8b  88  88          88  88         88  88"""""      
+   d8""""""""8b    88         8P  88         8P     88    `8b 88  Y8,        ,8P  88         8P  88           
+  d8'        `8b   88      .a8P   88      .a8P      88     `8888   Y8a.    .a8P   88      .a8P   88           
+ d8'          `8b  88888888Y"'    88888888Y"'       88      `888    `"Y8888Y"'    88888888Y"'    88888888888  
+*/
+
+  /**
+   * @private
+   */
+  addNodeFlowToggleDialog = () => {
+    this.setState(({ addNodeFlow }) => ({
+      addNodeFlow: {
+        ...INITIAL_ADD_NODE_FLOW,
+        showingAddNodeDialog: !addNodeFlow.showingAddNodeDialog,
+      },
+      addNodeFormData: BLANK_ADD_NODE_FORM_DATA,
+    }))
+  }
+
   /**
    * @private
    * @param {string} nextLabelValue
@@ -329,6 +347,15 @@ class NodesAndProps extends React.Component {
       }
     })
   }
+
+  /*
+       db         88888888ba,    88888888ba,       88888888ba   88888888ba     ,ad8888ba,    88888888ba   
+      d88b        88      `"8b   88      `"8b      88      "8b  88      "8b   d8"'    `"8b   88      "8b
+    d8'  `8b      88         88  88         88     88aaaaaa8P'  88aaaaaa8P'  88          88  88aaaaaa8P'
+   d8YaaaaY8b     88         88  88         88     88""""""'    88""""88'    88          88  88""""""'  
+ d8'        `8b   88      .a8P   88      .a8P      88           88     `8b    Y8a.    .a8P   88           
+d8'          `8b  88888888Y"'    88888888Y"'       88           88      `8b    `"Y8888Y"'    88           
+*/
 
   /**
    * @private
@@ -1301,52 +1328,62 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
 
         <Page titleText="Nodes And Properties">
           <div className={classes.root}>
-            <Grid container className={classes.nodesContainer}>
-              {activeNodes.map(([id, node]) => {
-                const Icon = nameToIconMap[node.iconName]
+            <div>
+              <Grid container className={classes.nodesContainer} spacing={24}>
+                {activeNodes.map(([id, node]) => {
+                  const Icon = nameToIconMap[node.iconName]
 
-                return (
-                  <Grid
-                    className={classes.pointerCursor}
-                    item
-                    xs={12}
-                    md={3}
-                    key={id}
-                    // TODO: fix callback in render()
-                    onClick={() => {
-                      this.onClickNode(id)
-                    }}
-                  >
-                    <Card>
-                      <CardActionArea>
-                        <CardHeader
-                          avatar={
-                            Icon && (
-                              <Avatar aria-label="icon">
-                                <Icon.outlined />
-                              </Avatar>
-                            )
-                          }
-                          title={node.label}
-                          subheader={node.name}
-                        />
-                      </CardActionArea>
-                      <CardActions>
-                        <IconButton
-                          className={classes.toRight}
-                          onClick={e => {
-                            e.stopPropagation()
-                            this.editNodeFlowOnClickEditNode(id)
-                          }}
-                        >
-                          <EditOutlineIcon />
-                        </IconButton>
-                      </CardActions>
-                    </Card>
-                  </Grid>
-                )
-              })}
-            </Grid>
+                  return (
+                    <Grid
+                      className={classes.pointerCursor}
+                      item
+                      xs={12}
+                      sm={6}
+                      md={3}
+                      key={id}
+                      // TODO: fix callback in render()
+                      onClick={() => {
+                        this.onClickNode(id)
+                      }}
+                    >
+                      <Card>
+                        <CardActionArea>
+                          <CardHeader
+                            avatar={
+                              Icon && (
+                                <Avatar aria-label="icon">
+                                  <Icon.outlined />
+                                </Avatar>
+                              )
+                            }
+                            title={node.label}
+                            subheader={node.name}
+                          />
+                        </CardActionArea>
+                        <CardActions>
+                          <IconButton
+                            className={classes.toRight}
+                            onClick={e => {
+                              e.stopPropagation()
+                              this.editNodeFlowOnClickEditNode(id)
+                            }}
+                          >
+                            <EditOutlineIcon />
+                          </IconButton>
+                        </CardActions>
+                      </Card>
+                    </Grid>
+                  )
+                })}
+              </Grid>
+
+              <IconButton
+                onClick={this.addNodeFlowToggleDialog}
+                aria-label="Plus"
+              >
+                <AddCircleOutline fontSize="small" color="primary" />
+              </IconButton>
+            </div>
 
             {unusedNodes.length > 0 && (
               <Typography variant="subtitle1">UNUSED NODES</Typography>
@@ -1398,22 +1435,6 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
                 )
               })}
             </Grid>
-
-            <IconButton
-              className={classes.addButton}
-              onClick={() => {
-                this.setState(() => ({
-                  addNodeFlow: {
-                    // TODO FIX THIS
-                    ...this.state.addNodeFlow,
-                    showingAddNodeDialog: true,
-                  },
-                }))
-              }}
-              aria-label="Plus"
-            >
-              <AddCircleOutline fontSize="small" color="primary" />
-            </IconButton>
           </div>
         </Page>
       </React.Fragment>
