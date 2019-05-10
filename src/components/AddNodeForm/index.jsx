@@ -108,6 +108,7 @@ class AddNodeForm extends React.PureComponent {
         spacing={8}
       >
         <TextField
+          autoFocus
           error={!!currentNameErrorMessage}
           disabled={disableNameInput}
           InputProps={nameFieldInputProps}
