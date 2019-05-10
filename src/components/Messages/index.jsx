@@ -12,13 +12,6 @@ const styles = theme => ({
   message: {
     color: theme.palette.error.dark,
   },
-  messages: {
-    backgroundColor: theme.palette.error.light,
-    border: 'solid',
-    borderColor: theme.palette.error.dark,
-    borderSize: '1px',
-    borderRadius: 2,
-  },
   messagesList: { listStyleType: 'circle' },
 })
 
@@ -32,7 +25,7 @@ const styles = theme => ({
  * @type {React.SFC<Props>}
  */
 const Messages = ({ classes, messages }) => (
-  <Grid container className={classes.messages} spacing={8}>
+  <Grid container spacing={8}>
     <ul className={classes.messagesList}>
       {messages.map(err => (
         <li>
