@@ -140,6 +140,10 @@ const styles = theme => ({
   listItem: {
     paddingLeft: '15px',
   },
+  nodeEditorContainer: {
+    paddingLeft: theme.spacing.unit * 2,
+    paddingRight: theme.spacing.unit * 2,
+  },
   pointerCursor: {
     cursor: 'pointer',
   },
@@ -1221,18 +1225,20 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
             title="Editing Node"
           >
             {!editNodeFlow.editingIcon && !editNodeFlow.editingLabel && (
-              <NodeEditor
-                onClickDeactivate={this.editNodeFlowToggleDeactivate}
-                onClickIcon={this.editNodeFlowOnClickIconBtn}
-                onClickLabel={this.editNodeFlowOnClickLabel}
-                onClickReactivate={this.editNodeFlowToggleReactivate}
-                icon={
-                  nameToIconMap[nodes[editNodeFlow.editingNodeID].iconName]
-                    .outlined
-                }
-                isNodeActive={nodes[editNodeFlow.editingNodeID].active}
-                label={nodes[editNodeFlow.editingNodeID].label}
-              />
+              <div className={classes.nodeEditorContainer}>
+                <NodeEditor
+                  onClickDeactivate={this.editNodeFlowToggleDeactivate}
+                  onClickIcon={this.editNodeFlowOnClickIconBtn}
+                  onClickLabel={this.editNodeFlowOnClickLabel}
+                  onClickReactivate={this.editNodeFlowToggleReactivate}
+                  icon={
+                    nameToIconMap[nodes[editNodeFlow.editingNodeID].iconName]
+                      .outlined
+                  }
+                  isNodeActive={nodes[editNodeFlow.editingNodeID].active}
+                  label={nodes[editNodeFlow.editingNodeID].label}
+                />
+              </div>
             )}
 
             {editNodeFlow.editingIcon && (
