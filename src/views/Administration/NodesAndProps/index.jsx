@@ -65,7 +65,7 @@ time to propagate to employees, and those who are currently offline wont be \
 able to add records to the node until they become online again.'
 
 const AVAILABLE_ICONS = Object.values(nameToIconMap).map(
-  iconTriple => iconTriple.filled,
+  iconTriple => iconTriple.outlined,
 )
 const AVAILABLE_ICON_NAMES = Object.keys(nameToIconMap)
 
