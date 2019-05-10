@@ -301,7 +301,7 @@ class NodesAndProps extends React.Component {
       /**
        * @type {string}
        */
-      let err
+      let err = ''
 
       nextNameValue = toUpper(nextNameValue)
 
