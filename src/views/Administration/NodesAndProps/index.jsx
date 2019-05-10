@@ -1218,12 +1218,11 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
                   disableLabelInput={addNodeFlow.savingNode}
                   disableNameInput={addNodeFlow.savingNode}
                 />
-                
+
                 {addNodeFormData.messagesIfError && (
                   <div style={{ marginTop: '20px' }}>
                     <Messages messages={addNodeFormData.messagesIfError} />
                   </div>
-                  
                 )}
               </React.Fragment>
             )}
@@ -1289,8 +1288,11 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
 
             {editNodeFlow.editingLabel && (
               <TextField
+                autoFocus
                 onChange={this.editNodeFlowOnChangeLabelTextField}
                 value={editNodeFlow.editingLabelCurrentValue}
+                type="search"
+                variant="outlined"
               />
             )}
           </PcDrawer>
