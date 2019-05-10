@@ -48,6 +48,21 @@ import {
  * @typedef {import('app/typings').PropertyType} PropType
  */
 
+const DEACTIVATING_NODE_EXPLANATION_TEXT =
+  'Deactivating a node prevents \
+adding new records to it, either by you or other employees. Properties and \
+relationships can still be edited. Please note, due to the nature of the app \
+(offline first) this change can take some time to propagate to employees, and \
+those who are currently offline will be able to add records to the node until \
+they become online again.'
+
+const REACTIVATING_NODE_EXPLANATION_TEXT =
+  'Reactivating a node allows for \
+records to be added to it again, either by you or other employees. Please \
+note, due to the nature of the app (offline first) this change can take some \
+time to propagate to employees, and those who are currently offline wont be \
+able to add records to the node until they become online again.'
+
 const AVAILABLE_ICONS = Object.values(nameToIconMap).map(
   iconTriple => iconTriple.filled,
 )
@@ -566,7 +581,6 @@ class NodesAndProps extends React.Component {
       },
     }))
   }
-
 
   editNodeFlowOnClickConfirmDeactivate = () => {
     nodesNode
@@ -1247,7 +1261,7 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
           onClickRightActionButton={this.editNodeFlowOnClickConfirmDeactivate}
           rightActionButtonColorRed
         >
-          here longer information about what deactivating a node entails
+          {DEACTIVATING_NODE_EXPLANATION_TEXT}
         </Dialog>
 
         <Dialog
@@ -1259,7 +1273,7 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
           onClickRightActionButton={this.editNodeFlowOnClickConfirmReactivate}
           rightActionButtonColorPrimary
         >
-          here longer information about what REACTIVATING a node entails
+          {REACTIVATING_NODE_EXPLANATION_TEXT}
         </Dialog>
 
         {/*
