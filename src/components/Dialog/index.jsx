@@ -33,6 +33,12 @@ const styles = theme => ({
     top: 0,
     zIndex: 10,
   },
+  container: {
+    paddingBottom: '20px',
+    paddingLeft: '10px',
+    paddingRight: '10px',
+    paddingTop: '20px',
+  },
   leftActionButton: { position: 'absolute', left: -1 },
   newTitle: {
     margin: '0 auto',
@@ -227,7 +233,9 @@ class Dialog extends React.PureComponent {
               </Toolbar>
             </AppBar>
           </div>
-          <DialogContent>{children}</DialogContent>
+          <DialogContent>
+            <div className={classes.container}>{children}</div>
+          </DialogContent>
         </React.Fragment>
       </MuiDialog>
     )
