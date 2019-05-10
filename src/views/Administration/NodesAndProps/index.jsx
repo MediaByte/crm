@@ -1050,6 +1050,11 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
         ? null
         : AVAILABLE_ICON_NAMES.indexOf(editNodeFlow.currentlySelectedIconName)
 
+    const activeNodes = Object.entries(nodes).filter(([_, node]) => node.active)
+    const unusedNodes = Object.entries(nodes).filter(
+      ([_, node]) => !node.active,
+    )
+
     return (
       <React.Fragment>
         <Snackbar
@@ -1297,75 +1302,101 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
         <Page titleText="Nodes And Properties">
           <div className={classes.root}>
             <Grid container className={classes.nodesContainer}>
-              {Object.entries(nodes).map(([id, node]) => (
-                <Grid
-                  className={classes.pointerCursor}
-                  item
-                  xs={12}
-                  md={3}
-                  key={id}
-                  // TODO: fix callback in render()
-                  onClick={() => {
-                    this.onClickNode(id)
-                  }}
-                >
-                  <Card>
-                    <CardActionArea>
-                      <CardHeader
-                        avatar={
-                          <Avatar aria-label="icon">
-                            <EditOutlineIcon />
-                          </Avatar>
-                        }
-                        title={node.label}
-                        subheader={node.name}
-                      />
-                    </CardActionArea>
-                    <CardActions>
-                      <IconButton className={classes.toRight}>
-                        <EditOutlineIcon />
-                      </IconButton>
-                    </CardActions>
-                  </Card>
-                </Grid>
-              ))}
+              {activeNodes.map(([id, node]) => {
+                const Icon = nameToIconMap[node.iconName]
+
+                return (
+                  <Grid
+                    className={classes.pointerCursor}
+                    item
+                    xs={12}
+                    md={3}
+                    key={id}
+                    // TODO: fix callback in render()
+                    onClick={() => {
+                      this.onClickNode(id)
+                    }}
+                  >
+                    <Card>
+                      <CardActionArea>
+                        <CardHeader
+                          avatar={
+                            Icon && (
+                              <Avatar aria-label="icon">
+                                <Icon.outlined />
+                              </Avatar>
+                            )
+                          }
+                          title={node.label}
+                          subheader={node.name}
+                        />
+                      </CardActionArea>
+                      <CardActions>
+                        <IconButton
+                          className={classes.toRight}
+                          onClick={e => {
+                            e.stopPropagation()
+                            this.editNodeFlowOnClickEditNode(id)
+                          }}
+                        >
+                          <EditOutlineIcon />
+                        </IconButton>
+                      </CardActions>
+                    </Card>
+                  </Grid>
+                )
+              })}
             </Grid>
 
-            <Typography variant="subtitle1">UNUSED NODES</Typography>
+            {unusedNodes.length > 0 && (
+              <Typography variant="subtitle1">UNUSED NODES</Typography>
+            )}
 
             <Grid container className={classes.nodesContainer}>
-              {Object.entries(nodes).map(([id, node]) => (
-                <Grid
-                  className={classes.pointerCursor}
-                  item
-                  xs={12}
-                  md={3}
-                  key={id}
-                  // TODO: fix callback in render()
-                  onClick={() => {
-                    this.onClickNode(id)
-                  }}
-                >
-                  <Card>
-                    <CardActionArea>
-                      <CardHeader
-                        avatar={
-                          <Avatar aria-label="icon">
-                            <EditOutlineIcon />
-                          </Avatar>
-                        }
-                        title={node.label}
-                        subheader={node.name}
-                      />
-                    </CardActionArea>
-                    <CardActions>
-                      <IconButton className={classes.toRight}>
-                        <HistoryOutlined />
-                      </IconButton>
-                    </CardActions>
-                  </Card>
-                </Grid>
-              ))}
+              {unusedNodes.map(([id, node]) => {
+                const Icon = nameToIconMap[node.iconName]
+
+                return (
+                  <Grid
+                    className={classes.pointerCursor}
+                    item
+                    xs={12}
+                    md={3}
+                    key={id}
+                    // TODO: fix callback in render()
+                    onClick={() => {
+                      this.onClickNode(id)
+                    }}
+                  >
+                    <Card>
+                      <CardActionArea>
+                        <CardHeader
+                          avatar={
+                            Icon && (
+                              <Avatar aria-label="icon">
+                                <Icon.outlined />
+                              </Avatar>
+                            )
+                          }
+                          title={node.label}
+                          subheader={node.name}
+                        />
+                      </CardActionArea>
+                      <CardActions>
+                        <IconButton
+                          className={classes.toRight}
+                          onClick={e => {
+                            e.stopPropagation()
+                            this.editNodeFlowOnClickEditNode(id)
+                          }}
+                        >
+                          <HistoryOutlined />
+                        </IconButton>
+                      </CardActions>
+                    </Card>
+                  </Grid>
+                )
+              })}
             </Grid>
 
             <IconButton
