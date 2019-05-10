@@ -15,6 +15,10 @@ import ChevronLeft from '@material-ui/icons/ChevronLeft'
  * @param {import('@material-ui/core/styles').Theme} theme
  */
 const styles = theme => ({
+  container: {
+    flex: 1,
+    marginTop: theme.spacing.unit * 3,
+  },
   drawerWidth: {
     [theme.breakpoints.down('xs')]: {
       width: '100vw',
@@ -25,6 +29,9 @@ const styles = theme => ({
   },
   menuButton: {
     color: '#fff',
+  },
+  spacer: {
+    height: theme.spacing.unit * 5,
   },
   title: {
     color: '#fff',
@@ -144,6 +151,8 @@ class PcDrawer extends React.PureComponent {
               </Grid>
             </Toolbar>
           </AppBar>
+          {/* HACK */}
+          <div className={classes.spacer} />
           {children}
         </Grid>
       </Drawer>
