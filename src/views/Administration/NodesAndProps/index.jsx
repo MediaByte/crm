@@ -46,6 +46,7 @@ import { AddCircleOutline, HistoryOutlined } from '@material-ui/icons'
  * @typedef {import('app/gun-wrapper/SetNode').default} SetNode
  * @typedef {import('app/typings').Node} Node
  * @typedef {import('app/typings').PropertyType} PropType
+ * @typedef {import('app/gun-wrapper/simple-typings').WrapperSetNode} WrapperSetNode
  */
 
 const DEACTIVATING_NODE_EXPLANATION_TEXT =
@@ -444,9 +445,13 @@ class NodesAndProps extends React.Component {
     const propTypeNode = (() => {
       let key
 
-      for (const [propTypeKey, propType] of Object.entries(
+      for (const [propTypeKey, pt] of Object.entries(
         propTypesNode.currentData,
       )) {
+        /** @type {PropType} */
+        // @ts-ignore CAST & ignore: TS wants me to convert to unknown first etc
+        const propType = pt
+
         if (propType.name === addPropFlow.typeValue) {
           key = propTypeKey
           break
@@ -462,12 +467,9 @@ class NodesAndProps extends React.Component {
       return propTypesNode.get(/** @type {string} */ (key))
     })()
 
-    /**
-     * @type {SetNode}
-     */
     const propDefs = nodesNode
       .get(/** @type {string} */ (selectedNodeID))
-      .get('propDefs')
+      .getSet('propDefs')
 
     propDefs
       .set({
@@ -762,7 +764,9 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
 */
 
   componentDidMount() {
+    // @ts-ignore
     nodesNode.on(this.onNodesUpdate)
+    // @ts-ignore
     propTypesNode.on(this.onPropTypesUpdate)
   }
 
@@ -785,7 +789,9 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
   }
 
   componentWillUnmount() {
+    // @ts-ignore
     nodesNode.off(this.onNodesUpdate)
+    // @ts-ignore
     propTypesNode.off(this.onPropTypesUpdate)
   }
 
