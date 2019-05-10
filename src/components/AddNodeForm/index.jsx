@@ -105,6 +105,7 @@ class AddNodeForm extends React.PureComponent {
         direction="column"
         justify="center"
         style={bodyDialogAddNode}
+        spacing={8}
       >
         <TextField
           error={!!currentNameErrorMessage}
