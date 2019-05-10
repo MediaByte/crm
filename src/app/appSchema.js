@@ -293,6 +293,10 @@ const RelDef = {
  */
 const Node = {
   [Utils.SCHEMA_NAME]: 'Node',
+  active: {
+    type: 'boolean',
+    onChange: BuiltIn.nonNullableOnChange,
+  },
   name: {
     type: 'string',
     async onChange(_, nextVal) {

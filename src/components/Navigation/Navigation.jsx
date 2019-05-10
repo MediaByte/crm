@@ -1,5 +1,4 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 //npm package for concatenating classes
 import classNames from 'classnames'
 //react router
@@ -499,10 +498,6 @@ class Navigation extends React.Component {
   }
 }
 
-Navigation.propTypes = {
-  classes: PropTypes.object.isRequired,
-  theme: PropTypes.object.isRequired,
-}
 /**
  * @typedef {keyof ReturnType<typeof navStyles>} ClassNames
  * @typedef {Record<ClassNames, string>} Classes

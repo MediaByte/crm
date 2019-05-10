@@ -10,6 +10,8 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import ListItemText from '@material-ui/core/ListItemText'
 import Snackbar from '@material-ui/core/Snackbar'
+import TextField from '@material-ui/core/TextField'
+import Typography from '@material-ui/core/Typography'
 import { withStyles } from '@material-ui/core/styles'
 
 import AddIcon from '@material-ui/icons/Add'
@@ -22,6 +24,7 @@ import AddPropForm from 'components/AddPropForm'
 import Dialog from 'components/Dialog'
 import IconSelector from 'components/IconSelector'
 import Messages from 'components/Messages'
+import NodeEditor from 'components/NodeEditor'
 import OverlaySpinner from 'components/OverlaySpinner'
 import Page from 'views/Page/Page.jsx'
 import PcDrawer from 'components/PcDrawer'
@@ -38,11 +41,27 @@ import {
   Node as NodeValidator,
   PropDef as PropDefValidator,
 } from 'app/validators'
+
 /**
  * @typedef {import('app/gun-wrapper/SetNode').default} SetNode
  * @typedef {import('app/typings').Node} Node
  * @typedef {import('app/typings').PropertyType} PropType
  */
+
+const DEACTIVATING_NODE_EXPLANATION_TEXT =
+  'Deactivating a node prevents \
+adding new records to it, either by you or other employees. Properties and \
+relationships can still be edited. Please note, due to the nature of the app \
+(offline first) this change can take some time to propagate to employees, and \
+those who are currently offline will be able to add records to the node until \
+they become online again.'
+
+const REACTIVATING_NODE_EXPLANATION_TEXT =
+  'Reactivating a node allows for \
+records to be added to it again, either by you or other employees. Please \
+note, due to the nature of the app (offline first) this change can take some \
+time to propagate to employees, and those who are currently offline wont be \
+able to add records to the node until they become online again.'
 
 const AVAILABLE_ICONS = Object.values(nameToIconMap).map(
   iconTriple => iconTriple.filled,
@@ -80,6 +99,17 @@ const INITIAL_ADD_PROP_FLOW = Object.freeze({
   saving: false,
   selectingIcon: false,
 })
+
+/** @type {EditNodeFlow} */
+const INITIAL_EDIT_NODE_FLOW = {
+  currentlySelectedIconName: null,
+  deactivating: false,
+  editingIcon: false,
+  editingLabel: false,
+  editingLabelCurrentValue: '',
+  editingNodeID: null,
+  reactivating: false,
+}
 
 /**
  * @param {import('@material-ui/core/styles').Theme} theme
@@ -169,13 +199,23 @@ const styles = theme => ({
  */
 
 /**
+ * @typedef {object} EditNodeFlow
+ * @prop {string|null} currentlySelectedIconName
+ * @prop {boolean} deactivating
+ * @prop {boolean} editingIcon
+ * @prop {boolean} editingLabel
+ * @prop {string} editingLabelCurrentValue
+ * @prop {string|null} editingNodeID Non-null when editing a node's icon or
+ * label, etc.
+ * @prop {boolean} reactivating
+ */
+
+/**
  * @typedef {object} State
  * @prop {AddNodeFlow} addNodeFlow
  * @prop {AddPropFlow} addPropFlow
  * @prop {AddNodeFormData} addNodeFormData
- * @prop {string|null} deactivatingNodeID
- * @prop {string|null} editingNodeID Non-null when editing a node's icon or
- * label.
+ * @prop {EditNodeFlow} editNodeFlow (Optional)
  * @prop {Record<string, Node>} nodes
  * @prop {Record<string, PropType>} propTypes
  * @prop {string|null} selectedNodeID Non-null when editing a node's property
@@ -199,8 +239,7 @@ class NodesAndProps extends React.Component {
     },
     addPropFlow: INITIAL_ADD_PROP_FLOW,
     addNodeFormData: BLANK_ADD_NODE_FORM_DATA,
-    deactivatingNodeID: null,
-    editingNodeID: null,
+    editNodeFlow: INITIAL_EDIT_NODE_FLOW,
     nodes: {},
     propTypes: {},
     selectedNodeID: null,
@@ -517,6 +556,212 @@ class NodesAndProps extends React.Component {
     })
   }
 
+  /*
+88888888888  88888888ba,    88  888888888888     888b      88    ,ad8888ba,    88888888ba,    88888888888                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+88           88      `"8b   88       88          8888b     88   d8"'    `"8b   88      `"8b   88
+88           88        `8b  88       88          88 `8b    88  d8'        `8b  88        `8b  88
+88aaaaa      88         88  88       88          88  `8b   88  88          88  88         88  88aaaaa                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+88"""""      88         88  88       88          88   `8b  88  88          88  88         88  88"""""                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+88           88         8P  88       88          88    `8b 88  Y8,        ,8P  88         8P  88                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+88           88      .a8P   88       88          88     `8888   Y8a.    .a8P   88      .a8P   88                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+88888888888  88888888Y"'    88       88          88      `888    `"Y8888Y"'    88888888Y"'    88888888888
+*/
+
+  /**
+   * @type {import('@material-ui/core/TextField').TextFieldProps['onChange']}
+   */
+  editNodeFlowOnChangeLabelTextField = e => {
+    // @ts-ignore
+    const editingLabelCurrentValue = e.target.value
+
+    this.setState(({ editNodeFlow }) => ({
+      editNodeFlow: {
+        ...editNodeFlow,
+        editingLabelCurrentValue,
+      },
+    }))
+  }
+
+  editNodeFlowOnClickConfirmDeactivate = () => {
+    nodesNode
+      .get(/** @type {string} */ (this.state.editNodeFlow.editingNodeID))
+      .put({
+        active: false,
+      })
+      .then(res => {
+        console.log(res)
+      })
+
+    this.setState({
+      editNodeFlow: INITIAL_EDIT_NODE_FLOW,
+    })
+  }
+
+  editNodeFlowOnClickConfirmReactivate = () => {
+    nodesNode
+      .get(/** @type {string} */ (this.state.editNodeFlow.editingNodeID))
+      .put({
+        active: true,
+      })
+      .then(res => {
+        console.log(res)
+      })
+
+    this.setState({
+      editNodeFlow: INITIAL_EDIT_NODE_FLOW,
+    })
+  }
+
+  editNodeFlowOnClickDrawerBtnLeft = () => {
+    this.setState(({ editNodeFlow }) => {
+      if (editNodeFlow.editingIcon) {
+        return {
+          editNodeFlow: {
+            ...editNodeFlow,
+            currentlySelectedIconName: null,
+            editingIcon: false,
+          },
+        }
+      }
+
+      if (editNodeFlow.editingLabel) {
+        return {
+          editNodeFlow: {
+            ...editNodeFlow,
+            editingLabel: false,
+          },
+        }
+      }
+
+      return {
+        editNodeFlow: INITIAL_EDIT_NODE_FLOW,
+      }
+    })
+  }
+
+  editNodeFlowOnClickDrawerBtnRight = () => {
+    const { editNodeFlow } = this.state
+
+    if (editNodeFlow.editingLabel) {
+      nodesNode
+        .get(/** @type {string} */ (editNodeFlow.editingNodeID))
+        .put({
+          label: editNodeFlow.editingLabelCurrentValue,
+        })
+        .then(res => {
+          console.log(res)
+        })
+
+      this.setState(({ editNodeFlow }) => ({
+        editNodeFlow: {
+          ...editNodeFlow,
+          editingLabel: false,
+        },
+      }))
+    }
+
+    if (editNodeFlow.editingIcon) {
+      const { editNodeFlow } = this.state
+
+      nodesNode
+        .get(/** @type {string} */ (editNodeFlow.editingNodeID))
+        .put({
+          iconName:
+            /** @type {string} */ (editNodeFlow.currentlySelectedIconName),
+        })
+        .then(res => {
+          console.log(res)
+        })
+
+      this.setState(({ editNodeFlow }) => ({
+        editNodeFlow: {
+          ...editNodeFlow,
+          editingIcon: false,
+        },
+      }))
+    }
+  }
+
+  /**
+   * @param {string} id
+   */
+  editNodeFlowOnClickEditNode = id => {
+    this.setState(({ editNodeFlow }) => ({
+      editNodeFlow: {
+        ...editNodeFlow,
+        editingNodeID: id,
+      },
+    }))
+  }
+
+  /**
+   * @param {number} idx
+   */
+  editNodeFlowOnClickIcon = idx => {
+    this.setState(({ editNodeFlow }) => ({
+      editNodeFlow: {
+        ...editNodeFlow,
+        currentlySelectedIconName:
+          editNodeFlow.currentlySelectedIconName === AVAILABLE_ICON_NAMES[idx]
+            ? null
+            : AVAILABLE_ICON_NAMES[idx],
+      },
+    }))
+  }
+
+  editNodeFlowOnClickIconBtn = () => {
+    this.setState(({ editNodeFlow, nodes }) => ({
+      editNodeFlow: {
+        ...editNodeFlow,
+        currentlySelectedIconName:
+          nodes[/** @type {string} */ (editNodeFlow.editingNodeID)].iconName,
+        editingIcon: true,
+      },
+    }))
+  }
+
+  editNodeFlowOnClickLabel = () => {
+    this.setState(({ editNodeFlow, nodes }) => ({
+      editNodeFlow: {
+        ...editNodeFlow,
+        editingLabelCurrentValue:
+          nodes[/** @type {string} */ (editNodeFlow.editingNodeID)].label,
+        editingLabel: true,
+      },
+    }))
+  }
+
+  editNodeFlowToggleDeactivate = () => {
+    this.setState(({ editNodeFlow }) => ({
+      editNodeFlow: {
+        ...editNodeFlow,
+        deactivating: !editNodeFlow.deactivating,
+      },
+    }))
+  }
+
+  editNodeFlowToggleReactivate = () => {
+    this.setState(({ editNodeFlow }) => ({
+      editNodeFlow: {
+        ...editNodeFlow,
+        reactivating: !editNodeFlow.reactivating,
+      },
+    }))
+  }
+
+  /*
+                        88                                              88                       88                                       
+                        88                                              ""                ,d     ""                                       
+                        88                                                                88                                              
+,adPPYba,  88       88  88,dPPYba,   ,adPPYba,   ,adPPYba,  8b,dPPYba,  88  8b,dPPYba,  MM88MMM  88   ,adPPYba,   8b,dPPYba,   ,adPPYba,  
+I8[    ""  88       88  88P'    "8a  I8[    ""  a8"     ""  88P'   "Y8  88  88P'    "8a   88     88  a8"     "8a  88P'   `"8a  I8[    ""  
+ `"Y8ba,   88       88  88       d8   `"Y8ba,   8b          88          88  88       d8   88     88  8b       d8  88       88   `"Y8ba,   
+aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,   ,a8"   88,    88  "8a,   ,a8"  88       88  aa    ]8I  
+`"YbbdP"'   `"YbbdP'Y8  8Y"Ybbd8"'   `"YbbdP"'   `"Ybbd8"'  88          88  88`YbbdP"'    "Y888  88   `"YbbdP"'   88       88  `"YbbdP"'  
+                                                                            88                                                            
+                                                                            88                                                            
+*/
+
   componentDidMount() {
     nodesNode.on(this.onNodesUpdate)
     propTypesNode.on(this.onPropTypesUpdate)
@@ -540,16 +785,15 @@ class NodesAndProps extends React.Component {
     })
   }
 
+  componentWillUnmount() {
+    nodesNode.off(this.onNodesUpdate)
+    propTypesNode.off(this.onPropTypesUpdate)
+  }
+
   closeSnackbar = () => {
     this.setState({
       snackbarMessage: null,
     })
-  }
-
-  /** @private */
-  componentWillUnmount() {
-    nodesNode.off(this.onNodesUpdate)
-    propTypesNode.off(this.onPropTypesUpdate)
   }
 
   /** @private */
@@ -592,44 +836,6 @@ class NodesAndProps extends React.Component {
     }))
   }
 
-  /**
-   * @private
-   * @param {string} id
-   */
-  editNode = id => {
-    this.setState({
-      editingNodeID: id,
-    })
-  }
-
-  /**
-   * @private
-   */
-  stopEditingNode = () => {
-    this.setState({
-      editingNodeID: null,
-    })
-  }
-
-  /**
-   * @private
-   * @param {string} id
-   */
-  deactivateNode = id => {
-    this.setState({
-      deactivatingNodeID: id,
-    })
-  }
-
-  /**
-   * @private
-   */
-  stopDeactivatingNode = () => {
-    this.setState({
-      deactivatingNodeID: null,
-    })
-  }
-
   /** @private */
   handleClosePropsDrawer = () => {
     this.setState({
@@ -667,6 +873,7 @@ class NodesAndProps extends React.Component {
             iconName: addNodeFlow.currentlySelectedIconName,
             label: addNodeFormData.currentLabelValue,
             name: addNodeFormData.currentNameValue,
+            active: true,
           })
           .then(res => {
             if (res.ok) {
@@ -807,8 +1014,7 @@ class NodesAndProps extends React.Component {
       addNodeFlow,
       addPropFlow,
       addNodeFormData,
-      editingNodeID,
-      deactivatingNodeID,
+      editNodeFlow,
       nodes,
       propTypes,
       selectedNodeID,
@@ -834,6 +1040,11 @@ class NodesAndProps extends React.Component {
         ? null
         : AVAILABLE_ICON_NAMES.indexOf(addPropFlow.currentlySelectedIconName)
 
+    const editNodeFlowSelectedIconIdx =
+      editNodeFlow.currentlySelectedIconName === null
+        ? null
+        : AVAILABLE_ICON_NAMES.indexOf(editNodeFlow.currentlySelectedIconName)
+
     return (
       <React.Fragment>
         <Snackbar
@@ -852,7 +1063,6 @@ class NodesAndProps extends React.Component {
             </IconButton>,
           ]}
         />
-
         {selectedNode && (
           <PcDrawer
             leftButtonOnClick={this.unselectNode}
@@ -927,7 +1137,6 @@ class NodesAndProps extends React.Component {
             />
           </PcDrawer>
         )}
-
         <Dialog
           disableLeftActionButton={addNodeFlow.savingNode}
           disableRightActionButton={
@@ -979,72 +1188,196 @@ class NodesAndProps extends React.Component {
           </OverlaySpinner>
         </Dialog>
 
+        {/*
+88888888888  88888888ba,    88  888888888888     888b      88    ,ad8888ba,    88888888ba,    88888888888                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+88           88      `"8b   88       88          8888b     88   d8"'    `"8b   88      `"8b   88
+88           88        `8b  88       88          88 `8b    88  d8'        `8b  88        `8b  88
+88aaaaa      88         88  88       88          88  `8b   88  88          88  88         88  88aaaaa                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+88"""""      88         88  88       88          88   `8b  88  88          88  88         88  88"""""                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+88           88         8P  88       88          88    `8b 88  Y8,        ,8P  88         8P  88                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+88           88      .a8P   88       88          88     `8888   Y8a.    .a8P   88      .a8P   88                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+88888888888  88888888Y"'    88       88          88      `888    `"Y8888Y"'    88888888Y"'    88888888888
+*/}
+
+        {editNodeFlow.editingNodeID && (
+          <PcDrawer
+            leftButtonOnClick={this.editNodeFlowOnClickDrawerBtnLeft}
+            open
+            rightButtonOnClick={this.editNodeFlowOnClickDrawerBtnRight}
+            rightButtonText={(() => {
+              if (
+                editNodeFlow.editingIcon &&
+                editNodeFlow.currentlySelectedIconName !== null
+              ) {
+                return 'select'
+              }
+
+              if (editNodeFlow.editingLabel) {
+                return 'save'
+              }
+
+              return undefined
+            })()}
+            title="Editing Node"
+          >
+            {!editNodeFlow.editingIcon && !editNodeFlow.editingLabel && (
+              <NodeEditor
+                onClickDeactivate={this.editNodeFlowToggleDeactivate}
+                onClickIcon={this.editNodeFlowOnClickIconBtn}
+                onClickLabel={this.editNodeFlowOnClickLabel}
+                onClickReactivate={this.editNodeFlowToggleReactivate}
+                icon={
+                  nameToIconMap[nodes[editNodeFlow.editingNodeID].iconName]
+                    .outlined
+                }
+                isNodeActive={nodes[editNodeFlow.editingNodeID].active}
+                label={nodes[editNodeFlow.editingNodeID].label}
+              />
+            )}
+
+            {editNodeFlow.editingIcon && (
+              <IconSelector
+                icons={AVAILABLE_ICONS}
+                onClickIcon={this.editNodeFlowOnClickIcon}
+                selectedIconIdx={editNodeFlowSelectedIconIdx}
+              />
+            )}
+
+            {editNodeFlow.editingLabel && (
+              <TextField
+                onChange={this.editNodeFlowOnChangeLabelTextField}
+                value={editNodeFlow.editingLabelCurrentValue}
+              />
+            )}
+          </PcDrawer>
+        )}
+
         <Dialog
-          open={editingNodeID !== null}
-          title="Edit Node"
-          handleClose={this.stopEditingNode}
+          handleClose={this.editNodeFlowToggleDeactivate}
+          showCloseButton
+          rightActionButtonText="confirm"
+          title="DEACTIVATE"
+          open={editNodeFlow.deactivating}
+          onClickRightActionButton={this.editNodeFlowOnClickConfirmDeactivate}
+          rightActionButtonColorRed
         >
-          Edit node dialog
+          {DEACTIVATING_NODE_EXPLANATION_TEXT}
         </Dialog>
 
         <Dialog
-          open={deactivatingNodeID !== null}
-          title="Edit Node"
-          handleClose={this.stopDeactivatingNode}
+          handleClose={this.editNodeFlowToggleReactivate}
+          showCloseButton
+          rightActionButtonText="confirm"
+          title="REACTIVATE"
+          open={editNodeFlow.reactivating}
+          onClickRightActionButton={this.editNodeFlowOnClickConfirmReactivate}
+          rightActionButtonColorPrimary
         >
-          Deactivating node dialog
+          {REACTIVATING_NODE_EXPLANATION_TEXT}
         </Dialog>
+
+        {/*
+888b      88    ,ad8888ba,    88888888ba,    88888888888  ad88888ba   
+8888b     88   d8"'    `"8b   88      `"8b   88          d8"     "8b  
+88 `8b    88  d8'        `8b  88        `8b  88          Y8,          
+88  `8b   88  88          88  88         88  88aaaaa     `Y8aaaaa,    
+88   `8b  88  88          88  88         88  88"""""       `"""""8b,  
+88    `8b 88  Y8,        ,8P  88         8P  88                  `8b  
+88     `8888   Y8a.    .a8P   88      .a8P   88          Y8a     a8P  
+88      `888    `"Y8888Y"'    88888888Y"'    88888888888  "Y88888P"   
+*/}
 
         <Page titleText="Nodes And Properties">
           <Grid container className={classes.root}>
-            {Object.entries(nodes).map(([id, node]) => (
-              <Grid
-                className={classes.pointerCursor}
-                item
-                xs={12}
-                md={3}
-                key={id}
-                // TODO: fix callback in render()
-                onClick={() => {
-                  this.onClickNode(id)
-                }}
-              >
-                <List className={classes.card}>
-                  <ListItem className={classes.listItem}>
-                    <ListItemAvatar>
-                      <DeleteOutlineIcon />
-                    </ListItemAvatar>
-
-                    <ListItemText primary={node.label} secondary={node.name} />
-
-                    <ListItemSecondaryAction className={classes.itemOption}>
-                      <IconButton
-                        aria-label="Edit"
-                        className={classes.smallIconButton}
-                        // TODO: fix callback in render()
-                        onClick={e => {
-                          e.stopPropagation()
-                          this.editNode(id)
-                        }}
-                      >
-                        <EditOutlineIcon />
-                      </IconButton>
-                      <IconButton
-                        aria-label="Delete"
-                        color="secondary"
-                        className={classes.smallIconButton}
-                        onClick={e => {
-                          e.stopPropagation()
-                          this.deactivateNode(id)
-                        }}
-                      >
+            {Object.entries(nodes)
+              .filter(([_, node]) => node.active)
+              .map(([id, node]) => (
+                <Grid
+                  className={classes.pointerCursor}
+                  item
+                  xs={12}
+                  md={3}
+                  key={id}
+                  // TODO: fix callback in render()
+                  onClick={() => {
+                    this.onClickNode(id)
+                  }}
+                >
+                  <List className={classes.card}>
+                    <ListItem className={classes.listItem}>
+                      <ListItemAvatar>
                         <DeleteOutlineIcon />
-                      </IconButton>
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                </List>
-              </Grid>
-            ))}
+                      </ListItemAvatar>
+
+                      <ListItemText
+                        primary={node.label}
+                        secondary={node.name}
+                      />
+
+                      <ListItemSecondaryAction className={classes.itemOption}>
+                        <IconButton
+                          aria-label="Edit"
+                          className={classes.smallIconButton}
+                          // TODO: fix callback in render()
+                          onClick={e => {
+                            e.stopPropagation()
+                            this.editNodeFlowOnClickEditNode(id)
+                          }}
+                        >
+                          <EditOutlineIcon />
+                        </IconButton>
+                      </ListItemSecondaryAction>
+                    </ListItem>
+                  </List>
+                </Grid>
+              ))}
+
+            <Grid item>
+              <Typography>UNUSED NODES</Typography>
+            </Grid>
+
+            {Object.entries(nodes)
+              .filter(([_, node]) => !node.active)
+              .map(([id, node]) => (
+                <Grid
+                  className={classes.pointerCursor}
+                  item
+                  xs={12}
+                  md={3}
+                  key={id}
+                  // TODO: fix callback in render()
+                  onClick={() => {
+                    this.onClickNode(id)
+                  }}
+                >
+                  <List className={classes.card}>
+                    <ListItem className={classes.listItem}>
+                      <ListItemAvatar>
+                        <DeleteOutlineIcon />
+                      </ListItemAvatar>
+
+                      <ListItemText
+                        primary={node.label}
+                        secondary={node.name}
+                      />
+
+                      <ListItemSecondaryAction className={classes.itemOption}>
+                        <IconButton
+                          aria-label="Edit"
+                          className={classes.smallIconButton}
+                          // TODO: fix callback in render()
+                          onClick={e => {
+                            e.stopPropagation()
+                            this.editNodeFlowOnClickEditNode(id)
+                          }}
+                        >
+                          <EditOutlineIcon />
+                        </IconButton>
+                      </ListItemSecondaryAction>
+                    </ListItem>
+                  </List>
+                </Grid>
+              ))}
 
             <IconButton
               color="secondary"

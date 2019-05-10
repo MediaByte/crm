@@ -74,6 +74,10 @@ const styles = theme => ({
  * is a submit type, useful for wrapping this component in a `<form>` and have
  * declarative required/error handling. `preventDefault()` will be called on the
  * event.
+ * @prop {boolean=} rightActionButtonColorPrimary (Optional) If provided, the
+ * right action button's text will be the primary color.
+ * @prop {boolean=} rightActionButtonColorRed (Optional) If provided, the right
+ * action button's text will be red.
  * @prop {string=} rightActionButtonText (Optional) If provided, the right
  * button will be rendered.
  * @prop {boolean=} showBackArrow (Optional) Show a backarrow instead of an x
@@ -120,6 +124,8 @@ class Dialog extends React.PureComponent {
       onClickLeftActionButton,
       open,
       rightActionButtonSubmitsForm,
+      rightActionButtonColorPrimary,
+      rightActionButtonColorRed,
       rightActionButtonText,
       showBackArrow,
       showCloseButton,
@@ -198,7 +204,17 @@ class Dialog extends React.PureComponent {
                   <Button
                     aria-label={rightActionButtonText}
                     className={classes.actionButton}
-                    color="inherit"
+                    color={(() => {
+                      if (rightActionButtonColorPrimary) {
+                        return 'primary'
+                      }
+
+                      if (rightActionButtonColorRed) {
+                        return 'secondary'
+                      }
+
+                      return 'inherit'
+                    })()}
                     disabled={disableRightActionButton}
                     onClick={this.onClickRightActionButton}
                     type={
