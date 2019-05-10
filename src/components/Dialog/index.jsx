@@ -69,6 +69,7 @@ const styles = theme => ({
  * @prop {Record<ClassKey, string>} classes
  * @prop {boolean=} disableLeftActionButton (Optional)
  * @prop {boolean=} disableRightActionButton (Optional)
+ * @prop {boolean=} enableClickOutsideClosing (Optional)
  * @prop {(() => void)=} handleClose (Optional) Called when the user clicks on
  * the designated close button or outside the dialog.
  * @prop {string=} leftActionButtonText (Optional) If provided, the left button
@@ -126,6 +127,7 @@ class Dialog extends React.PureComponent {
       children,
       disableLeftActionButton,
       disableRightActionButton,
+      enableClickOutsideClosing,
       classes,
       handleClose,
       leftActionButtonText,
@@ -145,7 +147,7 @@ class Dialog extends React.PureComponent {
         // @ts-ignore
         fullScreen={window.innerWidth < 750}
         fullWidth
-        onClose={handleClose}
+        onClose={enableClickOutsideClosing ? handleClose : undefined}
         open={!!open}
         scroll="paper"
         TransitionComponent={Transition}
