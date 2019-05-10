@@ -124,6 +124,10 @@ const styles = theme => ({
     flexDirection: 'column !important',
     right: '10px !important',
   },
+  labelEditorTextField: {
+    marginLeft: theme.spacing.unit * 2,
+    marginRight: theme.spacing.unit * 2,
+  },
   listItem: {
     paddingLeft: '15px',
   },
@@ -1289,6 +1293,7 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
             {editNodeFlow.editingLabel && (
               <TextField
                 autoFocus
+                className={classes.labelEditorTextField}
                 onChange={this.editNodeFlowOnChangeLabelTextField}
                 value={editNodeFlow.editingLabelCurrentValue}
                 type="search"
