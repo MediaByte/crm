@@ -11,10 +11,8 @@ const GUN_ROOT_KEY = 'PINECONE_CIVIC_ROOT'
 
 const root = new Node(Root, Gun().get(GUN_ROOT_KEY))
 
-/** @type {SetNode} */
-export const nodes = /** @type {SetNode<{}>} */ root.get('nodes')
+export const nodes = root.getSet('nodes')
 
-/** @type {SetNode} */
-export const propTypes = /** @type {SetNode<{}>} */ root.get('propTypes')
+export const propTypes = root.getSet('propTypes')
 
-window.propTypes = propTypes
+window.propTypes = propTypes // for testing

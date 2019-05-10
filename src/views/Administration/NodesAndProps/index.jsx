@@ -4,19 +4,12 @@ import toUpper from 'lodash/toUpper'
 
 import Grid from '@material-ui/core/Grid'
 import IconButton from '@material-ui/core/IconButton'
-import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemAvatar from '@material-ui/core/ListItemAvatar'
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
-import ListItemText from '@material-ui/core/ListItemText'
 import Snackbar from '@material-ui/core/Snackbar'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import { withStyles } from '@material-ui/core/styles'
 
-import AddIcon from '@material-ui/icons/Add'
 import CloseIcon from '@material-ui/icons/Close'
-import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline'
 import EditOutlineIcon from '@material-ui/icons/EditOutlined'
 
 import AddNodeForm from 'components/AddNodeForm'
@@ -41,11 +34,19 @@ import {
   Node as NodeValidator,
   PropDef as PropDefValidator,
 } from 'app/validators'
-
+import {
+  Card,
+  CardActions,
+  CardActionArea,
+  CardHeader,
+  Avatar,
+} from '@material-ui/core'
+import { AddCircleOutline, HistoryOutlined } from '@material-ui/icons'
 /**
  * @typedef {import('app/gun-wrapper/SetNode').default} SetNode
  * @typedef {import('app/typings').Node} Node
  * @typedef {import('app/typings').PropertyType} PropType
+ * @typedef {import('app/gun-wrapper/simple-typings').WrapperSetNode} WrapperSetNode
  */
 
 const DEACTIVATING_NODE_EXPLANATION_TEXT =
@@ -115,22 +116,8 @@ const INITIAL_EDIT_NODE_FLOW = {
  * @param {import('@material-ui/core/styles').Theme} theme
  */
 const styles = theme => ({
-  addButton: {
-    backgroundColor: '#f34930',
-    bottom: '40px',
-    boxShadow:
-      '0px 3px 5px -1px rgba(0,0,0,0.2), 0px 6px 10px 0px rgba(0,0,0,0.14), 0px 1px 18px 0px rgba(0,0,0,0.12)',
-    color: '#fff',
-    position: 'absolute',
-    right: '50px',
-    transition:
-      'background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
-  },
-  card: {
-    margin: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
-    padding: '20px 5px',
-    backgroundColor: theme.palette.background.paper,
+  toRight: {
+    marginLeft: 'auto',
   },
   itemOption: {
     display: 'flex !important',
@@ -140,8 +127,16 @@ const styles = theme => ({
   listItem: {
     paddingLeft: '15px',
   },
+  nodeEditorContainer: {
+    paddingLeft: theme.spacing.unit * 2,
+    paddingRight: theme.spacing.unit * 2,
+  },
   pointerCursor: {
     cursor: 'pointer',
+  },
+  nodesContainer: {
+    paddingBottom: '30px',
+    paddingTop: '10px',
   },
   root: {
     margin: theme.spacing.unit,
@@ -248,6 +243,29 @@ class NodesAndProps extends React.Component {
     snackbarMessage: null,
   }
 
+  /*
+        db         88888888ba,    88888888ba,       888b      88    ,ad8888ba,    88888888ba,    88888888888  
+       d88b        88      `"8b   88      `"8b      8888b     88   d8"'    `"8b   88      `"8b   88           
+      d8'`8b       88        `8b  88        `8b     88 `8b    88  d8'        `8b  88        `8b  88                 d8'  `8b      88         88  88         88     88  `8b   88  88          88  88         88  88aaaaa      
+    d8YaaaaY8b     88         88  88         88     88   `8b  88  88          88  88         88  88"""""      
+   d8""""""""8b    88         8P  88         8P     88    `8b 88  Y8,        ,8P  88         8P  88           
+  d8'        `8b   88      .a8P   88      .a8P      88     `8888   Y8a.    .a8P   88      .a8P   88           
+ d8'          `8b  88888888Y"'    88888888Y"'       88      `888    `"Y8888Y"'    88888888Y"'    88888888888  
+*/
+
+  /**
+   * @private
+   */
+  addNodeFlowToggleDialog = () => {
+    this.setState(({ addNodeFlow }) => ({
+      addNodeFlow: {
+        ...INITIAL_ADD_NODE_FLOW,
+        showingAddNodeDialog: !addNodeFlow.showingAddNodeDialog,
+      },
+      addNodeFormData: BLANK_ADD_NODE_FORM_DATA,
+    }))
+  }
+
   /**
    * @private
    * @param {string} nextLabelValue
@@ -295,7 +313,7 @@ class NodesAndProps extends React.Component {
       /**
        * @type {string}
        */
-      let err
+      let err = ''
 
       nextNameValue = toUpper(nextNameValue)
 
@@ -329,6 +347,15 @@ class NodesAndProps extends React.Component {
       }
     })
   }
+
+  /*
+       db         88888888ba,    88888888ba,       88888888ba   88888888ba     ,ad8888ba,    88888888ba   
+      d88b        88      `"8b   88      `"8b      88      "8b  88      "8b   d8"'    `"8b   88      "8b
+    d8'  `8b      88         88  88         88     88aaaaaa8P'  88aaaaaa8P'  88          88  88aaaaaa8P'
+   d8YaaaaY8b     88         88  88         88     88""""""'    88""""88'    88          88  88""""""'  
+ d8'        `8b   88      .a8P   88      .a8P      88           88     `8b    Y8a.    .a8P   88           
+d8'          `8b  88888888Y"'    88888888Y"'       88           88      `8b    `"Y8888Y"'    88           
+*/
 
   /**
    * @private
@@ -445,9 +472,13 @@ class NodesAndProps extends React.Component {
     const propTypeNode = (() => {
       let key
 
-      for (const [propTypeKey, propType] of Object.entries(
+      for (const [propTypeKey, pt] of Object.entries(
         propTypesNode.currentData,
       )) {
+        /** @type {PropType} */
+        // @ts-ignore CAST & ignore: TS wants me to convert to unknown first etc
+        const propType = pt
+
         if (propType.name === addPropFlow.typeValue) {
           key = propTypeKey
           break
@@ -463,12 +494,9 @@ class NodesAndProps extends React.Component {
       return propTypesNode.get(/** @type {string} */ (key))
     })()
 
-    /**
-     * @type {SetNode}
-     */
     const propDefs = nodesNode
       .get(/** @type {string} */ (selectedNodeID))
-      .get('propDefs')
+      .getSet('propDefs')
 
     propDefs
       .set({
@@ -763,7 +791,9 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
 */
 
   componentDidMount() {
+    // @ts-ignore
     nodesNode.on(this.onNodesUpdate)
+    // @ts-ignore
     propTypesNode.on(this.onPropTypesUpdate)
   }
 
@@ -786,7 +816,9 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
   }
 
   componentWillUnmount() {
+    // @ts-ignore
     nodesNode.off(this.onNodesUpdate)
+    // @ts-ignore
     propTypesNode.off(this.onPropTypesUpdate)
   }
 
@@ -1045,6 +1077,11 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
         ? null
         : AVAILABLE_ICON_NAMES.indexOf(editNodeFlow.currentlySelectedIconName)
 
+    const activeNodes = Object.entries(nodes).filter(([_, node]) => node.active)
+    const unusedNodes = Object.entries(nodes).filter(
+      ([_, node]) => !node.active,
+    )
+
     return (
       <React.Fragment>
         <Snackbar
@@ -1221,18 +1258,20 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
             title="Editing Node"
           >
             {!editNodeFlow.editingIcon && !editNodeFlow.editingLabel && (
-              <NodeEditor
-                onClickDeactivate={this.editNodeFlowToggleDeactivate}
-                onClickIcon={this.editNodeFlowOnClickIconBtn}
-                onClickLabel={this.editNodeFlowOnClickLabel}
-                onClickReactivate={this.editNodeFlowToggleReactivate}
-                icon={
-                  nameToIconMap[nodes[editNodeFlow.editingNodeID].iconName]
-                    .outlined
-                }
-                isNodeActive={nodes[editNodeFlow.editingNodeID].active}
-                label={nodes[editNodeFlow.editingNodeID].label}
-              />
+              <div className={classes.nodeEditorContainer}>
+                <NodeEditor
+                  onClickDeactivate={this.editNodeFlowToggleDeactivate}
+                  onClickIcon={this.editNodeFlowOnClickIconBtn}
+                  onClickLabel={this.editNodeFlowOnClickLabel}
+                  onClickReactivate={this.editNodeFlowToggleReactivate}
+                  icon={
+                    nameToIconMap[nodes[editNodeFlow.editingNodeID].iconName]
+                      .outlined
+                  }
+                  isNodeActive={nodes[editNodeFlow.editingNodeID].active}
+                  label={nodes[editNodeFlow.editingNodeID].label}
+                />
+              </div>
             )}
 
             {editNodeFlow.editingIcon && (
@@ -1288,113 +1327,115 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
 */}
 
         <Page titleText="Nodes And Properties">
-          <Grid container className={classes.root}>
-            {Object.entries(nodes)
-              .filter(([_, node]) => node.active)
-              .map(([id, node]) => (
-                <Grid
-                  className={classes.pointerCursor}
-                  item
-                  xs={12}
-                  md={3}
-                  key={id}
-                  // TODO: fix callback in render()
-                  onClick={() => {
-                    this.onClickNode(id)
-                  }}
-                >
-                  <List className={classes.card}>
-                    <ListItem className={classes.listItem}>
-                      <ListItemAvatar>
-                        <DeleteOutlineIcon />
-                      </ListItemAvatar>
+          <div className={classes.root}>
+            <div>
+              <Grid container className={classes.nodesContainer} spacing={24}>
+                {activeNodes.map(([id, node]) => {
+                  const Icon = nameToIconMap[node.iconName]
 
-                      <ListItemText
-                        primary={node.label}
-                        secondary={node.name}
-                      />
+                  return (
+                    <Grid
+                      className={classes.pointerCursor}
+                      item
+                      xs={12}
+                      sm={6}
+                      md={3}
+                      key={id}
+                      // TODO: fix callback in render()
+                      onClick={() => {
+                        this.onClickNode(id)
+                      }}
+                    >
+                      <Card>
+                        <CardActionArea>
+                          <CardHeader
+                            avatar={
+                              Icon && (
+                                <Avatar aria-label="icon">
+                                  <Icon.outlined />
+                                </Avatar>
+                              )
+                            }
+                            title={node.label}
+                            subheader={node.name}
+                          />
+                        </CardActionArea>
+                        <CardActions>
+                          <IconButton
+                            className={classes.toRight}
+                            onClick={e => {
+                              e.stopPropagation()
+                              this.editNodeFlowOnClickEditNode(id)
+                            }}
+                          >
+                            <EditOutlineIcon />
+                          </IconButton>
+                        </CardActions>
+                      </Card>
+                    </Grid>
+                  )
+                })}
+              </Grid>
 
-                      <ListItemSecondaryAction className={classes.itemOption}>
+              <IconButton
+                onClick={this.addNodeFlowToggleDialog}
+                aria-label="Plus"
+              >
+                <AddCircleOutline fontSize="small" color="primary" />
+              </IconButton>
+            </div>
+
+            {unusedNodes.length > 0 && (
+              <Typography variant="subtitle1">UNUSED NODES</Typography>
+            )}
+
+            <Grid container className={classes.nodesContainer}>
+              {unusedNodes.map(([id, node]) => {
+                const Icon = nameToIconMap[node.iconName]
+
+                return (
+                  <Grid
+                    className={classes.pointerCursor}
+                    item
+                    xs={12}
+                    md={3}
+                    key={id}
+                    // TODO: fix callback in render()
+                    onClick={() => {
+                      this.onClickNode(id)
+                    }}
+                  >
+                    <Card>
+                      <CardActionArea>
+                        <CardHeader
+                          avatar={
+                            Icon && (
+                              <Avatar aria-label="icon">
+                                <Icon.outlined />
+                              </Avatar>
+                            )
+                          }
+                          title={node.label}
+                          subheader={node.name}
+                        />
+                      </CardActionArea>
+                      <CardActions>
                         <IconButton
-                          aria-label="Edit"
-                          className={classes.smallIconButton}
-                          // TODO: fix callback in render()
+                          className={classes.toRight}
                           onClick={e => {
                             e.stopPropagation()
                             this.editNodeFlowOnClickEditNode(id)
                           }}
                         >
-                          <EditOutlineIcon />
+                          <HistoryOutlined />
                         </IconButton>
-                      </ListItemSecondaryAction>
-                    </ListItem>
-                  </List>
-                </Grid>
-              ))}
-
-            <Grid item>
-              <Typography>UNUSED NODES</Typography>
+                      </CardActions>
+                    </Card>
+                  </Grid>
+                )
+              })}
             </Grid>
-
-            {Object.entries(nodes)
-              .filter(([_, node]) => !node.active)
-              .map(([id, node]) => (
-                <Grid
-                  className={classes.pointerCursor}
-                  item
-                  xs={12}
-                  md={3}
-                  key={id}
-                  // TODO: fix callback in render()
-                  onClick={() => {
-                    this.onClickNode(id)
-                  }}
-                >
-                  <List className={classes.card}>
-                    <ListItem className={classes.listItem}>
-                      <ListItemAvatar>
-                        <DeleteOutlineIcon />
-                      </ListItemAvatar>
-
-                      <ListItemText
-                        primary={node.label}
-                        secondary={node.name}
-                      />
-
-                      <ListItemSecondaryAction className={classes.itemOption}>
-                        <IconButton
-                          aria-label="Edit"
-                          className={classes.smallIconButton}
-                          // TODO: fix callback in render()
-                          onClick={e => {
-                            e.stopPropagation()
-                            this.editNodeFlowOnClickEditNode(id)
-                          }}
-                        >
-                          <EditOutlineIcon />
-                        </IconButton>
-                      </ListItemSecondaryAction>
-                    </ListItem>
-                  </List>
-                </Grid>
-              ))}
-
-            <IconButton
-              color="secondary"
-              className={classes.addButton}
-              onClick={() => {
-                this.setState(state => ({
-                  addNodeFlow: {
-                    // TODO FIX THIS
-                    ...this.state.addNodeFlow,
-                    showingAddNodeDialog: true,
-                  },
-                }))
-              }}
-            >
-              <AddIcon />
-            </IconButton>
-          </Grid>
+          </div>
         </Page>
       </React.Fragment>
     )

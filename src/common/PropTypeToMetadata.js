@@ -5,11 +5,11 @@ export const typeToIconName = {
   address: 'pindrop',
   checkbox: 'checkbox',
   date: 'calendar',
-  memo: 'longText',
+  memo: 'subject',
   phone: 'phone',
   picklist: 'list',
   radio: 'radiobutton',
-  textfield: 'text',
+  textfield: 'formatSize',
   time: 'clock',
 }
 
