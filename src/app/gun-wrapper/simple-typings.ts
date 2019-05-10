@@ -30,6 +30,10 @@ export interface WrapperSetNode {
 
   get(key: string): WrapperNode
 
+  on(cb: Listener): void
+
+  off(cb?: Listener): void
+
   set(data: ValidSetPut): Promise<SetResponse>
 }
 
@@ -39,6 +43,10 @@ export interface WrapperNode {
   schema: Schema
 
   get(key: string): WrapperReferenceNode | WrapperSetNode
+
+  getEdge(edgeKey: string): WrapperReferenceNode
+
+  getSet(setKey: string): WrapperSetNode
 
   put(data: ValidPut): Promise<Response>
 
