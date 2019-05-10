@@ -1192,6 +1192,7 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
           showCloseButton={!addNodeFlow.selectingIcon}
           open={addNodeFlow.showingAddNodeDialog}
           rightActionButtonText={addNodeFlow.selectingIcon ? 'Save' : 'Next'}
+          rightActionButtonColorPrimary
           title={addNodeFlow.selectingIcon ? 'Select Icon' : 'Add Node'}
         >
           <OverlaySpinner showSpinner={addNodeFlow.savingNode}>
