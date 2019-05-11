@@ -175,7 +175,6 @@ export default class AddPropForm extends React.PureComponent {
             >
               {availableTypes.map(type => {
                 const label = typeToReadableName[type] || type
-                console.log(label)
                 const Icon = nameToIconMap[typeToIconName[type]]
 
                 return (
