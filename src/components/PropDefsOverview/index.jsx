@@ -30,6 +30,9 @@ import ReorderList from './ReorderList'
  * @param {import('@material-ui/core/styles').Theme} theme
  */
 const styles = theme => ({
+  addButton: {
+    alignSelf: 'flex-start',
+  },
   grow: {
     flexGrow: 1,
   },
@@ -191,7 +194,11 @@ class PropDefsOverview extends React.PureComponent {
           </List>
         )}
 
-        <IconButton onClick={onClickAdd} aria-label="Plus">
+        <IconButton
+          aria-label="Plus"
+          onClick={onClickAdd}
+          className={classes.addButton}
+        >
           <AddCircleOutlineIcon fontSize="small" color="primary" />
         </IconButton>
       </React.Fragment>
