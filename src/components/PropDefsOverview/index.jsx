@@ -139,8 +139,9 @@ class PropDefsOverview extends React.PureComponent {
           <List>
             {usedPropDefs.map(propDef => {
               const Icon = propDef.icon
+
               return (
-                <ListItem className={classes.listItem}>
+                <ListItem className={classes.listItem} key={propDef.id}>
                   {Icon && <Icon />}
 
                   <ListItemText
@@ -172,7 +173,7 @@ class PropDefsOverview extends React.PureComponent {
               const Icon = propDef.icon
 
               return (
-                <ListItem className={classes.listItem}>
+                <ListItem className={classes.listItem} key={propDef.id}>
                   {Icon && <Icon />}
 
                   <ListItemText
