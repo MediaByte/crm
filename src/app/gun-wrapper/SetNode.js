@@ -328,7 +328,7 @@ export default class SetNode {
       const value = objectData[key]
 
       //  @ts-ignore stupid instanceof typescript rule
-      if (value !== null || !(value instanceof Node)) {
+      if (value !== null && !(value instanceof Node)) {
         errorMap.puts(key, 'must initialize to a reference or a null value')
       }
 
