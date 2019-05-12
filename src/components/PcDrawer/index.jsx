@@ -95,7 +95,6 @@ class PcDrawer extends React.PureComponent {
       open,
       tabs,
       tabsCurrentValue,
-      ...props
     } = this.props
 
     const leftEl = (() => {
@@ -140,7 +139,6 @@ class PcDrawer extends React.PureComponent {
 
     return (
       <Drawer
-        {...props}
         anchor="right"
         ModalProps={{
           hideBackdrop: true,
