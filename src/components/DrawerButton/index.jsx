@@ -8,6 +8,7 @@ import {
   ListItemText,
   ListItemSecondaryAction,
   Grid,
+  Switch,
 } from '@material-ui/core'
 
 import ChevronRightIcon from '@material-ui/icons/ChevronRight'
@@ -26,12 +27,16 @@ const primaryTypographyPropsIfRed = {
  * @typedef {object} Props
  * @prop {Record<keyof typeof styles, string>} classes
  * @prop {React.ComponentType<import('@material-ui/core/SvgIcon').SvgIconProps>=} icon
+ * @prop {boolean=} isSwitch (Optional) Renders an switch, useful for setting
+ * boolean options.
+ * @prop {(() => void)=} onClick
  * @prop {string=} primaryText (Optional)
  * @prop {boolean=} primaryTextRed (Optional) Makes the button's primary text
  * red, this is useful for using it as a delete button for example.
- * @prop {string=} secondaryText
- * @prop {boolean=} secTextAtBottom
- * @prop {(() => void)=} onClick
+ * @prop {string=} secondaryText (Optional)
+ * @prop {boolean=} secTextAtBottom (Optional)
+ * @prop {boolean=} switchOn (Optional) If provided together with the isSwitch
+ * prop, the switch will be in the ON position.
  */
 
 /**
@@ -42,10 +47,12 @@ class DrawerButton extends React.PureComponent {
     const {
       classes,
       icon: Icon,
+      isSwitch,
       primaryText,
       primaryTextRed,
       secondaryText,
       secTextAtBottom,
+      switchOn,
       onClick,
     } = this.props
 
@@ -58,16 +65,18 @@ class DrawerButton extends React.PureComponent {
         )}
 
         <ListItemText
+          primary={primaryText}
           // @ts-ignore
           primaryTypographyProps={
             primaryTextRed ? primaryTypographyPropsIfRed : undefined
           }
-          primary={primaryText}
           secondary={secTextAtBottom && secondaryText}
         />
 
         <ListItemSecondaryAction>
-          {!secTextAtBottom && secondaryText ? (
+          {isSwitch ? (
+            <Switch checked={switchOn} color="primary" onChange={onClick} />
+          ) : !secTextAtBottom && secondaryText ? (
             <Grid container alignItems="center">
               <Typography color="textSecondary">{secondaryText}</Typography>
               <ChevronRightIcon color="disabled" fontSize="small" />
