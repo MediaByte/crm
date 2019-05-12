@@ -8,13 +8,22 @@ import {
   Typography,
   Grid,
   IconButton,
+  Tabs,
+  Tab,
 } from '@material-ui/core'
 import ChevronLeft from '@material-ui/icons/ChevronLeft'
+/**
+ * @typedef {import('@material-ui/core/Tabs').TabsProps['onChange']} TabsOnChange
+ */
 
 /**
  * @param {import('@material-ui/core/styles').Theme} theme
  */
 const styles = theme => ({
+  container: {
+    flex: 1,
+    marginTop: theme.spacing.unit * 3,
+  },
   drawerWidth: {
     [theme.breakpoints.down('xs')]: {
       width: '100vw',
@@ -25,6 +34,9 @@ const styles = theme => ({
   },
   menuButton: {
     color: '#fff',
+  },
+  spacer: {
+    height: theme.spacing.unit * 5,
   },
   title: {
     color: '#fff',
@@ -38,6 +50,7 @@ const styles = theme => ({
 /**
  * @typedef {object} Props
  * @prop {Record<ClassKey, string>} classes
+ * @prop {boolean=} hideTabs (Optional)
  * @prop {JSX.Element=} leftAction (Optional)
  * @prop {(() => void)=} leftButtonOnClick (Optional)
  * @prop {string=} leftButtonText (Optional) If provided renders a button with
@@ -47,6 +60,9 @@ const styles = theme => ({
  * @prop {(() => void)=} rightButtonOnClick (Optional)
  * @prop {string=} rightButtonText (Optional) If provided, renders a button with
  * this text to the right of the header.
+ * @prop {string[]=} tabs (Optional)
+ * @prop {number=} tabsCurrentValue (Optional)
+ * @prop {TabsOnChange=} tabsOnChange (Optional)
  * @prop {string} title
  */
 
@@ -54,8 +70,19 @@ const styles = theme => ({
  * @augments React.PureComponent<Props>
  */
 class PcDrawer extends React.PureComponent {
+  /**
+   * @private
+   * @type {TabsOnChange}
+   */
+  tabsOnChange = (e, tab) => {
+    const { tabsOnChange } = this.props
+
+    tabsOnChange && tabsOnChange(e, tab)
+  }
+
   render() {
     const {
+      hideTabs,
       leftAction,
       leftButtonOnClick,
       leftButtonText,
@@ -66,7 +93,8 @@ class PcDrawer extends React.PureComponent {
       children,
       classes,
       open,
-      ...props
+      tabs,
+      tabsCurrentValue,
     } = this.props
 
     const leftEl = (() => {
@@ -111,7 +139,6 @@ class PcDrawer extends React.PureComponent {
 
     return (
       <Drawer
-        {...props}
         anchor="right"
         ModalProps={{
           hideBackdrop: true,
@@ -144,6 +171,23 @@ class PcDrawer extends React.PureComponent {
               </Grid>
             </Toolbar>
           </AppBar>
+
+          {tabs && !hideTabs && (
+            <Tabs
+              fullWidth
+              value={tabsCurrentValue}
+              onChange={this.tabsOnChange}
+              indicatorColor="primary"
+              textColor="primary"
+            >
+              {tabs.map((tab, i) => (
+                <Tab label={tab} key={i} />
+              ))}
+            </Tabs>
+          )}
+
+          {/* HACK */}
+          <div className={classes.spacer} />
           {children}
         </Grid>
       </Drawer>

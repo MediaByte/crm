@@ -5,12 +5,12 @@ import toUpper from 'lodash/toUpper'
 import Grid from '@material-ui/core/Grid'
 import IconButton from '@material-ui/core/IconButton'
 import Snackbar from '@material-ui/core/Snackbar'
+
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import { withStyles } from '@material-ui/core/styles'
 
 import CloseIcon from '@material-ui/icons/Close'
-import EditOutlineIcon from '@material-ui/icons/EditOutlined'
 
 import AddNodeForm from 'components/AddNodeForm'
 import AddPropForm from 'components/AddPropForm'
@@ -34,20 +34,22 @@ import {
   Node as NodeValidator,
   PropDef as PropDefValidator,
 } from 'app/validators'
-import {
-  Card,
-  CardActions,
-  CardActionArea,
-  CardHeader,
-  Avatar,
-} from '@material-ui/core'
-import { AddCircleOutline, HistoryOutlined } from '@material-ui/icons'
+import { Card, CardActionArea, CardHeader, Avatar } from '@material-ui/core'
+import { AddCircleOutline } from '@material-ui/icons'
 /**
  * @typedef {import('app/gun-wrapper/SetNode').default} SetNode
  * @typedef {import('app/typings').Node} Node
  * @typedef {import('app/typings').PropertyType} PropType
  * @typedef {import('app/gun-wrapper/simple-typings').WrapperSetNode} WrapperSetNode
  */
+
+const NodeDrawerTab = {
+  Details: 0,
+  Properties: 1,
+  Relationships: 2,
+}
+
+const AVAILABLE_TABS_NAMES = Object.keys(NodeDrawerTab)
 
 const DEACTIVATING_NODE_EXPLANATION_TEXT =
   'Deactivating a node prevents \
@@ -65,7 +67,7 @@ time to propagate to employees, and those who are currently offline wont be \
 able to add records to the node until they become online again.'
 
 const AVAILABLE_ICONS = Object.values(nameToIconMap).map(
-  iconTriple => iconTriple.filled,
+  iconTriple => iconTriple.outlined,
 )
 const AVAILABLE_ICON_NAMES = Object.keys(nameToIconMap)
 
@@ -79,6 +81,11 @@ const BLANK_ADD_NODE_FORM_DATA = Object.freeze({
   detailsIfError: null,
   messagesIfError: null,
 })
+
+/** @type {Readonly<EditPropFlow>} */
+const INITIAL_EDIT_PROP_FLOW = {
+  selectedPropID: null,
+}
 
 /** @type {AddNodeFlow} */
 const INITIAL_ADD_NODE_FLOW = Object.freeze({
@@ -108,7 +115,6 @@ const INITIAL_EDIT_NODE_FLOW = {
   editingIcon: false,
   editingLabel: false,
   editingLabelCurrentValue: '',
-  editingNodeID: null,
   reactivating: false,
 }
 
@@ -123,6 +129,10 @@ const styles = theme => ({
     display: 'flex !important',
     flexDirection: 'column !important',
     right: '10px !important',
+  },
+  labelEditorTextField: {
+    marginLeft: theme.spacing.unit * 2,
+    marginRight: theme.spacing.unit * 2,
   },
   listItem: {
     paddingLeft: '15px',
@@ -200,9 +210,12 @@ const styles = theme => ({
  * @prop {boolean} editingIcon
  * @prop {boolean} editingLabel
  * @prop {string} editingLabelCurrentValue
- * @prop {string|null} editingNodeID Non-null when editing a node's icon or
- * label, etc.
  * @prop {boolean} reactivating
+ */
+
+/**
+ * @typedef {object} EditPropFlow
+ * @prop {string|null} selectedPropID
  */
 
 /**
@@ -210,7 +223,10 @@ const styles = theme => ({
  * @prop {AddNodeFlow} addNodeFlow
  * @prop {AddPropFlow} addPropFlow
  * @prop {AddNodeFormData} addNodeFormData
- * @prop {EditNodeFlow} editNodeFlow (Optional)
+ * @prop {number} currentNodeDrawerTab
+ * @prop {EditNodeFlow} editNodeFlow
+ * @prop {EditPropFlow} editPropFlow
+ * @prop {boolean} isReorderingProps
  * @prop {Record<string, Node>} nodes
  * @prop {Record<string, PropType>} propTypes
  * @prop {string|null} selectedNodeID Non-null when editing a node's property
@@ -234,7 +250,10 @@ class NodesAndProps extends React.Component {
     },
     addPropFlow: INITIAL_ADD_PROP_FLOW,
     addNodeFormData: BLANK_ADD_NODE_FORM_DATA,
+    currentNodeDrawerTab: NodeDrawerTab.Details,
     editNodeFlow: INITIAL_EDIT_NODE_FLOW,
+    editPropFlow: INITIAL_EDIT_PROP_FLOW,
+    isReorderingProps: false,
     nodes: {},
     propTypes: {},
     selectedNodeID: null,
@@ -334,7 +353,7 @@ class NodesAndProps extends React.Component {
 
       nodes.forEach(node => {
         if (node.name === nextNameValue) {
-          err = 'There already exists a node with this name'
+          err = 'There is already a node with this name'
         }
       })
 
@@ -541,6 +560,7 @@ d8'          `8b  88888888Y"'    88888888Y"'       88           88      `8b    `
               console.warn(
                 `received unexpected key in details of response: ${key}`,
               )
+              console.warn(res)
             }
           })
         }
@@ -584,6 +604,17 @@ d8'          `8b  88888888Y"'    88888888Y"'       88           88      `8b    `
     })
   }
 
+  /**
+   * @private
+   * @type {import('@material-ui/core/Tabs').TabsProps['onChange']}
+   */
+  handleNodeDrawerTabChange = (_, tab) => {
+    this.setState({
+      currentNodeDrawerTab: tab,
+      isReorderingProps: false,
+    })
+  }
+
   /*
 88888888888  88888888ba,    88  888888888888     888b      88    ,ad8888ba,    88888888ba,    88888888888                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
 88           88      `"8b   88       88          8888b     88   d8"'    `"8b   88      `"8b   88
@@ -612,7 +643,7 @@ d8'          `8b  88888888Y"'    88888888Y"'       88           88      `8b    `
 
   editNodeFlowOnClickConfirmDeactivate = () => {
     nodesNode
-      .get(/** @type {string} */ (this.state.editNodeFlow.editingNodeID))
+      .get(/** @type {string} */ (this.state.selectedNodeID))
       .put({
         active: false,
       })
@@ -627,7 +658,7 @@ d8'          `8b  88888888Y"'    88888888Y"'       88           88      `8b    `
 
   editNodeFlowOnClickConfirmReactivate = () => {
     nodesNode
-      .get(/** @type {string} */ (this.state.editNodeFlow.editingNodeID))
+      .get(/** @type {string} */ (this.state.selectedNodeID))
       .put({
         active: true,
       })
@@ -640,75 +671,9 @@ d8'          `8b  88888888Y"'    88888888Y"'       88           88      `8b    `
     })
   }
 
-  editNodeFlowOnClickDrawerBtnLeft = () => {
-    this.setState(({ editNodeFlow }) => {
-      if (editNodeFlow.editingIcon) {
-        return {
-          editNodeFlow: {
-            ...editNodeFlow,
-            currentlySelectedIconName: null,
-            editingIcon: false,
-          },
-        }
-      }
+  editNodeFlowOnClickDrawerBtnLeft = () => {}
 
-      if (editNodeFlow.editingLabel) {
-        return {
-          editNodeFlow: {
-            ...editNodeFlow,
-            editingLabel: false,
-          },
-        }
-      }
-
-      return {
-        editNodeFlow: INITIAL_EDIT_NODE_FLOW,
-      }
-    })
-  }
-
-  editNodeFlowOnClickDrawerBtnRight = () => {
-    const { editNodeFlow } = this.state
-
-    if (editNodeFlow.editingLabel) {
-      nodesNode
-        .get(/** @type {string} */ (editNodeFlow.editingNodeID))
-        .put({
-          label: editNodeFlow.editingLabelCurrentValue,
-        })
-        .then(res => {
-          console.log(res)
-        })
-
-      this.setState(({ editNodeFlow }) => ({
-        editNodeFlow: {
-          ...editNodeFlow,
-          editingLabel: false,
-        },
-      }))
-    }
-
-    if (editNodeFlow.editingIcon) {
-      const { editNodeFlow } = this.state
-
-      nodesNode
-        .get(/** @type {string} */ (editNodeFlow.editingNodeID))
-        .put({
-          iconName:
-            /** @type {string} */ (editNodeFlow.currentlySelectedIconName),
-        })
-        .then(res => {
-          console.log(res)
-        })
-
-      this.setState(({ editNodeFlow }) => ({
-        editNodeFlow: {
-          ...editNodeFlow,
-          editingIcon: false,
-        },
-      }))
-    }
-  }
+  editNodeFlowOnClickDrawerBtnRight = () => {}
 
   /**
    * @param {string} id
@@ -738,22 +703,22 @@ d8'          `8b  88888888Y"'    88888888Y"'       88           88      `8b    `
   }
 
   editNodeFlowOnClickIconBtn = () => {
-    this.setState(({ editNodeFlow, nodes }) => ({
+    this.setState(({ editNodeFlow, nodes, selectedNodeID }) => ({
       editNodeFlow: {
         ...editNodeFlow,
         currentlySelectedIconName:
-          nodes[/** @type {string} */ (editNodeFlow.editingNodeID)].iconName,
+          nodes[/** @type {string} */ (selectedNodeID)].iconName,
         editingIcon: true,
       },
     }))
   }
 
   editNodeFlowOnClickLabel = () => {
-    this.setState(({ editNodeFlow, nodes }) => ({
+    this.setState(({ editNodeFlow, nodes, selectedNodeID }) => ({
       editNodeFlow: {
         ...editNodeFlow,
         editingLabelCurrentValue:
-          nodes[/** @type {string} */ (editNodeFlow.editingNodeID)].label,
+          nodes[/** @type {string} */ (selectedNodeID)].label,
         editingLabel: true,
       },
     }))
@@ -775,6 +740,36 @@ d8'          `8b  88888888Y"'    88888888Y"'       88           88      `8b    `
         reactivating: !editNodeFlow.reactivating,
       },
     }))
+  }
+
+  /*
+88888888888  88888888ba,    88  888888888888     88888888ba   88888888ba     ,ad8888ba,    88888888ba
+88           88      `"8b   88       88          88      "8b  88      "8b   d8"'    `"8b   88      "8b
+88           88        `8b  88       88          88      ,8P  88      ,8P  d8'        `8b  88      ,8P
+88aaaaa      88         88  88       88          88aaaaaa8P'  88aaaaaa8P'  88          88  88aaaaaa8P'
+88"""""      88         88  88       88          88""""""'    88""""88'    88          88  88""""""'
+88           88         8P  88       88          88           88    `8b    Y8,        ,8P  88
+88           88      .a8P   88       88          88           88     `8b    Y8a.    .a8P   88
+88888888888  88888888Y"'    88       88          88           88      `8b    `"Y8888Y"'    88
+*/
+
+  /**
+   * @private
+   * @param {string} id
+   */
+  editPropFlowOnClickEdit = id => {
+    this.setState({
+      editPropFlow: {
+        ...INITIAL_EDIT_PROP_FLOW,
+        selectedPropID: id,
+      },
+    })
+  }
+
+  editPropFlowStopEditing = () => {
+    this.setState({
+      editPropFlow: INITIAL_EDIT_PROP_FLOW,
+    })
   }
 
   /*
@@ -1040,13 +1035,125 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
     })
   }
 
+  onClickDrawerLeftBtn = () => {
+    this.setState(({ currentNodeDrawerTab, editNodeFlow, selectedNodeID }) => {
+      if (editNodeFlow.editingIcon) {
+        return {
+          currentNodeDrawerTab,
+          editNodeFlow: {
+            ...editNodeFlow,
+            currentlySelectedIconName: null,
+            editingIcon: false,
+          },
+          selectedNodeID,
+        }
+      }
+
+      if (editNodeFlow.editingLabel) {
+        return {
+          currentNodeDrawerTab,
+          editNodeFlow: {
+            ...editNodeFlow,
+            editingLabel: false,
+          },
+          selectedNodeID,
+        }
+      }
+
+      return {
+        currentNodeDrawerTab: 0,
+        editNodeFlow: INITIAL_EDIT_NODE_FLOW,
+        selectedNodeID: null,
+      }
+    })
+  }
+
+  onClickDrawerRightBtn = () => {
+    const { editNodeFlow, selectedNodeID } = this.state
+
+    if (editNodeFlow.editingLabel) {
+      nodesNode
+        .get(/** @type {string} */ (selectedNodeID))
+        .put({
+          label: editNodeFlow.editingLabelCurrentValue,
+        })
+        .then(res => {
+          console.log(res)
+        })
+
+      this.setState(({ editNodeFlow }) => ({
+        editNodeFlow: {
+          ...editNodeFlow,
+          editingLabel: false,
+        },
+      }))
+    }
+
+    if (editNodeFlow.editingIcon) {
+      const { editNodeFlow, selectedNodeID } = this.state
+
+      nodesNode
+        .get(/** @type {string} */ (selectedNodeID))
+        .put({
+          iconName:
+            /** @type {string} */ (editNodeFlow.currentlySelectedIconName),
+        })
+        .then(res => {
+          console.log(res)
+        })
+
+      this.setState(({ editNodeFlow }) => ({
+        editNodeFlow: {
+          ...editNodeFlow,
+          editingIcon: false,
+        },
+      }))
+    }
+  }
+
+  /*
+                                                          88
+                                                          88
+                                                          88
+8b,dPPYba,   ,adPPYba,   ,adPPYba,   8b,dPPYba,   ,adPPYb,88   ,adPPYba,  8b,dPPYba,
+88P'   "Y8  a8P_____88  a8"     "8a  88P'   "Y8  a8"    `Y88  a8P_____88  88P'   "Y8
+88          8PP"""""""  8b       d8  88          8b       88  8PP"""""""  88
+88          "8b,   ,aa  "8a,   ,a8"  88          "8a,   ,d88  "8b,   ,aa  88
+88           `"Ybbd8"'   `"YbbdP"'   88           `"8bbdP"Y8   `"Ybbd8"'  88
+*/
+
+  /** @private */
+  toggleReorderProps = () => {
+    this.setState(({ isReorderingProps }) => ({
+      isReorderingProps: !isReorderingProps,
+    }))
+  }
+
+  /**
+   * @private
+   * @param {number} oldIndex
+   * @param {number} newIndex
+   */
+  onReorderEnd = (oldIndex, newIndex) => {
+    console.log(`onReorderEnd: ${oldIndex} -> ${newIndex}`)
+  }
+
+  //                                               88
+  // 8b,dPPYba,   ,adPPYba,  8b,dPPYba,    ,adPPYb,88   ,adPPYba,  8b,dPPYba,
+  // 88P'   "Y8  a8P_____88  88P'   `"8a  a8"    `Y88  a8P_____88  88P'   "Y8
+  // 88          8PP"""""""  88       88  8b       88  8PP"""""""  88
+  // 88          "8b,   ,aa  88       88  "8a,   ,d88  "8b,   ,aa  88
+  // 88           `"Ybbd8"'  88       88   `"8bbdP"Y8   `"Ybbd8"'  88
+
   render() {
     const { classes } = this.props
     const {
       addNodeFlow,
       addPropFlow,
       addNodeFormData,
+      currentNodeDrawerTab,
       editNodeFlow,
+      isReorderingProps,
       nodes,
       propTypes,
       selectedNodeID,
@@ -1100,13 +1207,104 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
             </IconButton>,
           ]}
         />
-        {selectedNode && (
+
+        {/* 88                                                                      
+         88                                                                      
+         88                                                                      
+ ,adPPYb,88  8b,dPPYba,  ,adPPYYba,  8b      db      d8   ,adPPYba,  8b,dPPYba,  
+a8"    `Y88  88P'   "Y8  ""     `Y8  `8b    d88b    d8'  a8P_____88  88P'   "Y8  
+8b       88  88          ,adPPPPP88   `8b  d8'`8b  d8'   8PP"""""""  88          
+"8a,   ,d88  88          88,    ,88    `8bd8'  `8bd8'    "8b,   ,aa  88          
+ `"8bbdP"Y8  88          `"8bbdP"Y8      YP      YP       `"Ybbd8"'  88*/}
+
+        {selectedNodeID && selectedNode && (
           <PcDrawer
-            leftButtonOnClick={this.unselectNode}
             title={selectedNode.label}
             open
+            leftButtonOnClick={this.onClickDrawerLeftBtn}
+            rightButtonOnClick={this.onClickDrawerRightBtn}
+            rightButtonText={(() => {
+              if (
+                editNodeFlow.editingIcon &&
+                editNodeFlow.currentlySelectedIconName !== null
+              ) {
+                return 'select'
+              }
+
+              if (editNodeFlow.editingLabel) {
+                return 'save'
+              }
+
+              return undefined
+            })()}
+            tabs={AVAILABLE_TABS_NAMES}
+            tabsCurrentValue={currentNodeDrawerTab}
+            tabsOnChange={this.handleNodeDrawerTabChange}
+            hideTabs={editNodeFlow.editingLabel || editNodeFlow.editingIcon}
           >
-            {/* TODO: Replace with new dialog */}
+            {currentNodeDrawerTab === NodeDrawerTab.Details &&
+              !editNodeFlow.editingIcon &&
+              !editNodeFlow.editingLabel && (
+                <div className={classes.nodeEditorContainer}>
+                  <NodeEditor
+                    onClickDeactivate={this.editNodeFlowToggleDeactivate}
+                    onClickIcon={this.editNodeFlowOnClickIconBtn}
+                    onClickLabel={this.editNodeFlowOnClickLabel}
+                    onClickReactivate={this.editNodeFlowToggleReactivate}
+                    icon={
+                      nameToIconMap[nodes[selectedNodeID].iconName].outlined
+                    }
+                    isNodeActive={nodes[selectedNodeID].active}
+                    label={nodes[selectedNodeID].label}
+                  />
+                </div>
+              )}
+
+            {editNodeFlow.editingIcon && (
+              <IconSelector
+                icons={AVAILABLE_ICONS}
+                onClickIcon={this.editNodeFlowOnClickIcon}
+                selectedIconIdx={editNodeFlowSelectedIconIdx}
+              />
+            )}
+
+            {editNodeFlow.editingLabel && (
+              <TextField
+                autoFocus
+                className={classes.labelEditorTextField}
+                onChange={this.editNodeFlowOnChangeLabelTextField}
+                value={editNodeFlow.editingLabelCurrentValue}
+                type="search"
+                variant="outlined"
+              />
+            )}
+
+            {currentNodeDrawerTab === NodeDrawerTab.Properties && (
+              <PropDefsOverview
+                onReorderEnd={this.onReorderEnd}
+                onClickReorder={this.toggleReorderProps}
+                isReordering={isReorderingProps}
+                onClickAdd={this.toggleAddPropDialog}
+                onClickEdit={this.editPropFlowOnClickEdit}
+                propDefs={Object.entries(selectedNode.propDefs).map(
+                  ([id, propDef]) => ({
+                    id,
+                    icon: nameToIconMap[propDef.iconName]
+                      ? nameToIconMap[propDef.iconName].filled
+                      : null,
+                    name: propDef.name,
+                    typeName:
+                      typeToReadableName[propDef.propType.name] ||
+                      propDef.propType.name,
+                    unused: propDef.unused,
+                  }),
+                )}
+              />
+            )}
+
+            {currentNodeDrawerTab === NodeDrawerTab.Relationships &&
+              'relationships'}
+
             <Dialog
               rightActionButtonText={
                 addPropFlow.selectingIcon ? 'Save' : 'Next'
@@ -1155,25 +1353,20 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
                 )}
               </OverlaySpinner>
             </Dialog>
-
-            <PropDefsOverview
-              onClickAdd={this.toggleAddPropDialog}
-              propDefs={Object.entries(selectedNode.propDefs).map(
-                ([id, propDef]) => ({
-                  id,
-                  icon: nameToIconMap[propDef.iconName]
-                    ? nameToIconMap[propDef.iconName].filled
-                    : null,
-                  name: propDef.name,
-                  typeName:
-                    typeToReadableName[propDef.propType.name] ||
-                    propDef.propType.name,
-                  unused: propDef.unused,
-                }),
-              )}
-            />
           </PcDrawer>
         )}
+
+        {/*
+                     88           88                                        88z
+                     88           88                                        88
+                     88           88                                        88
+,adPPYYba,   ,adPPYb,88   ,adPPYb,88     8b,dPPYba,    ,adPPYba,    ,adPPYb,88   ,adPPYba,
+""     `Y8  a8"    `Y88  a8"    `Y88     88P'   `"8a  a8"     "8a  a8"    `Y88  a8P_____88
+,adPPPPP88  8b       88  8b       88     88       88  8b       d8  8b       88  8PP"""""""
+88,    ,88  "8a,   ,d88  "8a,   ,d88     88       88  "8a,   ,a8"  "8a,   ,d88  "8b,   ,aa
+`"8bbdP"Y8   `"8bbdP"Y8   `"8bbdP"Y8     88       88   `"YbbdP"'    `"8bbdP"Y8   `"Ybbd8"'
+
+                                                                                             */}
         <Dialog
           disableLeftActionButton={addNodeFlow.savingNode}
           disableRightActionButton={
@@ -1192,6 +1385,7 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
           showCloseButton={!addNodeFlow.selectingIcon}
           open={addNodeFlow.showingAddNodeDialog}
           rightActionButtonText={addNodeFlow.selectingIcon ? 'Save' : 'Next'}
+          rightActionButtonColorPrimary
           title={addNodeFlow.selectingIcon ? 'Select Icon' : 'Add Node'}
         >
           <OverlaySpinner showSpinner={addNodeFlow.savingNode}>
@@ -1217,8 +1411,11 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
                   disableLabelInput={addNodeFlow.savingNode}
                   disableNameInput={addNodeFlow.savingNode}
                 />
+
                 {addNodeFormData.messagesIfError && (
-                  <Messages messages={addNodeFormData.messagesIfError} />
+                  <div style={{ marginTop: '20px' }}>
+                    <Messages messages={addNodeFormData.messagesIfError} />
+                  </div>
                 )}
               </React.Fragment>
             )}
@@ -1226,70 +1423,25 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
         </Dialog>
 
         {/*
-88888888888  88888888ba,    88  888888888888     888b      88    ,ad8888ba,    88888888ba,    88888888888                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
-88           88      `"8b   88       88          8888b     88   d8"'    `"8b   88      `"8b   88
-88           88        `8b  88       88          88 `8b    88  d8'        `8b  88        `8b  88
-88aaaaa      88         88  88       88          88  `8b   88  88          88  88         88  88aaaaa                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
-88"""""      88         88  88       88          88   `8b  88  88          88  88         88  88"""""                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
-88           88         8P  88       88          88    `8b 88  Y8,        ,8P  88         8P  88                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
-88           88      .a8P   88       88          88     `8888   Y8a.    .a8P   88      .a8P   88                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
-88888888888  88888888Y"'    88       88          88      `888    `"Y8888Y"'    88888888Y"'    88888888888
+                                 88                                    88                            
+                          ,d     ""                             ,d     ""                            
+                          88                                    88                                   
+,adPPYYba,   ,adPPYba,  MM88MMM  88  8b       d8  ,adPPYYba,  MM88MMM  88   ,adPPYba,   8b,dPPYba,   
+""     `Y8  a8"     ""    88     88  `8b     d8'  ""     `Y8    88     88  a8"     "8a  88P'   `"8a  
+,adPPPPP88  8b            88     88   `8b   d8'   ,adPPPPP88    88     88  8b       d8  88       88  
+88,    ,88  "8a,   ,aa    88,    88    `8b,d8'    88,    ,88    88,    88  "8a,   ,a8"  88       88  
+`"8bbdP"Y8   `"Ybbd8"'    "Y888  88      "8"      `"8bbdP"Y8    "Y888  88   `"YbbdP"'   88       88  
+         88  88              88                                       
+         88  ""              88                                       
+         88                  88                                       
+ ,adPPYb,88  88  ,adPPYYba,  88   ,adPPYba,    ,adPPYb,d8  ,adPPYba,  
+a8"    `Y88  88  ""     `Y8  88  a8"     "8a  a8"    `Y88  I8[    ""  
+8b       88  88  ,adPPPPP88  88  8b       d8  8b       88   `"Y8ba,   
+"8a,   ,d88  88  88,    ,88  88  "8a,   ,a8"  "8a,   ,d88  aa    ]8I  
+ `"8bbdP"Y8  88  `"8bbdP"Y8  88   `"YbbdP"'    `"YbbdP"Y8  `"YbbdP"'  
+                                               aa,    ,88             
+                                                "Y8bbdP"              
 */}
-
-        {editNodeFlow.editingNodeID && (
-          <PcDrawer
-            leftButtonOnClick={this.editNodeFlowOnClickDrawerBtnLeft}
-            open
-            rightButtonOnClick={this.editNodeFlowOnClickDrawerBtnRight}
-            rightButtonText={(() => {
-              if (
-                editNodeFlow.editingIcon &&
-                editNodeFlow.currentlySelectedIconName !== null
-              ) {
-                return 'select'
-              }
-
-              if (editNodeFlow.editingLabel) {
-                return 'save'
-              }
-
-              return undefined
-            })()}
-            title="Editing Node"
-          >
-            {!editNodeFlow.editingIcon && !editNodeFlow.editingLabel && (
-              <div className={classes.nodeEditorContainer}>
-                <NodeEditor
-                  onClickDeactivate={this.editNodeFlowToggleDeactivate}
-                  onClickIcon={this.editNodeFlowOnClickIconBtn}
-                  onClickLabel={this.editNodeFlowOnClickLabel}
-                  onClickReactivate={this.editNodeFlowToggleReactivate}
-                  icon={
-                    nameToIconMap[nodes[editNodeFlow.editingNodeID].iconName]
-                      .outlined
-                  }
-                  isNodeActive={nodes[editNodeFlow.editingNodeID].active}
-                  label={nodes[editNodeFlow.editingNodeID].label}
-                />
-              </div>
-            )}
-
-            {editNodeFlow.editingIcon && (
-              <IconSelector
-                icons={AVAILABLE_ICONS}
-                onClickIcon={this.editNodeFlowOnClickIcon}
-                selectedIconIdx={editNodeFlowSelectedIconIdx}
-              />
-            )}
-
-            {editNodeFlow.editingLabel && (
-              <TextField
-                onChange={this.editNodeFlowOnChangeLabelTextField}
-                value={editNodeFlow.editingLabelCurrentValue}
-              />
-            )}
-          </PcDrawer>
-        )}
 
         <Dialog
           handleClose={this.editNodeFlowToggleDeactivate}
@@ -1360,17 +1512,6 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
                             subheader={node.name}
                           />
                         </CardActionArea>
-                        <CardActions>
-                          <IconButton
-                            className={classes.toRight}
-                            onClick={e => {
-                              e.stopPropagation()
-                              this.editNodeFlowOnClickEditNode(id)
-                            }}
-                          >
-                            <EditOutlineIcon />
-                          </IconButton>
-                        </CardActions>
                       </Card>
                     </Grid>
                   )
@@ -1419,17 +1560,6 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
                           subheader={node.name}
                         />
                       </CardActionArea>
-                      <CardActions>
-                        <IconButton
-                          className={classes.toRight}
-                          onClick={e => {
-                            e.stopPropagation()
-                            this.editNodeFlowOnClickEditNode(id)
-                          }}
-                        >
-                          <HistoryOutlined />
-                        </IconButton>
-                      </CardActions>
                     </Card>
                   </Grid>
                 )

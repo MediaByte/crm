@@ -30,6 +30,9 @@ import ReorderList from './ReorderList'
  * @param {import('@material-ui/core/styles').Theme} theme
  */
 const styles = theme => ({
+  addButton: {
+    alignSelf: 'flex-start',
+  },
   grow: {
     flexGrow: 1,
   },
@@ -72,6 +75,7 @@ const styles = theme => ({
  * @prop {Record<ClassKey, string>} classes
  * @prop {boolean} isReordering
  * @prop {(() => void)=} onClickAdd (Optional)
+ * @prop {((id: string) => void)=} onClickEdit (Optional)
  * @prop {(() => void)=} onClickReorder (Optional)
  * @prop {((oldIndex: number, newIndex: number) => void)=} onReorderEnd
  * @prop {PropDef[]} propDefs
@@ -81,6 +85,16 @@ const styles = theme => ({
  * @augments React.PureComponent<Props>
  */
 class PropDefsOverview extends React.PureComponent {
+  /**
+   * @private
+   * @param {any} e
+   */
+  onClickEdit = e => {
+    const { onClickEdit } = this.props
+
+    onClickEdit && onClickEdit(e.currentTarget.dataset.id)
+  }
+
   /**
    * @private
    * @type {SortEndHandler}
@@ -115,7 +129,7 @@ class PropDefsOverview extends React.PureComponent {
             </Typography>
           )}
 
-          {!isReordering && usedPropDefs.length > 0 && (
+          {usedPropDefs.length > 0 && (
             <Tooltip title="Reorder" aria-label="Reorder" placement="left">
               <IconButton
                 className={classes.reorderIcon}
@@ -136,8 +150,9 @@ class PropDefsOverview extends React.PureComponent {
           <List>
             {usedPropDefs.map(propDef => {
               const Icon = propDef.icon
+
               return (
-                <ListItem className={classes.listItem}>
+                <ListItem className={classes.listItem} key={propDef.id}>
                   {Icon && <Icon />}
 
                   <ListItemText
@@ -149,6 +164,8 @@ class PropDefsOverview extends React.PureComponent {
                     <IconButton
                       aria-label="Edit"
                       className={classes.smallIconButton}
+                      data-id={propDef.id}
+                      onClick={this.onClickEdit}
                     >
                       <EditOutlinedIcon />
                     </IconButton>
@@ -169,7 +186,7 @@ class PropDefsOverview extends React.PureComponent {
               const Icon = propDef.icon
 
               return (
-                <ListItem className={classes.listItem}>
+                <ListItem className={classes.listItem} key={propDef.id}>
                   {Icon && <Icon />}
 
                   <ListItemText
@@ -191,7 +208,11 @@ class PropDefsOverview extends React.PureComponent {
           </List>
         )}
 
-        <IconButton onClick={onClickAdd} aria-label="Plus">
+        <IconButton
+          aria-label="Plus"
+          onClick={onClickAdd}
+          className={classes.addButton}
+        >
           <AddCircleOutlineIcon fontSize="small" color="primary" />
         </IconButton>
       </React.Fragment>

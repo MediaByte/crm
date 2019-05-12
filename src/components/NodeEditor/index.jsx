@@ -6,10 +6,13 @@ import List from '@material-ui/core/List'
 import Typography from '@material-ui/core/Typography'
 
 import DeleteOutline from '@material-ui/icons/DeleteOutline'
+import RestoreIcon from '@material-ui/icons/RestoreOutlined'
 
 import DrawerButton from 'components/DrawerButton'
 
 const alignSelfCenter = { alignSelf: 'center' }
+const activationBtnStyle = { backgroundColor: 'white' }
+const activationBtnTxtStyle = { marginLeft: '5px' }
 
 /**
  * @typedef {object} Props
@@ -44,28 +47,41 @@ export default class NodeEditor extends React.PureComponent {
         container
         direction="column"
         justify="flex-start"
+        spacing={16}
       >
-        <List>
-          <DrawerButton
-            onClick={onClickLabel}
-            primaryText="Label"
-            secondaryText={label}
-          />
-        </List>
+        <Grid item>
+          <List>
+            <DrawerButton
+              onClick={onClickLabel}
+              primaryText="Label"
+              secondaryText={label}
+            />
+          </List>
+        </Grid>
 
-        <Typography>ICON</Typography>
+        <Grid item>
+          <Typography>ICON</Typography>
+        </Grid>
 
-        <List>
-          <DrawerButton icon={icon} onClick={onClickIcon} />
-        </List>
+        <Grid item>
+          <List>
+            <DrawerButton icon={icon} onClick={onClickIcon} />
+          </List>
+        </Grid>
 
-        <Grid item style={alignSelfCenter}>
+        <Grid item>
           <Button
             color={isNodeActive ? 'secondary' : 'primary'}
             onClick={isNodeActive ? onClickDeactivate : onClickReactivate}
+            style={activationBtnStyle}
+            fullWidth
           >
-            <DeleteOutline />
-            {isNodeActive ? 'Deactivate' : 'Reactivate'}
+            {isNodeActive ? <DeleteOutline /> : <RestoreIcon />}
+            {isNodeActive ? (
+              <span style={activationBtnTxtStyle}>Deactivate</span>
+            ) : (
+              <span style={activationBtnTxtStyle}>Reactivate</span>
+            )}
           </Button>
         </Grid>
       </Grid>

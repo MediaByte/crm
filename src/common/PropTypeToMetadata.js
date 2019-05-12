@@ -4,7 +4,7 @@
 export const typeToIconName = {
   address: 'pindrop',
   checkbox: 'checkbox',
-  date: 'calendar',
+  date: 'calendarToday',
   memo: 'subject',
   phone: 'phone',
   picklist: 'list',

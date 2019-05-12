@@ -175,16 +175,16 @@ export default class AddPropForm extends React.PureComponent {
             >
               {availableTypes.map(type => {
                 const label = typeToReadableName[type] || type
-                const iconName = typeToIconName[type]
-                const Icon = nameToIconMap[iconName].outlined
+                const Icon = nameToIconMap[typeToIconName[type]]
 
                 return (
                   <MenuItem value={type} key={type}>
-                    {iconName && (
+                    {Icon && (
                       <span style={menuIconStyle}>
-                        <Icon />
+                        <Icon.outlined />
                       </span>
                     )}
+
                     {label || type}
                   </MenuItem>
                 )

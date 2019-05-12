@@ -31,7 +31,13 @@ export default class IconSelector extends React.PureComponent {
     const { icons, selectedIconIdx } = this.props
 
     return (
-      <Grid container spacing={0}>
+      <Grid
+        alignItems="center"
+        alignContent="center"
+        container
+        justify="center"
+        spacing={0}
+      >
         {icons.map((icon, i) => (
           <Grid item key={i}>
             <SelectableIcon
