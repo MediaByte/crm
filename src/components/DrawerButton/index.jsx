@@ -9,6 +9,7 @@ import {
   ListItemSecondaryAction,
   Grid,
   Switch,
+  List,
 } from '@material-ui/core'
 
 import ChevronRightIcon from '@material-ui/icons/ChevronRight'
@@ -57,35 +58,37 @@ class DrawerButton extends React.PureComponent {
     } = this.props
 
     return (
-      <ListItem className={classes.listItem} button onClick={onClick}>
-        {Icon && (
-          <ListItemIcon>
-            <Icon />
-          </ListItemIcon>
-        )}
-
-        <ListItemText
-          primary={primaryText}
-          // @ts-ignore
-          primaryTypographyProps={
-            primaryTextRed ? primaryTypographyPropsIfRed : undefined
-          }
-          secondary={secTextAtBottom && secondaryText}
-        />
-
-        <ListItemSecondaryAction>
-          {isSwitch ? (
-            <Switch checked={switchOn} color="primary" onChange={onClick} />
-          ) : !secTextAtBottom && secondaryText ? (
-            <Grid container alignItems="center">
-              <Typography color="textSecondary">{secondaryText}</Typography>
-              <ChevronRightIcon color="disabled" fontSize="small" />
-            </Grid>
-          ) : (
-            <ChevronRightIcon color="disabled" fontSize="small" />
+      <List disablePadding>
+        <ListItem className={classes.listItem} button onClick={onClick}>
+          {Icon && (
+            <ListItemIcon>
+              <Icon />
+            </ListItemIcon>
           )}
-        </ListItemSecondaryAction>
-      </ListItem>
+
+          <ListItemText
+            primary={primaryText}
+            // @ts-ignore
+            primaryTypographyProps={
+              primaryTextRed ? primaryTypographyPropsIfRed : undefined
+            }
+            secondary={secTextAtBottom && secondaryText}
+          />
+
+          <ListItemSecondaryAction>
+            {isSwitch ? (
+              <Switch checked={switchOn} color="primary" onChange={onClick} />
+            ) : !secTextAtBottom && secondaryText ? (
+              <Grid container alignItems="center">
+                <Typography color="textSecondary">{secondaryText}</Typography>
+                <ChevronRightIcon color="disabled" fontSize="small" />
+              </Grid>
+            ) : (
+              <ChevronRightIcon color="disabled" fontSize="small" />
+            )}
+          </ListItemSecondaryAction>
+        </ListItem>
+      </List>
     )
   }
 }

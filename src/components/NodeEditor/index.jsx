@@ -50,13 +50,11 @@ export default class NodeEditor extends React.PureComponent {
         spacing={16}
       >
         <Grid item>
-          <List>
-            <DrawerButton
-              onClick={onClickLabel}
-              primaryText="Label"
-              secondaryText={label}
-            />
-          </List>
+          <DrawerButton
+            onClick={onClickLabel}
+            primaryText="Label"
+            secondaryText={label}
+          />
         </Grid>
 
         <Grid item>
@@ -64,9 +62,7 @@ export default class NodeEditor extends React.PureComponent {
         </Grid>
 
         <Grid item>
-          <List>
-            <DrawerButton icon={icon} onClick={onClickIcon} />
-          </List>
+          <DrawerButton icon={icon} onClick={onClickIcon} />
         </Grid>
 
         <Grid item>
