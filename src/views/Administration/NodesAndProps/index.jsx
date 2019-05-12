@@ -5,14 +5,12 @@ import toUpper from 'lodash/toUpper'
 import Grid from '@material-ui/core/Grid'
 import IconButton from '@material-ui/core/IconButton'
 import Snackbar from '@material-ui/core/Snackbar'
-import Tab from '@material-ui/core/Tab'
-import Tabs from '@material-ui/core/Tabs'
+
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import { withStyles } from '@material-ui/core/styles'
 
 import CloseIcon from '@material-ui/icons/Close'
-import EditOutlineIcon from '@material-ui/icons/EditOutlined'
 
 import AddNodeForm from 'components/AddNodeForm'
 import AddPropForm from 'components/AddPropForm'
@@ -36,14 +34,8 @@ import {
   Node as NodeValidator,
   PropDef as PropDefValidator,
 } from 'app/validators'
-import {
-  Card,
-  CardActions,
-  CardActionArea,
-  CardHeader,
-  Avatar,
-} from '@material-ui/core'
-import { AddCircleOutline, HistoryOutlined } from '@material-ui/icons'
+import { Card, CardActionArea, CardHeader, Avatar } from '@material-ui/core'
+import { AddCircleOutline } from '@material-ui/icons'
 /**
  * @typedef {import('app/gun-wrapper/SetNode').default} SetNode
  * @typedef {import('app/typings').Node} Node
@@ -89,6 +81,11 @@ const BLANK_ADD_NODE_FORM_DATA = Object.freeze({
   detailsIfError: null,
   messagesIfError: null,
 })
+
+/** @type {Readonly<EditPropFlow>} */
+const INITIAL_EDIT_PROP_FLOW = {
+  selectedPropID: null,
+}
 
 /** @type {AddNodeFlow} */
 const INITIAL_ADD_NODE_FLOW = Object.freeze({
@@ -217,12 +214,19 @@ const styles = theme => ({
  */
 
 /**
+ * @typedef {object} EditPropFlow
+ * @prop {string|null} selectedPropID
+ */
+
+/**
  * @typedef {object} State
  * @prop {AddNodeFlow} addNodeFlow
  * @prop {AddPropFlow} addPropFlow
  * @prop {AddNodeFormData} addNodeFormData
  * @prop {number} currentNodeDrawerTab
- * @prop {EditNodeFlow} editNodeFlow (Optional)
+ * @prop {EditNodeFlow} editNodeFlow
+ * @prop {EditPropFlow} editPropFlow
+ * @prop {boolean} isReorderingProps
  * @prop {Record<string, Node>} nodes
  * @prop {Record<string, PropType>} propTypes
  * @prop {string|null} selectedNodeID Non-null when editing a node's property
@@ -248,6 +252,8 @@ class NodesAndProps extends React.Component {
     addNodeFormData: BLANK_ADD_NODE_FORM_DATA,
     currentNodeDrawerTab: NodeDrawerTab.Details,
     editNodeFlow: INITIAL_EDIT_NODE_FLOW,
+    editPropFlow: INITIAL_EDIT_PROP_FLOW,
+    isReorderingProps: false,
     nodes: {},
     propTypes: {},
     selectedNodeID: null,
@@ -605,6 +611,7 @@ d8'          `8b  88888888Y"'    88888888Y"'       88           88      `8b    `
   handleNodeDrawerTabChange = (_, tab) => {
     this.setState({
       currentNodeDrawerTab: tab,
+      isReorderingProps: false,
     })
   }
 
@@ -733,6 +740,36 @@ d8'          `8b  88888888Y"'    88888888Y"'       88           88      `8b    `
         reactivating: !editNodeFlow.reactivating,
       },
     }))
+  }
+
+  /*
+88888888888  88888888ba,    88  888888888888     88888888ba   88888888ba     ,ad8888ba,    88888888ba
+88           88      `"8b   88       88          88      "8b  88      "8b   d8"'    `"8b   88      "8b
+88           88        `8b  88       88          88      ,8P  88      ,8P  d8'        `8b  88      ,8P
+88aaaaa      88         88  88       88          88aaaaaa8P'  88aaaaaa8P'  88          88  88aaaaaa8P'
+88"""""      88         88  88       88          88""""""'    88""""88'    88          88  88""""""'
+88           88         8P  88       88          88           88    `8b    Y8,        ,8P  88
+88           88      .a8P   88       88          88           88     `8b    Y8a.    .a8P   88
+88888888888  88888888Y"'    88       88          88           88      `8b    `"Y8888Y"'    88
+*/
+
+  /**
+   * @private
+   * @param {string} id
+   */
+  editPropFlowOnClickEdit = id => {
+    this.setState({
+      editPropFlow: {
+        ...INITIAL_EDIT_PROP_FLOW,
+        selectedPropID: id,
+      },
+    })
+  }
+
+  editPropFlowStopEditing = () => {
+    this.setState({
+      editPropFlow: INITIAL_EDIT_PROP_FLOW,
+    })
   }
 
   /*
@@ -1074,6 +1111,33 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
     }
   }
 
+  /*
+                                                          88
+                                                          88
+                                                          88
+8b,dPPYba,   ,adPPYba,   ,adPPYba,   8b,dPPYba,   ,adPPYb,88   ,adPPYba,  8b,dPPYba,
+88P'   "Y8  a8P_____88  a8"     "8a  88P'   "Y8  a8"    `Y88  a8P_____88  88P'   "Y8
+88          8PP"""""""  8b       d8  88          8b       88  8PP"""""""  88
+88          "8b,   ,aa  "8a,   ,a8"  88          "8a,   ,d88  "8b,   ,aa  88
+88           `"Ybbd8"'   `"YbbdP"'   88           `"8bbdP"Y8   `"Ybbd8"'  88
+*/
+
+  /** @private */
+  toggleReorderProps = () => {
+    this.setState(({ isReorderingProps }) => ({
+      isReorderingProps: !isReorderingProps,
+    }))
+  }
+
+  /**
+   * @private
+   * @param {number} oldIndex
+   * @param {number} newIndex
+   */
+  onReorderEnd = (oldIndex, newIndex) => {
+    console.log(`onReorderEnd: ${oldIndex} -> ${newIndex}`)
+  }
+
   //                                               88
   // 8b,dPPYba,   ,adPPYba,  8b,dPPYba,    ,adPPYb,88   ,adPPYba,  8b,dPPYba,
   // 88P'   "Y8  a8P_____88  88P'   `"8a  a8"    `Y88  a8P_____88  88P'   "Y8
@@ -1089,6 +1153,7 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
       addNodeFormData,
       currentNodeDrawerTab,
       editNodeFlow,
+      isReorderingProps,
       nodes,
       propTypes,
       selectedNodeID,
@@ -1216,7 +1281,11 @@ a8"    `Y88  88P'   "Y8  ""     `Y8  `8b    d88b    d8'  a8P_____88  88P'   "Y8
 
             {currentNodeDrawerTab === NodeDrawerTab.Properties && (
               <PropDefsOverview
+                onReorderEnd={this.onReorderEnd}
+                onClickReorder={this.toggleReorderProps}
+                isReordering={isReorderingProps}
                 onClickAdd={this.toggleAddPropDialog}
+                onClickEdit={this.editPropFlowOnClickEdit}
                 propDefs={Object.entries(selectedNode.propDefs).map(
                   ([id, propDef]) => ({
                     id,
