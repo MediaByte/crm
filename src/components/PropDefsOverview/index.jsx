@@ -129,7 +129,7 @@ class PropDefsOverview extends React.PureComponent {
             </Typography>
           )}
 
-          {!isReordering && usedPropDefs.length > 0 && (
+          {usedPropDefs.length > 0 && (
             <Tooltip title="Reorder" aria-label="Reorder" placement="left">
               <IconButton
                 className={classes.reorderIcon}
