@@ -75,6 +75,7 @@ const styles = theme => ({
  * @prop {Record<ClassKey, string>} classes
  * @prop {boolean} isReordering
  * @prop {(() => void)=} onClickAdd (Optional)
+ * @prop {((id: string) => void)=} onClickEdit (Optional)
  * @prop {(() => void)=} onClickReorder (Optional)
  * @prop {((oldIndex: number, newIndex: number) => void)=} onReorderEnd
  * @prop {PropDef[]} propDefs
@@ -84,6 +85,16 @@ const styles = theme => ({
  * @augments React.PureComponent<Props>
  */
 class PropDefsOverview extends React.PureComponent {
+  /**
+   * @private
+   * @param {any} e
+   */
+  onClickEdit = e => {
+    const { onClickEdit } = this.props
+
+    onClickEdit && onClickEdit(e.currentTarget.dataset.id)
+  }
+
   /**
    * @private
    * @type {SortEndHandler}
@@ -153,6 +164,8 @@ class PropDefsOverview extends React.PureComponent {
                     <IconButton
                       aria-label="Edit"
                       className={classes.smallIconButton}
+                      data-id={propDef.id}
+                      onClick={this.onClickEdit}
                     >
                       <EditOutlinedIcon />
                     </IconButton>
