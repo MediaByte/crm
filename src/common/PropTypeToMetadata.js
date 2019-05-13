@@ -2,15 +2,22 @@
  * @type {Record<string, string>}
  */
 export const typeToIconName = {
-  address: 'pindrop',
-  checkbox: 'checkbox',
+  address: 'pinDrop',
+  checkbox: 'checkBox',
+  currency: 'attachMoney',
   date: 'calendarToday',
+  decimal: 'centerFocusStrong',
+  email: 'email',
   memo: 'subject',
-  phone: 'phone',
+  number: 'exposurePlus2',
+  multiselect: 'selectAll',
+  lookup: '',
+  percent: '',
+  phone: 'speakerPhone',
   picklist: 'list',
   radio: 'radiobutton',
   textfield: 'formatSize',
-  time: 'clock',
+  time: 'accessTime',
 }
 
 /**
@@ -19,8 +26,15 @@ export const typeToIconName = {
 export const typeToReadableName = {
   address: 'Address',
   checkbox: 'Checkbox',
+  currency: 'Currency',
   date: 'Date',
+  decimal: 'Decimal',
+  email: 'Email',
   memo: 'Memo',
+  number: 'Number',
+  multiselect: 'Multi-Select',
+  lookup: 'Lookup',
+  percent: 'Percent',
   phone: 'Phone',
   picklist: 'Picklist',
   radio: 'Radio',
