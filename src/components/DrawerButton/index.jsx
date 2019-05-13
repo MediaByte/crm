@@ -27,7 +27,7 @@ const primaryTypographyPropsIfRed = {
 /**
  * @typedef {object} Props
  * @prop {Record<keyof typeof styles, string>} classes
- * @prop {React.ComponentType<import('@material-ui/core/SvgIcon').SvgIconProps>=} icon
+ * @prop {(React.ComponentType<import('@material-ui/core/SvgIcon').SvgIconProps>|null)=} icon
  * @prop {boolean=} isSwitch (Optional) Renders an switch, useful for setting
  * boolean options.
  * @prop {(() => void)=} onClick
@@ -57,6 +57,8 @@ class DrawerButton extends React.PureComponent {
       onClick,
     } = this.props
 
+    const actuallySwitchOn = typeof switchOn === 'undefined' ? false : switchOn
+
     return (
       <List disablePadding>
         <ListItem className={classes.listItem} button onClick={onClick}>
@@ -77,7 +79,11 @@ class DrawerButton extends React.PureComponent {
 
           <ListItemSecondaryAction>
             {isSwitch ? (
-              <Switch checked={switchOn} color="primary" onChange={onClick} />
+              <Switch
+                checked={actuallySwitchOn}
+                color="primary"
+                onChange={onClick}
+              />
             ) : !secTextAtBottom && secondaryText ? (
               <Grid container alignItems="center">
                 <Typography color="textSecondary">{secondaryText}</Typography>
