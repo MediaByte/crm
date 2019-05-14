@@ -703,25 +703,31 @@ d8'          `8b  88888888Y"'    88888888Y"'       88           88      `8b    `
   }
 
   editNodeFlowOnClickIconBtn = () => {
-    this.setState(({ editNodeFlow, nodes, selectedNodeID }) => ({
-      editNodeFlow: {
-        ...editNodeFlow,
-        currentlySelectedIconName:
-          nodes[/** @type {string} */ (selectedNodeID)].iconName,
-        editingIcon: true,
-      },
-    }))
+    this.setState(({ editNodeFlow, nodes, selectedNodeID }) => {
+      const sni = /** @type {string} */ (selectedNodeID)
+
+      return {
+        editNodeFlow: {
+          ...editNodeFlow,
+          currentlySelectedIconName: nodes[sni].iconName,
+          editingIcon: true,
+        },
+      }
+    })
   }
 
   editNodeFlowOnClickLabel = () => {
-    this.setState(({ editNodeFlow, nodes, selectedNodeID }) => ({
-      editNodeFlow: {
-        ...editNodeFlow,
-        editingLabelCurrentValue:
-          nodes[/** @type {string} */ (selectedNodeID)].label,
-        editingLabel: true,
-      },
-    }))
+    this.setState(({ editNodeFlow, nodes, selectedNodeID }) => {
+      const sni = /** @type {string} */ (selectedNodeID)
+
+      return {
+        editNodeFlow: {
+          ...editNodeFlow,
+          editingLabelCurrentValue: nodes[sni].label,
+          editingLabel: true,
+        },
+      }
+    })
   }
 
   editNodeFlowToggleDeactivate = () => {
@@ -1036,36 +1042,55 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
   }
 
   onClickDrawerLeftBtn = () => {
-    this.setState(({ currentNodeDrawerTab, editNodeFlow, selectedNodeID }) => {
-      if (editNodeFlow.editingIcon) {
-        return {
-          currentNodeDrawerTab,
-          editNodeFlow: {
-            ...editNodeFlow,
-            currentlySelectedIconName: null,
-            editingIcon: false,
-          },
-          selectedNodeID,
+    this.setState(
+      ({
+        currentNodeDrawerTab,
+        editNodeFlow,
+        editPropFlow,
+        selectedNodeID,
+      }) => {
+        if (editPropFlow.selectedPropID) {
+          return {
+            currentNodeDrawerTab,
+            editNodeFlow,
+            editPropFlow: INITIAL_EDIT_PROP_FLOW,
+            selectedNodeID,
+          }
         }
-      }
 
-      if (editNodeFlow.editingLabel) {
-        return {
-          currentNodeDrawerTab,
-          editNodeFlow: {
-            ...editNodeFlow,
-            editingLabel: false,
-          },
-          selectedNodeID,
+        if (editNodeFlow.editingIcon) {
+          return {
+            currentNodeDrawerTab,
+            editNodeFlow: {
+              ...editNodeFlow,
+              currentlySelectedIconName: null,
+              editingIcon: false,
+            },
+            editPropFlow,
+            selectedNodeID,
+          }
         }
-      }
 
-      return {
-        currentNodeDrawerTab: 0,
-        editNodeFlow: INITIAL_EDIT_NODE_FLOW,
-        selectedNodeID: null,
-      }
-    })
+        if (editNodeFlow.editingLabel) {
+          return {
+            currentNodeDrawerTab,
+            editNodeFlow: {
+              ...editNodeFlow,
+              editingLabel: false,
+            },
+            editPropFlow,
+            selectedNodeID,
+          }
+        }
+
+        return {
+          currentNodeDrawerTab: 0,
+          editNodeFlow: INITIAL_EDIT_NODE_FLOW,
+          editPropFlow,
+          selectedNodeID: null,
+        }
+      },
+    )
   }
 
   onClickDrawerRightBtn = () => {
@@ -1153,6 +1178,7 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
       addNodeFormData,
       currentNodeDrawerTab,
       editNodeFlow,
+      editPropFlow,
       isReorderingProps,
       nodes,
       propTypes,
@@ -1191,6 +1217,54 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
 
     return (
       <React.Fragment>
+        <Dialog
+          rightActionButtonText={addPropFlow.selectingIcon ? 'Save' : 'Next'}
+          disableRightActionButton={
+            addPropFlow.saving ||
+            (addPropFlow.currentlySelectedIconName === null &&
+              addPropFlow.selectingIcon) ||
+            !!addPropFlow.labelError ||
+            !!addPropFlow.nameError ||
+            addPropFlow.labelValue.length === 0 ||
+            addPropFlow.nameValue.length === 0 ||
+            addPropFlow.typeValue === ''
+          }
+          disableLeftActionButton={addPropFlow.saving}
+          onClickLeftActionButton={this.addPropFlowOnClickLeftACtion}
+          handleClose={this.toggleAddPropDialog}
+          onClickRightActionButton={this.addPropFlowOnClickAction}
+          showBackArrow={addPropFlow.selectingIcon}
+          showCloseButton={!addPropFlow.selectingIcon}
+          open={addPropFlow.dialogOpen}
+          title={`Add a Property to Node ${
+            /** @type {Node} */ (selectedNode).label
+          } `}
+        >
+          <OverlaySpinner showSpinner={addPropFlow.saving}>
+            {addPropFlow.selectingIcon ? (
+              <IconSelector
+                icons={AVAILABLE_ICONS}
+                onClickIcon={this.addPropFlowOnClickIcon}
+                selectedIconIdx={addPropFlowSelectedIconIdx}
+              />
+            ) : (
+              <AddPropForm
+                availableTypes={Object.values(propTypes).map(pt => pt.name)}
+                disableLabelInput={addPropFlow.saving}
+                disableNameInput={addPropFlow.saving}
+                disableTypeSelection={addPropFlow.saving}
+                labelValue={addPropFlow.labelValue}
+                labelErrorMessage={addPropFlow.labelError}
+                nameErrorMessage={addPropFlow.nameError}
+                nameValue={addPropFlow.nameValue}
+                typeValue={addPropFlow.typeValue}
+                onLabelChange={this.addPropFormOnLabelChange}
+                onNameChange={this.addPropFormOnNameChange}
+                onTypeChange={this.addPropFormOnTypeChange}
+              />
+            )}
+          </OverlaySpinner>
+        </Dialog>
         <Snackbar
           autoHideDuration={2000}
           message={<span>{snackbarMessage}</span>}
@@ -1240,7 +1314,11 @@ a8"    `Y88  88P'   "Y8  ""     `Y8  `8b    d88b    d8'  a8P_____88  88P'   "Y8
             tabs={AVAILABLE_TABS_NAMES}
             tabsCurrentValue={currentNodeDrawerTab}
             tabsOnChange={this.handleNodeDrawerTabChange}
-            hideTabs={editNodeFlow.editingLabel || editNodeFlow.editingIcon}
+            hideTabs={
+              editNodeFlow.editingLabel ||
+              editNodeFlow.editingIcon ||
+              !!editPropFlow.selectedPropID
+            }
           >
             {currentNodeDrawerTab === NodeDrawerTab.Details &&
               !editNodeFlow.editingIcon &&
@@ -1279,80 +1357,34 @@ a8"    `Y88  88P'   "Y8  ""     `Y8  `8b    d88b    d8'  a8P_____88  88P'   "Y8
               />
             )}
 
-            {currentNodeDrawerTab === NodeDrawerTab.Properties && (
-              <PropDefsOverview
-                onReorderEnd={this.onReorderEnd}
-                onClickReorder={this.toggleReorderProps}
-                isReordering={isReorderingProps}
-                onClickAdd={this.toggleAddPropDialog}
-                onClickEdit={this.editPropFlowOnClickEdit}
-                propDefs={Object.entries(selectedNode.propDefs).map(
-                  ([id, propDef]) => ({
-                    id,
-                    icon: nameToIconMap[propDef.iconName]
-                      ? nameToIconMap[propDef.iconName].filled
-                      : null,
-                    name: propDef.name,
-                    typeName:
-                      typeToReadableName[propDef.propType.name] ||
-                      propDef.propType.name,
-                    unused: propDef.unused,
-                  }),
-                )}
-              />
-            )}
+            {currentNodeDrawerTab === NodeDrawerTab.Properties &&
+              !editPropFlow.selectedPropID && (
+                <PropDefsOverview
+                  onReorderEnd={this.onReorderEnd}
+                  onClickReorder={this.toggleReorderProps}
+                  isReordering={isReorderingProps}
+                  onClickAdd={this.toggleAddPropDialog}
+                  onClickEdit={this.editPropFlowOnClickEdit}
+                  propDefs={Object.entries(selectedNode.propDefs).map(
+                    ([id, propDef]) => ({
+                      id,
+                      icon: nameToIconMap[propDef.iconName]
+                        ? nameToIconMap[propDef.iconName].filled
+                        : null,
+                      name: propDef.name,
+                      typeName:
+                        typeToReadableName[propDef.propType.name] ||
+                        propDef.propType.name,
+                      unused: propDef.unused,
+                    }),
+                  )}
+                />
+              )}
+
+            {editPropFlow.selectedPropID && 'propdefeditor'}
 
             {currentNodeDrawerTab === NodeDrawerTab.Relationships &&
               'relationships'}
-
-            <Dialog
-              rightActionButtonText={
-                addPropFlow.selectingIcon ? 'Save' : 'Next'
-              }
-              disableRightActionButton={
-                addPropFlow.saving ||
-                (addPropFlow.currentlySelectedIconName === null &&
-                  addPropFlow.selectingIcon) ||
-                !!addPropFlow.labelError ||
-                !!addPropFlow.nameError ||
-                addPropFlow.labelValue.length === 0 ||
-                addPropFlow.nameValue.length === 0 ||
-                addPropFlow.typeValue === ''
-              }
-              disableLeftActionButton={addPropFlow.saving}
-              onClickLeftActionButton={this.addPropFlowOnClickLeftACtion}
-              handleClose={this.toggleAddPropDialog}
-              onClickRightActionButton={this.addPropFlowOnClickAction}
-              showBackArrow={addPropFlow.selectingIcon}
-              showCloseButton={!addPropFlow.selectingIcon}
-              open={addPropFlow.dialogOpen}
-              title={`Add a Property to Node ${selectedNode.label}`}
-            >
-              <OverlaySpinner showSpinner={addPropFlow.saving}>
-                {addPropFlow.selectingIcon ? (
-                  <IconSelector
-                    icons={AVAILABLE_ICONS}
-                    onClickIcon={this.addPropFlowOnClickIcon}
-                    selectedIconIdx={addPropFlowSelectedIconIdx}
-                  />
-                ) : (
-                  <AddPropForm
-                    availableTypes={Object.values(propTypes).map(pt => pt.name)}
-                    disableLabelInput={addPropFlow.saving}
-                    disableNameInput={addPropFlow.saving}
-                    disableTypeSelection={addPropFlow.saving}
-                    labelValue={addPropFlow.labelValue}
-                    labelErrorMessage={addPropFlow.labelError}
-                    nameErrorMessage={addPropFlow.nameError}
-                    nameValue={addPropFlow.nameValue}
-                    typeValue={addPropFlow.typeValue}
-                    onLabelChange={this.addPropFormOnLabelChange}
-                    onNameChange={this.addPropFormOnNameChange}
-                    onTypeChange={this.addPropFormOnTypeChange}
-                  />
-                )}
-              </OverlaySpinner>
-            </Dialog>
           </PcDrawer>
         )}
 
