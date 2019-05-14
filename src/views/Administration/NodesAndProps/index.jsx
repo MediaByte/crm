@@ -22,6 +22,7 @@ import OverlaySpinner from 'components/OverlaySpinner'
 import Page from 'views/Page/Page.jsx'
 import PcDrawer from 'components/PcDrawer'
 import PropDefsOverview from 'components/PropDefsOverview'
+import PropDefEditor from 'components/PropDefEditor'
 
 import { nameToIconMap } from 'common/NameToIcon'
 import { typeToReadableName } from 'common/PropTypeToMetadata'
@@ -1195,6 +1196,10 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
     const selectedNode =
       typeof selectedNodeID === 'string' && nodes[selectedNodeID]
 
+    const selectedPropDef =
+      selectedNode &&
+      selectedNode.propDefs[/** @type {string} */ (editPropFlow.selectedPropID)]
+
     const addNodeSelectedIconIdx =
       addNodeFlow.currentlySelectedIconName === null
         ? null
@@ -1381,7 +1386,21 @@ a8"    `Y88  88P'   "Y8  ""     `Y8  `8b    d88b    d8'  a8P_____88  88P'   "Y8
                 />
               )}
 
-            {editPropFlow.selectedPropID && 'propdefeditor'}
+            {editPropFlow.selectedPropID && selectedPropDef && (
+              <PropDefEditor
+                args={[]}
+                helpText={selectedPropDef.helpText}
+                icon={
+                  selectedPropDef.iconName &&
+                  nameToIconMap[selectedPropDef.iconName]
+                    ? nameToIconMap[selectedPropDef.iconName].outlined
+                    : null
+                }
+                isIndexed={selectedPropDef.indexed}
+                label={selectedPropDef.label}
+                required={selectedPropDef.required}
+              />
+            )}
 
             {currentNodeDrawerTab === NodeDrawerTab.Relationships &&
               'relationships'}
