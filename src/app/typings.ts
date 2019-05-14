@@ -49,8 +49,12 @@ export interface PropertyDefinition extends Soulful {
   arguments: Record<string, PropDefArgument>
   helpText: string
   iconName: string
+  indexed: boolean
+  label: string
   name: string
+  order: number
   propType: PropertyType
+  required: boolean
   unused: boolean
 }
 
