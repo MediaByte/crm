@@ -1379,7 +1379,7 @@ a8"    `Y88  88P'   "Y8  ""     `Y8  `8b    d88b    d8'  a8P_____88  88P'   "Y8
                       icon: nameToIconMap[propDef.iconName]
                         ? nameToIconMap[propDef.iconName].filled
                         : null,
-                      name: propDef.name,
+                      label: propDef.label,
                       typeName:
                         typeToReadableName[propDef.propType.name] ||
                         propDef.propType.name,
