@@ -1244,9 +1244,7 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
           showBackArrow={addPropFlow.selectingIcon}
           showCloseButton={!addPropFlow.selectingIcon}
           open={addPropFlow.dialogOpen}
-          title={`Add a Property to Node ${
-            /** @type {Node} */ (selectedNode).label
-          } `}
+          title={'Add Property'}
         >
           <OverlaySpinner showSpinner={addPropFlow.saving}>
             {addPropFlow.selectingIcon ? (
@@ -1391,7 +1389,7 @@ a8"    `Y88  88P'   "Y8  ""     `Y8  `8b    d88b    d8'  a8P_____88  88P'   "Y8
 
             {editPropFlow.selectedPropID && selectedPropDef && (
               <PropDefEditor
-                args={[]}
+                settings={getSettingsForPropDefEditor(selectedPropDef)}
                 helpText={selectedPropDef.helpText}
                 icon={
                   selectedPropDef.iconName &&
@@ -1625,6 +1623,93 @@ a8"    `Y88  88  ""     `Y8  88  a8"     "8a  a8"    `Y88  I8[    ""
     )
   }
 }
+
+/**
+ * @param {import('app/typings').PropertyDefinition} propDef
+ * @returns {import('components/PropDefEditor').Setting[]}
+ */
+const getSettingsForPropDefEditor = propDef =>
+  Object.entries(propDef.propType.params).map(([id, param]) => {
+    const paramName = param.name
+    const paramType = param.type
+    const multiple = param.multiple
+
+    // TODO: check this actually works, especially because of equality operator
+    const maybeArgEntry = Object.entries(propDef.arguments).find(
+      ([_, arg]) => arg.param == param,
+    )
+
+    const maybeArg = maybeArgEntry && maybeArgEntry[1]
+
+    if (paramType === 'boolean') {
+      if (multiple) {
+        // I Suspect there wont be many multiple boolean arg values
+        return {
+          argValueOrValues: 'Click to edit',
+          id,
+          paramName,
+        }
+      } else {
+        return {
+          argValueOrValues: maybeArg ? !!maybeArg.value.valueIfBoolean : false,
+          id,
+          paramName,
+        }
+      }
+    }
+
+    if (paramType === 'number') {
+      if (multiple) {
+        return {
+          argValueOrValues: maybeArg
+            ? Object.values(maybeArg.value.valuesIfMultipleNumber).map(n =>
+                n.toString(),
+              )
+            : [],
+          id,
+          paramName,
+        }
+      } else {
+        return {
+          argValueOrValues: maybeArg
+            ? maybeArg.value.valueIfNumber === null
+              ? 'Non set'
+              : maybeArg.value.valueIfNumber.toString()
+            : 'Non set',
+          id,
+          paramName,
+        }
+      }
+    }
+
+    if (paramType === 'string') {
+      if (multiple) {
+        return {
+          argValueOrValues: maybeArg
+            ? Object.values(maybeArg.value.valuesIfMultipleString)
+            : [],
+          id,
+          paramName,
+        }
+      } else {
+        return {
+          argValueOrValues: maybeArg
+            ? maybeArg.value.valueIfString === null
+              ? ''
+              : maybeArg.value.valueIfString
+            : '',
+          id,
+          paramName,
+        }
+      }
+    }
+
+    return {
+      argValueOrValues: '',
+      id,
+      paramName,
+    }
+  })
 
 export default withStyles(
   // Cast: no way to pass in generic arguments in JSDOC+Typescript
