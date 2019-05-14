@@ -522,9 +522,12 @@ d8'          `8b  88888888Y"'    88888888Y"'       88           88      `8b    `
       .set({
         helpText: null,
         iconName: addPropFlow.currentlySelectedIconName,
+        indexed: false,
         label: addPropFlow.labelValue,
         name: addPropFlow.nameValue,
+        order: Object.keys(propDefs).length,
         propType: propTypeNode,
+        required: false,
       })
       .then(res => {
         if (res.ok) {
