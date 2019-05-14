@@ -17,15 +17,14 @@ const APPEARANCE_SUBHEADER = (
 const ICON_SUBHEADER = <ListSubheader disableSticky>ICON</ListSubheader>
 
 /**
- * @typedef {object} Argument
- * @prop {string|string[]} argValueOrValues
+ * @typedef {object} Setting
+ * @prop {boolean|string|string[]} settingValuesOrValue
  * @prop {string} id
  * @prop {string} paramName
  */
 
 /**
  * @typedef {object} Props
- * @prop {Argument[]} args
  * @prop {string|null} helpText
  * @prop {React.ComponentType<SvgIconProps>|null} icon
  * @prop {boolean} isIndexed
@@ -35,6 +34,7 @@ const ICON_SUBHEADER = <ListSubheader disableSticky>ICON</ListSubheader>
  * @prop {(() => void)=} onClickLabelBtn (Optional)
  * @prop {(() => void)=} onClickRequired (optional)
  * @prop {boolean} required
+ * @prop {Setting[]} settings
  */
 
 /**
@@ -43,13 +43,13 @@ const ICON_SUBHEADER = <ListSubheader disableSticky>ICON</ListSubheader>
 class PropDefEditor extends React.PureComponent {
   render() {
     const {
-      args,
       helpText,
       icon,
       label,
       onClickHelpTextBtn,
       onClickLabelBtn,
       required,
+      settings,
     } = this.props
 
     return (
@@ -61,16 +61,28 @@ class PropDefEditor extends React.PureComponent {
               primaryText="Label"
               secondaryText={label}
             />
-            {args.map(argument => (
+            {settings.map(setting => (
               <DrawerButton
-                key={argument.id}
-                primaryText={argument.paramName}
-                secondaryText={
-                  Array.isArray(argument.argValueOrValues)
-                    ? argument.argValueOrValues.join(', ')
-                    : argument.argValueOrValues
+                key={setting.id}
+                primaryText={setting.paramName}
+                secondaryText={(() => {
+                  if (Array.isArray(setting.settingValuesOrValue)) {
+                    return setting.settingValuesOrValue.join(', ')
+                  }
+
+                  if (typeof setting.settingValuesOrValue === 'boolean') {
+                    return undefined
+                  }
+
+                  return setting.settingValuesOrValue
+                })()}
+                secTextAtBottom={Array.isArray(setting.settingValuesOrValue)}
+                isSwitch={typeof setting.settingValuesOrValue === 'boolean'}
+                switchOn={
+                  typeof setting.settingValuesOrValue === 'boolean'
+                    ? setting.settingValuesOrValue
+                    : undefined
                 }
-                secTextAtBottom={Array.isArray(argument.argValueOrValues)}
               />
             ))}
           </List>
