@@ -41,6 +41,7 @@ import { AddCircleOutline } from '@material-ui/icons'
  * @typedef {import('app/gun-wrapper/SetNode').default} SetNode
  * @typedef {import('app/typings').Node} Node
  * @typedef {import('app/typings').PropertyType} PropType
+ * @typedef {import('app/typings').PropDefArgument} PropDefArgument
  * @typedef {import('app/gun-wrapper/simple-typings').WrapperSetNode} WrapperSetNode
  */
 
@@ -86,6 +87,7 @@ const BLANK_ADD_NODE_FORM_DATA = Object.freeze({
 /** @type {Readonly<EditPropFlow>} */
 const INITIAL_EDIT_PROP_FLOW = {
   selectedPropID: null,
+  selectedSettingParamID: null,
 }
 
 /** @type {AddNodeFlow} */
@@ -217,6 +219,7 @@ const styles = theme => ({
 /**
  * @typedef {object} EditPropFlow
  * @prop {string|null} selectedPropID
+ * @prop {string|null} selectedSettingParamID
  */
 
 /**
@@ -782,6 +785,99 @@ d8'          `8b  88888888Y"'    88888888Y"'       88           88      `8b    `
     })
   }
 
+  /**
+   * @private
+   * @param {string} paramID
+   */
+  editPropFlowOnClickSetting = paramID => {
+    // NOTE: This can be the id of the param or the id of an existing arg
+
+    this.setState(({ editPropFlow }) => ({
+      editPropFlow: {
+        ...editPropFlow,
+        selectedSettingParamID: paramID,
+      },
+    }))
+  }
+
+  /**
+   * @private
+   * @returns {React.ReactNode}
+   */
+  editPropFlowRenderSettingEditor = () => {
+    const paramID = /** @type {string} */ (this.state.editPropFlow
+      .selectedSettingParamID)
+
+    const selectedNode = this.state.nodes[
+      /** @type {string} */ (this.state.selectedNodeID)
+    ]
+
+    const selectedPropDef =
+      selectedNode.propDefs[
+        /** @type {string} */ (this.state.editPropFlow.selectedPropID)
+      ]
+
+    const propType = selectedPropDef.propType
+
+    const selectedParam = propType.params[paramID]
+
+    const maybeMatchingArg = Object.values(selectedPropDef.arguments).find(
+      arg => arg.param === selectedParam,
+    )
+
+    if (selectedParam.type === 'boolean') {
+      if (selectedParam.multiple) {
+        const values = maybeMatchingArg
+          ? Object.entries(maybeMatchingArg.value.valuesIfMultipleBoolean)
+          : []
+        return values && 'multiboolean'
+      }
+
+      const value = maybeMatchingArg
+        ? !!maybeMatchingArg.value.valueIfBoolean
+        : false
+
+      return `single boolean : ${value}`
+    }
+
+    if (selectedParam.type === 'number') {
+      if (selectedParam.multiple) {
+        const values = maybeMatchingArg
+          ? Object.entries(maybeMatchingArg.value.valuesIfMultipleNumber)
+          : []
+        return 'multienumber' && values
+      }
+
+      const value = maybeMatchingArg
+        ? maybeMatchingArg.value.valueIfNumber === null
+          ? 'null number'
+          : maybeMatchingArg.value.valueIfNumber
+        : 'no matching arg for number val'
+
+      return value
+    }
+
+    if (selectedParam.type === 'string') {
+      if (selectedParam.multiple) {
+        const values = maybeMatchingArg
+          ? Object.entries(maybeMatchingArg.value.valuesIfMultipleString)
+          : []
+        return 'multistring' && values
+      }
+
+      const value = maybeMatchingArg
+        ? maybeMatchingArg.value.valueIfString === null
+          ? 'null string'
+          : maybeMatchingArg.value.valueIfNumber
+        : 'no matching arg for string val'
+
+      return value
+    }
+
+    console.assert('unreachable')
+    return null
+  }
+
   /*
                         88                                              88                       88                                       
                         88                                              ""                ,d     ""                                       
@@ -1053,6 +1149,21 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
         editPropFlow,
         selectedNodeID,
       }) => {
+        // the more 'in' an screen is, the higher up top here the handling logic
+        // for it has to be
+
+        if (editPropFlow.selectedSettingParamID) {
+          return {
+            currentNodeDrawerTab,
+            editNodeFlow,
+            editPropFlow: {
+              ...editPropFlow,
+              selectedSettingParamID: null,
+            },
+            selectedNodeID,
+          }
+        }
+
         if (editPropFlow.selectedPropID) {
           return {
             currentNodeDrawerTab,
@@ -1323,7 +1434,8 @@ a8"    `Y88  88P'   "Y8  ""     `Y8  `8b    d88b    d8'  a8P_____88  88P'   "Y8
             hideTabs={
               editNodeFlow.editingLabel ||
               editNodeFlow.editingIcon ||
-              !!editPropFlow.selectedPropID
+              !!editPropFlow.selectedPropID ||
+              !!editPropFlow.selectedSettingParamID
             }
           >
             {currentNodeDrawerTab === NodeDrawerTab.Details &&
@@ -1387,21 +1499,27 @@ a8"    `Y88  88P'   "Y8  ""     `Y8  `8b    d88b    d8'  a8P_____88  88P'   "Y8
                 />
               )}
 
-            {editPropFlow.selectedPropID && selectedPropDef && (
-              <PropDefEditor
-                settings={getSettingsForPropDefEditor(selectedPropDef)}
-                helpText={selectedPropDef.helpText}
-                icon={
-                  selectedPropDef.iconName &&
-                  nameToIconMap[selectedPropDef.iconName]
-                    ? nameToIconMap[selectedPropDef.iconName].outlined
-                    : null
-                }
-                isIndexed={selectedPropDef.indexed}
-                label={selectedPropDef.label}
-                required={selectedPropDef.required}
-              />
-            )}
+            {editPropFlow.selectedPropID &&
+              selectedPropDef &&
+              !editPropFlow.selectedSettingParamID && (
+                <PropDefEditor
+                  settings={getSettingsForPropDefEditor(selectedPropDef)}
+                  helpText={selectedPropDef.helpText}
+                  icon={
+                    selectedPropDef.iconName &&
+                    nameToIconMap[selectedPropDef.iconName]
+                      ? nameToIconMap[selectedPropDef.iconName].outlined
+                      : null
+                  }
+                  isIndexed={selectedPropDef.indexed}
+                  label={selectedPropDef.label}
+                  required={selectedPropDef.required}
+                  onClickSetting={this.editPropFlowOnClickSetting}
+                />
+              )}
+
+            {!!editPropFlow.selectedSettingParamID &&
+              this.editPropFlowRenderSettingEditor()}
 
             {currentNodeDrawerTab === NodeDrawerTab.Relationships &&
               'relationships'}
