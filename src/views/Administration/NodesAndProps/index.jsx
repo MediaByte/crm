@@ -1645,13 +1645,15 @@ const getSettingsForPropDefEditor = propDef =>
       if (multiple) {
         // I Suspect there wont be many multiple boolean arg values
         return {
-          argValueOrValues: 'Click to edit',
+          settingValueOrValues: 'Click to edit',
           id,
           paramName,
         }
       } else {
         return {
-          argValueOrValues: maybeArg ? !!maybeArg.value.valueIfBoolean : false,
+          settingValueOrValues: maybeArg
+            ? !!maybeArg.value.valueIfBoolean
+            : false,
           id,
           paramName,
         }
@@ -1661,7 +1663,7 @@ const getSettingsForPropDefEditor = propDef =>
     if (paramType === 'number') {
       if (multiple) {
         return {
-          argValueOrValues: maybeArg
+          settingValueOrValues: maybeArg
             ? Object.values(maybeArg.value.valuesIfMultipleNumber).map(n =>
                 n.toString(),
               )
@@ -1671,7 +1673,7 @@ const getSettingsForPropDefEditor = propDef =>
         }
       } else {
         return {
-          argValueOrValues: maybeArg
+          settingValueOrValues: maybeArg
             ? maybeArg.value.valueIfNumber === null
               ? 'Non set'
               : maybeArg.value.valueIfNumber.toString()
@@ -1685,7 +1687,7 @@ const getSettingsForPropDefEditor = propDef =>
     if (paramType === 'string') {
       if (multiple) {
         return {
-          argValueOrValues: maybeArg
+          settingValueOrValues: maybeArg
             ? Object.values(maybeArg.value.valuesIfMultipleString)
             : [],
           id,
@@ -1693,7 +1695,7 @@ const getSettingsForPropDefEditor = propDef =>
         }
       } else {
         return {
-          argValueOrValues: maybeArg
+          settingValueOrValues: maybeArg
             ? maybeArg.value.valueIfString === null
               ? ''
               : maybeArg.value.valueIfString
@@ -1705,7 +1707,7 @@ const getSettingsForPropDefEditor = propDef =>
     }
 
     return {
-      argValueOrValues: '',
+      settingValueOrValues: '',
       id,
       paramName,
     }
