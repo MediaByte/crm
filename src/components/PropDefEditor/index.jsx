@@ -18,7 +18,7 @@ const ICON_SUBHEADER = <ListSubheader disableSticky>ICON</ListSubheader>
 
 /**
  * @typedef {object} Setting
- * @prop {boolean|string|string[]} settingValuesOrValue
+ * @prop {boolean|string|string[]} settingValueOrValues
  * @prop {string} id
  * @prop {string} paramName
  */
@@ -31,6 +31,7 @@ const ICON_SUBHEADER = <ListSubheader disableSticky>ICON</ListSubheader>
  * @prop {string} label
  * @prop {(() => void)=} onClickHelpTextBtn (Optional)
  * @prop {(() => void)=} onClickIconBtn (Optional)
+ * @prop {((id: string) => void)=} onClickSetting (Optional)
  * @prop {(() => void)=} onClickLabelBtn (Optional)
  * @prop {(() => void)=} onClickRequired (optional)
  * @prop {boolean} required
@@ -41,6 +42,17 @@ const ICON_SUBHEADER = <ListSubheader disableSticky>ICON</ListSubheader>
  * @augments React.PureComponent<Props>
  */
 class PropDefEditor extends React.PureComponent {
+  /**
+   * @private
+   * @param {string=} id
+   */
+  onClickSetting = id => {
+    const { onClickSetting } = this.props
+
+    // CAST: We are supplying the ID to the drawer button so it will be defined
+    onClickSetting && onClickSetting(/** @type {string} */ (id))
+  }
+
   render() {
     const {
       helpText,
@@ -64,23 +76,25 @@ class PropDefEditor extends React.PureComponent {
             {settings.map(setting => (
               <DrawerButton
                 key={setting.id}
+                id={setting.id}
+                onClick={this.onClickSetting}
                 primaryText={setting.paramName}
                 secondaryText={(() => {
-                  if (Array.isArray(setting.settingValuesOrValue)) {
-                    return setting.settingValuesOrValue.join(', ')
+                  if (Array.isArray(setting.settingValueOrValues)) {
+                    return setting.settingValueOrValues.join(', ')
                   }
 
-                  if (typeof setting.settingValuesOrValue === 'boolean') {
+                  if (typeof setting.settingValueOrValues === 'boolean') {
                     return undefined
                   }
 
-                  return setting.settingValuesOrValue
+                  return setting.settingValueOrValues
                 })()}
-                secTextAtBottom={Array.isArray(setting.settingValuesOrValue)}
-                isSwitch={typeof setting.settingValuesOrValue === 'boolean'}
+                secTextAtBottom={Array.isArray(setting.settingValueOrValues)}
+                isSwitch={typeof setting.settingValueOrValues === 'boolean'}
                 switchOn={
-                  typeof setting.settingValuesOrValue === 'boolean'
-                    ? setting.settingValuesOrValue
+                  typeof setting.settingValueOrValues === 'boolean'
+                    ? setting.settingValueOrValues
                     : undefined
                 }
               />
