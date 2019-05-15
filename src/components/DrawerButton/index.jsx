@@ -28,9 +28,11 @@ const primaryTypographyPropsIfRed = {
  * @typedef {object} Props
  * @prop {Record<keyof typeof styles, string>} classes
  * @prop {(React.ComponentType<import('@material-ui/core/SvgIcon').SvgIconProps>|null)=} icon
+ * @prop {string=} id (Optional) The onClick prop will be called with this id as
+ * the first argument if provided.
  * @prop {boolean=} isSwitch (Optional) Renders an switch, useful for setting
  * boolean options.
- * @prop {(() => void)=} onClick
+ * @prop {((id?: string) => void)=} onClick
  * @prop {string=} primaryText (Optional)
  * @prop {boolean=} primaryTextRed (Optional) Makes the button's primary text
  * red, this is useful for using it as a delete button for example.
@@ -44,24 +46,30 @@ const primaryTypographyPropsIfRed = {
  * @augments React.PureComponent<Props>
  */
 class DrawerButton extends React.PureComponent {
+  onClick = () => {
+    const { id, onClick } = this.props
+
+    onClick && onClick(id)
+  }
+
   render() {
     const {
       classes,
       icon: Icon,
+      id,
       isSwitch,
       primaryText,
       primaryTextRed,
       secondaryText,
       secTextAtBottom,
       switchOn,
-      onClick,
     } = this.props
 
     const actuallySwitchOn = typeof switchOn === 'undefined' ? false : switchOn
 
     return (
-      <List disablePadding>
-        <ListItem className={classes.listItem} button onClick={onClick}>
+      <List disablePadding data-id={id} onClick={this.onClick}>
+        <ListItem className={classes.listItem} button>
           {Icon && (
             <ListItemIcon>
               <Icon />
@@ -79,11 +87,7 @@ class DrawerButton extends React.PureComponent {
 
           <ListItemSecondaryAction>
             {isSwitch ? (
-              <Switch
-                checked={actuallySwitchOn}
-                color="primary"
-                onChange={onClick}
-              />
+              <Switch checked={actuallySwitchOn} color="primary" />
             ) : !secTextAtBottom && secondaryText ? (
               <Grid container alignItems="center">
                 <Typography color="textSecondary">{secondaryText}</Typography>
