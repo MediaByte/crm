@@ -111,6 +111,7 @@ export class Node {
      * @type {WrapperNode}
      */
     const instance = this
+    // eslint-disable-next-line
     instance
   }
 

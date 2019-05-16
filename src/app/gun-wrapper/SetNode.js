@@ -55,6 +55,7 @@ export default class SetNode {
 
     /** @type {WrapperSetNode} */
     const instance = this
+    // eslint-disable-next-line
     instance
   }
 
@@ -150,6 +151,7 @@ export default class SetNode {
 
         for (const [k, edge] of Object.entries(edgeData)) {
           writes.push(
+            // eslint-disable-next-line no-loop-func
             new Promise(resolve => {
               gunRef.get(k).put(
                 edge,

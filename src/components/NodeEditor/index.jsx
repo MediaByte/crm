@@ -2,7 +2,6 @@ import React from 'react'
 
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
-import List from '@material-ui/core/List'
 import Typography from '@material-ui/core/Typography'
 
 import DeleteOutline from '@material-ui/icons/DeleteOutline'
@@ -10,7 +9,6 @@ import RestoreIcon from '@material-ui/icons/RestoreOutlined'
 
 import DrawerButton from 'components/DrawerButton'
 
-const alignSelfCenter = { alignSelf: 'center' }
 const activationBtnStyle = { backgroundColor: 'white' }
 const activationBtnTxtStyle = { marginLeft: '5px' }
 
