@@ -189,7 +189,20 @@ const setUpPropTypes = () => {
       name: 'currency',
     })
     .then(res => {
-      if (!res.ok) {
+      if (res.ok) {
+        res.reference
+          .getSet('params')
+          .set({
+            multiple: false,
+            name: 'Symbol',
+            type: 'string',
+          })
+          .then(res => {
+            if (!res.ok) {
+              console.log(res)
+            }
+          })
+      } else {
         console.warn(res)
       }
     })
