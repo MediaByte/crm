@@ -1,3 +1,4 @@
+/* eslint no-multi-str: 0 */
 import React from 'react'
 
 import toUpper from 'lodash/toUpper'
@@ -86,6 +87,7 @@ const BLANK_ADD_NODE_FORM_DATA = Object.freeze({
 
 /** @type {Readonly<EditPropFlow>} */
 const INITIAL_EDIT_PROP_FLOW = {
+  currentSettingValue: null,
   selectedPropID: null,
   selectedSettingParamID: null,
 }
@@ -218,6 +220,7 @@ const styles = theme => ({
 
 /**
  * @typedef {object} EditPropFlow
+ * @prop {string|number|boolean|Record<string, string>|Record<string, number>|Record<string, boolean>|null} currentSettingValue
  * @prop {string|null} selectedPropID
  * @prop {string|null} selectedSettingParamID
  */
@@ -779,6 +782,9 @@ d8'          `8b  88888888Y"'    88888888Y"'       88           88      `8b    `
     })
   }
 
+  /**
+   * @private
+   */
   editPropFlowStopEditing = () => {
     this.setState({
       editPropFlow: INITIAL_EDIT_PROP_FLOW,
@@ -787,17 +793,117 @@ d8'          `8b  88888888Y"'    88888888Y"'       88           88      `8b    `
 
   /**
    * @private
+   * @param {{ target: {} }} e
+   */
+  editPropFlowOnChangeSettingTextfieldNumber = e => {
+    /** @type {string} */
+    // @ts-ignore
+    const value = e.target.value
+
+    const chars = value.split('')
+
+    if (chars.some(char => !Utils.isNumber(char))) {
+      return
+    }
+
+    this.setState(({ editPropFlow }) => {
+      return {
+        editPropFlow: {
+          ...editPropFlow,
+          currentSettingValue: value,
+        },
+      }
+    })
+  }
+
+  /**
+   * @private
+   * @param {{ target: {} }} e
+   */
+  editPropFlowOnChangeSettingTextfieldString = e => {
+    /** @type {string} */
+    // @ts-ignore
+    const value = e.target.value
+
+    this.setState(({ editPropFlow }) => {
+      return {
+        editPropFlow: {
+          ...editPropFlow,
+          currentSettingValue: value,
+        },
+      }
+    })
+  }
+
+  /**
+   * @private
    * @param {string} paramID
    */
   editPropFlowOnClickSetting = paramID => {
-    // NOTE: This can be the id of the param or the id of an existing arg
+    this.setState(({ editPropFlow, nodes, selectedNodeID }) => {
+      const selectedNode =
+        /** @type {string} */ nodes[/** @type {string} */ (selectedNodeID)]
 
-    this.setState(({ editPropFlow }) => ({
-      editPropFlow: {
-        ...editPropFlow,
-        selectedSettingParamID: paramID,
-      },
-    }))
+      const selectedPropDef =
+        selectedNode.propDefs[
+          /** @type {string} */ (editPropFlow.selectedPropID)
+        ]
+
+      const propType = selectedPropDef.propType
+
+      const selectedParam = propType.params[paramID]
+
+      const maybeMatchingArg = Object.values(selectedPropDef.arguments).find(
+        arg => arg.param === selectedParam,
+      )
+
+      console.log(typeof maybeMatchingArg)
+
+      /**
+       * @type {EditPropFlow['currentSettingValue']}
+       */
+      let value = null
+
+      if (selectedParam.type === 'boolean') {
+        if (selectedParam.multiple) {
+          value = maybeMatchingArg
+            ? maybeMatchingArg.value.valuesIfMultipleBoolean
+            : {}
+        } else {
+          value = maybeMatchingArg
+            ? !!maybeMatchingArg.value.valueIfBoolean
+            : false
+        }
+      }
+
+      if (selectedParam.type === 'number') {
+        if (selectedParam.multiple) {
+          value = maybeMatchingArg
+            ? maybeMatchingArg.value.valuesIfMultipleNumber
+            : {}
+        } else {
+          value = maybeMatchingArg ? maybeMatchingArg.value.valueIfNumber : null
+        }
+      }
+
+      if (selectedParam.type === 'string') {
+        if (selectedParam.multiple) {
+          value = maybeMatchingArg
+            ? maybeMatchingArg.value.valuesIfMultipleString
+            : {}
+        } else {
+          value = maybeMatchingArg ? maybeMatchingArg.value.valueIfNumber : null
+        }
+      }
+
+      return {
+        editPropFlow: {
+          ...editPropFlow,
+          currentSettingValue: value,
+          selectedSettingParamID: paramID,
+        },
+      }
+    })
   }
 
   /**
@@ -821,57 +927,79 @@ d8'          `8b  88888888Y"'    88888888Y"'       88           88      `8b    `
 
     const selectedParam = propType.params[paramID]
 
-    const maybeMatchingArg = Object.values(selectedPropDef.arguments).find(
-      arg => arg.param === selectedParam,
-    )
-
     if (selectedParam.type === 'boolean') {
-      if (selectedParam.multiple) {
-        const values = maybeMatchingArg
-          ? Object.entries(maybeMatchingArg.value.valuesIfMultipleBoolean)
-          : []
-        return values && 'multiboolean'
-      }
-
-      const value = maybeMatchingArg
-        ? !!maybeMatchingArg.value.valueIfBoolean
-        : false
-
-      return `single boolean : ${value}`
+      // There wont be really be many multiboolean prop type settings better
+      // render an switch inside propsdefeditor for single boolean settings
+      return `There's an error if you're seeing this text, please contact us.`
     }
 
     if (selectedParam.type === 'number') {
       if (selectedParam.multiple) {
-        const values = maybeMatchingArg
-          ? Object.entries(maybeMatchingArg.value.valuesIfMultipleNumber)
-          : []
-        return 'multienumber' && values
+        return (
+          'options editor with number values' &&
+          this.state.editPropFlow.currentSettingValue
+        )
       }
 
-      const value = maybeMatchingArg
-        ? maybeMatchingArg.value.valueIfNumber === null
-          ? 'null number'
-          : maybeMatchingArg.value.valueIfNumber
-        : 'no matching arg for number val'
+      return (
+        <Grid
+          alignContent="center"
+          alignItems="center"
+          justify="center"
+          container
+          direction="column"
+        >
+          <Grid item>
+            <Typography align="center" color="textSecondary" variant="body1">
+              {selectedParam.name}
+            </Typography>
+          </Grid>
 
-      return value
+          <Grid item>
+            <TextField
+              onChange={this.editPropFlowOnChangeSettingTextfieldNumber}
+              value={
+                this.state.editPropFlow.currentSettingValue === null
+                  ? 0
+                  : /** @type {number} */ (this.state.editPropFlow
+                      .currentSettingValue)
+              }
+            />
+          </Grid>
+        </Grid>
+      )
     }
 
     if (selectedParam.type === 'string') {
       if (selectedParam.multiple) {
-        const values = maybeMatchingArg
-          ? Object.entries(maybeMatchingArg.value.valuesIfMultipleString)
-          : []
-        return 'multistring' && values
+        return 'multistring' && this.state.editPropFlow.currentSettingValue
       }
 
-      const value = maybeMatchingArg
-        ? maybeMatchingArg.value.valueIfString === null
-          ? 'null string'
-          : maybeMatchingArg.value.valueIfNumber
-        : 'no matching arg for string val'
-
-      return value
+      return (
+        <Grid
+          alignContent="center"
+          alignItems="center"
+          justify="center"
+          container
+          direction="column"
+        >
+          <Grid item>
+            <Typography align="center" color="textSecondary" variant="body1">
+              {selectedParam.name}
+            </Typography>
+          </Grid>
+          <Grid item>
+            <TextField
+              onChange={this.editPropFlowOnChangeSettingTextfieldString}
+              value={
+                typeof this.state.editPropFlow.currentSettingValue === 'string'
+                  ? this.state.editPropFlow.currentSettingValue
+                  : ''
+              }
+            />
+          </Grid>
+        </Grid>
+      )
     }
 
     console.assert('unreachable')
@@ -1158,6 +1286,7 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
             editNodeFlow,
             editPropFlow: {
               ...editPropFlow,
+              currentSettingValue: null,
               selectedSettingParamID: null,
             },
             selectedNodeID,
@@ -1209,7 +1338,19 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
   }
 
   onClickDrawerRightBtn = () => {
-    const { editNodeFlow, selectedNodeID } = this.state
+    const { editNodeFlow, editPropFlow, selectedNodeID } = this.state
+
+    if (editPropFlow.selectedSettingParamID) {
+      console.log(editPropFlow.currentSettingValue)
+      this.setState({
+        editPropFlow: {
+          ...INITIAL_EDIT_PROP_FLOW,
+          selectedSettingParamID: null,
+        },
+      })
+
+      return
+    }
 
     if (editNodeFlow.editingLabel) {
       nodesNode
@@ -1227,6 +1368,8 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
           editingLabel: false,
         },
       }))
+
+      return
     }
 
     if (editNodeFlow.editingIcon) {
@@ -1248,6 +1391,8 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
           editingIcon: false,
         },
       }))
+
+      return
     }
   }
 
@@ -1415,6 +1560,10 @@ a8"    `Y88  88P'   "Y8  ""     `Y8  `8b    d88b    d8'  a8P_____88  88P'   "Y8
             leftButtonOnClick={this.onClickDrawerLeftBtn}
             rightButtonOnClick={this.onClickDrawerRightBtn}
             rightButtonText={(() => {
+              if (editPropFlow.selectedSettingParamID) {
+                return 'save'
+              }
+
               if (
                 editNodeFlow.editingIcon &&
                 editNodeFlow.currentlySelectedIconName !== null
@@ -1754,7 +1903,7 @@ const getSettingsForPropDefEditor = propDef =>
 
     // TODO: check this actually works, especially because of equality operator
     const maybeArgEntry = Object.entries(propDef.arguments).find(
-      ([_, arg]) => arg.param == param,
+      ([_, arg]) => arg.param === param,
     )
 
     const maybeArg = maybeArgEntry && maybeArgEntry[1]
@@ -1815,9 +1964,9 @@ const getSettingsForPropDefEditor = propDef =>
         return {
           settingValueOrValues: maybeArg
             ? maybeArg.value.valueIfString === null
-              ? ''
+              ? 'Non set'
               : maybeArg.value.valueIfString
-            : '',
+            : 'Non set',
           id,
           paramName,
         }
