@@ -3,5 +3,6 @@
   "editor.formatOnSave": true,
   // required disabled by prettier extension
   "javascript.format.enable": false,
-  "editor.tabSize": 2
+  "editor.tabSize": 2,
+  "typescript.tsdk": "node_modules/typescript/lib"
 }
