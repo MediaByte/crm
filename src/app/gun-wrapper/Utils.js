@@ -107,9 +107,7 @@ const _mergeResponseDetails = (...detailsObjects) => {
 
   detailsObjects.forEach(dObj => {
     for (const [key, msgs] of Object.entries(dObj)) {
-      // @ts-ignore
       if (!finalDetails[key]) finalDetails[key] = []
-      // @ts-ignore
       finalDetails[key].push(...msgs)
     }
   })
