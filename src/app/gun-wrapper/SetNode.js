@@ -68,16 +68,9 @@ export default class SetNode {
    * @returns {void}
    */
   cachePut(nextData) {
-    if (this.itemSchema[Utils.SCHEMA_NAME] === 'PropDef') {
-      console.log(`cachePut: ${JSON.stringify(nextData)}`)
-    }
-
     for (const [key, value] of Object.entries(nextData)) {
       if (Utils.conformsToSchema(this.itemSchema, value)) {
         this.currentData[key] = value
-        if (this.itemSchema[Utils.SCHEMA_NAME] === 'PropDef') {
-          console.log(`cacheputdidpass: ${JSON.stringify(nextData)}`)
-        }
       }
     }
 
