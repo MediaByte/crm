@@ -332,6 +332,19 @@ export const FreeValue = {
 }
 
 /**
+ * @param {boolean} bool
+ * @returns {object}
+ */
+export const createBooleanFreeValue = bool => ({
+  valueIfBoolean: bool,
+  valueIfNumber: null,
+  valueIfString: null,
+  valuesIfMultipleBoolean: {},
+  valuesIfMultipleNumber: {},
+  valuesIfMultipleString: {},
+})
+
+/**
  * @param {number|null} number
  * @returns {object}
  */
