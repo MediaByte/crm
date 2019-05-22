@@ -1,10 +1,4 @@
-interface Soulful {
-  _: {
-    '#': string
-  }
-}
-
-export interface Node extends Soulful {
+export interface Node {
   iconName: string
   label: string
   name: string
@@ -15,18 +9,18 @@ export interface Node extends Soulful {
 // if clicking on an edit button pass this same data to the component that
 // handles the edit screen
 
-export interface PropTypeParam extends Soulful {
+export interface PropTypeParam {
   name: string
   type: 'boolean' | 'number' | 'string'
   multiple: boolean
 }
 
-export interface PropertyType extends Soulful {
+export interface PropertyType {
   name: string
   params: Record<string, PropTypeParam>
 }
 
-export interface FreeValue extends Soulful {
+export interface FreeValue {
   valueIfBoolean: boolean | null
   valueIfNumber: number | null
   valueIfString: string | null
@@ -35,7 +29,7 @@ export interface FreeValue extends Soulful {
   valuesIfMultipleString: Record<string, string>
 }
 
-export interface PropDefArgument extends Soulful {
+export interface PropDefArgument {
   param: PropTypeParam
   /**
    * Look at the param reference, and based on the combination of param.type and
@@ -45,7 +39,7 @@ export interface PropDefArgument extends Soulful {
   value: FreeValue
 }
 
-export interface PropertyDefinition extends Soulful {
+export interface PropertyDefinition {
   arguments: Record<string, PropDefArgument>
   helpText: string
   iconName: string
