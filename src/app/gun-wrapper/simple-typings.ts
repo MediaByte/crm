@@ -51,6 +51,8 @@ export interface WrapperNode {
   put(data: ValidPut): Promise<Response>
 
   on(listener: Listener): void
+
+  cachePut(data: Data): void
 }
 
 export interface Data {
