@@ -56,6 +56,11 @@ export default class SetNode {
 
     this.setOnChange = setOnChange
 
+    /**
+     * @type {Record<string, WrapperNode|undefined>}
+     */
+    this.spawnedNodes = {}
+
     /** @type {WrapperSetNode} */
     const instance = this
     // eslint-disable-next-line
@@ -71,6 +76,12 @@ export default class SetNode {
     for (const [key, value] of Object.entries(nextData)) {
       if (Utils.conformsToSchema(this.itemSchema, value)) {
         this.currentData[key] = value
+
+        const spawnedNode = this.spawnedNodes[key]
+
+        if (spawnedNode) {
+          spawnedNode.cachePut(value)
+        }
       }
     }
 
@@ -244,8 +255,10 @@ export default class SetNode {
       nextValOrNull => this.setOnChange(nextValOrNull, setKey),
     )
 
-    // why not?
-    node.currentData = this.currentData[setKey]
+    // initial currentData for that node
+    node.cachePut(this.currentData[setKey])
+
+    this.spawnedNodes[setKey] = node
 
     return node
   }

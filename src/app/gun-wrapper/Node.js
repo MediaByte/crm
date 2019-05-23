@@ -104,7 +104,9 @@ export class Node {
 
     this.onOpen = this.onOpen.bind(this)
 
-    this.gunInstance.open(this.onOpen)
+    if (isRoot) {
+      this.gunInstance.open(this.onOpen)
+    }
 
     this.isRoot = isRoot
 
@@ -114,6 +116,17 @@ export class Node {
     const instance = this
     // eslint-disable-next-line
     instance
+  }
+
+  /**
+   * @param {Data} data
+   */
+  cachePut(data) {
+    if (this.schema[Utils.SCHEMA_NAME] === 'PropDef') {
+      console.log('cachePut called in PropDef single node')
+      console.log(data)
+    }
+    this.onOpen(data)
   }
 
   /**
