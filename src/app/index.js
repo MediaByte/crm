@@ -11,6 +11,8 @@ const GUN_ROOT_KEY = 'PINECONE_CIVIC_ROOT'
 
 const root = new Node(Root, Gun().get(GUN_ROOT_KEY))
 
+window.___root = root
+
 export const nodes = root.getSet('nodes')
 
 export const propTypes = root.getSet('propTypes')
@@ -202,6 +204,32 @@ const setUpPropTypes = () => {
               console.log(res)
             }
           })
+
+        res.reference
+          .getSet('params')
+          .set({
+            multiple: false,
+            name: 'Allow Negative',
+            type: 'boolean',
+          })
+          .then(res => {
+            if (!res.ok) {
+              console.log(res)
+            }
+          })
+
+        res.reference
+          .getSet('params')
+          .set({
+            multiple: false,
+            name: 'Upper Bound',
+            type: 'number',
+          })
+          .then(res => {
+            if (!res.ok) {
+              console.log(res)
+            }
+          })
       } else {
         console.warn(res)
       }
@@ -222,6 +250,28 @@ const setUpPropTypes = () => {
   propTypes
     .set({
       name: 'phone',
+    })
+    .then(res => {
+      if (!res.ok) {
+        console.warn(res)
+      }
+    })
+    .catch(console.warn)
+
+  propTypes
+    .set({
+      name: 'url',
+    })
+    .then(res => {
+      if (!res.ok) {
+        console.warn(res)
+      }
+    })
+    .catch(console.warn)
+
+  propTypes
+    .set({
+      name: 'name',
     })
     .then(res => {
       if (!res.ok) {
