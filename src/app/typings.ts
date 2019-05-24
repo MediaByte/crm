@@ -41,7 +41,7 @@ export interface PropDefArgument {
 
 export interface PropertyDefinition {
   arguments: Record<string, PropDefArgument>
-  helpText: string
+  helpText: string | null
   iconName: string
   indexed: boolean
   label: string
