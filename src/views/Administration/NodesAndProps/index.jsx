@@ -36,6 +36,7 @@ import {
   Node as NodeValidator,
   PropDef as PropDefValidator,
 } from 'app/validators'
+import * as BuiltIn from 'app/gun-wrapper/BuiltIn'
 import { Card, CardActionArea, CardHeader, Avatar } from '@material-ui/core'
 import { AddCircleOutline } from '@material-ui/icons'
 /**
@@ -44,6 +45,7 @@ import { AddCircleOutline } from '@material-ui/icons'
  * @typedef {import('app/typings').PropertyType} PropType
  * @typedef {import('app/typings').PropDefArgument} PropDefArgument
  * @typedef {import('app/gun-wrapper/simple-typings').WrapperSetNode} WrapperSetNode
+ * @typedef {import('app/gun-wrapper/simple-typings').WrapperNode} WrapperNode
  */
 
 const NodeDrawerTab = {
@@ -88,6 +90,7 @@ const BLANK_ADD_NODE_FORM_DATA = Object.freeze({
 /** @type {Readonly<EditPropFlow>} */
 const INITIAL_EDIT_PROP_FLOW = {
   currentSettingValue: null,
+  currentLabelValue: null,
   selectedPropID: null,
   selectedSettingParamID: null,
 }
@@ -135,10 +138,6 @@ const styles = theme => ({
     flexDirection: 'column !important',
     right: '10px !important',
   },
-  labelEditorTextField: {
-    marginLeft: theme.spacing.unit * 2,
-    marginRight: theme.spacing.unit * 2,
-  },
   listItem: {
     paddingLeft: '15px',
   },
@@ -164,6 +163,10 @@ const styles = theme => ({
   smallIconButton: {},
   spinner: {
     position: 'absolute',
+  },
+  textField: {
+    marginLeft: theme.spacing.unit * 2,
+    marginRight: theme.spacing.unit * 2,
   },
 })
 
@@ -221,6 +224,7 @@ const styles = theme => ({
 /**
  * @typedef {object} EditPropFlow
  * @prop {string|number|boolean|Record<string, string>|Record<string, number>|Record<string, boolean>|null} currentSettingValue
+ * @prop {string|null} currentLabelValue Null when not editing it
  * @prop {string|null} selectedPropID
  * @prop {string|null} selectedSettingParamID
  */
@@ -681,11 +685,18 @@ d8'          `8b  88888888Y"'    88888888Y"'       88           88      `8b    `
     })
   }
 
+  /**
+   * @private
+   */
   editNodeFlowOnClickDrawerBtnLeft = () => {}
 
+  /**
+   * @private
+   */
   editNodeFlowOnClickDrawerBtnRight = () => {}
 
   /**
+   * @private
    * @param {string} id
    */
   editNodeFlowOnClickEditNode = id => {
@@ -785,6 +796,90 @@ d8'          `8b  88888888Y"'    88888888Y"'       88           88      `8b    `
   /**
    * @private
    */
+  editPropFlowOnClickLabel = () => {
+    this.setState(({ editPropFlow }) => ({
+      editPropFlow: {
+        ...editPropFlow,
+        currentLabelValue: '', // having it be an string brings up the component
+      },
+    }))
+  }
+
+  /**
+   * @private
+   */
+  editPropFlowSavePrimitiveSettingValue = () => {
+    const { editPropFlow, nodes, selectedNodeID } = this.state
+
+    const value = /** @type {string} */ editPropFlow.currentSettingValue
+
+    const paramID = /** @type {string} */ (editPropFlow.selectedSettingParamID)
+
+    const selectedNode = nodes[/** @type {string} */ (selectedNodeID)]
+
+    const selectedPropDef =
+      selectedNode.propDefs[/** @type {string} */ (editPropFlow.selectedPropID)]
+
+    const propType = selectedPropDef.propType
+
+    const selectedParam = propType.params[paramID]
+
+    const maybeMatchingArgEntry = Object.entries(
+      selectedPropDef.arguments,
+    ).find(([_, arg]) => arg.param === selectedParam)
+
+    const relevantPropDefNode = nodesNode
+      .get(/** @type {string} */ (this.state.selectedNodeID))
+      .getSet('propDefs')
+      .get(/** @type {string} */ (this.state.editPropFlow.selectedPropID))
+
+    if (maybeMatchingArgEntry) {
+      const [key] = maybeMatchingArgEntry
+
+      relevantPropDefNode
+        .getSet('arguments')
+        .get(key)
+        .put({
+          value:
+            selectedParam.type === 'string'
+              ? BuiltIn.createStringFreeValue(/** @type {string} */ (value))
+              : BuiltIn.createNumberFreeValue(Number(value)),
+        })
+        .then(res => {
+          console.log(res)
+        })
+        .catch(e => {
+          console.warn(e)
+        })
+    } else {
+      // CAST: we already know this edge cannot be null
+      const relevantPropType = /** @type {WrapperNode} */ (relevantPropDefNode.getEdgeRef(
+        'propType',
+      ))
+
+      const relevantParam = relevantPropType.getSet('params').get(paramID)
+
+      relevantPropDefNode
+        .getSet('arguments')
+        .set({
+          param: relevantParam,
+          value:
+            selectedParam.type === 'string'
+              ? BuiltIn.createStringFreeValue(/** @type {string} */ (value))
+              : BuiltIn.createNumberFreeValue(Number(value)),
+        })
+        .then(res => {
+          console.log(res)
+        })
+        .catch(e => {
+          console.warn(e)
+        })
+    }
+  }
+
+  /**
+   * @private
+   */
   editPropFlowStopEditing = () => {
     this.setState({
       editPropFlow: INITIAL_EDIT_PROP_FLOW,
@@ -840,39 +935,121 @@ d8'          `8b  88888888Y"'    88888888Y"'       88           88      `8b    `
    * @param {string} paramID
    */
   editPropFlowOnClickSetting = paramID => {
-    this.setState(({ editPropFlow, nodes, selectedNodeID }) => {
-      const selectedNode =
-        /** @type {string} */ nodes[/** @type {string} */ (selectedNodeID)]
+    ;(() => {
+      const selectedNode = /** @type {string} */ this.state.nodes[
+        /** @type {string} */ (this.state.selectedNodeID)
+      ]
 
       const selectedPropDef =
         selectedNode.propDefs[
-          /** @type {string} */ (editPropFlow.selectedPropID)
+          /** @type {string} */ (this.state.editPropFlow.selectedPropID)
         ]
 
       const propType = selectedPropDef.propType
 
       const selectedParam = propType.params[paramID]
 
-      const maybeMatchingArg = Object.values(selectedPropDef.arguments).find(
-        arg => arg.param === selectedParam,
-      )
+      const isBooleanSwitch =
+        selectedParam.type === 'boolean' && !selectedParam.multiple
 
-      console.log(typeof maybeMatchingArg)
+      if (!isBooleanSwitch) {
+        return
+      }
 
+      const maybeMatchingArgEntry = Object.entries(
+        selectedPropDef.arguments,
+      ).find(([_, arg]) => arg.param === selectedParam)
+
+      const relevantPropDefNode = nodesNode
+        .get(/** @type {string} */ (this.state.selectedNodeID))
+        .getSet('propDefs')
+        .get(/** @type {string} */ (this.state.editPropFlow.selectedPropID))
+
+      if (maybeMatchingArgEntry) {
+        const [key, matchingArg] = maybeMatchingArgEntry
+
+        relevantPropDefNode
+          .getSet('arguments')
+          .get(key)
+          .put({
+            value: BuiltIn.createBooleanFreeValue(
+              !matchingArg.value.valueIfBoolean,
+            ),
+          })
+          .then(res => {
+            console.log(res)
+          })
+      } else {
+        // CAST: we already know this edge cannot be null
+        const relevantPropType = /** @type {WrapperNode} */ (relevantPropDefNode.getEdgeRef(
+          'propType',
+        ))
+        const relevantParam = relevantPropType.getSet('params').get(paramID)
+
+        relevantPropDefNode
+          .getSet('arguments')
+          .set({
+            param: relevantParam,
+            value: BuiltIn.createBooleanFreeValue(true),
+          })
+          .then(res => {
+            console.log(res)
+          })
+      }
+    })()
+
+    this.setState(({ editPropFlow, nodes, selectedNodeID }) => {
+      const selectedNode =
+        /** @type {string} */ nodes[/** @type {string} */ (selectedNodeID)]
+      const selectedPropDef =
+        selectedNode.propDefs[
+          /** @type {string} */ (editPropFlow.selectedPropID)
+        ]
+      const propType = selectedPropDef.propType
+      const selectedParam = propType.params[paramID]
+      const maybeMatchingArgEntry = Object.entries(
+        selectedPropDef.arguments,
+      ).find(([_, arg]) => arg.param === selectedParam)
+      const maybeMatchingKey = maybeMatchingArgEntry && maybeMatchingArgEntry[0]
+      const maybeMatchingArg = maybeMatchingArgEntry && maybeMatchingArgEntry[1]
       /**
        * @type {EditPropFlow['currentSettingValue']}
        */
       let value = null
-
       if (selectedParam.type === 'boolean') {
         if (selectedParam.multiple) {
           value = maybeMatchingArg
             ? maybeMatchingArg.value.valuesIfMultipleBoolean
             : {}
         } else {
-          value = maybeMatchingArg
-            ? !!maybeMatchingArg.value.valueIfBoolean
-            : false
+          return {
+            editPropFlow,
+            nodes: {
+              ...nodes,
+              [/** @type {string} */ (selectedNodeID)]: {
+                ...nodes[/** @type {string} */ (selectedNodeID)],
+                propDefs: {
+                  [/** @type {string} */ (editPropFlow.selectedPropID)]: {
+                    ...nodes[/** @type {string} */ (selectedNodeID)].propDefs[
+                      /** @type {string} */ (editPropFlow.selectedPropID)
+                    ],
+                    arguments: {
+                      // The math.random() entry will get overriden when the
+                      // actual argument gets created and or updated
+                      [maybeMatchingKey || Math.random()]: {
+                        param: selectedParam,
+                        value: BuiltIn.createBooleanFreeValue(
+                          maybeMatchingArg
+                            ? !maybeMatchingArg.value.valueIfBoolean
+                            : true,
+                        ),
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          }
         }
       }
 
@@ -902,6 +1079,7 @@ d8'          `8b  88888888Y"'    88888888Y"'       88           88      `8b    `
           currentSettingValue: value,
           selectedSettingParamID: paramID,
         },
+        nodes,
       }
     })
   }
@@ -911,6 +1089,8 @@ d8'          `8b  88888888Y"'    88888888Y"'       88           88      `8b    `
    * @returns {React.ReactNode}
    */
   editPropFlowRenderSettingEditor = () => {
+    const { classes } = this.props
+
     const paramID = /** @type {string} */ (this.state.editPropFlow
       .selectedSettingParamID)
 
@@ -943,8 +1123,9 @@ d8'          `8b  88888888Y"'    88888888Y"'       88           88      `8b    `
 
       return (
         <Grid
-          alignContent="center"
-          alignItems="center"
+          // TODO: Why do both need to be stretch?
+          alignContent="stretch"
+          alignItems="stretch"
           justify="center"
           container
           direction="column"
@@ -955,15 +1136,19 @@ d8'          `8b  88888888Y"'    88888888Y"'       88           88      `8b    `
             </Typography>
           </Grid>
 
-          <Grid item>
+          <Grid className={classes.textField} item>
             <TextField
+              autoFocus
+              fullWidth
               onChange={this.editPropFlowOnChangeSettingTextfieldNumber}
+              type="search"
               value={
                 this.state.editPropFlow.currentSettingValue === null
                   ? 0
                   : /** @type {number} */ (this.state.editPropFlow
                       .currentSettingValue)
               }
+              variant="outlined"
             />
           </Grid>
         </Grid>
@@ -977,20 +1162,26 @@ d8'          `8b  88888888Y"'    88888888Y"'       88           88      `8b    `
 
       return (
         <Grid
-          alignContent="center"
-          alignItems="center"
-          justify="center"
+          // TODO: Why do both need to be stretch?
+          alignContent="stretch"
+          alignItems="stretch"
           container
           direction="column"
+          justify="center"
         >
           <Grid item>
             <Typography align="center" color="textSecondary" variant="body1">
               {selectedParam.name}
             </Typography>
           </Grid>
-          <Grid item>
+
+          <Grid className={classes.textField} item>
             <TextField
+              autoFocus
+              fullWidth
               onChange={this.editPropFlowOnChangeSettingTextfieldString}
+              type="search"
+              variant="outlined"
               value={
                 typeof this.state.editPropFlow.currentSettingValue === 'string'
                   ? this.state.editPropFlow.currentSettingValue
@@ -1280,6 +1471,18 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
         // the more 'in' an screen is, the higher up top here the handling logic
         // for it has to be
 
+        if (editPropFlow.currentLabelValue !== null) {
+          return {
+            currentNodeDrawerTab,
+            editNodeFlow,
+            editPropFlow: {
+              ...editPropFlow,
+              currentLabelValue: null,
+            },
+            selectedNodeID,
+          }
+        }
+
         if (editPropFlow.selectedSettingParamID) {
           return {
             currentNodeDrawerTab,
@@ -1341,13 +1544,15 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
     const { editNodeFlow, editPropFlow, selectedNodeID } = this.state
 
     if (editPropFlow.selectedSettingParamID) {
-      console.log(editPropFlow.currentSettingValue)
-      this.setState({
+      this.editPropFlowSavePrimitiveSettingValue()
+
+      this.setState(({ editPropFlow }) => ({
         editPropFlow: {
-          ...INITIAL_EDIT_PROP_FLOW,
+          ...editPropFlow,
+          currentSettingValue: null,
           selectedSettingParamID: null,
         },
-      })
+      }))
 
       return
     }
@@ -1555,7 +1760,12 @@ a8"    `Y88  88P'   "Y8  ""     `Y8  `8b    d88b    d8'  a8P_____88  88P'   "Y8
 
         {selectedNodeID && selectedNode && (
           <PcDrawer
-            title={selectedNode.label}
+            title={(() => {
+              if (selectedNode) {
+                return selectedNode.label
+              }
+              return ''
+            })()}
             open
             leftButtonOnClick={this.onClickDrawerLeftBtn}
             rightButtonOnClick={this.onClickDrawerRightBtn}
@@ -1616,10 +1826,10 @@ a8"    `Y88  88P'   "Y8  ""     `Y8  `8b    d88b    d8'  a8P_____88  88P'   "Y8
             {editNodeFlow.editingLabel && (
               <TextField
                 autoFocus
-                className={classes.labelEditorTextField}
+                className={classes.textField}
                 onChange={this.editNodeFlowOnChangeLabelTextField}
-                value={editNodeFlow.editingLabelCurrentValue}
                 type="search"
+                value={editNodeFlow.editingLabelCurrentValue}
                 variant="outlined"
               />
             )}
@@ -1650,7 +1860,8 @@ a8"    `Y88  88P'   "Y8  ""     `Y8  `8b    d88b    d8'  a8P_____88  88P'   "Y8
 
             {editPropFlow.selectedPropID &&
               selectedPropDef &&
-              !editPropFlow.selectedSettingParamID && (
+              !editPropFlow.selectedSettingParamID &&
+              editPropFlow.currentLabelValue === null && (
                 <PropDefEditor
                   settings={getSettingsForPropDefEditor(selectedPropDef)}
                   helpText={selectedPropDef.helpText}
@@ -1664,8 +1875,11 @@ a8"    `Y88  88P'   "Y8  ""     `Y8  `8b    d88b    d8'  a8P_____88  88P'   "Y8
                   label={selectedPropDef.label}
                   required={selectedPropDef.required}
                   onClickSetting={this.editPropFlowOnClickSetting}
+                  onClickLabelBtn={this.editPropFlowOnClickLabel}
                 />
               )}
+
+            {editPropFlow.currentLabelValue !== null && 'editing the label'}
 
             {!!editPropFlow.selectedSettingParamID &&
               this.editPropFlowRenderSettingEditor()}
