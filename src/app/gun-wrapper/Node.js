@@ -69,7 +69,7 @@ export class Node {
 
     if (!isRoot && onSetChange === DEFAULT_ON_SET_CHANGE) {
       throw new TypeError(
-        'if a node is not root it must have an onChangeSet() provided since non-root nodes always belong to a set',
+        'if a node is not root it must have an onChangeSet() provided since non-root nodes always belong to a set, if this is an spawned edge ref node provide a mock onSetChange()',
       )
     }
 
@@ -89,6 +89,11 @@ export class Node {
      * @type {Record<string, WrapperSetNode>}
      */
     this.setNodes = {}
+
+    /**
+     * @type {Record<string, WrapperNode|undefined>}
+     */
+    this.spawnedNodes = {}
 
     for (const [key, setLeaf] of Object.entries(
       Utils.getSetLeaves(this.schema),
@@ -122,10 +127,6 @@ export class Node {
    * @param {Data} data
    */
   cachePut(data) {
-    if (this.schema[Utils.SCHEMA_NAME] === 'PropDef') {
-      console.log('cachePut called in PropDef single node')
-      console.log(data)
-    }
     this.onOpen(data)
   }
 
@@ -153,6 +154,12 @@ export class Node {
           Utils.conformsToSchema(edgeSchema, itemReceived)
         ) {
           this.currentData[key] = itemReceived
+
+          const spawnedNode = this.spawnedNodes[key]
+
+          if (spawnedNode) {
+            spawnedNode.cachePut(itemReceived)
+          }
         }
       },
     )
@@ -734,6 +741,45 @@ export class Node {
     }
 
     return /** @type {WrapperReferenceNode} */ (this.get(edgeKey))
+  }
+
+  /**
+   * Returns a node corresponding to the edge chosen. Use them for acquiring
+   * data from it or for setting it as references in other nodes. If the
+   * edge is set to null, null will be returned.
+   * @param {string} edgeKey
+   * @throws {ReferenceError} A runtimne check is performed to ensure the key
+   * supplied belongs to an edge, if it doesn't, this error is thrown.
+   * @returns {WrapperNode|null}
+   */
+  getEdgeRef(edgeKey) {
+    const edgeLeaves = Utils.getEdgeLeaves(this.schema)
+    const edgeKeys = Object.keys(edgeLeaves)
+
+    if (!edgeKeys.includes(edgeKey)) {
+      throw new ReferenceError(
+        `Invalid key supplied to Node.prototype.getEdge(), expected a key belonging to en edge of this node, one of these: ${edgeKeys} but got: ${edgeKey}`,
+      )
+    }
+
+    const currentData = this.currentData[edgeKey]
+
+    if (currentData === null) {
+      return null
+    }
+
+    const theNode = new Node(
+      edgeLeaves[edgeKey].type,
+      this.gunInstance.get(edgeKey),
+      false,
+      () => Promise.resolve(undefined),
+    )
+
+    this.spawnedNodes[edgeKey] = theNode
+
+    theNode.cachePut(/** @type {Data} */ (currentData))
+
+    return theNode
   }
 
   /**

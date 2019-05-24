@@ -46,6 +46,8 @@ export interface WrapperNode {
 
   getEdge(edgeKey: string): WrapperReferenceNode
 
+  getEdgeRef(edgeKey: string): WrapperNode | null
+
   getSet(setKey: string): WrapperSetNode
 
   put(data: ValidPut): Promise<Response>
