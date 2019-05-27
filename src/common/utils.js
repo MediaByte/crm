@@ -72,3 +72,13 @@ export const arrayMove = (array, from, to) => {
 
   return array
 }
+
+/**
+ * @param {any} reason
+ * @returns {string}
+ */
+export const reasonToString = reason => {
+  if (typeof reason === 'string') return reason
+  if (typeof reason.message === 'string') return reason.message
+  return 'Unknown error'
+}
