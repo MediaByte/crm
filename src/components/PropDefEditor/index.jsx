@@ -31,9 +31,10 @@ const ICON_SUBHEADER = <ListSubheader disableSticky>ICON</ListSubheader>
  * @prop {string} label
  * @prop {(() => void)=} onClickHelpTextBtn (Optional)
  * @prop {(() => void)=} onClickIconBtn (Optional)
- * @prop {((id: string) => void)=} onClickSetting (Optional)
+ * @prop {(() => void)=} onClickIndex (optional)
  * @prop {(() => void)=} onClickLabelBtn (Optional)
  * @prop {(() => void)=} onClickRequired (optional)
+ * @prop {((id: string) => void)=} onClickSetting (Optional)
  * @prop {boolean} required
  * @prop {Setting[]} settings
  */
@@ -57,9 +58,12 @@ class PropDefEditor extends React.PureComponent {
     const {
       helpText,
       icon,
+      isIndexed,
       label,
       onClickHelpTextBtn,
+      onClickIndex,
       onClickLabelBtn,
+      onClickRequired,
       required,
       settings,
     } = this.props
@@ -111,7 +115,12 @@ class PropDefEditor extends React.PureComponent {
         </Grid>
 
         <Grid item>
-          <DrawerButton isSwitch primaryText="Required" switchOn={required} />
+          <DrawerButton
+            isSwitch
+            onClick={onClickRequired}
+            primaryText="Required"
+            switchOn={required}
+          />
         </Grid>
 
         <Grid item>
@@ -121,7 +130,12 @@ class PropDefEditor extends React.PureComponent {
         </Grid>
 
         <Grid item>
-          <DrawerButton isSwitch primaryText="Index" switchOn={required} />
+          <DrawerButton
+            isSwitch
+            onClick={onClickIndex}
+            primaryText="Index"
+            switchOn={isIndexed}
+          />
         </Grid>
 
         <Grid item>
