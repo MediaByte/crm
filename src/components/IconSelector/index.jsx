@@ -18,12 +18,16 @@ import SelectableIcon from 'components/SelectableIcon'
  * @augments React.PureComponent<Props>
  */
 export default class IconSelector extends React.PureComponent {
+  /**
+   * @private
+   * @param {{ currentTarget: { dataset: { i: string } }}} e
+   */
   onClick = e => {
     const { onClickIcon } = this.props
     const idx = e.currentTarget.dataset.i
 
     if (onClickIcon) {
-      onClickIcon(idx)
+      onClickIcon(Number(idx))
     }
   }
 
@@ -43,6 +47,7 @@ export default class IconSelector extends React.PureComponent {
             <SelectableIcon
               selected={i === selectedIconIdx}
               data-i={i}
+              // @ts-ignore dataset isnt typed
               onClick={this.onClick}
               icon={icon}
             />
