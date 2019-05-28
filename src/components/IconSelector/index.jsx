@@ -9,7 +9,7 @@ import SelectableIcon from 'components/SelectableIcon'
 
 /**
  * @typedef {object} Props
- * @prop {Array<React.ComponentType<SvgIconProps>} icons
+ * @prop {Array<React.ComponentType<SvgIconProps>>} icons
  * @prop {((idx: number) => void)=} onClickIcon
  * @prop {(number|null|boolean)=} selectedIconIdx
  */
