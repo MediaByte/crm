@@ -61,6 +61,7 @@ class PropDefEditor extends React.PureComponent {
       isIndexed,
       label,
       onClickHelpTextBtn,
+      onClickIconBtn,
       onClickIndex,
       onClickLabelBtn,
       onClickRequired,
@@ -148,6 +149,7 @@ class PropDefEditor extends React.PureComponent {
           <List subheader={ICON_SUBHEADER}>
             <DrawerButton
               icon={icon}
+              onClick={onClickIconBtn}
               primaryText={icon ? undefined : 'No Icon Selected'}
             />
           </List>
