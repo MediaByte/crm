@@ -18,12 +18,15 @@ import CheckCircle from '@material-ui/icons/CheckCircle'
  * @typedef {object} Props
  * @prop {boolean=} big (Optional) If passed in, set the icon to a bigger (1.5x)
  * size.
- * @prop {React.ReactElement<SvgIconProps>=} children The icon to be rendered.
+ * @prop {(React.ReactElement<SvgIconProps>|string)=} children The icon to be
+ * rendered.
  * @prop {Record<ClassNames, string>} classes
- * @prop {React.ComponentType<SvgIconProps>=} icon (Optional) Use this prop
- * instead of the children prop to prevent re-renders.
+ * @prop {(React.ComponentType<SvgIconProps>|string)=} icon (Optional) Use this
+ * prop instead of the children prop to prevent re-renders.
  * @prop {IconButtonProps['onClick']=} onClick
- * @prop {boolean=} selected
+ * @prop {boolean=} selected (Optional)
+ * @prop {string=} text (Optional) If provided will render this text inside of
+ * an icon in the center.
  */
 
 /**
@@ -38,6 +41,7 @@ class SelectableIcon extends React.PureComponent {
       icon: Icon,
       onClick,
       selected,
+      text,
       ...restProps
     } = this.props
 
@@ -59,7 +63,7 @@ class SelectableIcon extends React.PureComponent {
           onClick={onClick}
           {...restProps}
         >
-          {icon}
+          {text ? text : icon}
         </RoundedIconButton>
         {selected && (
           <CheckCircle color="primary" className={classes.checkCircle} />
