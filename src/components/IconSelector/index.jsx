@@ -10,8 +10,11 @@ import SelectableIcon from 'components/SelectableIcon'
 /**
  * @typedef {object} Props
  * @prop {Array<React.ComponentType<SvgIconProps>>} icons
- * @prop {((idx: number) => void)=} onClickIcon
+ * @prop {((idx: number) => void)=} onClickIcon (Optional) Gets called with -1
+ * when clicking on the 'no icon' option.
  * @prop {(number|null|boolean)=} selectedIconIdx
+ * @prop {boolean=} showNoIconOption If set to true, will show a 'no icon'
+ * option.
  */
 
 /**
@@ -32,7 +35,7 @@ export default class IconSelector extends React.PureComponent {
   }
 
   render() {
-    const { icons, selectedIconIdx } = this.props
+    const { icons, selectedIconIdx, showNoIconOption } = this.props
 
     return (
       <Grid
@@ -42,6 +45,17 @@ export default class IconSelector extends React.PureComponent {
         justify="center"
         spacing={0}
       >
+        {showNoIconOption && (
+          <Grid item>
+            <SelectableIcon
+              data-i={-1}
+              // @ts-ignore dataset isnt typed
+              onClick={this.onClick}
+              selected={selectedIconIdx === -1}
+              text="No Icon   "
+            />
+          </Grid>
+        )}
         {icons.map((icon, i) => (
           <Grid item key={i}>
             <SelectableIcon
