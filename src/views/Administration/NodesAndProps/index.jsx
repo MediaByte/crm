@@ -1279,7 +1279,7 @@ d8'          `8b  88888888Y"'    88888888Y"'       88           88      `8b    `
           value = maybeMatchingArg
             ? maybeMatchingArg.value.valueIfNumber === null
               ? '0'
-              : maybeMatchingArg.value.valueIfNumber
+              : maybeMatchingArg.value.valueIfNumber.toString()
             : '0'
         }
       }
@@ -1370,8 +1370,8 @@ d8'          `8b  88888888Y"'    88888888Y"'       88           88      `8b    `
               value={
                 this.state.editPropFlow.currentSettingValue === null
                   ? 0
-                  : /** @type {number} */ (this.state.editPropFlow
-                      .currentSettingValue)
+                  : // @ts-ignore CAST: safe cast
+                    this.state.editPropFlow.currentSettingValue
               }
               variant="outlined"
             />
