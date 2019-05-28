@@ -96,6 +96,7 @@ const INITIAL_EDIT_PROP_FLOW = {
   currentHelpTextValue: '',
   currentLabelValue: null,
   editingHelpText: false,
+  editingIcon: false,
   selectedPropID: null,
   selectedSettingParamID: null,
   willChangeHelpTextStatus: false,
@@ -229,10 +230,11 @@ const styles = theme => ({
 
 /**
  * @typedef {object} EditPropFlow
- * @prop {boolean} editingHelpText
  * @prop {string} currentHelpTextValue
  * @prop {string|null} currentLabelValue Null when not editing it
  * @prop {string|Record<string, string>|Record<string, number>|null} currentSettingValue
+ * @prop {boolean} editingHelpText
+ * @prop {boolean} editingIcon
  * @prop {string|null} selectedPropID
  * @prop {string|null} selectedSettingParamID
  * @prop {boolean} willChangeHelpTextStatus
