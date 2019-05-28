@@ -1367,11 +1367,11 @@ d8'          `8b  88888888Y"'    88888888Y"'       88           88      `8b    `
               fullWidth
               onChange={this.editPropFlowOnChangeSettingTextfieldNumber}
               type="search"
+              // @ts-ignore
               value={
                 this.state.editPropFlow.currentSettingValue === null
                   ? 0
-                  : // @ts-ignore CAST: safe cast
-                    this.state.editPropFlow.currentSettingValue
+                  : this.state.editPropFlow.currentSettingValue
               }
               variant="outlined"
             />
