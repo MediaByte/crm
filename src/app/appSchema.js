@@ -193,6 +193,10 @@ const PropDef = {
     type: 'string',
     async onChange() {},
   },
+  indexed: {
+    type: 'boolean',
+    async onChange() {},
+  },
   iconName: {
     type: 'string',
     async onChange() {},
@@ -205,8 +209,16 @@ const PropDef = {
     type: 'string',
     async onChange() {},
   },
+  order: {
+    type: 'number',
+    async onChange() {},
+  },
   propType: {
     type: PropType,
+    async onChange() {},
+  },
+  required: {
+    type: 'boolean',
     async onChange() {},
   },
 }

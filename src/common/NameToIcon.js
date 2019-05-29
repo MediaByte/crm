@@ -7,7 +7,6 @@
  * @typedef {ComponentType<SvgIconProps>} IconComponent
  */
 
-
 import accessAlarmIcon from '@material-ui/icons/AccessAlarm'
 import accessAlarmOutlinedIcon from '@material-ui/icons/AccessAlarmOutlined'
 import accessAlarmTwoToneIcon from '@material-ui/icons/AccessAlarmTwoTone'
@@ -1918,7 +1917,6 @@ import isoIcon from '@material-ui/icons/Iso'
 
 import isoOutlinedIcon from '@material-ui/icons/IsoOutlined'
 import isoTwoToneIcon from '@material-ui/icons/IsoTwoTone'
-import keyboardIcon from '@material-ui/icons/Keyboard'
 
 import keyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown'
 import keyboardArrowDownOutlinedIcon from '@material-ui/icons/KeyboardArrowDownOutlined'
@@ -3079,8 +3077,6 @@ import restorePageIcon from '@material-ui/icons/RestorePage'
 import restorePageOutlinedIcon from '@material-ui/icons/RestorePageOutlined'
 import restorePageTwoToneIcon from '@material-ui/icons/RestorePageTwoTone'
 
-
-
 import ringVolumeIcon from '@material-ui/icons/RingVolume'
 import ringVolumeOutlinedIcon from '@material-ui/icons/RingVolumeOutlined'
 import ringVolumeTwoToneIcon from '@material-ui/icons/RingVolumeTwoTone'
@@ -3092,7 +3088,6 @@ import roomTwoToneIcon from '@material-ui/icons/RoomTwoTone'
 import roomServiceIcon from '@material-ui/icons/RoomService'
 import roomServiceOutlinedIcon from '@material-ui/icons/RoomServiceOutlined'
 import roomServiceTwoToneIcon from '@material-ui/icons/RoomServiceTwoTone'
-
 
 import rotate9DegreesCcwIcon from '@material-ui/icons/Rotate90DegreesCcw'
 import rotate9DegreesCcwOutlinedIcon from '@material-ui/icons/Rotate90DegreesCcwOutlined'
@@ -4203,4182 +4198,5224 @@ import zoomOutTwoToneIcon from '@material-ui/icons/ZoomOutTwoTone'
  * @type {Record<string, IconTriple>}
  */
 export const nameToIconMap = {
-  accessAlarm:{	
+  accessAlarm: {
     filled: accessAlarmIcon,
     outlined: accessAlarmOutlinedIcon,
-    twoTone: accessAlarmTwoToneIcon, },
-  accessAlarms:{	
+    twoTone: accessAlarmTwoToneIcon,
+  },
+  accessAlarms: {
     filled: accessAlarmsIcon,
     outlined: accessAlarmsOutlinedIcon,
-    twoTone: accessAlarmsTwoToneIcon, },
-  accessibilityNew:{	
+    twoTone: accessAlarmsTwoToneIcon,
+  },
+  accessibilityNew: {
     filled: accessibilityNewIcon,
     outlined: accessibilityNewOutlinedIcon,
-    twoTone: accessibilityNewTwoToneIcon, },
-  accessibility:{	
+    twoTone: accessibilityNewTwoToneIcon,
+  },
+  accessibility: {
     filled: accessibilityIcon,
     outlined: accessibilityOutlinedIcon,
-    twoTone: accessibilityTwoToneIcon, },
-  accessibleForward:{	
+    twoTone: accessibilityTwoToneIcon,
+  },
+  accessibleForward: {
     filled: accessibleForwardIcon,
     outlined: accessibleForwardOutlinedIcon,
-    twoTone: accessibleForwardTwoToneIcon, },
-  accessible:{	
+    twoTone: accessibleForwardTwoToneIcon,
+  },
+  accessible: {
     filled: accessibleIcon,
     outlined: accessibleOutlinedIcon,
-    twoTone: accessibleTwoToneIcon, },
-  accessTime:{	
+    twoTone: accessibleTwoToneIcon,
+  },
+  accessTime: {
     filled: accessTimeIcon,
     outlined: accessTimeOutlinedIcon,
-    twoTone: accessTimeTwoToneIcon, },
-  accountBalance:{	
+    twoTone: accessTimeTwoToneIcon,
+  },
+  accountBalance: {
     filled: accountBalanceIcon,
     outlined: accountBalanceOutlinedIcon,
-    twoTone: accountBalanceTwoToneIcon, },
-  accountBalanceWallet:{	
+    twoTone: accountBalanceTwoToneIcon,
+  },
+  accountBalanceWallet: {
     filled: accountBalanceWalletIcon,
     outlined: accountBalanceWalletOutlinedIcon,
-    twoTone: accountBalanceWalletTwoToneIcon, },
-  accountBox:{	
+    twoTone: accountBalanceWalletTwoToneIcon,
+  },
+  accountBox: {
     filled: accountBoxIcon,
     outlined: accountBoxOutlinedIcon,
-    twoTone: accountBoxTwoToneIcon, },
-  accountCircle:{	
+    twoTone: accountBoxTwoToneIcon,
+  },
+  accountCircle: {
     filled: accountCircleIcon,
     outlined: accountCircleOutlinedIcon,
-    twoTone: accountCircleTwoToneIcon, },
-  acUnit:{	
+    twoTone: accountCircleTwoToneIcon,
+  },
+  acUnit: {
     filled: acUnitIcon,
     outlined: acUnitOutlinedIcon,
-    twoTone: acUnitTwoToneIcon, },
-  adb:{	
+    twoTone: acUnitTwoToneIcon,
+  },
+  adb: {
     filled: adbIcon,
     outlined: adbOutlinedIcon,
-    twoTone: adbTwoToneIcon, },
-  add:{	
+    twoTone: adbTwoToneIcon,
+  },
+  add: {
     filled: addIcon,
     outlined: addOutlinedIcon,
-    twoTone: addTwoToneIcon, },
-  addAlarm:{	
+    twoTone: addTwoToneIcon,
+  },
+  addAlarm: {
     filled: addAlarmIcon,
     outlined: addAlarmOutlinedIcon,
-    twoTone: addAlarmTwoToneIcon, },
-  addAlert:{	
+    twoTone: addAlarmTwoToneIcon,
+  },
+  addAlert: {
     filled: addAlertIcon,
     outlined: addAlertOutlinedIcon,
-    twoTone: addAlertTwoToneIcon, },
-  addAPhoto:{	
+    twoTone: addAlertTwoToneIcon,
+  },
+  addAPhoto: {
     filled: addAPhotoIcon,
     outlined: addAPhotoOutlinedIcon,
-    twoTone: addAPhotoTwoToneIcon, },
-  addBox:{	
+    twoTone: addAPhotoTwoToneIcon,
+  },
+  addBox: {
     filled: addBoxIcon,
     outlined: addBoxOutlinedIcon,
-    twoTone: addBoxTwoToneIcon, },
-  addCircle:{	
+    twoTone: addBoxTwoToneIcon,
+  },
+  addCircle: {
     filled: addCircleIcon,
     outlined: addCircleOutlineIcon,
-    twoTone: addCircleTwoToneIcon, },
-  addCircleOutline:{	
+    twoTone: addCircleTwoToneIcon,
+  },
+  addCircleOutline: {
     filled: addCircleOutlinedIcon,
     outlined: addCircleOutlineOutlinedIcon,
-    twoTone: addCircleOutlineTwoToneIcon, },
-  addComment:{	
+    twoTone: addCircleOutlineTwoToneIcon,
+  },
+  addComment: {
     filled: addCommentIcon,
     outlined: addCommentOutlinedIcon,
-    twoTone: addCommentTwoToneIcon, },
-  addLocation:{	
+    twoTone: addCommentTwoToneIcon,
+  },
+  addLocation: {
     filled: addLocationIcon,
     outlined: addLocationOutlinedIcon,
-    twoTone: addLocationTwoToneIcon, },
-  addPhotoAlternate:{	
+    twoTone: addLocationTwoToneIcon,
+  },
+  addPhotoAlternate: {
     filled: addPhotoAlternateIcon,
     outlined: addPhotoAlternateOutlinedIcon,
-    twoTone: addPhotoAlternateTwoToneIcon, },
-  addShoppingCart:{	
+    twoTone: addPhotoAlternateTwoToneIcon,
+  },
+  addShoppingCart: {
     filled: addShoppingCartIcon,
     outlined: addShoppingCartOutlinedIcon,
-    twoTone: addShoppingCartTwoToneIcon, },
-  addToHomeScreen:{	
+    twoTone: addShoppingCartTwoToneIcon,
+  },
+  addToHomeScreen: {
     filled: addToHomeScreenIcon,
     outlined: addToHomeScreenOutlinedIcon,
-    twoTone: addToHomeScreenTwoToneIcon, },
-  addToPhotos:{	
+    twoTone: addToHomeScreenTwoToneIcon,
+  },
+  addToPhotos: {
     filled: addToPhotosIcon,
     outlined: addToPhotosOutlinedIcon,
-    twoTone: addToPhotosTwoToneIcon, },
-  addToQueue:{	
+    twoTone: addToPhotosTwoToneIcon,
+  },
+  addToQueue: {
     filled: addToQueueIcon,
     outlined: addToQueueOutlinedIcon,
-    twoTone: addToQueueTwoToneIcon, },
-  adjust:{	
+    twoTone: addToQueueTwoToneIcon,
+  },
+  adjust: {
     filled: adjustIcon,
     outlined: adjustOutlinedIcon,
-    twoTone: adjustTwoToneIcon, },
-  airlineSeatFlat:{	
+    twoTone: adjustTwoToneIcon,
+  },
+  airlineSeatFlat: {
     filled: airlineSeatFlatIcon,
     outlined: airlineSeatFlatAngledIcon,
-    twoTone: airlineSeatFlatAngledOutlinedIcon, },
-  airlineSeatFlatAngled:{	
+    twoTone: airlineSeatFlatAngledOutlinedIcon,
+  },
+  airlineSeatFlatAngled: {
     filled: airlineSeatFlatAngledTwoToneIcon,
     outlined: airlineSeatFlatOutlinedIcon,
-    twoTone: airlineSeatFlatTwoToneIcon, },
-  airlineSeatIndividualSuite:{	
+    twoTone: airlineSeatFlatTwoToneIcon,
+  },
+  airlineSeatIndividualSuite: {
     filled: airlineSeatIndividualSuiteIcon,
     outlined: airlineSeatIndividualSuiteOutlinedIcon,
-    twoTone: airlineSeatIndividualSuiteTwoToneIcon, },
-  airlineSeatLegroomExtra:{	
+    twoTone: airlineSeatIndividualSuiteTwoToneIcon,
+  },
+  airlineSeatLegroomExtra: {
     filled: airlineSeatLegroomExtraIcon,
     outlined: airlineSeatLegroomExtraOutlinedIcon,
-    twoTone: airlineSeatLegroomExtraTwoToneIcon, },
-  airlineSeatLegroomNormal:{	
+    twoTone: airlineSeatLegroomExtraTwoToneIcon,
+  },
+  airlineSeatLegroomNormal: {
     filled: airlineSeatLegroomNormalIcon,
     outlined: airlineSeatLegroomNormalOutlinedIcon,
-    twoTone: airlineSeatLegroomNormalTwoToneIcon, },
-  airlineSeatLegroomReduced:{	
+    twoTone: airlineSeatLegroomNormalTwoToneIcon,
+  },
+  airlineSeatLegroomReduced: {
     filled: airlineSeatLegroomReducedIcon,
     outlined: airlineSeatLegroomReducedOutlinedIcon,
-    twoTone: airlineSeatLegroomReducedTwoToneIcon, },
-  airlineSeatReclineExtra:{	
+    twoTone: airlineSeatLegroomReducedTwoToneIcon,
+  },
+  airlineSeatReclineExtra: {
     filled: airlineSeatReclineExtraIcon,
     outlined: airlineSeatReclineExtraOutlinedIcon,
-    twoTone: airlineSeatReclineExtraTwoToneIcon, },
-  airlineSeatReclineNormal:{	
+    twoTone: airlineSeatReclineExtraTwoToneIcon,
+  },
+  airlineSeatReclineNormal: {
     filled: airlineSeatReclineNormalIcon,
     outlined: airlineSeatReclineNormalOutlinedIcon,
-    twoTone: airlineSeatReclineNormalTwoToneIcon, },
-  airplanemodeActive:{	
+    twoTone: airlineSeatReclineNormalTwoToneIcon,
+  },
+  airplanemodeActive: {
     filled: airplanemodeActiveIcon,
     outlined: airplanemodeActiveOutlinedIcon,
-    twoTone: airplanemodeActiveTwoToneIcon, },
-  airplanemodeInactive:{	
+    twoTone: airplanemodeActiveTwoToneIcon,
+  },
+  airplanemodeInactive: {
     filled: airplanemodeInactiveIcon,
     outlined: airplanemodeInactiveOutlinedIcon,
-    twoTone: airplanemodeInactiveTwoToneIcon, },
-  airplay:{	
+    twoTone: airplanemodeInactiveTwoToneIcon,
+  },
+  airplay: {
     filled: airplayIcon,
     outlined: airplayOutlinedIcon,
-    twoTone: airplayTwoToneIcon, },
-  airportShuttle:{	
+    twoTone: airplayTwoToneIcon,
+  },
+  airportShuttle: {
     filled: airportShuttleIcon,
     outlined: airportShuttleOutlinedIcon,
-    twoTone: airportShuttleTwoToneIcon, },
-  alarm:{	
+    twoTone: airportShuttleTwoToneIcon,
+  },
+  alarm: {
     filled: alarmIcon,
     outlined: alarmAddIcon,
-    twoTone: alarmAddOutlinedIcon, },
-  alarmAdd:{	
+    twoTone: alarmAddOutlinedIcon,
+  },
+  alarmAdd: {
     filled: alarmAddTwoToneIcon,
     outlined: alarmOffIcon,
-    twoTone: alarmOffOutlinedIcon, },
-  alarmOff:{	
+    twoTone: alarmOffOutlinedIcon,
+  },
+  alarmOff: {
     filled: alarmOffTwoToneIcon,
     outlined: alarmOnIcon,
-    twoTone: alarmOnOutlinedIcon, },
-  alarmOn:{	
+    twoTone: alarmOnOutlinedIcon,
+  },
+  alarmOn: {
     filled: alarmOnTwoToneIcon,
     outlined: alarmOutlinedIcon,
-    twoTone: alarmTwoToneIcon, },
-  album:{	
+    twoTone: alarmTwoToneIcon,
+  },
+  album: {
     filled: albumIcon,
     outlined: albumOutlinedIcon,
-    twoTone: albumTwoToneIcon, },
-  allInbox:{	
+    twoTone: albumTwoToneIcon,
+  },
+  allInbox: {
     filled: allInboxIcon,
     outlined: allInboxOutlinedIcon,
-    twoTone: allInboxTwoToneIcon, },
-  allInclusive:{	
+    twoTone: allInboxTwoToneIcon,
+  },
+  allInclusive: {
     filled: allInclusiveIcon,
     outlined: allInclusiveOutlinedIcon,
-    twoTone: allInclusiveTwoToneIcon, },
-  allOut:{	
+    twoTone: allInclusiveTwoToneIcon,
+  },
+  allOut: {
     filled: allOutIcon,
     outlined: allOutOutlinedIcon,
-    twoTone: allOutTwoToneIcon, },
-  alternateEmail:{	
+    twoTone: allOutTwoToneIcon,
+  },
+  alternateEmail: {
     filled: alternateEmailIcon,
     outlined: alternateEmailOutlinedIcon,
-    twoTone: alternateEmailTwoToneIcon, },
-  android:{	
+    twoTone: alternateEmailTwoToneIcon,
+  },
+  android: {
     filled: androidIcon,
     outlined: androidOutlinedIcon,
-    twoTone: androidTwoToneIcon, },
-  announcement:{	
+    twoTone: androidTwoToneIcon,
+  },
+  announcement: {
     filled: announcementIcon,
     outlined: announcementOutlinedIcon,
-    twoTone: announcementTwoToneIcon, },
-  apps:{	
+    twoTone: announcementTwoToneIcon,
+  },
+  apps: {
     filled: appsIcon,
     outlined: appsOutlinedIcon,
-    twoTone: appsTwoToneIcon, },
-  archive:{	
+    twoTone: appsTwoToneIcon,
+  },
+  archive: {
     filled: archiveIcon,
     outlined: archiveOutlinedIcon,
-    twoTone: archiveTwoToneIcon, },
-  arrowBack:{	
+    twoTone: archiveTwoToneIcon,
+  },
+  arrowBack: {
     filled: arrowBackIcon,
     outlined: arrowBackIosIcon,
-    twoTone: arrowBackIosOutlinedIcon, },
-  arrowBackIos:{	
+    twoTone: arrowBackIosOutlinedIcon,
+  },
+  arrowBackIos: {
     filled: arrowBackIosTwoToneIcon,
     outlined: arrowBackOutlinedIcon,
-    twoTone: arrowBackTwoToneIcon, },
-  arrowDownward:{	
+    twoTone: arrowBackTwoToneIcon,
+  },
+  arrowDownward: {
     filled: arrowDownwardIcon,
     outlined: arrowDownwardOutlinedIcon,
-    twoTone: arrowDownwardTwoToneIcon, },
-  arrowDropDown:{	
+    twoTone: arrowDownwardTwoToneIcon,
+  },
+  arrowDropDown: {
     filled: arrowDropDownIcon,
     outlined: arrowDropDownCircleIcon,
-    twoTone: arrowDropDownCircleOutlinedIcon, },
-  arrowDropDownCircle:{	
+    twoTone: arrowDropDownCircleOutlinedIcon,
+  },
+  arrowDropDownCircle: {
     filled: arrowDropDownCircleTwoToneIcon,
     outlined: arrowDropDownOutlinedIcon,
-    twoTone: arrowDropDownTwoToneIcon, },
-  arrowDropUp:{	
+    twoTone: arrowDropDownTwoToneIcon,
+  },
+  arrowDropUp: {
     filled: arrowDropUpIcon,
     outlined: arrowDropUpOutlinedIcon,
-    twoTone: arrowDropUpTwoToneIcon, },
-  arrowForward:{	
+    twoTone: arrowDropUpTwoToneIcon,
+  },
+  arrowForward: {
     filled: arrowForwardIcon,
     outlined: arrowForwardIosIcon,
-    twoTone: arrowForwardIosOutlinedIcon, },
-  arrowForwardIos:{	
+    twoTone: arrowForwardIosOutlinedIcon,
+  },
+  arrowForwardIos: {
     filled: arrowForwardIosTwoToneIcon,
     outlined: arrowForwardOutlinedIcon,
-    twoTone: arrowForwardTwoToneIcon, },
-  arrowLeft:{	
+    twoTone: arrowForwardTwoToneIcon,
+  },
+  arrowLeft: {
     filled: arrowLeftIcon,
     outlined: arrowLeftOutlinedIcon,
-    twoTone: arrowLeftTwoToneIcon, },
-  arrowRight:{	
+    twoTone: arrowLeftTwoToneIcon,
+  },
+  arrowRight: {
     filled: arrowRightIcon,
     outlined: arrowRightOutlinedIcon,
-    twoTone: arrowRightTwoToneIcon, },
-  arrowRightAlt:{	
+    twoTone: arrowRightTwoToneIcon,
+  },
+  arrowRightAlt: {
     filled: arrowRightAltIcon,
-    outlined:arrowRightAltOutlinedIcon ,
-    twoTone: arrowRightAltTwoToneIcon, },
-  arrowUpward:{	
+    outlined: arrowRightAltOutlinedIcon,
+    twoTone: arrowRightAltTwoToneIcon,
+  },
+  arrowUpward: {
     filled: arrowUpwardIcon,
     outlined: arrowUpwardOutlinedIcon,
-    twoTone: arrowUpwardTwoToneIcon, },
-  artTrack:{	
+    twoTone: arrowUpwardTwoToneIcon,
+  },
+  artTrack: {
     filled: artTrackIcon,
     outlined: artTrackOutlinedIcon,
-    twoTone: artTrackTwoToneIcon, },
-  aspectRatio:{	
+    twoTone: artTrackTwoToneIcon,
+  },
+  aspectRatio: {
     filled: aspectRatioIcon,
     outlined: aspectRatioOutlinedIcon,
-    twoTone: aspectRatioTwoToneIcon, },
-  assessment:{	
+    twoTone: aspectRatioTwoToneIcon,
+  },
+  assessment: {
     filled: assessmentIcon,
     outlined: assessmentOutlinedIcon,
-    twoTone: assessmentTwoToneIcon, },
-  assignment:{	
+    twoTone: assessmentTwoToneIcon,
+  },
+  assignment: {
     filled: assignmentIcon,
     outlined: assignmentIndIcon,
-    twoTone: assignmentIndOutlinedIcon, },
-  assignmentInd:{	
+    twoTone: assignmentIndOutlinedIcon,
+  },
+  assignmentInd: {
     filled: assignmentIndTwoToneIcon,
     outlined: assignmentLateIcon,
-    twoTone: assignmentLateOutlinedIcon, },
-  assignmentLate:{	
+    twoTone: assignmentLateOutlinedIcon,
+  },
+  assignmentLate: {
     filled: assignmentLateTwoToneIcon,
     outlined: assignmentOutlinedIcon,
-    twoTone: assignmentReturnIcon, },
-  assignmentReturn:{	
+    twoTone: assignmentReturnIcon,
+  },
+  assignmentReturn: {
     filled: assignmentReturnedIcon,
     outlined: assignmentReturnedOutlinedIcon,
-    twoTone: assignmentReturnedTwoToneIcon, },
-  assignmentReturned:{	
+    twoTone: assignmentReturnedTwoToneIcon,
+  },
+  assignmentReturned: {
     filled: assignmentReturnOutlinedIcon,
     outlined: assignmentReturnTwoToneIcon,
-    twoTone: assignmentTurnedInIcon, },
-  assignmentTurnedIn:{	
+    twoTone: assignmentTurnedInIcon,
+  },
+  assignmentTurnedIn: {
     filled: assignmentTurnedInOutlinedIcon,
     outlined: assignmentTurnedInTwoToneIcon,
-    twoTone: assignmentTwoToneIcon, },
-  assistant:{	
+    twoTone: assignmentTwoToneIcon,
+  },
+  assistant: {
     filled: assistantIcon,
     outlined: assistantOutlinedIcon,
-    twoTone: assistantPhotoIcon, },
-  assistantPhoto:{	
+    twoTone: assistantPhotoIcon,
+  },
+  assistantPhoto: {
     filled: assistantPhotoOutlinedIcon,
     outlined: assistantPhotoTwoToneIcon,
-    twoTone: assistantTwoToneIcon, },
-  atm:{	
+    twoTone: assistantTwoToneIcon,
+  },
+  atm: {
     filled: atmIcon,
     outlined: atmOutlinedIcon,
-    twoTone: atmTwoToneIcon, },
-  attachFile:{	
+    twoTone: atmTwoToneIcon,
+  },
+  attachFile: {
     filled: attachFileIcon,
     outlined: attachFileOutlinedIcon,
-    twoTone: attachFileTwoToneIcon, },
-  attachment:{	
+    twoTone: attachFileTwoToneIcon,
+  },
+  attachment: {
     filled: attachmentIcon,
     outlined: attachmentOutlinedIcon,
-    twoTone: attachmentTwoToneIcon, },
-  attachMoney:{	
+    twoTone: attachmentTwoToneIcon,
+  },
+  attachMoney: {
     filled: attachMoneyIcon,
     outlined: attachMoneyOutlinedIcon,
-    twoTone: attachMoneyTwoToneIcon, },
-  audiotrack:{	
+    twoTone: attachMoneyTwoToneIcon,
+  },
+  audiotrack: {
     filled: audiotrackIcon,
     outlined: audiotrackOutlinedIcon,
-    twoTone: audiotrackTwoToneIcon, },
-  autorenew:{	
+    twoTone: audiotrackTwoToneIcon,
+  },
+  autorenew: {
     filled: autorenewIcon,
     outlined: autorenewOutlinedIcon,
-    twoTone: autorenewTwoToneIcon, },
-  avTimer:{	
+    twoTone: autorenewTwoToneIcon,
+  },
+  avTimer: {
     filled: avTimerIcon,
     outlined: avTimerOutlinedIcon,
-    twoTone: avTimerTwoToneIcon, },
-  backspace:{	
+    twoTone: avTimerTwoToneIcon,
+  },
+  backspace: {
     filled: backspaceIcon,
     outlined: backspaceOutlinedIcon,
-    twoTone: backspaceTwoToneIcon, },
-  backup:{	
+    twoTone: backspaceTwoToneIcon,
+  },
+  backup: {
     filled: backupIcon,
     outlined: backupOutlinedIcon,
-    twoTone: backupTwoToneIcon, },
-  ballot:{	
+    twoTone: backupTwoToneIcon,
+  },
+  ballot: {
     filled: ballotIcon,
     outlined: ballotOutlinedIcon,
-    twoTone: ballotTwoToneIcon, },
-  barChart:{	
+    twoTone: ballotTwoToneIcon,
+  },
+  barChart: {
     filled: barChartIcon,
     outlined: barChartOutlinedIcon,
-    twoTone: barChartTwoToneIcon, },
-  battery2:{	
+    twoTone: barChartTwoToneIcon,
+  },
+  battery2: {
     filled: battery20Icon,
     outlined: battery20OutlinedIcon,
-    twoTone: battery20TwoToneIcon, },
-  battery3:{	
+    twoTone: battery20TwoToneIcon,
+  },
+  battery3: {
     filled: battery30Icon,
     outlined: battery30OutlinedIcon,
-    twoTone: battery30TwoToneIcon, },
-  battery5:{	
+    twoTone: battery30TwoToneIcon,
+  },
+  battery5: {
     filled: battery50Icon,
     outlined: battery50OutlinedIcon,
-    twoTone: battery50TwoToneIcon, },
-  battery6:{	
+    twoTone: battery50TwoToneIcon,
+  },
+  battery6: {
     filled: battery60Icon,
     outlined: battery60OutlinedIcon,
-    twoTone: battery60TwoToneIcon, },
-  battery8:{	
+    twoTone: battery60TwoToneIcon,
+  },
+  battery8: {
     filled: battery80Icon,
     outlined: battery80OutlinedIcon,
-    twoTone: battery80TwoToneIcon, },
-  battery9:{	
+    twoTone: battery80TwoToneIcon,
+  },
+  battery9: {
     filled: battery90Icon,
     outlined: battery90OutlinedIcon,
-    twoTone: battery90TwoToneIcon, },
-  batteryAlert:{	
+    twoTone: battery90TwoToneIcon,
+  },
+  batteryAlert: {
     filled: batteryAlertIcon,
     outlined: batteryAlertOutlinedIcon,
-    twoTone: batteryAlertTwoToneIcon, },
-  batteryCharging2:{	
+    twoTone: batteryAlertTwoToneIcon,
+  },
+  batteryCharging2: {
     filled: batteryCharging20Icon,
     outlined: batteryCharging20OutlinedIcon,
-    twoTone: batteryCharging20TwoToneIcon, },
-  batteryCharging3:{	
+    twoTone: batteryCharging20TwoToneIcon,
+  },
+  batteryCharging3: {
     filled: batteryCharging30Icon,
     outlined: batteryCharging30OutlinedIcon,
-    twoTone: batteryCharging30TwoToneIcon, },
-  batteryCharging5:{	
+    twoTone: batteryCharging30TwoToneIcon,
+  },
+  batteryCharging5: {
     filled: batteryCharging50Icon,
     outlined: batteryCharging50OutlinedIcon,
-    twoTone: batteryCharging50TwoToneIcon, },
-  batteryCharging6:{	
+    twoTone: batteryCharging50TwoToneIcon,
+  },
+  batteryCharging6: {
     filled: batteryCharging60Icon,
     outlined: batteryCharging60OutlinedIcon,
-    twoTone: batteryCharging60TwoToneIcon, },
-  batteryCharging8:{	
+    twoTone: batteryCharging60TwoToneIcon,
+  },
+  batteryCharging8: {
     filled: batteryCharging80Icon,
     outlined: batteryCharging80OutlinedIcon,
-    twoTone: batteryCharging80TwoToneIcon, },
-  batteryCharging9:{	
+    twoTone: batteryCharging80TwoToneIcon,
+  },
+  batteryCharging9: {
     filled: batteryCharging90Icon,
     outlined: batteryCharging90OutlinedIcon,
-    twoTone: batteryCharging90TwoToneIcon, },
-  batteryChargingFull:{	
+    twoTone: batteryCharging90TwoToneIcon,
+  },
+  batteryChargingFull: {
     filled: batteryChargingFullIcon,
     outlined: batteryChargingFullOutlinedIcon,
-    twoTone: batteryChargingFullTwoToneIcon, },
-  batteryFull:{	
+    twoTone: batteryChargingFullTwoToneIcon,
+  },
+  batteryFull: {
     filled: batteryFullIcon,
     outlined: batteryFullOutlinedIcon,
-    twoTone: batteryFullTwoToneIcon, },
-  batteryStd:{	
+    twoTone: batteryFullTwoToneIcon,
+  },
+  batteryStd: {
     filled: batteryStdIcon,
     outlined: batteryStdOutlinedIcon,
-    twoTone: batteryStdTwoToneIcon, },
-  batteryUnknown:{	
+    twoTone: batteryStdTwoToneIcon,
+  },
+  batteryUnknown: {
     filled: batteryUnknownIcon,
     outlined: batteryUnknownOutlinedIcon,
-    twoTone: batteryUnknownTwoToneIcon, },
-  beachAccess:{	
+    twoTone: batteryUnknownTwoToneIcon,
+  },
+  beachAccess: {
     filled: beachAccessIcon,
     outlined: beachAccessOutlinedIcon,
-    twoTone: beachAccessTwoToneIcon, },
-  beenhere:{	
+    twoTone: beachAccessTwoToneIcon,
+  },
+  beenhere: {
     filled: beenhereIcon,
     outlined: beenhereOutlinedIcon,
-    twoTone: beenhereTwoToneIcon, },
-  block:{	
+    twoTone: beenhereTwoToneIcon,
+  },
+  block: {
     filled: blockIcon,
     outlined: blockOutlinedIcon,
-    twoTone: blockTwoToneIcon, },
-  bluetooth:{	
+    twoTone: blockTwoToneIcon,
+  },
+  bluetooth: {
     filled: bluetoothIcon,
     outlined: bluetoothOutlinedIcon,
-    twoTone: bluetoothTwoToneIcon, },
-  bluetoothAudio:{	
+    twoTone: bluetoothTwoToneIcon,
+  },
+  bluetoothAudio: {
     filled: bluetoothAudioIcon,
     outlined: bluetoothAudioOutlinedIcon,
-    twoTone: bluetoothAudioTwoToneIcon, },
-  bluetoothConnected:{	
+    twoTone: bluetoothAudioTwoToneIcon,
+  },
+  bluetoothConnected: {
     filled: bluetoothConnectedIcon,
     outlined: bluetoothConnectedOutlinedIcon,
-    twoTone: bluetoothConnectedTwoToneIcon, },
-  bluetoothDisabled:{	
+    twoTone: bluetoothConnectedTwoToneIcon,
+  },
+  bluetoothDisabled: {
     filled: bluetoothDisabledIcon,
     outlined: bluetoothDisabledOutlinedIcon,
-    twoTone: bluetoothDisabledTwoToneIcon, },
-  bluetoothSearching:{	
+    twoTone: bluetoothDisabledTwoToneIcon,
+  },
+  bluetoothSearching: {
     filled: bluetoothSearchingIcon,
     outlined: bluetoothSearchingOutlinedIcon,
-    twoTone: bluetoothSearchingTwoToneIcon, },
-  blurCircular:{	
+    twoTone: bluetoothSearchingTwoToneIcon,
+  },
+  blurCircular: {
     filled: blurCircularIcon,
     outlined: blurCircularOutlinedIcon,
-    twoTone: blurCircularTwoToneIcon, },
-  blurLinear:{	
+    twoTone: blurCircularTwoToneIcon,
+  },
+  blurLinear: {
     filled: blurLinearIcon,
     outlined: blurLinearOutlinedIcon,
-    twoTone: blurLinearTwoToneIcon, },
-  blurOff:{	
+    twoTone: blurLinearTwoToneIcon,
+  },
+  blurOff: {
     filled: blurOffIcon,
     outlined: blurOffOutlinedIcon,
-    twoTone: blurOffTwoToneIcon, },
-  blurOn:{	
+    twoTone: blurOffTwoToneIcon,
+  },
+  blurOn: {
     filled: blurOnIcon,
     outlined: blurOnOutlinedIcon,
-    twoTone: blurOnTwoToneIcon, },
-  book:{	
+    twoTone: blurOnTwoToneIcon,
+  },
+  book: {
     filled: bookIcon,
     outlined: bookOutlinedIcon,
-    twoTone: bookTwoToneIcon, },
-  bookmark:{	
+    twoTone: bookTwoToneIcon,
+  },
+  bookmark: {
     filled: bookmarkIcon,
     outlined: bookmarkOutlinedIcon,
-    twoTone: bookmarkTwoToneIcon, },
-  bookmarkBorder:{	
+    twoTone: bookmarkTwoToneIcon,
+  },
+  bookmarkBorder: {
     filled: bookmarkBorderIcon,
     outlined: bookmarkBorderOutlinedIcon,
-    twoTone: bookmarkBorderTwoToneIcon, },
-  bookmarks:{	
+    twoTone: bookmarkBorderTwoToneIcon,
+  },
+  bookmarks: {
     filled: bookmarksIcon,
     outlined: bookmarksOutlinedIcon,
-    twoTone: bookmarksTwoToneIcon, },
-  borderAll:{	
+    twoTone: bookmarksTwoToneIcon,
+  },
+  borderAll: {
     filled: borderAllIcon,
     outlined: borderAllOutlinedIcon,
-    twoTone: borderAllTwoToneIcon, },
-  borderBottom:{	
+    twoTone: borderAllTwoToneIcon,
+  },
+  borderBottom: {
     filled: borderBottomIcon,
     outlined: borderBottomOutlinedIcon,
-    twoTone: borderBottomTwoToneIcon, },
-  borderClear:{	
+    twoTone: borderBottomTwoToneIcon,
+  },
+  borderClear: {
     filled: borderClearIcon,
     outlined: borderClearOutlinedIcon,
-    twoTone: borderClearTwoToneIcon, },
-  borderColor:{	
+    twoTone: borderClearTwoToneIcon,
+  },
+  borderColor: {
     filled: borderColorIcon,
     outlined: borderColorOutlinedIcon,
-    twoTone: borderColorTwoToneIcon, },
-  borderHorizontal:{	
+    twoTone: borderColorTwoToneIcon,
+  },
+  borderHorizontal: {
     filled: borderHorizontalIcon,
     outlined: borderHorizontalOutlinedIcon,
-    twoTone: borderHorizontalTwoToneIcon, },
-  borderInner:{	
+    twoTone: borderHorizontalTwoToneIcon,
+  },
+  borderInner: {
     filled: borderInnerIcon,
     outlined: borderInnerOutlinedIcon,
-    twoTone: borderInnerTwoToneIcon, },
-  borderLeft:{	
+    twoTone: borderInnerTwoToneIcon,
+  },
+  borderLeft: {
     filled: borderLeftIcon,
     outlined: borderLeftOutlinedIcon,
-    twoTone: borderLeftTwoToneIcon, },
-  borderOuter:{	
+    twoTone: borderLeftTwoToneIcon,
+  },
+  borderOuter: {
     filled: borderOuterIcon,
     outlined: borderOuterOutlinedIcon,
-    twoTone: borderOuterTwoToneIcon, },
-  borderRight:{	
+    twoTone: borderOuterTwoToneIcon,
+  },
+  borderRight: {
     filled: borderRightIcon,
     outlined: borderRightOutlinedIcon,
-    twoTone: borderRightTwoToneIcon, },
-  borderStyle:{	
+    twoTone: borderRightTwoToneIcon,
+  },
+  borderStyle: {
     filled: borderStyleIcon,
     outlined: borderStyleOutlinedIcon,
-    twoTone: borderStyleTwoToneIcon, },
-  borderTop:{	
+    twoTone: borderStyleTwoToneIcon,
+  },
+  borderTop: {
     filled: borderTopIcon,
     outlined: borderTopOutlinedIcon,
-    twoTone: borderTopTwoToneIcon, },
-  borderVertical:{	
+    twoTone: borderTopTwoToneIcon,
+  },
+  borderVertical: {
     filled: borderVerticalIcon,
     outlined: borderVerticalOutlinedIcon,
-    twoTone: borderVerticalTwoToneIcon, },
-  brandingWatermark:{	
+    twoTone: borderVerticalTwoToneIcon,
+  },
+  brandingWatermark: {
     filled: brandingWatermarkIcon,
     outlined: brandingWatermarkOutlinedIcon,
-    twoTone: brandingWatermarkTwoToneIcon, },
-  brightness1:{	
+    twoTone: brandingWatermarkTwoToneIcon,
+  },
+  brightness1: {
     filled: brightness1Icon,
     outlined: brightness1OutlinedIcon,
-    twoTone: brightness1TwoToneIcon, },
-  brightness2:{	
+    twoTone: brightness1TwoToneIcon,
+  },
+  brightness2: {
     filled: brightness2Icon,
     outlined: brightness2OutlinedIcon,
-    twoTone: brightness2TwoToneIcon, },
-  brightness3:{	
+    twoTone: brightness2TwoToneIcon,
+  },
+  brightness3: {
     filled: brightness3Icon,
     outlined: brightness3OutlinedIcon,
-    twoTone: brightness3TwoToneIcon, },
-  brightness4:{	
+    twoTone: brightness3TwoToneIcon,
+  },
+  brightness4: {
     filled: brightness4Icon,
     outlined: brightness4OutlinedIcon,
-    twoTone: brightness4TwoToneIcon, },
-  brightness5:{	
+    twoTone: brightness4TwoToneIcon,
+  },
+  brightness5: {
     filled: brightness5Icon,
     outlined: brightness5OutlinedIcon,
-    twoTone: brightness5TwoToneIcon, },
-  brightness6:{	
+    twoTone: brightness5TwoToneIcon,
+  },
+  brightness6: {
     filled: brightness6Icon,
     outlined: brightness6OutlinedIcon,
-    twoTone: brightness6TwoToneIcon, },
-  brightness7:{	
+    twoTone: brightness6TwoToneIcon,
+  },
+  brightness7: {
     filled: brightness7Icon,
     outlined: brightness7OutlinedIcon,
-    twoTone: brightness7TwoToneIcon, },
-  brightnessAuto:{	
+    twoTone: brightness7TwoToneIcon,
+  },
+  brightnessAuto: {
     filled: brightnessAutoIcon,
     outlined: brightnessAutoOutlinedIcon,
-    twoTone: brightnessAutoTwoToneIcon, },
-  brightnessHigh:{	
+    twoTone: brightnessAutoTwoToneIcon,
+  },
+  brightnessHigh: {
     filled: brightnessHighIcon,
     outlined: brightnessHighOutlinedIcon,
-    twoTone: brightnessHighTwoToneIcon, },
-  brightnessLow:{	
+    twoTone: brightnessHighTwoToneIcon,
+  },
+  brightnessLow: {
     filled: brightnessLowIcon,
     outlined: brightnessLowOutlinedIcon,
-    twoTone: brightnessLowTwoToneIcon, },
-  brightnessMedium:{	
+    twoTone: brightnessLowTwoToneIcon,
+  },
+  brightnessMedium: {
     filled: brightnessMediumIcon,
     outlined: brightnessMediumOutlinedIcon,
-    twoTone: brightnessMediumTwoToneIcon, },
-  brokenImage:{	
+    twoTone: brightnessMediumTwoToneIcon,
+  },
+  brokenImage: {
     filled: brokenImageIcon,
     outlined: brokenImageOutlinedIcon,
-    twoTone: brokenImageTwoToneIcon, },
-  brush:{	
+    twoTone: brokenImageTwoToneIcon,
+  },
+  brush: {
     filled: brushIcon,
     outlined: brushOutlinedIcon,
-    twoTone: brushTwoToneIcon, },
-  bubbleChart:{	
+    twoTone: brushTwoToneIcon,
+  },
+  bubbleChart: {
     filled: bubbleChartIcon,
     outlined: bubbleChartOutlinedIcon,
-    twoTone: bubbleChartTwoToneIcon, },
-  bugReport:{	
+    twoTone: bubbleChartTwoToneIcon,
+  },
+  bugReport: {
     filled: bugReportIcon,
     outlined: bugReportOutlinedIcon,
-    twoTone: bugReportTwoToneIcon, },
-  build:{	
+    twoTone: bugReportTwoToneIcon,
+  },
+  build: {
     filled: buildIcon,
     outlined: buildOutlinedIcon,
-    twoTone: buildTwoToneIcon, },
-  burstMode:{	
+    twoTone: buildTwoToneIcon,
+  },
+  burstMode: {
     filled: burstModeIcon,
     outlined: burstModeOutlinedIcon,
-    twoTone: burstModeTwoToneIcon, },
-  business:{	
+    twoTone: burstModeTwoToneIcon,
+  },
+  business: {
     filled: businessIcon,
     outlined: businessCenterIcon,
-    twoTone: businessCenterOutlinedIcon, },
-  businessCenter:{	
+    twoTone: businessCenterOutlinedIcon,
+  },
+  businessCenter: {
     filled: businessCenterTwoToneIcon,
     outlined: businessOutlinedIcon,
-    twoTone: businessTwoToneIcon, },
-  cached:{	
+    twoTone: businessTwoToneIcon,
+  },
+  cached: {
     filled: cachedIcon,
     outlined: cachedOutlinedIcon,
-    twoTone: cachedTwoToneIcon, },
-  cake:{	
+    twoTone: cachedTwoToneIcon,
+  },
+  cake: {
     filled: cakeIcon,
     outlined: cakeOutlinedIcon,
-    twoTone: cakeTwoToneIcon, },
-  calendarToday:{	
+    twoTone: cakeTwoToneIcon,
+  },
+  calendarToday: {
     filled: calendarTodayIcon,
     outlined: calendarTodayOutlinedIcon,
-    twoTone: calendarTodayTwoToneIcon, },
-  calendarViewDay:{	
+    twoTone: calendarTodayTwoToneIcon,
+  },
+  calendarViewDay: {
     filled: calendarViewDayIcon,
     outlined: calendarViewDayOutlinedIcon,
-    twoTone: calendarViewDayTwoToneIcon, },
-  call:{	
+    twoTone: calendarViewDayTwoToneIcon,
+  },
+  call: {
     filled: callIcon,
     outlined: callOutlinedIcon,
-    twoTone: callTwoToneIcon, },
-  callEnd:{	
+    twoTone: callTwoToneIcon,
+  },
+  callEnd: {
     filled: callEndIcon,
     outlined: callEndOutlinedIcon,
-    twoTone: callEndTwoToneIcon, },
-  callMade:{	
+    twoTone: callEndTwoToneIcon,
+  },
+  callMade: {
     filled: callMadeIcon,
     outlined: callMadeOutlinedIcon,
-    twoTone: callMadeTwoToneIcon, },
-  callMerge:{	
+    twoTone: callMadeTwoToneIcon,
+  },
+  callMerge: {
     filled: callMergeIcon,
     outlined: callMergeOutlinedIcon,
-    twoTone: callMergeTwoToneIcon, },
-  callMissed:{	
+    twoTone: callMergeTwoToneIcon,
+  },
+  callMissed: {
     filled: callMissedIcon,
     outlined: callMissedOutlinedIcon,
-    twoTone: callMissedTwoToneIcon, },
-  callMissedOutgoing:{	
+    twoTone: callMissedTwoToneIcon,
+  },
+  callMissedOutgoing: {
     filled: callMissedOutgoingIcon,
     outlined: callMissedOutgoingOutlinedIcon,
-    twoTone: callMissedOutgoingTwoToneIcon, },
-  callReceived:{	
+    twoTone: callMissedOutgoingTwoToneIcon,
+  },
+  callReceived: {
     filled: callReceivedIcon,
     outlined: callReceivedOutlinedIcon,
-    twoTone: callReceivedTwoToneIcon, },
-  callSplit:{	
+    twoTone: callReceivedTwoToneIcon,
+  },
+  callSplit: {
     filled: callSplitIcon,
     outlined: callSplitOutlinedIcon,
-    twoTone: callSplitTwoToneIcon, },
-  callToAction:{	
+    twoTone: callSplitTwoToneIcon,
+  },
+  callToAction: {
     filled: callToActionIcon,
     outlined: callToActionOutlinedIcon,
-    twoTone: callToActionTwoToneIcon, },
-  camera:{	
+    twoTone: callToActionTwoToneIcon,
+  },
+  camera: {
     filled: cameraIcon,
     outlined: cameraOutlinedIcon,
-    twoTone: cameraTwoToneIcon, },
-  cameraAlt:{	
+    twoTone: cameraTwoToneIcon,
+  },
+  cameraAlt: {
     filled: cameraAltIcon,
     outlined: cameraAltOutlinedIcon,
-    twoTone: cameraAltTwoToneIcon, },
-  cameraEnhance:{	
+    twoTone: cameraAltTwoToneIcon,
+  },
+  cameraEnhance: {
     filled: cameraEnhanceIcon,
     outlined: cameraEnhanceOutlinedIcon,
-    twoTone: cameraEnhanceTwoToneIcon, },
-  cameraFront:{	
+    twoTone: cameraEnhanceTwoToneIcon,
+  },
+  cameraFront: {
     filled: cameraFrontIcon,
     outlined: cameraFrontOutlinedIcon,
-    twoTone: cameraFrontTwoToneIcon, },
-  cameraRear:{	
+    twoTone: cameraFrontTwoToneIcon,
+  },
+  cameraRear: {
     filled: cameraRearIcon,
     outlined: cameraRearOutlinedIcon,
-    twoTone: cameraRearTwoToneIcon, },
-  cameraRoll:{	
+    twoTone: cameraRearTwoToneIcon,
+  },
+  cameraRoll: {
     filled: cameraRollIcon,
     outlined: cameraRollOutlinedIcon,
-    twoTone: cameraRollTwoToneIcon, },
-  cancel:{	
+    twoTone: cameraRollTwoToneIcon,
+  },
+  cancel: {
     filled: cancelIcon,
     outlined: cancelOutlinedIcon,
-    twoTone: cancelTwoToneIcon, },
-  cancelPresentation:{	
+    twoTone: cancelTwoToneIcon,
+  },
+  cancelPresentation: {
     filled: cancelPresentationIcon,
     outlined: cancelPresentationOutlinedIcon,
-    twoTone: cancelPresentationTwoToneIcon, },
-  cardGiftcard:{	
+    twoTone: cancelPresentationTwoToneIcon,
+  },
+  cardGiftcard: {
     filled: cardGiftcardIcon,
     outlined: cardGiftcardOutlinedIcon,
-    twoTone: cardGiftcardTwoToneIcon, },
-  cardMembership:{	
+    twoTone: cardGiftcardTwoToneIcon,
+  },
+  cardMembership: {
     filled: cardMembershipIcon,
     outlined: cardMembershipOutlinedIcon,
-    twoTone: cardMembershipTwoToneIcon, },
-  cardTravel:{	
+    twoTone: cardMembershipTwoToneIcon,
+  },
+  cardTravel: {
     filled: cardTravelIcon,
     outlined: cardTravelOutlinedIcon,
-    twoTone: cardTravelTwoToneIcon, },
-  casino:{	
+    twoTone: cardTravelTwoToneIcon,
+  },
+  casino: {
     filled: casinoIcon,
     outlined: casinoOutlinedIcon,
-    twoTone: casinoTwoToneIcon, },
-  cast:{	
+    twoTone: casinoTwoToneIcon,
+  },
+  cast: {
     filled: castIcon,
     outlined: castConnectedIcon,
-    twoTone: castConnectedOutlinedIcon, },
-  castConnected:{	
+    twoTone: castConnectedOutlinedIcon,
+  },
+  castConnected: {
     filled: castConnectedTwoToneIcon,
     outlined: castForEducationIcon,
-    twoTone: castForEducationOutlinedIcon, },
-  castForEducation:{	
+    twoTone: castForEducationOutlinedIcon,
+  },
+  castForEducation: {
     filled: castForEducationTwoToneIcon,
     outlined: castOutlinedIcon,
-    twoTone: castTwoToneIcon, },
-  category:{	
+    twoTone: castTwoToneIcon,
+  },
+  category: {
     filled: categoryIcon,
     outlined: categoryOutlinedIcon,
-    twoTone: categoryTwoToneIcon, },
-  cellWifi:{	
+    twoTone: categoryTwoToneIcon,
+  },
+  cellWifi: {
     filled: cellWifiIcon,
     outlined: cellWifiOutlinedIcon,
-    twoTone: cellWifiTwoToneIcon, },
-  centerFocusStrong:{	
+    twoTone: cellWifiTwoToneIcon,
+  },
+  centerFocusStrong: {
     filled: centerFocusStrongIcon,
     outlined: centerFocusStrongOutlinedIcon,
-    twoTone: centerFocusStrongTwoToneIcon, },
-  centerFocusWeak:{	
+    twoTone: centerFocusStrongTwoToneIcon,
+  },
+  centerFocusWeak: {
     filled: centerFocusWeakIcon,
     outlined: centerFocusWeakOutlinedIcon,
-    twoTone: centerFocusWeakTwoToneIcon, },
-  changeHistory:{	
+    twoTone: centerFocusWeakTwoToneIcon,
+  },
+  changeHistory: {
     filled: changeHistoryIcon,
     outlined: changeHistoryOutlinedIcon,
-    twoTone: changeHistoryTwoToneIcon, },
-  chat:{	
+    twoTone: changeHistoryTwoToneIcon,
+  },
+  chat: {
     filled: chatIcon,
     outlined: chatOutlinedIcon,
-    twoTone: chatTwoToneIcon, },
-  chatBubble:{	
+    twoTone: chatTwoToneIcon,
+  },
+  chatBubble: {
     filled: chatBubbleIcon,
     outlined: chatBubbleOutlineIcon,
-    twoTone: chatBubbleTwoToneIcon, },
-  chatBubbleOutline:{	
+    twoTone: chatBubbleTwoToneIcon,
+  },
+  chatBubbleOutline: {
     filled: chatBubbleOutlinedIcon,
     outlined: chatBubbleOutlineOutlinedIcon,
-    twoTone: chatBubbleOutlineTwoToneIcon, },
-  check:{	
+    twoTone: chatBubbleOutlineTwoToneIcon,
+  },
+  check: {
     filled: checkIcon,
     outlined: checkOutlinedIcon,
-    twoTone: checkTwoToneIcon, },
-  checkBox:{	
+    twoTone: checkTwoToneIcon,
+  },
+  checkBox: {
     filled: checkBoxIcon,
     outlined: checkBoxOutlinedIcon,
-    twoTone: checkBoxTwoToneIcon, },
-  checkBoxOutlineBlank:{	
+    twoTone: checkBoxTwoToneIcon,
+  },
+  checkBoxOutlineBlank: {
     filled: checkBoxOutlineBlankIcon,
     outlined: checkBoxOutlineBlankOutlinedIcon,
-    twoTone: checkBoxOutlineBlankTwoToneIcon, },
-  checkCircle:{	
+    twoTone: checkBoxOutlineBlankTwoToneIcon,
+  },
+  checkCircle: {
     filled: checkCircleIcon,
     outlined: checkCircleOutlinedIcon,
-    twoTone: checkCircleTwoToneIcon, },
-  checkCircleOutline:{	
+    twoTone: checkCircleTwoToneIcon,
+  },
+  checkCircleOutline: {
     filled: checkCircleOutlineIcon,
     outlined: checkCircleOutlineOutlinedIcon,
-    twoTone: checkCircleOutlineTwoToneIcon, },
-  chevronLeft:{	
+    twoTone: checkCircleOutlineTwoToneIcon,
+  },
+  chevronLeft: {
     filled: chevronLeftIcon,
     outlined: chevronLeftOutlinedIcon,
-    twoTone: chevronLeftTwoToneIcon, },
-  chevronRight:{	
+    twoTone: chevronLeftTwoToneIcon,
+  },
+  chevronRight: {
     filled: chevronRightIcon,
     outlined: chevronRightOutlinedIcon,
-    twoTone: chevronRightTwoToneIcon, },
-  childCare:{	
+    twoTone: chevronRightTwoToneIcon,
+  },
+  childCare: {
     filled: childCareIcon,
     outlined: childCareOutlinedIcon,
-    twoTone: childCareTwoToneIcon, },
-  childFriendly:{	
+    twoTone: childCareTwoToneIcon,
+  },
+  childFriendly: {
     filled: childFriendlyIcon,
     outlined: childFriendlyOutlinedIcon,
-    twoTone: childFriendlyTwoToneIcon, },
-  chromeReaderMode:{	
+    twoTone: childFriendlyTwoToneIcon,
+  },
+  chromeReaderMode: {
     filled: chromeReaderModeIcon,
     outlined: chromeReaderModeOutlinedIcon,
-    twoTone: chromeReaderModeTwoToneIcon, },
-  class:{	
+    twoTone: chromeReaderModeTwoToneIcon,
+  },
+  class: {
     filled: classIcon,
     outlined: classOutlinedIcon,
-    twoTone: classTwoToneIcon, },
-  clear:{	
+    twoTone: classTwoToneIcon,
+  },
+  clear: {
     filled: clearIcon,
     outlined: clearOutlinedIcon,
-    twoTone: clearTwoToneIcon, },
-  clearAll:{	
+    twoTone: clearTwoToneIcon,
+  },
+  clearAll: {
     filled: clearAllIcon,
     outlined: clearAllOutlinedIcon,
-    twoTone: clearAllTwoToneIcon, },
-  close:{	
+    twoTone: clearAllTwoToneIcon,
+  },
+  close: {
     filled: closeIcon,
     outlined: closeOutlinedIcon,
-    twoTone: closeTwoToneIcon, },
-  closedCaption:{	
+    twoTone: closeTwoToneIcon,
+  },
+  closedCaption: {
     filled: closedCaptionIcon,
     outlined: closedCaptionOutlinedIcon,
-    twoTone: closedCaptionTwoToneIcon, },
-  cloud:{	
+    twoTone: closedCaptionTwoToneIcon,
+  },
+  cloud: {
     filled: cloudIcon,
     outlined: cloudOutlinedIcon,
-    twoTone: cloudTwoToneIcon, },
-  cloudCircle:{	
+    twoTone: cloudTwoToneIcon,
+  },
+  cloudCircle: {
     filled: cloudCircleIcon,
     outlined: cloudCircleOutlinedIcon,
-    twoTone: cloudCircleTwoToneIcon, },
-  cloudDone:{	
+    twoTone: cloudCircleTwoToneIcon,
+  },
+  cloudDone: {
     filled: cloudDoneIcon,
     outlined: cloudDoneOutlinedIcon,
-    twoTone: cloudDoneTwoToneIcon, },
-  cloudDownload:{	
+    twoTone: cloudDoneTwoToneIcon,
+  },
+  cloudDownload: {
     filled: cloudDownloadIcon,
     outlined: cloudDownloadOutlinedIcon,
-    twoTone: cloudDownloadTwoToneIcon, },
-  cloudOff:{	
+    twoTone: cloudDownloadTwoToneIcon,
+  },
+  cloudOff: {
     filled: cloudOffIcon,
     outlined: cloudOffOutlinedIcon,
-    twoTone: cloudOffTwoToneIcon, },
-  cloudQueue:{	
+    twoTone: cloudOffTwoToneIcon,
+  },
+  cloudQueue: {
     filled: cloudQueueIcon,
     outlined: cloudQueueOutlinedIcon,
-    twoTone: cloudQueueTwoToneIcon, },
-  cloudUpload:{	
+    twoTone: cloudQueueTwoToneIcon,
+  },
+  cloudUpload: {
     filled: cloudUploadIcon,
     outlined: cloudUploadOutlinedIcon,
-    twoTone: cloudUploadTwoToneIcon, },
-  code:{	
+    twoTone: cloudUploadTwoToneIcon,
+  },
+  code: {
     filled: codeIcon,
     outlined: codeOutlinedIcon,
-    twoTone: codeTwoToneIcon, },
-  collections:{	
+    twoTone: codeTwoToneIcon,
+  },
+  collections: {
     filled: collectionsIcon,
     outlined: collectionsBookmarkIcon,
-    twoTone: collectionsBookmarkOutlinedIcon, },
-  collectionsBookmark:{	
+    twoTone: collectionsBookmarkOutlinedIcon,
+  },
+  collectionsBookmark: {
     filled: collectionsBookmarkTwoToneIcon,
     outlined: collectionsOutlinedIcon,
-    twoTone: collectionsTwoToneIcon, },
-  colorize:{	
+    twoTone: collectionsTwoToneIcon,
+  },
+  colorize: {
     filled: colorizeIcon,
     outlined: colorizeOutlinedIcon,
-    twoTone: colorizeTwoToneIcon, },
-  colorLens:{	
+    twoTone: colorizeTwoToneIcon,
+  },
+  colorLens: {
     filled: colorLensIcon,
     outlined: colorLensOutlinedIcon,
-    twoTone: colorLensTwoToneIcon, },
-  comment:{	
+    twoTone: colorLensTwoToneIcon,
+  },
+  comment: {
     filled: commentIcon,
     outlined: commentOutlinedIcon,
-    twoTone: commentTwoToneIcon, },
-  commute:{	
+    twoTone: commentTwoToneIcon,
+  },
+  commute: {
     filled: commuteIcon,
     outlined: commuteOutlinedIcon,
-    twoTone: commuteTwoToneIcon, },
-  compare:{	
+    twoTone: commuteTwoToneIcon,
+  },
+  compare: {
     filled: compareIcon,
     outlined: compareOutlinedIcon,
-    twoTone: compareTwoToneIcon, },
-  compareArrows:{	
+    twoTone: compareTwoToneIcon,
+  },
+  compareArrows: {
     filled: compareArrowsIcon,
     outlined: compareArrowsOutlinedIcon,
-    twoTone: compareArrowsTwoToneIcon, },
-  compassCalibration:{	
+    twoTone: compareArrowsTwoToneIcon,
+  },
+  compassCalibration: {
     filled: compassCalibrationIcon,
     outlined: compassCalibrationOutlinedIcon,
-    twoTone: compassCalibrationTwoToneIcon, },
-  computer:{	
+    twoTone: compassCalibrationTwoToneIcon,
+  },
+  computer: {
     filled: computerIcon,
     outlined: computerOutlinedIcon,
-    twoTone: computerTwoToneIcon, },
-  confirmationNumber:{	
+    twoTone: computerTwoToneIcon,
+  },
+  confirmationNumber: {
     filled: confirmationNumberIcon,
     outlined: confirmationNumberOutlinedIcon,
-    twoTone: confirmationNumberTwoToneIcon, },
-  contactMail:{	
+    twoTone: confirmationNumberTwoToneIcon,
+  },
+  contactMail: {
     filled: contactMailIcon,
     outlined: contactMailOutlinedIcon,
-    twoTone: contactMailTwoToneIcon, },
-  contactPhone:{	
+    twoTone: contactMailTwoToneIcon,
+  },
+  contactPhone: {
     filled: contactPhoneIcon,
     outlined: contactPhoneOutlinedIcon,
-    twoTone: contactPhoneTwoToneIcon, },
-  contacts:{	
+    twoTone: contactPhoneTwoToneIcon,
+  },
+  contacts: {
     filled: contactsIcon,
     outlined: contactsOutlinedIcon,
-    twoTone: contactsTwoToneIcon, },
-  contactSupport:{	
+    twoTone: contactsTwoToneIcon,
+  },
+  contactSupport: {
     filled: contactSupportIcon,
     outlined: contactSupportOutlinedIcon,
-    twoTone: contactSupportTwoToneIcon, },
-  controlCamera:{	
+    twoTone: contactSupportTwoToneIcon,
+  },
+  controlCamera: {
     filled: controlCameraIcon,
     outlined: controlCameraOutlinedIcon,
-    twoTone: controlCameraTwoToneIcon, },
-  controlPoint:{	
+    twoTone: controlCameraTwoToneIcon,
+  },
+  controlPoint: {
     filled: controlPointIcon,
     outlined: controlPointOutlinedIcon,
-    twoTone: controlPointTwoToneIcon, },
-  controlPointDuplicate:{	
+    twoTone: controlPointTwoToneIcon,
+  },
+  controlPointDuplicate: {
     filled: controlPointDuplicateIcon,
     outlined: controlPointDuplicateOutlinedIcon,
-    twoTone: controlPointDuplicateTwoToneIcon, },
-  copyright:{	
+    twoTone: controlPointDuplicateTwoToneIcon,
+  },
+  copyright: {
     filled: copyrightIcon,
     outlined: copyrightOutlinedIcon,
-    twoTone: copyrightTwoToneIcon, },
-  create:{	
+    twoTone: copyrightTwoToneIcon,
+  },
+  create: {
     filled: createIcon,
     outlined: createNewFolderIcon,
-    twoTone: createNewFolderOutlinedIcon, },
-  createNewFolder:{	
+    twoTone: createNewFolderOutlinedIcon,
+  },
+  createNewFolder: {
     filled: createNewFolderTwoToneIcon,
     outlined: createOutlinedIcon,
-    twoTone: createTwoToneIcon, },
-  creditCard:{	
+    twoTone: createTwoToneIcon,
+  },
+  creditCard: {
     filled: creditCardIcon,
     outlined: creditCardOutlinedIcon,
-    twoTone: creditCardTwoToneIcon, },
-  crop:{	
+    twoTone: creditCardTwoToneIcon,
+  },
+  crop: {
     filled: cropIcon,
     outlined: cropOutlinedIcon,
-    twoTone: cropTwoToneIcon, },
-  crop169:{	
+    twoTone: cropTwoToneIcon,
+  },
+  crop169: {
     filled: crop169Icon,
     outlined: crop169OutlinedIcon,
-    twoTone: crop169TwoToneIcon, },
-  crop32:{	
+    twoTone: crop169TwoToneIcon,
+  },
+  crop32: {
     filled: crop32Icon,
     outlined: crop32OutlinedIcon,
-    twoTone: crop32TwoToneIcon, },
-  crop54:{	
+    twoTone: crop32TwoToneIcon,
+  },
+  crop54: {
     filled: crop54Icon,
     outlined: crop54OutlinedIcon,
-    twoTone: crop54TwoToneIcon, },
-  crop75:{	
+    twoTone: crop54TwoToneIcon,
+  },
+  crop75: {
     filled: crop75Icon,
     outlined: crop75OutlinedIcon,
-    twoTone: crop75TwoToneIcon, },
-  cropDin:{	
+    twoTone: crop75TwoToneIcon,
+  },
+  cropDin: {
     filled: cropDinIcon,
     outlined: cropDinOutlinedIcon,
-    twoTone: cropDinTwoToneIcon, },
-  cropFree:{	
+    twoTone: cropDinTwoToneIcon,
+  },
+  cropFree: {
     filled: cropFreeIcon,
     outlined: cropFreeOutlinedIcon,
-    twoTone: cropFreeTwoToneIcon, },
-  cropLandscape:{	
+    twoTone: cropFreeTwoToneIcon,
+  },
+  cropLandscape: {
     filled: cropLandscapeIcon,
     outlined: cropLandscapeOutlinedIcon,
-    twoTone: cropLandscapeTwoToneIcon, },
-  cropOriginal:{	
+    twoTone: cropLandscapeTwoToneIcon,
+  },
+  cropOriginal: {
     filled: cropOriginalIcon,
     outlined: cropOriginalOutlinedIcon,
-    twoTone: cropOriginalTwoToneIcon, },
-  cropPortrait:{	
+    twoTone: cropOriginalTwoToneIcon,
+  },
+  cropPortrait: {
     filled: cropPortraitIcon,
     outlined: cropPortraitOutlinedIcon,
-    twoTone: cropPortraitTwoToneIcon, },
-  cropRotate:{	
+    twoTone: cropPortraitTwoToneIcon,
+  },
+  cropRotate: {
     filled: cropRotateIcon,
     outlined: cropRotateOutlinedIcon,
-    twoTone: cropRotateTwoToneIcon, },
-  cropSquare:{	
+    twoTone: cropRotateTwoToneIcon,
+  },
+  cropSquare: {
     filled: cropSquareIcon,
     outlined: cropSquareOutlinedIcon,
-    twoTone: cropSquareTwoToneIcon, },
-  dashboard:{	
+    twoTone: cropSquareTwoToneIcon,
+  },
+  dashboard: {
     filled: dashboardIcon,
     outlined: dashboardOutlinedIcon,
-    twoTone: dashboardTwoToneIcon, },
-  dataUsage:{	
+    twoTone: dashboardTwoToneIcon,
+  },
+  dataUsage: {
     filled: dataUsageIcon,
     outlined: dataUsageOutlinedIcon,
-    twoTone: dataUsageTwoToneIcon, },
-  dateRange:{	
+    twoTone: dataUsageTwoToneIcon,
+  },
+  dateRange: {
     filled: dateRangeIcon,
     outlined: dateRangeOutlinedIcon,
-    twoTone: dateRangeTwoToneIcon, },
-  dehaze:{	
+    twoTone: dateRangeTwoToneIcon,
+  },
+  dehaze: {
     filled: dehazeIcon,
     outlined: dehazeOutlinedIcon,
-    twoTone: dehazeTwoToneIcon, },
-  delete:{	
+    twoTone: dehazeTwoToneIcon,
+  },
+  delete: {
     filled: deleteIcon,
     outlined: deleteOutlineIcon,
-    twoTone: deleteTwoToneIcon, },
-  deleteForever:{	
+    twoTone: deleteTwoToneIcon,
+  },
+  deleteForever: {
     filled: deleteForeverIcon,
     outlined: deleteForeverOutlinedIcon,
-    twoTone: deleteForeverTwoToneIcon, },
-  deleteOutline:{	
+    twoTone: deleteForeverTwoToneIcon,
+  },
+  deleteOutline: {
     filled: deleteOutlinedIcon,
     outlined: deleteOutlineOutlinedIcon,
-    twoTone: deleteOutlineTwoToneIcon, },
-  deleteSweep:{	
+    twoTone: deleteOutlineTwoToneIcon,
+  },
+  deleteSweep: {
     filled: deleteSweepIcon,
     outlined: deleteSweepOutlinedIcon,
-    twoTone: deleteSweepTwoToneIcon, },
-  departureBoard:{	
+    twoTone: deleteSweepTwoToneIcon,
+  },
+  departureBoard: {
     filled: departureBoardIcon,
     outlined: departureBoardOutlinedIcon,
-    twoTone: departureBoardTwoToneIcon, },
-  description:{	
+    twoTone: departureBoardTwoToneIcon,
+  },
+  description: {
     filled: descriptionIcon,
     outlined: descriptionOutlinedIcon,
-    twoTone: descriptionTwoToneIcon, },
-  desktopAccessDisabled:{	
+    twoTone: descriptionTwoToneIcon,
+  },
+  desktopAccessDisabled: {
     filled: desktopAccessDisabledIcon,
     outlined: desktopAccessDisabledOutlinedIcon,
-    twoTone: desktopAccessDisabledTwoToneIcon, },
-  desktopMac:{	
+    twoTone: desktopAccessDisabledTwoToneIcon,
+  },
+  desktopMac: {
     filled: desktopMacIcon,
     outlined: desktopMacOutlinedIcon,
-    twoTone: desktopMacTwoToneIcon, },
-  desktopWindows:{	
+    twoTone: desktopMacTwoToneIcon,
+  },
+  desktopWindows: {
     filled: desktopWindowsIcon,
     outlined: desktopWindowsOutlinedIcon,
-    twoTone: desktopWindowsTwoToneIcon, },
-  details:{	
+    twoTone: desktopWindowsTwoToneIcon,
+  },
+  details: {
     filled: detailsIcon,
     outlined: detailsOutlinedIcon,
-    twoTone: detailsTwoToneIcon, },
-  developerBoard:{	
+    twoTone: detailsTwoToneIcon,
+  },
+  developerBoard: {
     filled: developerBoardIcon,
     outlined: developerBoardOutlinedIcon,
-    twoTone: developerBoardTwoToneIcon, },
-  developerMode:{	
+    twoTone: developerBoardTwoToneIcon,
+  },
+  developerMode: {
     filled: developerModeIcon,
     outlined: developerModeOutlinedIcon,
-    twoTone: developerModeTwoToneIcon, },
-  deviceHub:{	
+    twoTone: developerModeTwoToneIcon,
+  },
+  deviceHub: {
     filled: deviceHubIcon,
     outlined: deviceHubOutlinedIcon,
-    twoTone: deviceHubTwoToneIcon, },
-  devices:{	
+    twoTone: deviceHubTwoToneIcon,
+  },
+  devices: {
     filled: devicesIcon,
     outlined: devicesOtherIcon,
-    twoTone: devicesOtherOutlinedIcon, },
-  devicesOther:{	
+    twoTone: devicesOtherOutlinedIcon,
+  },
+  devicesOther: {
     filled: devicesOtherTwoToneIcon,
     outlined: devicesOutlinedIcon,
-    twoTone: devicesTwoToneIcon, },
-  deviceUnknown:{	
+    twoTone: devicesTwoToneIcon,
+  },
+  deviceUnknown: {
     filled: deviceUnknownIcon,
     outlined: deviceUnknownOutlinedIcon,
-    twoTone: deviceUnknownTwoToneIcon, },
-  dialerSip:{	
+    twoTone: deviceUnknownTwoToneIcon,
+  },
+  dialerSip: {
     filled: dialerSipIcon,
     outlined: dialerSipOutlinedIcon,
-    twoTone: dialerSipTwoToneIcon, },
-  dialpad:{	
+    twoTone: dialerSipTwoToneIcon,
+  },
+  dialpad: {
     filled: dialpadIcon,
     outlined: dialpadOutlinedIcon,
-    twoTone: dialpadTwoToneIcon, },
-  directions:{	
+    twoTone: dialpadTwoToneIcon,
+  },
+  directions: {
     filled: directionsIcon,
     outlined: directionsBikeIcon,
-    twoTone: directionsBikeOutlinedIcon, },
-  directionsBike:{	
+    twoTone: directionsBikeOutlinedIcon,
+  },
+  directionsBike: {
     filled: directionsBikeTwoToneIcon,
     outlined: directionsBoatIcon,
-    twoTone: directionsBoatOutlinedIcon, },
-  directionsBoat:{	
+    twoTone: directionsBoatOutlinedIcon,
+  },
+  directionsBoat: {
     filled: directionsBoatTwoToneIcon,
     outlined: directionsBusIcon,
-    twoTone: directionsBusOutlinedIcon, },
-  directionsBus:{	
+    twoTone: directionsBusOutlinedIcon,
+  },
+  directionsBus: {
     filled: directionsBusTwoToneIcon,
     outlined: directionsCarIcon,
-    twoTone: directionsCarOutlinedIcon, },
-  directionsCar:{	
+    twoTone: directionsCarOutlinedIcon,
+  },
+  directionsCar: {
     filled: directionsCarTwoToneIcon,
     outlined: directionsOutlinedIcon,
-    twoTone: directionsRailwayIcon, },
-  directionsRailway:{	
+    twoTone: directionsRailwayIcon,
+  },
+  directionsRailway: {
     filled: directionsRailwayOutlinedIcon,
     outlined: directionsRailwayTwoToneIcon,
-    twoTone: directionsRunIcon, },
-  directionsRun:{	
+    twoTone: directionsRunIcon,
+  },
+  directionsRun: {
     filled: directionsRunOutlinedIcon,
     outlined: directionsRunTwoToneIcon,
-    twoTone: directionsSubwayIcon, },
-  directionsSubway:{	
+    twoTone: directionsSubwayIcon,
+  },
+  directionsSubway: {
     filled: directionsSubwayOutlinedIcon,
     outlined: directionsSubwayTwoToneIcon,
-    twoTone: directionsTransitIcon, },
-  directionsTransit:{	
+    twoTone: directionsTransitIcon,
+  },
+  directionsTransit: {
     filled: directionsTransitOutlinedIcon,
     outlined: directionsTransitTwoToneIcon,
-    twoTone: directionsTwoToneIcon, },
-  directionsWalk:{	
+    twoTone: directionsTwoToneIcon,
+  },
+  directionsWalk: {
     filled: directionsWalkIcon,
     outlined: directionsWalkOutlinedIcon,
-    twoTone: directionsWalkTwoToneIcon, },
-  discFull:{	
+    twoTone: directionsWalkTwoToneIcon,
+  },
+  discFull: {
     filled: discFullIcon,
     outlined: discFullOutlinedIcon,
-    twoTone: discFullTwoToneIcon, },
-  dns:{	
+    twoTone: discFullTwoToneIcon,
+  },
+  dns: {
     filled: dnsIcon,
     outlined: dnsOutlinedIcon,
-    twoTone: dnsTwoToneIcon, },
-  dock:{	
+    twoTone: dnsTwoToneIcon,
+  },
+  dock: {
     filled: dockIcon,
     outlined: dockOutlinedIcon,
-    twoTone: dockTwoToneIcon, },
-  domain:{	
+    twoTone: dockTwoToneIcon,
+  },
+  domain: {
     filled: domainIcon,
     outlined: domainDisabledIcon,
-    twoTone: domainDisabledOutlinedIcon, },
-  domainDisabled:{	
+    twoTone: domainDisabledOutlinedIcon,
+  },
+  domainDisabled: {
     filled: domainDisabledTwoToneIcon,
     outlined: domainOutlinedIcon,
-    twoTone: domainTwoToneIcon, },
-  done:{	
+    twoTone: domainTwoToneIcon,
+  },
+  done: {
     filled: doneIcon,
     outlined: doneAllIcon,
-    twoTone: doneAllOutlinedIcon, },
-  doneAll:{	
+    twoTone: doneAllOutlinedIcon,
+  },
+  doneAll: {
     filled: doneAllTwoToneIcon,
     outlined: doneOutlineIcon,
-    twoTone: doneOutlinedIcon, },
-  doneOutline:{	
+    twoTone: doneOutlinedIcon,
+  },
+  doneOutline: {
     filled: doneOutlineOutlinedIcon,
     outlined: doneOutlineTwoToneIcon,
-    twoTone: doneTwoToneIcon, },
-  donutLarge:{	
+    twoTone: doneTwoToneIcon,
+  },
+  donutLarge: {
     filled: donutLargeIcon,
     outlined: donutLargeOutlinedIcon,
-    twoTone: donutLargeTwoToneIcon, },
-  donutSmall:{	
+    twoTone: donutLargeTwoToneIcon,
+  },
+  donutSmall: {
     filled: donutSmallIcon,
     outlined: donutSmallOutlinedIcon,
-    twoTone: donutSmallTwoToneIcon, },
-  drafts:{	
+    twoTone: donutSmallTwoToneIcon,
+  },
+  drafts: {
     filled: draftsIcon,
     outlined: draftsOutlinedIcon,
-    twoTone: draftsTwoToneIcon, },
-  dragHandle:{	
+    twoTone: draftsTwoToneIcon,
+  },
+  dragHandle: {
     filled: dragHandleIcon,
     outlined: dragHandleOutlinedIcon,
-    twoTone: dragHandleTwoToneIcon, },
-  dragIndicator:{	
+    twoTone: dragHandleTwoToneIcon,
+  },
+  dragIndicator: {
     filled: dragIndicatorIcon,
     outlined: dragIndicatorOutlinedIcon,
-    twoTone: dragIndicatorTwoToneIcon, },
-  driveEta:{	
+    twoTone: dragIndicatorTwoToneIcon,
+  },
+  driveEta: {
     filled: driveEtaIcon,
     outlined: driveEtaOutlinedIcon,
-    twoTone: driveEtaTwoToneIcon, },
-  duo:{	
+    twoTone: driveEtaTwoToneIcon,
+  },
+  duo: {
     filled: duoIcon,
     outlined: duoOutlinedIcon,
-    twoTone: duoTwoToneIcon, },
-  dvr:{	
+    twoTone: duoTwoToneIcon,
+  },
+  dvr: {
     filled: dvrIcon,
     outlined: dvrOutlinedIcon,
-    twoTone: dvrTwoToneIcon, },
-  edit:{	
+    twoTone: dvrTwoToneIcon,
+  },
+  edit: {
     filled: editIcon,
     outlined: editAttributesIcon,
-    twoTone: editAttributesOutlinedIcon, },
-  editAttributes:{	
+    twoTone: editAttributesOutlinedIcon,
+  },
+  editAttributes: {
     filled: editAttributesTwoToneIcon,
     outlined: editLocationIcon,
-    twoTone: editLocationOutlinedIcon, },
-  editLocation:{	
+    twoTone: editLocationOutlinedIcon,
+  },
+  editLocation: {
     filled: editLocationTwoToneIcon,
     outlined: editOutlinedIcon,
-    twoTone: editTwoToneIcon, },
-  eject:{	
+    twoTone: editTwoToneIcon,
+  },
+  eject: {
     filled: ejectIcon,
     outlined: ejectOutlinedIcon,
-    twoTone: ejectTwoToneIcon, },
-  email:{	
+    twoTone: ejectTwoToneIcon,
+  },
+  email: {
     filled: emailIcon,
     outlined: emailOutlinedIcon,
-    twoTone: emailTwoToneIcon, },
-  enhancedEncryption:{	
+    twoTone: emailTwoToneIcon,
+  },
+  enhancedEncryption: {
     filled: enhancedEncryptionIcon,
     outlined: enhancedEncryptionOutlinedIcon,
-    twoTone: enhancedEncryptionTwoToneIcon, },
-  equalizer:{	
+    twoTone: enhancedEncryptionTwoToneIcon,
+  },
+  equalizer: {
     filled: equalizerIcon,
     outlined: equalizerOutlinedIcon,
-    twoTone: equalizerTwoToneIcon, },
-  error:{	
+    twoTone: equalizerTwoToneIcon,
+  },
+  error: {
     filled: errorIcon,
     outlined: errorOutlineIcon,
-    twoTone: errorOutlinedIcon, },
-  errorOutline:{	
+    twoTone: errorOutlinedIcon,
+  },
+  errorOutline: {
     filled: errorOutlineOutlinedIcon,
     outlined: errorOutlineTwoToneIcon,
-    twoTone: errorTwoToneIcon, },
-  euroSymbol:{	
+    twoTone: errorTwoToneIcon,
+  },
+  euroSymbol: {
     filled: euroSymbolIcon,
     outlined: euroSymbolOutlinedIcon,
-    twoTone: euroSymbolTwoToneIcon, },
-  event:{	
+    twoTone: euroSymbolTwoToneIcon,
+  },
+  event: {
     filled: eventIcon,
     outlined: eventOutlinedIcon,
-    twoTone: eventTwoToneIcon, },
-  eventAvailable:{	
+    twoTone: eventTwoToneIcon,
+  },
+  eventAvailable: {
     filled: eventAvailableIcon,
     outlined: eventAvailableOutlinedIcon,
-    twoTone: eventAvailableTwoToneIcon, },
-  eventBusy:{	
+    twoTone: eventAvailableTwoToneIcon,
+  },
+  eventBusy: {
     filled: eventBusyIcon,
     outlined: eventBusyOutlinedIcon,
-    twoTone: eventBusyTwoToneIcon, },
-  eventNote:{	
+    twoTone: eventBusyTwoToneIcon,
+  },
+  eventNote: {
     filled: eventNoteIcon,
     outlined: eventNoteOutlinedIcon,
-    twoTone: eventNoteTwoToneIcon, },
-  eventSeat:{	
+    twoTone: eventNoteTwoToneIcon,
+  },
+  eventSeat: {
     filled: eventSeatIcon,
     outlined: eventSeatOutlinedIcon,
-    twoTone: eventSeatTwoToneIcon, },
-  evStation:{	
+    twoTone: eventSeatTwoToneIcon,
+  },
+  evStation: {
     filled: evStationIcon,
     outlined: evStationOutlinedIcon,
-    twoTone: evStationTwoToneIcon, },
-  exitToApp:{	
+    twoTone: evStationTwoToneIcon,
+  },
+  exitToApp: {
     filled: exitToAppIcon,
     outlined: exitToAppOutlinedIcon,
-    twoTone: exitToAppTwoToneIcon, },
-  expandLess:{	
+    twoTone: exitToAppTwoToneIcon,
+  },
+  expandLess: {
     filled: expandLessIcon,
     outlined: expandLessOutlinedIcon,
-    twoTone: expandLessTwoToneIcon, },
-  expandMore:{	
+    twoTone: expandLessTwoToneIcon,
+  },
+  expandMore: {
     filled: expandMoreIcon,
     outlined: expandMoreOutlinedIcon,
-    twoTone: expandMoreTwoToneIcon, },
-  explicit:{	
+    twoTone: expandMoreTwoToneIcon,
+  },
+  explicit: {
     filled: explicitIcon,
     outlined: explicitOutlinedIcon,
-    twoTone: explicitTwoToneIcon, },
-  explore:{	
+    twoTone: explicitTwoToneIcon,
+  },
+  explore: {
     filled: exploreIcon,
     outlined: exploreOffIcon,
-    twoTone: exploreOffOutlinedIcon, },
-  exploreOff:{	
+    twoTone: exploreOffOutlinedIcon,
+  },
+  exploreOff: {
     filled: exploreOffTwoToneIcon,
     outlined: exploreOutlinedIcon,
-    twoTone: exploreTwoToneIcon, },
-  exposure:{	
+    twoTone: exploreTwoToneIcon,
+  },
+  exposure: {
     filled: exposureIcon,
     outlined: exposureOutlinedIcon,
-    twoTone: exposureTwoToneIcon, },
-  exposureNeg1:{	
+    twoTone: exposureTwoToneIcon,
+  },
+  exposureNeg1: {
     filled: exposureNeg1Icon,
     outlined: exposureNeg1OutlinedIcon,
-    twoTone: exposureNeg1TwoToneIcon, },
-  exposureNeg2:{	
+    twoTone: exposureNeg1TwoToneIcon,
+  },
+  exposureNeg2: {
     filled: exposureNeg2Icon,
     outlined: exposureNeg2OutlinedIcon,
-    twoTone: exposureNeg2TwoToneIcon, },
-  exposurePlus1:{	
+    twoTone: exposureNeg2TwoToneIcon,
+  },
+  exposurePlus1: {
     filled: exposurePlus1Icon,
     outlined: exposurePlus1OutlinedIcon,
-    twoTone: exposurePlus1TwoToneIcon, },
-  exposurePlus2:{	
+    twoTone: exposurePlus1TwoToneIcon,
+  },
+  exposurePlus2: {
     filled: exposurePlus2Icon,
     outlined: exposurePlus2OutlinedIcon,
-    twoTone: exposurePlus2TwoToneIcon, },
-  exposureZero:{	
+    twoTone: exposurePlus2TwoToneIcon,
+  },
+  exposureZero: {
     filled: exposureZeroIcon,
     outlined: exposureZeroOutlinedIcon,
-    twoTone: exposureZeroTwoToneIcon, },
-  extension:{	
+    twoTone: exposureZeroTwoToneIcon,
+  },
+  extension: {
     filled: extensionIcon,
     outlined: extensionOutlinedIcon,
-    twoTone: extensionTwoToneIcon, },
-  face:{	
+    twoTone: extensionTwoToneIcon,
+  },
+  face: {
     filled: faceIcon,
     outlined: faceOutlinedIcon,
-    twoTone: faceTwoToneIcon, },
-  fastfood:{	
+    twoTone: faceTwoToneIcon,
+  },
+  fastfood: {
     filled: fastfoodIcon,
     outlined: fastfoodOutlinedIcon,
-    twoTone: fastfoodTwoToneIcon, },
-  fastForward:{	
+    twoTone: fastfoodTwoToneIcon,
+  },
+  fastForward: {
     filled: fastForwardIcon,
     outlined: fastForwardOutlinedIcon,
-    twoTone: fastForwardTwoToneIcon, },
-  fastRewind:{	
+    twoTone: fastForwardTwoToneIcon,
+  },
+  fastRewind: {
     filled: fastRewindIcon,
     outlined: fastRewindOutlinedIcon,
-    twoTone: fastRewindTwoToneIcon, },
-  favorite:{	
+    twoTone: fastRewindTwoToneIcon,
+  },
+  favorite: {
     filled: favoriteIcon,
     outlined: favoriteBorderOutlinedIcon,
-    twoTone: favoriteTwoToneIcon, },
-  favoriteBorder:{	
+    twoTone: favoriteTwoToneIcon,
+  },
+  favoriteBorder: {
     filled: favoriteBorderIcon,
     outlined: favoriteOutlinedIcon,
-    twoTone: favoriteBorderTwoToneIcon, },
-  featuredPlayList:{	
+    twoTone: favoriteBorderTwoToneIcon,
+  },
+  featuredPlayList: {
     filled: featuredPlayListIcon,
     outlined: featuredPlayListOutlinedIcon,
-    twoTone: featuredPlayListTwoToneIcon, },
-  featuredVideo:{	
+    twoTone: featuredPlayListTwoToneIcon,
+  },
+  featuredVideo: {
     filled: featuredVideoIcon,
     outlined: featuredVideoOutlinedIcon,
-    twoTone: featuredVideoTwoToneIcon, },
-  feedback:{	
+    twoTone: featuredVideoTwoToneIcon,
+  },
+  feedback: {
     filled: feedbackIcon,
     outlined: feedbackOutlinedIcon,
-    twoTone: feedbackTwoToneIcon, },
-  fiberDvr:{	
+    twoTone: feedbackTwoToneIcon,
+  },
+  fiberDvr: {
     filled: fiberDvrIcon,
     outlined: fiberDvrOutlinedIcon,
-    twoTone: fiberDvrTwoToneIcon, },
-  fiberManualRecord:{	
+    twoTone: fiberDvrTwoToneIcon,
+  },
+  fiberManualRecord: {
     filled: fiberManualRecordIcon,
     outlined: fiberManualRecordOutlinedIcon,
-    twoTone: fiberManualRecordTwoToneIcon, },
-  fiberNew:{	
+    twoTone: fiberManualRecordTwoToneIcon,
+  },
+  fiberNew: {
     filled: fiberNewIcon,
     outlined: fiberNewOutlinedIcon,
-    twoTone: fiberNewTwoToneIcon, },
-  fiberPin:{	
+    twoTone: fiberNewTwoToneIcon,
+  },
+  fiberPin: {
     filled: fiberPinIcon,
     outlined: fiberPinOutlinedIcon,
-    twoTone: fiberPinTwoToneIcon, },
-  fiberSmartRecord:{	
+    twoTone: fiberPinTwoToneIcon,
+  },
+  fiberSmartRecord: {
     filled: fiberSmartRecordIcon,
     outlined: fiberSmartRecordOutlinedIcon,
-    twoTone: fiberSmartRecordTwoToneIcon, },
-  fileCopy:{	
+    twoTone: fiberSmartRecordTwoToneIcon,
+  },
+  fileCopy: {
     filled: fileCopyIcon,
     outlined: fileCopyOutlinedIcon,
-    twoTone: fileCopyTwoToneIcon, },
-  filter:{	
+    twoTone: fileCopyTwoToneIcon,
+  },
+  filter: {
     filled: filterIcon,
     outlined: filter1Icon,
-    twoTone: filter1OutlinedIcon, },
-  filter1:{	
+    twoTone: filter1OutlinedIcon,
+  },
+  filter1: {
     filled: filter1TwoToneIcon,
     outlined: filter2Icon,
-    twoTone: filter2OutlinedIcon, },
-  filter2:{	
+    twoTone: filter2OutlinedIcon,
+  },
+  filter2: {
     filled: filter2TwoToneIcon,
     outlined: filter3Icon,
-    twoTone: filter3OutlinedIcon, },
-  filter3:{	
+    twoTone: filter3OutlinedIcon,
+  },
+  filter3: {
     filled: filter3TwoToneIcon,
     outlined: filter4Icon,
-    twoTone: filter4OutlinedIcon, },
-  filter4:{	
+    twoTone: filter4OutlinedIcon,
+  },
+  filter4: {
     filled: filter4TwoToneIcon,
     outlined: filter5Icon,
-    twoTone: filter5OutlinedIcon, },
-  filter5:{	
+    twoTone: filter5OutlinedIcon,
+  },
+  filter5: {
     filled: filter5TwoToneIcon,
     outlined: filter6Icon,
-    twoTone: filter6OutlinedIcon, },
-  filter6:{	
+    twoTone: filter6OutlinedIcon,
+  },
+  filter6: {
     filled: filter6TwoToneIcon,
     outlined: filter7Icon,
-    twoTone: filter7OutlinedIcon, },
-  filter7:{	
+    twoTone: filter7OutlinedIcon,
+  },
+  filter7: {
     filled: filter7TwoToneIcon,
     outlined: filter8Icon,
-    twoTone: filter8OutlinedIcon, },
-  filter8:{	
+    twoTone: filter8OutlinedIcon,
+  },
+  filter8: {
     filled: filter8TwoToneIcon,
     outlined: filter9Icon,
-    twoTone: filter9OutlinedIcon, },
-  filter9:{	
+    twoTone: filter9OutlinedIcon,
+  },
+  filter9: {
     filled: filter9PlusIcon,
     outlined: filter9PlusOutlinedIcon,
-    twoTone: filter9PlusTwoToneIcon, },
-  filter9Plus:{	
+    twoTone: filter9PlusTwoToneIcon,
+  },
+  filter9Plus: {
     filled: filter9TwoToneIcon,
     outlined: filterBAndWIcon,
-    twoTone: filterBAndWOutlinedIcon, },
-  filterBAndW:{	
+    twoTone: filterBAndWOutlinedIcon,
+  },
+  filterBAndW: {
     filled: filterBAndWTwoToneIcon,
     outlined: filterCenterFocusIcon,
-    twoTone: filterCenterFocusOutlinedIcon, },
-  filterCenterFocus:{	
+    twoTone: filterCenterFocusOutlinedIcon,
+  },
+  filterCenterFocus: {
     filled: filterCenterFocusTwoToneIcon,
     outlined: filterDramaIcon,
-    twoTone: filterDramaOutlinedIcon, },
-  filterDrama:{	
+    twoTone: filterDramaOutlinedIcon,
+  },
+  filterDrama: {
     filled: filterDramaTwoToneIcon,
     outlined: filterFramesIcon,
-    twoTone: filterFramesOutlinedIcon, },
-  filterFrames:{	
+    twoTone: filterFramesOutlinedIcon,
+  },
+  filterFrames: {
     filled: filterFramesTwoToneIcon,
     outlined: filterHdrIcon,
-    twoTone: filterHdrOutlinedIcon, },
-  filterHdr:{	
+    twoTone: filterHdrOutlinedIcon,
+  },
+  filterHdr: {
     filled: filterHdrTwoToneIcon,
     outlined: filterListIcon,
-    twoTone: filterListOutlinedIcon, },
-  filterList:{	
+    twoTone: filterListOutlinedIcon,
+  },
+  filterList: {
     filled: filterListTwoToneIcon,
     outlined: filterNoneIcon,
-    twoTone: filterNoneOutlinedIcon, },
-  filterNone:{	
+    twoTone: filterNoneOutlinedIcon,
+  },
+  filterNone: {
     filled: filterNoneTwoToneIcon,
     outlined: filterOutlinedIcon,
-    twoTone: filterTiltShiftIcon, },
-  filterTiltShift:{	
+    twoTone: filterTiltShiftIcon,
+  },
+  filterTiltShift: {
     filled: filterTiltShiftOutlinedIcon,
     outlined: filterTiltShiftTwoToneIcon,
-    twoTone: filterTwoToneIcon, },
-  filterVintage:{	
+    twoTone: filterTwoToneIcon,
+  },
+  filterVintage: {
     filled: filterVintageIcon,
     outlined: filterVintageOutlinedIcon,
-    twoTone: filterVintageTwoToneIcon, },
-  findInPage:{	
+    twoTone: filterVintageTwoToneIcon,
+  },
+  findInPage: {
     filled: findInPageIcon,
     outlined: findInPageOutlinedIcon,
-    twoTone: findInPageTwoToneIcon, },
-  findReplace:{	
+    twoTone: findInPageTwoToneIcon,
+  },
+  findReplace: {
     filled: findReplaceIcon,
     outlined: findReplaceOutlinedIcon,
-    twoTone: findReplaceTwoToneIcon, },
-  fingerprint:{	
+    twoTone: findReplaceTwoToneIcon,
+  },
+  fingerprint: {
     filled: fingerprintIcon,
     outlined: fingerprintOutlinedIcon,
-    twoTone: fingerprintTwoToneIcon, },
-  firstPage:{	
+    twoTone: fingerprintTwoToneIcon,
+  },
+  firstPage: {
     filled: firstPageIcon,
     outlined: firstPageOutlinedIcon,
-    twoTone: firstPageTwoToneIcon, },
-  fitnessCenter:{	
+    twoTone: firstPageTwoToneIcon,
+  },
+  fitnessCenter: {
     filled: fitnessCenterIcon,
     outlined: fitnessCenterOutlinedIcon,
-    twoTone: fitnessCenterTwoToneIcon, },
-  flag:{	
+    twoTone: fitnessCenterTwoToneIcon,
+  },
+  flag: {
     filled: flagIcon,
     outlined: flagOutlinedIcon,
-    twoTone: flagTwoToneIcon, },
-  flare:{	
+    twoTone: flagTwoToneIcon,
+  },
+  flare: {
     filled: flareIcon,
     outlined: flareOutlinedIcon,
-    twoTone: flareTwoToneIcon, },
-  flashAuto:{	
+    twoTone: flareTwoToneIcon,
+  },
+  flashAuto: {
     filled: flashAutoIcon,
     outlined: flashAutoOutlinedIcon,
-    twoTone: flashAutoTwoToneIcon, },
-  flashOff:{	
+    twoTone: flashAutoTwoToneIcon,
+  },
+  flashOff: {
     filled: flashOffIcon,
     outlined: flashOffOutlinedIcon,
-    twoTone: flashOffTwoToneIcon, },
-  flashOn:{	
+    twoTone: flashOffTwoToneIcon,
+  },
+  flashOn: {
     filled: flashOnIcon,
     outlined: flashOnOutlinedIcon,
-    twoTone: flashOnTwoToneIcon, },
-  flight:{	
+    twoTone: flashOnTwoToneIcon,
+  },
+  flight: {
     filled: flightIcon,
     outlined: flightLandIcon,
-    twoTone: flightLandOutlinedIcon, },
-  flightLand:{	
+    twoTone: flightLandOutlinedIcon,
+  },
+  flightLand: {
     filled: flightLandTwoToneIcon,
     outlined: flightOutlinedIcon,
-    twoTone: flightTakeoffIcon, },
-  flightTakeoff:{	
+    twoTone: flightTakeoffIcon,
+  },
+  flightTakeoff: {
     filled: flightTakeoffOutlinedIcon,
     outlined: flightTakeoffTwoToneIcon,
-    twoTone: flightTwoToneIcon, },
-  flip:{	
+    twoTone: flightTwoToneIcon,
+  },
+  flip: {
     filled: flipIcon,
     outlined: flipOutlinedIcon,
-    twoTone: flipToBackIcon, },
-  flipToBack:{	
+    twoTone: flipToBackIcon,
+  },
+  flipToBack: {
     filled: flipToBackOutlinedIcon,
     outlined: flipToBackTwoToneIcon,
-    twoTone: flipToFrontIcon, },
-  flipToFront:{	
+    twoTone: flipToFrontIcon,
+  },
+  flipToFront: {
     filled: flipToFrontOutlinedIcon,
     outlined: flipToFrontTwoToneIcon,
-    twoTone: flipTwoToneIcon, },
-  folder:{	
+    twoTone: flipTwoToneIcon,
+  },
+  folder: {
     filled: folderIcon,
     outlined: folderOpenIcon,
-    twoTone: folderOpenOutlinedIcon, },
-  folderOpen:{	
+    twoTone: folderOpenOutlinedIcon,
+  },
+  folderOpen: {
     filled: folderOpenTwoToneIcon,
     outlined: folderOutlinedIcon,
-    twoTone: folderSharedIcon, },
-  folderShared:{	
+    twoTone: folderSharedIcon,
+  },
+  folderShared: {
     filled: folderSharedOutlinedIcon,
     outlined: folderSharedTwoToneIcon,
-    twoTone: folderSpecialIcon, },
-  folderSpecial:{	
+    twoTone: folderSpecialIcon,
+  },
+  folderSpecial: {
     filled: folderSpecialOutlinedIcon,
     outlined: folderSpecialTwoToneIcon,
-    twoTone: folderTwoToneIcon, },
-  fontDownload:{	
+    twoTone: folderTwoToneIcon,
+  },
+  fontDownload: {
     filled: fontDownloadIcon,
     outlined: fontDownloadOutlinedIcon,
-    twoTone: fontDownloadTwoToneIcon, },
-  formatAlignCenter:{	
+    twoTone: fontDownloadTwoToneIcon,
+  },
+  formatAlignCenter: {
     filled: formatAlignCenterIcon,
     outlined: formatAlignCenterOutlinedIcon,
-    twoTone: formatAlignCenterTwoToneIcon, },
-  formatAlignJustify:{	
+    twoTone: formatAlignCenterTwoToneIcon,
+  },
+  formatAlignJustify: {
     filled: formatAlignJustifyIcon,
     outlined: formatAlignJustifyOutlinedIcon,
-    twoTone: formatAlignJustifyTwoToneIcon, },
-  formatAlignLeft:{	
+    twoTone: formatAlignJustifyTwoToneIcon,
+  },
+  formatAlignLeft: {
     filled: formatAlignLeftIcon,
     outlined: formatAlignLeftOutlinedIcon,
-    twoTone: formatAlignLeftTwoToneIcon, },
-  formatAlignRight:{	
+    twoTone: formatAlignLeftTwoToneIcon,
+  },
+  formatAlignRight: {
     filled: formatAlignRightIcon,
     outlined: formatAlignRightOutlinedIcon,
-    twoTone: formatAlignRightTwoToneIcon, },
-  formatBold:{	
+    twoTone: formatAlignRightTwoToneIcon,
+  },
+  formatBold: {
     filled: formatBoldIcon,
     outlined: formatBoldOutlinedIcon,
-    twoTone: formatBoldTwoToneIcon, },
-  formatClear:{	
+    twoTone: formatBoldTwoToneIcon,
+  },
+  formatClear: {
     filled: formatClearIcon,
     outlined: formatClearOutlinedIcon,
-    twoTone: formatClearTwoToneIcon, },
-  formatColorFill:{	
+    twoTone: formatClearTwoToneIcon,
+  },
+  formatColorFill: {
     filled: formatColorFillIcon,
     outlined: formatColorFillOutlinedIcon,
-    twoTone: formatColorFillTwoToneIcon, },
-  formatColorReset:{	
+    twoTone: formatColorFillTwoToneIcon,
+  },
+  formatColorReset: {
     filled: formatColorResetIcon,
     outlined: formatColorResetOutlinedIcon,
-    twoTone: formatColorResetTwoToneIcon, },
-  formatColorText:{	
+    twoTone: formatColorResetTwoToneIcon,
+  },
+  formatColorText: {
     filled: formatColorTextIcon,
     outlined: formatColorTextOutlinedIcon,
-    twoTone: formatColorTextTwoToneIcon, },
-  formatIndentDecrease:{	
+    twoTone: formatColorTextTwoToneIcon,
+  },
+  formatIndentDecrease: {
     filled: formatIndentDecreaseIcon,
     outlined: formatIndentDecreaseOutlinedIcon,
-    twoTone: formatIndentDecreaseTwoToneIcon, },
-  formatIndentIncrease:{	
+    twoTone: formatIndentDecreaseTwoToneIcon,
+  },
+  formatIndentIncrease: {
     filled: formatIndentIncreaseIcon,
     outlined: formatIndentIncreaseOutlinedIcon,
-    twoTone: formatIndentIncreaseTwoToneIcon, },
-  formatItalic:{	
+    twoTone: formatIndentIncreaseTwoToneIcon,
+  },
+  formatItalic: {
     filled: formatItalicIcon,
     outlined: formatItalicOutlinedIcon,
-    twoTone: formatItalicTwoToneIcon, },
-  formatLineSpacing:{	
+    twoTone: formatItalicTwoToneIcon,
+  },
+  formatLineSpacing: {
     filled: formatLineSpacingIcon,
     outlined: formatLineSpacingOutlinedIcon,
-    twoTone: formatLineSpacingTwoToneIcon, },
-  formatListBulleted:{	
+    twoTone: formatLineSpacingTwoToneIcon,
+  },
+  formatListBulleted: {
     filled: formatListBulletedIcon,
     outlined: formatListBulletedOutlinedIcon,
-    twoTone: formatListBulletedTwoToneIcon, },
-  formatListNumbered:{	
+    twoTone: formatListBulletedTwoToneIcon,
+  },
+  formatListNumbered: {
     filled: formatListNumberedIcon,
     outlined: formatListNumberedOutlinedIcon,
-    twoTone: formatListNumberedRtlIcon, },
-  formatListNumberedRtl:{	
+    twoTone: formatListNumberedRtlIcon,
+  },
+  formatListNumberedRtl: {
     filled: formatListNumberedRtlOutlinedIcon,
     outlined: formatListNumberedRtlTwoToneIcon,
-    twoTone: formatListNumberedTwoToneIcon, },
-  formatPaint:{	
+    twoTone: formatListNumberedTwoToneIcon,
+  },
+  formatPaint: {
     filled: formatPaintIcon,
     outlined: formatPaintOutlinedIcon,
-    twoTone: formatPaintTwoToneIcon, },
-  formatQuote:{	
+    twoTone: formatPaintTwoToneIcon,
+  },
+  formatQuote: {
     filled: formatQuoteIcon,
     outlined: formatQuoteOutlinedIcon,
-    twoTone: formatQuoteTwoToneIcon, },
-  formatShapes:{	
+    twoTone: formatQuoteTwoToneIcon,
+  },
+  formatShapes: {
     filled: formatShapesIcon,
     outlined: formatShapesOutlinedIcon,
-    twoTone: formatShapesTwoToneIcon, },
-  formatSize:{	
+    twoTone: formatShapesTwoToneIcon,
+  },
+  formatSize: {
     filled: formatSizeIcon,
     outlined: formatSizeOutlinedIcon,
-    twoTone: formatSizeTwoToneIcon, },
-  formatStrikethrough:{	
+    twoTone: formatSizeTwoToneIcon,
+  },
+  formatStrikethrough: {
     filled: formatStrikethroughIcon,
     outlined: formatStrikethroughOutlinedIcon,
-    twoTone: formatStrikethroughTwoToneIcon, },
-  formatTextdirectionLToR:{	
+    twoTone: formatStrikethroughTwoToneIcon,
+  },
+  formatTextdirectionLToR: {
     filled: formatTextdirectionLToRIcon,
     outlined: formatTextdirectionLToROutlinedIcon,
-    twoTone: formatTextdirectionLToRTwoToneIcon, },
-  formatTextdirectionRToL:{	
+    twoTone: formatTextdirectionLToRTwoToneIcon,
+  },
+  formatTextdirectionRToL: {
     filled: formatTextdirectionRToLIcon,
     outlined: formatTextdirectionRToLOutlinedIcon,
-    twoTone: formatTextdirectionRToLTwoToneIcon, },
-  formatUnderlined:{	
+    twoTone: formatTextdirectionRToLTwoToneIcon,
+  },
+  formatUnderlined: {
     filled: formatUnderlinedIcon,
     outlined: formatUnderlinedOutlinedIcon,
-    twoTone: formatUnderlinedTwoToneIcon, },
-  forum:{	
+    twoTone: formatUnderlinedTwoToneIcon,
+  },
+  forum: {
     filled: forumIcon,
     outlined: forumOutlinedIcon,
-    twoTone: forumTwoToneIcon, },
-  forward:{	
+    twoTone: forumTwoToneIcon,
+  },
+  forward: {
     filled: forwardIcon,
     outlined: forward1Icon,
-    twoTone: forward1OutlinedIcon, },
-  forward1:{	
+    twoTone: forward1OutlinedIcon,
+  },
+  forward1: {
     filled: forward1TwoToneIcon,
     outlined: forward3Icon,
-    twoTone: forward3OutlinedIcon, },
-  forward3:{	
+    twoTone: forward3OutlinedIcon,
+  },
+  forward3: {
     filled: forward3TwoToneIcon,
     outlined: forward5Icon,
-    twoTone: forward5OutlinedIcon, },
-  forward5:{	
+    twoTone: forward5OutlinedIcon,
+  },
+  forward5: {
     filled: forward5TwoToneIcon,
     outlined: forwardOutlinedIcon,
-    twoTone: forwardTwoToneIcon, },
-  fourK:{	
+    twoTone: forwardTwoToneIcon,
+  },
+  fourK: {
     filled: fourKIcon,
     outlined: fourKOutlinedIcon,
-    twoTone: fourKTwoToneIcon, },
-  freeBreakfast:{	
+    twoTone: fourKTwoToneIcon,
+  },
+  freeBreakfast: {
     filled: freeBreakfastIcon,
     outlined: freeBreakfastOutlinedIcon,
-    twoTone: freeBreakfastTwoToneIcon, },
-  fullscreen:{	
+    twoTone: freeBreakfastTwoToneIcon,
+  },
+  fullscreen: {
     filled: fullscreenIcon,
     outlined: fullscreenExitIcon,
-    twoTone: fullscreenExitOutlinedIcon, },
-  fullscreenExit:{	
+    twoTone: fullscreenExitOutlinedIcon,
+  },
+  fullscreenExit: {
     filled: fullscreenExitTwoToneIcon,
     outlined: fullscreenOutlinedIcon,
-    twoTone: fullscreenTwoToneIcon, },
-  functions:{	
+    twoTone: fullscreenTwoToneIcon,
+  },
+  functions: {
     filled: functionsIcon,
     outlined: functionsOutlinedIcon,
-    twoTone: functionsTwoToneIcon, },
-  gamepad:{	
+    twoTone: functionsTwoToneIcon,
+  },
+  gamepad: {
     filled: gamepadIcon,
     outlined: gamepadOutlinedIcon,
-    twoTone: gamepadTwoToneIcon, },
-  games:{	
+    twoTone: gamepadTwoToneIcon,
+  },
+  games: {
     filled: gamesIcon,
     outlined: gamesOutlinedIcon,
-    twoTone: gamesTwoToneIcon, },
-  gavel:{	
+    twoTone: gamesTwoToneIcon,
+  },
+  gavel: {
     filled: gavelIcon,
     outlined: gavelOutlinedIcon,
-    twoTone: gavelTwoToneIcon, },
-  gesture:{	
+    twoTone: gavelTwoToneIcon,
+  },
+  gesture: {
     filled: gestureIcon,
     outlined: gestureOutlinedIcon,
-    twoTone: gestureTwoToneIcon, },
-  getApp:{	
+    twoTone: gestureTwoToneIcon,
+  },
+  getApp: {
     filled: getAppIcon,
     outlined: getAppOutlinedIcon,
-    twoTone: getAppTwoToneIcon, },
-  gif:{	
+    twoTone: getAppTwoToneIcon,
+  },
+  gif: {
     filled: gifIcon,
     outlined: gifOutlinedIcon,
-    twoTone: gifTwoToneIcon, },
-  golfCourse:{	
+    twoTone: gifTwoToneIcon,
+  },
+  golfCourse: {
     filled: golfCourseIcon,
     outlined: golfCourseOutlinedIcon,
-    twoTone: golfCourseTwoToneIcon, },
-  gpsFixed:{	
+    twoTone: golfCourseTwoToneIcon,
+  },
+  gpsFixed: {
     filled: gpsFixedIcon,
     outlined: gpsFixedOutlinedIcon,
-    twoTone: gpsFixedTwoToneIcon, },
-  gpsNotFixed:{	
+    twoTone: gpsFixedTwoToneIcon,
+  },
+  gpsNotFixed: {
     filled: gpsNotFixedIcon,
     outlined: gpsNotFixedOutlinedIcon,
-    twoTone: gpsNotFixedTwoToneIcon, },
-  gpsOff:{	
+    twoTone: gpsNotFixedTwoToneIcon,
+  },
+  gpsOff: {
     filled: gpsOffIcon,
     outlined: gpsOffOutlinedIcon,
-    twoTone: gpsOffTwoToneIcon, },
-  grade:{	
+    twoTone: gpsOffTwoToneIcon,
+  },
+  grade: {
     filled: gradeIcon,
     outlined: gradeOutlinedIcon,
-    twoTone: gradeTwoToneIcon, },
-  gradient:{	
+    twoTone: gradeTwoToneIcon,
+  },
+  gradient: {
     filled: gradientIcon,
     outlined: gradientOutlinedIcon,
-    twoTone: gradientTwoToneIcon, },
-  grain:{	
+    twoTone: gradientTwoToneIcon,
+  },
+  grain: {
     filled: grainIcon,
     outlined: grainOutlinedIcon,
-    twoTone: grainTwoToneIcon, },
-  graphicEq:{	
+    twoTone: grainTwoToneIcon,
+  },
+  graphicEq: {
     filled: graphicEqIcon,
     outlined: graphicEqOutlinedIcon,
-    twoTone: graphicEqTwoToneIcon, },
-  gridOff:{	
+    twoTone: graphicEqTwoToneIcon,
+  },
+  gridOff: {
     filled: gridOffIcon,
     outlined: gridOffOutlinedIcon,
-    twoTone: gridOffTwoToneIcon, },
-  gridOn:{	
+    twoTone: gridOffTwoToneIcon,
+  },
+  gridOn: {
     filled: gridOnIcon,
     outlined: gridOnOutlinedIcon,
-    twoTone: gridOnTwoToneIcon, },
-  group:{	
+    twoTone: gridOnTwoToneIcon,
+  },
+  group: {
     filled: groupIcon,
     outlined: groupAddIcon,
-    twoTone: groupAddOutlinedIcon, },
-  groupAdd:{	
+    twoTone: groupAddOutlinedIcon,
+  },
+  groupAdd: {
     filled: groupAddTwoToneIcon,
     outlined: groupOutlinedIcon,
-    twoTone: groupTwoToneIcon, },
-  groupWork:{	
+    twoTone: groupTwoToneIcon,
+  },
+  groupWork: {
     filled: groupWorkIcon,
     outlined: groupWorkOutlinedIcon,
-    twoTone: groupWorkTwoToneIcon, },
-  gTranslate:{	
+    twoTone: groupWorkTwoToneIcon,
+  },
+  gTranslate: {
     filled: gTranslateIcon,
     outlined: gTranslateOutlinedIcon,
-    twoTone: gTranslateTwoToneIcon, },
-  hd:{	
+    twoTone: gTranslateTwoToneIcon,
+  },
+  hd: {
     filled: hdIcon,
     outlined: hdOutlinedIcon,
-    twoTone: hdrOffIcon, },
-  hdrOff:{	
+    twoTone: hdrOffIcon,
+  },
+  hdrOff: {
     filled: hdrOffOutlinedIcon,
     outlined: hdrOffTwoToneIcon,
-    twoTone: hdrOnIcon, },
-  hdrOn:{	
+    twoTone: hdrOnIcon,
+  },
+  hdrOn: {
     filled: hdrOnOutlinedIcon,
     outlined: hdrOnTwoToneIcon,
-    twoTone: hdrStrongIcon, },
-  hdrStrong:{	
+    twoTone: hdrStrongIcon,
+  },
+  hdrStrong: {
     filled: hdrStrongOutlinedIcon,
     outlined: hdrStrongTwoToneIcon,
-    twoTone: hdrWeakIcon, },
-  hdrWeak:{	
+    twoTone: hdrWeakIcon,
+  },
+  hdrWeak: {
     filled: hdrWeakOutlinedIcon,
     outlined: hdrWeakTwoToneIcon,
-    twoTone: hdTwoToneIcon, },
-  headset:{	
+    twoTone: hdTwoToneIcon,
+  },
+  headset: {
     filled: headsetIcon,
     outlined: headsetMicIcon,
-    twoTone: headsetMicOutlinedIcon, },
-  headsetMic:{	
+    twoTone: headsetMicOutlinedIcon,
+  },
+  headsetMic: {
     filled: headsetMicTwoToneIcon,
     outlined: headsetOutlinedIcon,
-    twoTone: headsetTwoToneIcon, },
-  healing:{	
+    twoTone: headsetTwoToneIcon,
+  },
+  healing: {
     filled: healingIcon,
     outlined: healingOutlinedIcon,
-    twoTone: healingTwoToneIcon, },
-  hearing:{	
+    twoTone: healingTwoToneIcon,
+  },
+  hearing: {
     filled: hearingIcon,
     outlined: hearingOutlinedIcon,
-    twoTone: hearingTwoToneIcon, },
-  help:{	
+    twoTone: hearingTwoToneIcon,
+  },
+  help: {
     filled: helpIcon,
     outlined: helpOutlineIcon,
-    twoTone: helpOutlinedIcon, },
-  helpOutline:{	
+    twoTone: helpOutlinedIcon,
+  },
+  helpOutline: {
     filled: helpOutlineOutlinedIcon,
     outlined: helpOutlineTwoToneIcon,
-    twoTone: helpTwoToneIcon, },
-  highlight:{	
+    twoTone: helpTwoToneIcon,
+  },
+  highlight: {
     filled: highlightIcon,
     outlined: highlightOffIcon,
-    twoTone: highlightOffOutlinedIcon, },
-  highlightOff:{	
+    twoTone: highlightOffOutlinedIcon,
+  },
+  highlightOff: {
     filled: highlightOffTwoToneIcon,
     outlined: highlightOutlinedIcon,
-    twoTone: highlightTwoToneIcon, },
-  highQuality:{	
+    twoTone: highlightTwoToneIcon,
+  },
+  highQuality: {
     filled: highQualityIcon,
     outlined: highQualityOutlinedIcon,
-    twoTone: highQualityTwoToneIcon, },
-  history:{	
+    twoTone: highQualityTwoToneIcon,
+  },
+  history: {
     filled: historyIcon,
     outlined: historyOutlinedIcon,
-    twoTone: historyTwoToneIcon, },
-  home:{	
+    twoTone: historyTwoToneIcon,
+  },
+  home: {
     filled: homeIcon,
     outlined: homeOutlinedIcon,
-    twoTone: homeTwoToneIcon, },
-  horizontalSplit:{	
+    twoTone: homeTwoToneIcon,
+  },
+  horizontalSplit: {
     filled: horizontalSplitIcon,
     outlined: horizontalSplitOutlinedIcon,
-    twoTone: horizontalSplitTwoToneIcon, },
-  hotel:{	
+    twoTone: horizontalSplitTwoToneIcon,
+  },
+  hotel: {
     filled: hotelIcon,
     outlined: hotelOutlinedIcon,
-    twoTone: hotelTwoToneIcon, },
-  hotTub:{	
+    twoTone: hotelTwoToneIcon,
+  },
+  hotTub: {
     filled: hotTubIcon,
     outlined: hotTubOutlinedIcon,
-    twoTone: hotTubTwoToneIcon, },
-  hourglassEmpty:{	
+    twoTone: hotTubTwoToneIcon,
+  },
+  hourglassEmpty: {
     filled: hourglassEmptyIcon,
     outlined: hourglassEmptyOutlinedIcon,
-    twoTone: hourglassEmptyTwoToneIcon, },
-  hourglassFull:{	
+    twoTone: hourglassEmptyTwoToneIcon,
+  },
+  hourglassFull: {
     filled: hourglassFullIcon,
     outlined: hourglassFullOutlinedIcon,
-    twoTone: hourglassFullTwoToneIcon, },
-  howToReg:{	
+    twoTone: hourglassFullTwoToneIcon,
+  },
+  howToReg: {
     filled: howToRegIcon,
     outlined: howToRegOutlinedIcon,
-    twoTone: howToRegTwoToneIcon, },
-  howToVote:{	
+    twoTone: howToRegTwoToneIcon,
+  },
+  howToVote: {
     filled: howToVoteIcon,
     outlined: howToVoteOutlinedIcon,
-    twoTone: howToVoteTwoToneIcon, },
-  http:{	
+    twoTone: howToVoteTwoToneIcon,
+  },
+  http: {
     filled: httpIcon,
     outlined: httpOutlinedIcon,
-    twoTone: httpsIcon, },
-  https:{	
+    twoTone: httpsIcon,
+  },
+  https: {
     filled: httpsOutlinedIcon,
     outlined: httpsTwoToneIcon,
-    twoTone: httpTwoToneIcon, },
-  image:{	
+    twoTone: httpTwoToneIcon,
+  },
+  image: {
     filled: imageIcon,
     outlined: imageAspectRatioIcon,
-    twoTone: imageAspectRatioOutlinedIcon, },
-  imageAspectRatio:{	
+    twoTone: imageAspectRatioOutlinedIcon,
+  },
+  imageAspectRatio: {
     filled: imageAspectRatioTwoToneIcon,
     outlined: imageOutlinedIcon,
-    twoTone: imageSearchIcon, },
-  imageSearch:{	
+    twoTone: imageSearchIcon,
+  },
+  imageSearch: {
     filled: imageSearchOutlinedIcon,
     outlined: imageSearchTwoToneIcon,
-    twoTone: imageTwoToneIcon, },
-  importantDevices:{	
+    twoTone: imageTwoToneIcon,
+  },
+  importantDevices: {
     filled: importantDevicesIcon,
     outlined: importantDevicesOutlinedIcon,
-    twoTone: importantDevicesTwoToneIcon, },
-  importContacts:{	
+    twoTone: importantDevicesTwoToneIcon,
+  },
+  importContacts: {
     filled: importContactsIcon,
     outlined: importContactsOutlinedIcon,
-    twoTone: importContactsTwoToneIcon, },
-  importExport:{	
+    twoTone: importContactsTwoToneIcon,
+  },
+  importExport: {
     filled: importExportIcon,
     outlined: importExportOutlinedIcon,
-    twoTone: importExportTwoToneIcon, },
-  inbox:{	
+    twoTone: importExportTwoToneIcon,
+  },
+  inbox: {
     filled: inboxIcon,
     outlined: inboxOutlinedIcon,
-    twoTone: inboxTwoToneIcon, },
-  indeterminateCheckBox:{	
+    twoTone: inboxTwoToneIcon,
+  },
+  indeterminateCheckBox: {
     filled: indeterminateCheckBoxIcon,
     outlined: indeterminateCheckBoxOutlinedIcon,
-    twoTone: indeterminateCheckBoxTwoToneIcon, },
-  info:{	
+    twoTone: indeterminateCheckBoxTwoToneIcon,
+  },
+  info: {
     filled: infoIcon,
     outlined: infoOutlinedIcon,
-    twoTone: infoTwoToneIcon, },
-  input:{	
+    twoTone: infoTwoToneIcon,
+  },
+  input: {
     filled: inputIcon,
     outlined: inputOutlinedIcon,
-    twoTone: inputTwoToneIcon, },
-  insertChart:{	
+    twoTone: inputTwoToneIcon,
+  },
+  insertChart: {
     filled: insertChartIcon,
     outlined: insertChartOutlinedIcon,
     twoTone: insertChartTwoToneIcon,
-     },
-  insertChartOutlined:{	
+  },
+  insertChartOutlined: {
     filled: insertChartOutlinedIcon,
     outlined: insertChartOutlinedOutlinedIcon,
-    twoTone: insertChartOutlinedTwoToneIcon, },
-  insertComment:{	
+    twoTone: insertChartOutlinedTwoToneIcon,
+  },
+  insertComment: {
     filled: insertCommentIcon,
     outlined: insertCommentOutlinedIcon,
-    twoTone: insertCommentTwoToneIcon, },
-  insertDriveFile:{	
+    twoTone: insertCommentTwoToneIcon,
+  },
+  insertDriveFile: {
     filled: insertDriveFileIcon,
     outlined: insertDriveFileOutlinedIcon,
-    twoTone: insertDriveFileTwoToneIcon, },
-  insertEmoticon:{	
+    twoTone: insertDriveFileTwoToneIcon,
+  },
+  insertEmoticon: {
     filled: insertEmoticonIcon,
     outlined: insertEmoticonOutlinedIcon,
-    twoTone: insertEmoticonTwoToneIcon, },
-  insertInvitation:{	
+    twoTone: insertEmoticonTwoToneIcon,
+  },
+  insertInvitation: {
     filled: insertInvitationIcon,
     outlined: insertInvitationOutlinedIcon,
-    twoTone: insertInvitationTwoToneIcon, },
-  insertLink:{	
+    twoTone: insertInvitationTwoToneIcon,
+  },
+  insertLink: {
     filled: insertLinkIcon,
     outlined: insertLinkOutlinedIcon,
-    twoTone: insertLinkTwoToneIcon, },
-  insertPhoto:{	
+    twoTone: insertLinkTwoToneIcon,
+  },
+  insertPhoto: {
     filled: insertPhotoOutlinedIcon,
     outlined: insertPhotoTwoToneIcon,
-    twoTone: insertPhotoIcon, },
-  invertColors:{	
+    twoTone: insertPhotoIcon,
+  },
+  invertColors: {
     filled: invertColorsIcon,
     outlined: invertColorsOutlinedIcon,
-    twoTone: invertColorsTwoToneIcon, },
-  invertColorsOff:{	
+    twoTone: invertColorsTwoToneIcon,
+  },
+  invertColorsOff: {
     filled: invertColorsOffIcon,
-    outlined: invertColorsOutlinedIcon,
-    twoTone: invertColorsOffTwoToneIcon, },
-  isoIcon:{	
+    outlined: invertColorsOffOutlinedIcon,
+    twoTone: invertColorsOffTwoToneIcon,
+  },
+  isoIcon: {
     filled: isoIcon,
     outlined: isoOutlinedIcon,
     twoTone: isoTwoToneIcon,
-     },
-  keyboardArrowDown:{	
+  },
+  keyboardArrowDown: {
     filled: keyboardArrowDownIcon,
     outlined: keyboardArrowDownOutlinedIcon,
-    twoTone: keyboardArrowDownTwoToneIcon, },
-  keyboardArrowLeft:{	
+    twoTone: keyboardArrowDownTwoToneIcon,
+  },
+  keyboardArrowLeft: {
     filled: keyboardArrowLeftIcon,
     outlined: keyboardArrowLeftOutlinedIcon,
-    twoTone: keyboardArrowLeftTwoToneIcon, },
-  keyboardArrowRight:{	
+    twoTone: keyboardArrowLeftTwoToneIcon,
+  },
+  keyboardArrowRight: {
     filled: keyboardArrowRightIcon,
     outlined: keyboardArrowRightOutlinedIcon,
-    twoTone: keyboardArrowRightTwoToneIcon, },
-  keyboardArrowUp:{	
+    twoTone: keyboardArrowRightTwoToneIcon,
+  },
+  keyboardArrowUp: {
     filled: keyboardArrowUpIcon,
     outlined: keyboardArrowUpOutlinedIcon,
-    twoTone: keyboardArrowUpTwoToneIcon, },
-  keyboardBackspace:{	
+    twoTone: keyboardArrowUpTwoToneIcon,
+  },
+  keyboardBackspace: {
     filled: keyboardBackspaceIcon,
     outlined: keyboardBackspaceOutlinedIcon,
-    twoTone: keyboardBackspaceTwoToneIcon, },
-  keyboardCapslock:{	
+    twoTone: keyboardBackspaceTwoToneIcon,
+  },
+  keyboardCapslock: {
     filled: keyboardCapslockIcon,
     outlined: keyboardCapslockOutlinedIcon,
-    twoTone: keyboardCapslockTwoToneIcon, },
-  keyboardHide:{	
+    twoTone: keyboardCapslockTwoToneIcon,
+  },
+  keyboardHide: {
     filled: keyboardHideIcon,
     outlined: keyboardHideOutlinedIcon,
-    twoTone: keyboardHideTwoToneIcon, },
-  keyboardReturn:{	
+    twoTone: keyboardHideTwoToneIcon,
+  },
+  keyboardReturn: {
     filled: keyboardOutlinedIcon,
     outlined: keyboardReturnIcon,
-    twoTone: keyboardReturnOutlinedIcon, },
-  keyboardTab:{	
+    twoTone: keyboardReturnOutlinedIcon,
+  },
+  keyboardTab: {
     filled: keyboardReturnTwoToneIcon,
     outlined: keyboardTabIcon,
-    twoTone: keyboardTabOutlinedIcon, },
-  keyboard:{	
+    twoTone: keyboardTabOutlinedIcon,
+  },
+  keyboard: {
     filled: keyboardTabTwoToneIcon,
     outlined: keyboardTwoToneIcon,
-    twoTone: keyboardVoiceIcon, },
-  keyboardVoice:{	
+    twoTone: keyboardVoiceIcon,
+  },
+  keyboardVoice: {
     filled: keyboardVoiceOutlinedIcon,
     outlined: keyboardVoiceTwoToneIcon,
-    twoTone: kitchenIcon, },
-  kitchen:{	
+    twoTone: kitchenIcon,
+  },
+  kitchen: {
     filled: kitchenOutlinedIcon,
     outlined: kitchenTwoToneIcon,
-    twoTone: labelIcon, },
-  label:{	
+    twoTone: labelIcon,
+  },
+  label: {
     filled: labelImportantIcon,
     outlined: labelImportantOutlinedIcon,
-    twoTone: labelImportantTwoToneIcon, },
-  labelImportant:{	
+    twoTone: labelImportantTwoToneIcon,
+  },
+  labelImportant: {
     filled: labelOffIcon,
     outlined: labelOffOutlinedIcon,
-    twoTone: labelOffTwoToneIcon, },
-  labelOff:{	
+    twoTone: labelOffTwoToneIcon,
+  },
+  labelOff: {
     filled: labelOutlinedIcon,
     outlined: labelTwoToneIcon,
-    twoTone: landscapeIcon, },
-  landscape:{	
+    twoTone: landscapeIcon,
+  },
+  landscape: {
     filled: landscapeOutlinedIcon,
     outlined: landscapeTwoToneIcon,
-    twoTone: languageIcon, },
-  language:{	
+    twoTone: languageIcon,
+  },
+  language: {
     filled: languageOutlinedIcon,
     outlined: languageTwoToneIcon,
-    twoTone: laptopIcon, },
-  laptop:{	
+    twoTone: laptopIcon,
+  },
+  laptop: {
     filled: laptopChromebookIcon,
     outlined: laptopChromebookOutlinedIcon,
-    twoTone: laptopChromebookTwoToneIcon, },
-  laptopChromebook:{	
+    twoTone: laptopChromebookTwoToneIcon,
+  },
+  laptopChromebook: {
     filled: laptopMacIcon,
     outlined: laptopMacOutlinedIcon,
-    twoTone: laptopMacTwoToneIcon, },
-  laptopMac:{	
+    twoTone: laptopMacTwoToneIcon,
+  },
+  laptopMac: {
     filled: laptopOutlinedIcon,
     outlined: laptopTwoToneIcon,
-    twoTone: laptopWindowsIcon, },
-  laptopWindows:{	
+    twoTone: laptopWindowsIcon,
+  },
+  laptopWindows: {
     filled: laptopWindowsOutlinedIcon,
     outlined: laptopWindowsTwoToneIcon,
-    twoTone: lastPageIcon, },
-  lastPage:{	
+    twoTone: lastPageIcon,
+  },
+  lastPage: {
     filled: lastPageOutlinedIcon,
     outlined: lastPageTwoToneIcon,
-    twoTone: launchIcon, },
-  launch:{	
+    twoTone: launchIcon,
+  },
+  launch: {
     filled: launchOutlinedIcon,
     outlined: launchTwoToneIcon,
-    twoTone: layersIcon, },
-  layers:{	
+    twoTone: layersIcon,
+  },
+  layers: {
     filled: layersClearIcon,
     outlined: layersClearOutlinedIcon,
-    twoTone: layersClearTwoToneIcon, },
-  layersClear:{	
+    twoTone: layersClearTwoToneIcon,
+  },
+  layersClear: {
     filled: layersOutlinedIcon,
     outlined: layersTwoToneIcon,
-    twoTone: leakAddIcon, },
-  leakAdd:{	
+    twoTone: leakAddIcon,
+  },
+  leakAdd: {
     filled: leakAddOutlinedIcon,
     outlined: leakAddTwoToneIcon,
-    twoTone: leakRemoveIcon, },
-  leakRemove:{	
+    twoTone: leakRemoveIcon,
+  },
+  leakRemove: {
     filled: leakRemoveOutlinedIcon,
     outlined: leakRemoveTwoToneIcon,
-    twoTone: lensIcon, },
-  lens:{	
+    twoTone: lensIcon,
+  },
+  lens: {
     filled: lensOutlinedIcon,
     outlined: lensTwoToneIcon,
-    twoTone: libraryAddIcon, },
-  libraryAdd:{	
+    twoTone: libraryAddIcon,
+  },
+  libraryAdd: {
     filled: libraryAddOutlinedIcon,
     outlined: libraryAddTwoToneIcon,
-    twoTone: libraryBooksIcon, },
-  libraryBooks:{	
+    twoTone: libraryBooksIcon,
+  },
+  libraryBooks: {
     filled: libraryBooksOutlinedIcon,
     outlined: libraryBooksTwoToneIcon,
-    twoTone: libraryMusicIcon, },
-  libraryMusic:{	
+    twoTone: libraryMusicIcon,
+  },
+  libraryMusic: {
     filled: libraryMusicOutlinedIcon,
     outlined: libraryMusicTwoToneIcon,
-    twoTone: linearScaleIcon, },
-  linearScale:{	
+    twoTone: linearScaleIcon,
+  },
+  linearScale: {
     filled: linearScaleOutlinedIcon,
     outlined: linearScaleTwoToneIcon,
-    twoTone: lineStyleIcon, },
-  lineStyle:{	
+    twoTone: lineStyleIcon,
+  },
+  lineStyle: {
     filled: lineStyleOutlinedIcon,
     outlined: lineStyleTwoToneIcon,
-    twoTone: lineWeightIcon, },
-  lineWeight:{	
+    twoTone: lineWeightIcon,
+  },
+  lineWeight: {
     filled: lineWeightOutlinedIcon,
     outlined: lineWeightTwoToneIcon,
-    twoTone: linkIcon, },
-  link:{	
+    twoTone: linkIcon,
+  },
+  link: {
     filled: linkedCameraIcon,
     outlined: linkedCameraOutlinedIcon,
-    twoTone: linkedCameraTwoToneIcon, },
-  linkedCamera:{	
+    twoTone: linkedCameraTwoToneIcon,
+  },
+  linkedCamera: {
     filled: linkOffIcon,
     outlined: linkOffOutlinedIcon,
-    twoTone: linkOffTwoToneIcon, },
-  linkOff:{	
+    twoTone: linkOffTwoToneIcon,
+  },
+  linkOff: {
     filled: linkOutlinedIcon,
     outlined: linkTwoToneIcon,
-    twoTone: listIcon, },
-  list:{	
+    twoTone: listIcon,
+  },
+  list: {
     filled: listAltIcon,
     outlined: listAltOutlinedIcon,
-    twoTone: listAltTwoToneIcon, },
-  listAlt:{	
+    twoTone: listAltTwoToneIcon,
+  },
+  listAlt: {
     filled: listOutlinedIcon,
     outlined: listTwoToneIcon,
-    twoTone: liveHelpIcon, },
-  liveHelp:{	
+    twoTone: liveHelpIcon,
+  },
+  liveHelp: {
     filled: liveHelpOutlinedIcon,
     outlined: liveHelpTwoToneIcon,
-    twoTone: liveTvIcon, },
-  liveTv:{	
+    twoTone: liveTvIcon,
+  },
+  liveTv: {
     filled: liveTvOutlinedIcon,
     outlined: liveTvTwoToneIcon,
-    twoTone: localActivityIcon, },
-  localActivity:{	
+    twoTone: localActivityIcon,
+  },
+  localActivity: {
     filled: localActivityOutlinedIcon,
     outlined: localActivityTwoToneIcon,
-    twoTone: localAirportIcon, },
-  localAirport:{	
+    twoTone: localAirportIcon,
+  },
+  localAirport: {
     filled: localAirportOutlinedIcon,
     outlined: localAirportTwoToneIcon,
-    twoTone: localAtmIcon, },
-  localAtm:{	
+    twoTone: localAtmIcon,
+  },
+  localAtm: {
     filled: localAtmOutlinedIcon,
     outlined: localAtmTwoToneIcon,
-    twoTone: localBarIcon, },
-  localBar:{	
+    twoTone: localBarIcon,
+  },
+  localBar: {
     filled: localBarOutlinedIcon,
     outlined: localBarTwoToneIcon,
-    twoTone: localCafeIcon, },
-  localCafe:{	
+    twoTone: localCafeIcon,
+  },
+  localCafe: {
     filled: localCafeOutlinedIcon,
     outlined: localCafeTwoToneIcon,
-    twoTone: localCarWashIcon, },
-  localCarWash:{	
+    twoTone: localCarWashIcon,
+  },
+  localCarWash: {
     filled: localCarWashOutlinedIcon,
     outlined: localCarWashTwoToneIcon,
-    twoTone: localConvenienceStoreIcon, },
-  localConvenienceStore:{	
+    twoTone: localConvenienceStoreIcon,
+  },
+  localConvenienceStore: {
     filled: localConvenienceStoreOutlinedIcon,
     outlined: localConvenienceStoreTwoToneIcon,
-    twoTone: localDiningIcon, },
-  localDining:{	
+    twoTone: localDiningIcon,
+  },
+  localDining: {
     filled: localDiningOutlinedIcon,
     outlined: localDiningTwoToneIcon,
-    twoTone: localDrinkIcon, },
-  localDrink:{	
+    twoTone: localDrinkIcon,
+  },
+  localDrink: {
     filled: localDrinkOutlinedIcon,
     outlined: localDrinkTwoToneIcon,
-    twoTone: localFloristIcon, },
-  localFlorist:{	
+    twoTone: localFloristIcon,
+  },
+  localFlorist: {
     filled: localFloristOutlinedIcon,
     outlined: localFloristTwoToneIcon,
-    twoTone: localGasStationIcon, },
-  localGasStation:{	
+    twoTone: localGasStationIcon,
+  },
+  localGasStation: {
     filled: localGasStationOutlinedIcon,
     outlined: localGasStationTwoToneIcon,
-    twoTone: localGroceryStoreIcon, },
-  localGroceryStore:{	
+    twoTone: localGroceryStoreIcon,
+  },
+  localGroceryStore: {
     filled: localGroceryStoreOutlinedIcon,
     outlined: localGroceryStoreTwoToneIcon,
-    twoTone: localHospitalIcon, },
-  localHospital:{	
+    twoTone: localHospitalIcon,
+  },
+  localHospital: {
     filled: localHospitalOutlinedIcon,
     outlined: localHospitalTwoToneIcon,
-    twoTone: localHotelIcon, },
-  localHotel:{	
+    twoTone: localHotelIcon,
+  },
+  localHotel: {
     filled: localHotelOutlinedIcon,
     outlined: localHotelTwoToneIcon,
-    twoTone: localLaundryServiceIcon, },
-  localLaundryService:{	
+    twoTone: localLaundryServiceIcon,
+  },
+  localLaundryService: {
     filled: localLaundryServiceOutlinedIcon,
     outlined: localLaundryServiceTwoToneIcon,
-    twoTone: localLibraryIcon, },
-  localLibrary:{	
+    twoTone: localLibraryIcon,
+  },
+  localLibrary: {
     filled: localLibraryOutlinedIcon,
     outlined: localLibraryTwoToneIcon,
-    twoTone: localMallIcon, },
-  localMall:{	
+    twoTone: localMallIcon,
+  },
+  localMall: {
     filled: localMallOutlinedIcon,
     outlined: localMallTwoToneIcon,
-    twoTone: localMoviesIcon, },
-  localMovies:{	
+    twoTone: localMoviesIcon,
+  },
+  localMovies: {
     filled: localMoviesOutlinedIcon,
     outlined: localMoviesTwoToneIcon,
-    twoTone: localOfferIcon, },
-  localOffer:{	
+    twoTone: localOfferIcon,
+  },
+  localOffer: {
     filled: localOfferOutlinedIcon,
     outlined: localOfferTwoToneIcon,
-    twoTone: localParkingIcon, },
-  localParking:{	
+    twoTone: localParkingIcon,
+  },
+  localParking: {
     filled: localParkingOutlinedIcon,
     outlined: localParkingTwoToneIcon,
-    twoTone: localPharmacyIcon, },
-  localPharmacy:{	
+    twoTone: localPharmacyIcon,
+  },
+  localPharmacy: {
     filled: localPharmacyOutlinedIcon,
     outlined: localPharmacyTwoToneIcon,
-    twoTone: localPhoneIcon, },
-  localPhone:{	
+    twoTone: localPhoneIcon,
+  },
+  localPhone: {
     filled: localPhoneOutlinedIcon,
     outlined: localPhoneTwoToneIcon,
-    twoTone: localPizzaIcon, },
-  localPizza:{	
+    twoTone: localPizzaIcon,
+  },
+  localPizza: {
     filled: localPizzaOutlinedIcon,
     outlined: localPizzaTwoToneIcon,
-    twoTone: localPlayIcon, },
-  localPlay:{	
+    twoTone: localPlayIcon,
+  },
+  localPlay: {
     filled: localPlayOutlinedIcon,
     outlined: localPlayTwoToneIcon,
-    twoTone: localPostOfficeIcon, },
-  localPostOffice:{	
+    twoTone: localPostOfficeIcon,
+  },
+  localPostOffice: {
     filled: localPostOfficeOutlinedIcon,
     outlined: localPostOfficeTwoToneIcon,
-    twoTone: localPrintshopIcon, },
-  localPrintshop:{	
+    twoTone: localPrintshopIcon,
+  },
+  localPrintshop: {
     filled: localPrintshopOutlinedIcon,
     outlined: localPrintshopTwoToneIcon,
-    twoTone: localSeeIcon, },
-  localSee:{	
+    twoTone: localSeeIcon,
+  },
+  localSee: {
     filled: localSeeOutlinedIcon,
     outlined: localSeeTwoToneIcon,
-    twoTone: localShippingIcon, },
-  localShipping:{	
+    twoTone: localShippingIcon,
+  },
+  localShipping: {
     filled: localShippingOutlinedIcon,
     outlined: localShippingTwoToneIcon,
-    twoTone: localTaxiIcon, },
-  localTaxi:{	
+    twoTone: localTaxiIcon,
+  },
+  localTaxi: {
     filled: localTaxiOutlinedIcon,
     outlined: localTaxiTwoToneIcon,
-    twoTone: locationCityIcon, },
-  locationCity:{	
+    twoTone: locationCityIcon,
+  },
+  locationCity: {
     filled: locationCityOutlinedIcon,
     outlined: locationCityTwoToneIcon,
-    twoTone: locationDisabledIcon, },
-  locationDisabled:{	
+    twoTone: locationDisabledIcon,
+  },
+  locationDisabled: {
     filled: locationDisabledOutlinedIcon,
     outlined: locationDisabledTwoToneIcon,
-    twoTone: locationOffIcon, },
-  locationOff:{	
+    twoTone: locationOffIcon,
+  },
+  locationOff: {
     filled: locationOffOutlinedIcon,
     outlined: locationOffTwoToneIcon,
-    twoTone: locationOnIcon, },
-  locationOn:{	
+    twoTone: locationOnIcon,
+  },
+  locationOn: {
     filled: locationOnOutlinedIcon,
     outlined: locationOnTwoToneIcon,
-    twoTone: locationSearchingIcon, },
-  locationSearching:{	
+    twoTone: locationSearchingIcon,
+  },
+  locationSearching: {
     filled: locationSearchingOutlinedIcon,
     outlined: locationSearchingTwoToneIcon,
-    twoTone: lockIcon, },
-  lock:{	
+    twoTone: lockIcon,
+  },
+  lock: {
     filled: lockOpenIcon,
     outlined: lockOpenOutlinedIcon,
-    twoTone: lockOpenTwoToneIcon, },
-  lockOpen:{	
+    twoTone: lockOpenTwoToneIcon,
+  },
+  lockOpen: {
     filled: lockOutlinedIcon,
     outlined: lockTwoToneIcon,
-    twoTone: looksIcon, },
-  looks:{	
+    twoTone: looksIcon,
+  },
+  looks: {
     filled: looks3Icon,
     outlined: looks3OutlinedIcon,
-    twoTone: looks3TwoToneIcon, },
-  looks3:{	
+    twoTone: looks3TwoToneIcon,
+  },
+  looks3: {
     filled: looks4Icon,
     outlined: looks4OutlinedIcon,
-    twoTone: looks4TwoToneIcon, },
-  looks4:{	
+    twoTone: looks4TwoToneIcon,
+  },
+  looks4: {
     filled: looks5Icon,
     outlined: looks5OutlinedIcon,
-    twoTone: looks5TwoToneIcon, },
-  looks5:{	
+    twoTone: looks5TwoToneIcon,
+  },
+  looks5: {
     filled: looks6Icon,
     outlined: looks6OutlinedIcon,
-    twoTone: looks6TwoToneIcon, },
-  looks6:{	
+    twoTone: looks6TwoToneIcon,
+  },
+  looks6: {
     filled: looksOneIcon,
     outlined: looksOneOutlinedIcon,
-    twoTone: looksOneTwoToneIcon, },
-  looksOne:{	
+    twoTone: looksOneTwoToneIcon,
+  },
+  looksOne: {
     filled: looksOutlinedIcon,
     outlined: looksTwoIcon,
-    twoTone: looksTwoOutlinedIcon, },
-  looksTwo:{	
+    twoTone: looksTwoOutlinedIcon,
+  },
+  looksTwo: {
     filled: looksTwoToneIcon,
     outlined: looksTwoTwoToneIcon,
-    twoTone: loopIcon, },
-  loop:{	
+    twoTone: loopIcon,
+  },
+  loop: {
     filled: loopOutlinedIcon,
     outlined: loopTwoToneIcon,
-    twoTone: loupeIcon, },
-  loupe:{	
+    twoTone: loupeIcon,
+  },
+  loupe: {
     filled: loupeOutlinedIcon,
     outlined: loupeTwoToneIcon,
-    twoTone: lowPriorityIcon, },
-  lowPriority:{	
+    twoTone: lowPriorityIcon,
+  },
+  lowPriority: {
     filled: lowPriorityOutlinedIcon,
     outlined: lowPriorityTwoToneIcon,
-    twoTone: loyaltyIcon, },
-  loyalty:{	
+    twoTone: loyaltyIcon,
+  },
+  loyalty: {
     filled: loyaltyOutlinedIcon,
     outlined: loyaltyTwoToneIcon,
-    twoTone: mailIcon, },
-  mail:{	
+    twoTone: mailIcon,
+  },
+  mail: {
     filled: mailOutlineIcon,
     outlined: mailOutlinedIcon,
-    twoTone: mailOutlineOutlinedIcon, },
-  mailOutline:{	
+    twoTone: mailOutlineOutlinedIcon,
+  },
+  mailOutline: {
     filled: mailOutlineTwoToneIcon,
     outlined: mailTwoToneIcon,
-    twoTone: mapIcon, },
-  map:{	
+    twoTone: mapIcon,
+  },
+  map: {
     filled: mapOutlinedIcon,
     outlined: mapTwoToneIcon,
-    twoTone: markunreadIcon, },
-  markunread:{	
+    twoTone: markunreadIcon,
+  },
+  markunread: {
     filled: markunreadMailboxIcon,
     outlined: markunreadMailboxOutlinedIcon,
-    twoTone: markunreadMailboxTwoToneIcon, },
-  markunreadMailbox:{	
+    twoTone: markunreadMailboxTwoToneIcon,
+  },
+  markunreadMailbox: {
     filled: markunreadOutlinedIcon,
     outlined: markunreadTwoToneIcon,
-    twoTone: maximizeIcon, },
-  maximize:{	
+    twoTone: maximizeIcon,
+  },
+  maximize: {
     filled: maximizeOutlinedIcon,
     outlined: maximizeTwoToneIcon,
-    twoTone: meetingRoomIcon, },
-  meetingRoom:{	
+    twoTone: meetingRoomIcon,
+  },
+  meetingRoom: {
     filled: meetingRoomOutlinedIcon,
     outlined: meetingRoomTwoToneIcon,
-    twoTone: memoryIcon, },
-  memory:{	
+    twoTone: memoryIcon,
+  },
+  memory: {
     filled: memoryOutlinedIcon,
     outlined: memoryTwoToneIcon,
-    twoTone: menuIcon, },
-  menu:{	
+    twoTone: menuIcon,
+  },
+  menu: {
     filled: menuOutlinedIcon,
     outlined: menuTwoToneIcon,
-    twoTone: mergeTypeIcon, },
-  mergeType:{	
+    twoTone: mergeTypeIcon,
+  },
+  mergeType: {
     filled: mergeTypeOutlinedIcon,
     outlined: mergeTypeTwoToneIcon,
-    twoTone: messageIcon, },
-  message:{	
+    twoTone: messageIcon,
+  },
+  message: {
     filled: messageOutlinedIcon,
     outlined: messageTwoToneIcon,
-    twoTone: micIcon, },
-  mic:{	
+    twoTone: micIcon,
+  },
+  mic: {
     filled: micNoneIcon,
     outlined: micNoneOutlinedIcon,
-    twoTone: micNoneTwoToneIcon, },
-  micNone:{	
+    twoTone: micNoneTwoToneIcon,
+  },
+  micNone: {
     filled: micOffIcon,
     outlined: micOffOutlinedIcon,
-    twoTone: micOffTwoToneIcon, },
-  micOff:{	
+    twoTone: micOffTwoToneIcon,
+  },
+  micOff: {
     filled: micOutlinedIcon,
     outlined: micTwoToneIcon,
-    twoTone: minimizeIcon, },
-  minimize:{	
+    twoTone: minimizeIcon,
+  },
+  minimize: {
     filled: minimizeOutlinedIcon,
     outlined: minimizeTwoToneIcon,
-    twoTone: missedVideoCallIcon, },
-  missedVideoCall:{	
+    twoTone: missedVideoCallIcon,
+  },
+  missedVideoCall: {
     filled: missedVideoCallOutlinedIcon,
     outlined: missedVideoCallTwoToneIcon,
-    twoTone: mmsIcon, },
-  mms:{	
+    twoTone: mmsIcon,
+  },
+  mms: {
     filled: mmsOutlinedIcon,
     outlined: mmsTwoToneIcon,
-    twoTone: mobileFriendlyIcon, },
-  mobileFriendly:{	
+    twoTone: mobileFriendlyIcon,
+  },
+  mobileFriendly: {
     filled: mobileFriendlyOutlinedIcon,
     outlined: mobileFriendlyTwoToneIcon,
-    twoTone: mobileOffIcon, },
-  mobileOff:{	
+    twoTone: mobileOffIcon,
+  },
+  mobileOff: {
     filled: mobileOffOutlinedIcon,
     outlined: mobileOffTwoToneIcon,
-    twoTone: mobileScreenShareIcon, },
-  mobileScreenShare:{	
+    twoTone: mobileScreenShareIcon,
+  },
+  mobileScreenShare: {
     filled: mobileScreenShareOutlinedIcon,
     outlined: mobileScreenShareTwoToneIcon,
-    twoTone: modeCommentIcon, },
-  modeComment:{	
+    twoTone: modeCommentIcon,
+  },
+  modeComment: {
     filled: modeCommentOutlinedIcon,
     outlined: modeCommentTwoToneIcon,
-    twoTone: monetizationOnIcon, },
-  monetizationOn:{	
+    twoTone: monetizationOnIcon,
+  },
+  monetizationOn: {
     filled: monetizationOnOutlinedIcon,
     outlined: monetizationOnTwoToneIcon,
-    twoTone: moneyIcon, },
-  money:{	
+    twoTone: moneyIcon,
+  },
+  money: {
     filled: moneyOffIcon,
     outlined: moneyOffOutlinedIcon,
-    twoTone: moneyOffTwoToneIcon, },
-  moneyOff:{	
+    twoTone: moneyOffTwoToneIcon,
+  },
+  moneyOff: {
     filled: moneyOutlinedIcon,
     outlined: moneyTwoToneIcon,
-    twoTone: monochromePhotosIcon, },
-  monochromePhotos:{	
+    twoTone: monochromePhotosIcon,
+  },
+  monochromePhotos: {
     filled: monochromePhotosOutlinedIcon,
     outlined: monochromePhotosTwoToneIcon,
-    twoTone: moodIcon, },
-  mood:{	
+    twoTone: moodIcon,
+  },
+  mood: {
     filled: moodBadIcon,
     outlined: moodBadOutlinedIcon,
-    twoTone: moodBadTwoToneIcon, },
-  moodBad:{	
+    twoTone: moodBadTwoToneIcon,
+  },
+  moodBad: {
     filled: moodOutlinedIcon,
     outlined: moodTwoToneIcon,
-    twoTone: moreIcon, },
-  more:{	
+    twoTone: moreIcon,
+  },
+  more: {
     filled: moreHorizIcon,
     outlined: moreHorizOutlinedIcon,
-    twoTone: moreHorizTwoToneIcon, },
-  moreHoriz:{	
+    twoTone: moreHorizTwoToneIcon,
+  },
+  moreHoriz: {
     filled: moreOutlinedIcon,
     outlined: moreTwoToneIcon,
-    twoTone: moreVertIcon, },
-  moreVert:{	
+    twoTone: moreVertIcon,
+  },
+  moreVert: {
     filled: moreVertOutlinedIcon,
     outlined: moreVertTwoToneIcon,
-    twoTone: motorcycleIcon, },
-  motorcycle:{	
+    twoTone: motorcycleIcon,
+  },
+  motorcycle: {
     filled: motorcycleOutlinedIcon,
     outlined: motorcycleTwoToneIcon,
-    twoTone: mouseIcon, },
-  mouse:{	
+    twoTone: mouseIcon,
+  },
+  mouse: {
     filled: mouseOutlinedIcon,
     outlined: mouseTwoToneIcon,
-    twoTone: moveToInboxIcon, },
-  moveToInbox:{	
+    twoTone: moveToInboxIcon,
+  },
+  moveToInbox: {
     filled: moveToInboxOutlinedIcon,
     outlined: moveToInboxTwoToneIcon,
-    twoTone: movieIcon, },
-  movie:{	
+    twoTone: movieIcon,
+  },
+  movie: {
     filled: movieCreationIcon,
     outlined: movieCreationOutlinedIcon,
-    twoTone: movieCreationTwoToneIcon, },
-  movieCreation:{	
+    twoTone: movieCreationTwoToneIcon,
+  },
+  movieCreation: {
     filled: movieFilterIcon,
     outlined: movieFilterOutlinedIcon,
-    twoTone: movieFilterTwoToneIcon, },
-  movieFilter:{	
+    twoTone: movieFilterTwoToneIcon,
+  },
+  movieFilter: {
     filled: movieOutlinedIcon,
     outlined: movieTwoToneIcon,
-    twoTone: multilineChartIcon, },
-  multilineChart:{	
+    twoTone: multilineChartIcon,
+  },
+  multilineChart: {
     filled: multilineChartOutlinedIcon,
     outlined: multilineChartTwoToneIcon,
-    twoTone: musicNoteIcon, },
-  musicNote:{	
+    twoTone: musicNoteIcon,
+  },
+  musicNote: {
     filled: musicNoteOutlinedIcon,
     outlined: musicNoteTwoToneIcon,
-    twoTone: musicOffIcon, },
-  musicOff:{	
+    twoTone: musicOffIcon,
+  },
+  musicOff: {
     filled: musicOffOutlinedIcon,
     outlined: musicOffTwoToneIcon,
-    twoTone: musicVideoIcon, },
-  musicVideo:{	
+    twoTone: musicVideoIcon,
+  },
+  musicVideo: {
     filled: musicVideoOutlinedIcon,
     outlined: musicVideoTwoToneIcon,
-    twoTone: myLocationIcon, },
-  myLocation:{	
+    twoTone: myLocationIcon,
+  },
+  myLocation: {
     filled: myLocationOutlinedIcon,
     outlined: myLocationTwoToneIcon,
-    twoTone: natureIcon, },
-  nature:{	
+    twoTone: natureIcon,
+  },
+  nature: {
     filled: natureOutlinedIcon,
     outlined: naturePeopleIcon,
-    twoTone: naturePeopleOutlinedIcon, },
-  naturePeople:{	
+    twoTone: naturePeopleOutlinedIcon,
+  },
+  naturePeople: {
     filled: naturePeopleTwoToneIcon,
     outlined: natureTwoToneIcon,
-    twoTone: navigateBeforeIcon, },
-  navigateBefore:{	
+    twoTone: navigateBeforeIcon,
+  },
+  navigateBefore: {
     filled: navigateBeforeOutlinedIcon,
     outlined: navigateBeforeTwoToneIcon,
-    twoTone: navigateNextIcon, },
-  navigateNext:{	
+    twoTone: navigateNextIcon,
+  },
+  navigateNext: {
     filled: navigateNextOutlinedIcon,
     outlined: navigateNextTwoToneIcon,
-    twoTone: navigationIcon, },
-  navigation:{	
+    twoTone: navigationIcon,
+  },
+  navigation: {
     filled: navigationOutlinedIcon,
     outlined: navigationTwoToneIcon,
-    twoTone: nearMeIcon, },
-  nearMe:{	
+    twoTone: nearMeIcon,
+  },
+  nearMe: {
     filled: nearMeOutlinedIcon,
     outlined: nearMeTwoToneIcon,
-    twoTone: networkCellIcon, },
-  networkCell:{	
+    twoTone: networkCellIcon,
+  },
+  networkCell: {
     filled: networkCellOutlinedIcon,
     outlined: networkCellTwoToneIcon,
-    twoTone: networkCheckIcon, },
-  networkCheck:{	
+    twoTone: networkCheckIcon,
+  },
+  networkCheck: {
     filled: networkCheckOutlinedIcon,
     outlined: networkCheckTwoToneIcon,
-    twoTone: networkLockedIcon, },
-  networkLocked:{	
+    twoTone: networkLockedIcon,
+  },
+  networkLocked: {
     filled: networkLockedOutlinedIcon,
     outlined: networkLockedTwoToneIcon,
-    twoTone: networkWifiIcon, },
-  networkWifi:{	
+    twoTone: networkWifiIcon,
+  },
+  networkWifi: {
     filled: networkWifiOutlinedIcon,
     outlined: networkWifiTwoToneIcon,
-    twoTone: newReleasesIcon, },
-  newReleases:{	
+    twoTone: newReleasesIcon,
+  },
+  newReleases: {
     filled: newReleasesOutlinedIcon,
     outlined: newReleasesTwoToneIcon,
-    twoTone: nextWeekIcon, },
-  nextWeek:{	
+    twoTone: nextWeekIcon,
+  },
+  nextWeek: {
     filled: nextWeekOutlinedIcon,
     outlined: nextWeekTwoToneIcon,
-    twoTone: nfcIcon, },
-  nfc:{	
+    twoTone: nfcIcon,
+  },
+  nfc: {
     filled: nfcOutlinedIcon,
     outlined: nfcTwoToneIcon,
-    twoTone: noEncryptionIcon, },
-  noEncryption:{	
+    twoTone: noEncryptionIcon,
+  },
+  noEncryption: {
     filled: noEncryptionOutlinedIcon,
     outlined: noEncryptionTwoToneIcon,
-    twoTone: noMeetingRoomIcon, },
-  noMeetingRoom:{	
+    twoTone: noMeetingRoomIcon,
+  },
+  noMeetingRoom: {
     filled: noMeetingRoomOutlinedIcon,
     outlined: noMeetingRoomTwoToneIcon,
-    twoTone: noSimIcon, },
-  noSim:{	
+    twoTone: noSimIcon,
+  },
+  noSim: {
     filled: noSimOutlinedIcon,
     outlined: noSimTwoToneIcon,
-    twoTone: noteIcon, },
-  note:{	
+    twoTone: noteIcon,
+  },
+  note: {
     filled: noteAddIcon,
     outlined: noteAddOutlinedIcon,
-    twoTone: noteAddTwoToneIcon, },
-  noteAdd:{	
+    twoTone: noteAddTwoToneIcon,
+  },
+  noteAdd: {
     filled: noteOutlinedIcon,
     outlined: notesIcon,
-    twoTone: notesOutlinedIcon, },
-  notes:{	
+    twoTone: notesOutlinedIcon,
+  },
+  notes: {
     filled: notesTwoToneIcon,
     outlined: noteTwoToneIcon,
-    twoTone: notificationImportantIcon, },
-  notificationImportant:{	
+    twoTone: notificationImportantIcon,
+  },
+  notificationImportant: {
     filled: notificationImportantOutlinedIcon,
     outlined: notificationImportantTwoToneIcon,
-    twoTone: notificationsIcon, },
-  notifications:{	
+    twoTone: notificationsIcon,
+  },
+  notifications: {
     filled: notificationsActiveIcon,
     outlined: notificationsActiveOutlinedIcon,
-    twoTone: notificationsActiveTwoToneIcon, },
-  notificationsActive:{	
+    twoTone: notificationsActiveTwoToneIcon,
+  },
+  notificationsActive: {
     filled: notificationsNoneIcon,
     outlined: notificationsNoneOutlinedIcon,
-    twoTone: notificationsNoneTwoToneIcon, },
-  notificationsNone:{	
+    twoTone: notificationsNoneTwoToneIcon,
+  },
+  notificationsNone: {
     filled: notificationsOffIcon,
     outlined: notificationsOffOutlinedIcon,
-    twoTone: notificationsOffTwoToneIcon, },
-  notificationsOff:{	
+    twoTone: notificationsOffTwoToneIcon,
+  },
+  notificationsOff: {
     filled: notificationsOutlinedIcon,
     outlined: notificationsPausedIcon,
-    twoTone: notificationsPausedOutlinedIcon, },
-  notificationsPaused:{	
+    twoTone: notificationsPausedOutlinedIcon,
+  },
+  notificationsPaused: {
     filled: notificationsPausedTwoToneIcon,
     outlined: notificationsTwoToneIcon,
-    twoTone: notInterestedIcon, },
-  notInterested:{	
+    twoTone: notInterestedIcon,
+  },
+  notInterested: {
     filled: notInterestedOutlinedIcon,
     outlined: notInterestedTwoToneIcon,
-    twoTone: notListedLocationIcon, },
-  notListedLocation:{	
+    twoTone: notListedLocationIcon,
+  },
+  notListedLocation: {
     filled: notListedLocationOutlinedIcon,
     outlined: notListedLocationTwoToneIcon,
-    twoTone: offlineBoltIcon, },
-  offlineBolt:{	
+    twoTone: offlineBoltIcon,
+  },
+  offlineBolt: {
     filled: offlineBoltOutlinedIcon,
     outlined: offlineBoltTwoToneIcon,
-    twoTone: offlinePinIcon, },
-  offlinePin:{	
+    twoTone: offlinePinIcon,
+  },
+  offlinePin: {
     filled: offlinePinOutlinedIcon,
     outlined: offlinePinTwoToneIcon,
-    twoTone: ondemandVideoIcon, },
-  ondemandVideo:{	
+    twoTone: ondemandVideoIcon,
+  },
+  ondemandVideo: {
     filled: ondemandVideoOutlinedIcon,
     outlined: ondemandVideoTwoToneIcon,
-    twoTone: opacityIcon, },
-  opacity:{	
+    twoTone: opacityIcon,
+  },
+  opacity: {
     filled: opacityOutlinedIcon,
     outlined: opacityTwoToneIcon,
-    twoTone: openInBrowserIcon, },
-  openInBrowser:{	
+    twoTone: openInBrowserIcon,
+  },
+  openInBrowser: {
     filled: openInBrowserOutlinedIcon,
     outlined: openInBrowserTwoToneIcon,
-    twoTone: openInNewIcon, },
-  openInNew:{	
+    twoTone: openInNewIcon,
+  },
+  openInNew: {
     filled: openInNewOutlinedIcon,
     outlined: openInNewTwoToneIcon,
-    twoTone: openWithIcon, },
-  openWith:{	
+    twoTone: openWithIcon,
+  },
+  openWith: {
     filled: openWithOutlinedIcon,
     outlined: openWithTwoToneIcon,
-    twoTone: outlinedFlagIcon, },
-  outlinedFlag:{	
+    twoTone: outlinedFlagIcon,
+  },
+  outlinedFlag: {
     filled: outlinedFlagOutlinedIcon,
     outlined: outlinedFlagTwoToneIcon,
-    twoTone: pagesIcon, },
-  pages:{	
+    twoTone: pagesIcon,
+  },
+  pages: {
     filled: pagesOutlinedIcon,
     outlined: pagesTwoToneIcon,
-    twoTone: pageviewIcon, },
-  pageview:{	
+    twoTone: pageviewIcon,
+  },
+  pageview: {
     filled: pageviewOutlinedIcon,
     outlined: pageviewTwoToneIcon,
-    twoTone: paletteIcon, },
-  palette:{	
+    twoTone: paletteIcon,
+  },
+  palette: {
     filled: paletteOutlinedIcon,
     outlined: paletteTwoToneIcon,
-    twoTone: panoramaIcon, },
-  panorama:{	
+    twoTone: panoramaIcon,
+  },
+  panorama: {
     filled: panoramaFishEyeIcon,
     outlined: panoramaFishEyeOutlinedIcon,
-    twoTone: panoramaFishEyeTwoToneIcon, },
-  panoramaFishEye:{	
+    twoTone: panoramaFishEyeTwoToneIcon,
+  },
+  panoramaFishEye: {
     filled: panoramaHorizontalIcon,
     outlined: panoramaHorizontalOutlinedIcon,
-    twoTone: panoramaHorizontalTwoToneIcon, },
-  panoramaHorizontal:{	
+    twoTone: panoramaHorizontalTwoToneIcon,
+  },
+  panoramaHorizontal: {
     filled: panoramaOutlinedIcon,
     outlined: panoramaTwoToneIcon,
-    twoTone: panoramaVerticalIcon, },
-  panoramaVertical:{	
+    twoTone: panoramaVerticalIcon,
+  },
+  panoramaVertical: {
     filled: panoramaVerticalOutlinedIcon,
     outlined: panoramaVerticalTwoToneIcon,
-    twoTone: panoramaWideAngleIcon, },
-  panoramaWideAngle:{	
+    twoTone: panoramaWideAngleIcon,
+  },
+  panoramaWideAngle: {
     filled: panoramaWideAngleOutlinedIcon,
     outlined: panoramaWideAngleTwoToneIcon,
-    twoTone: panToolIcon, },
-  panTool:{	
+    twoTone: panToolIcon,
+  },
+  panTool: {
     filled: panToolOutlinedIcon,
     outlined: panToolTwoToneIcon,
-    twoTone: partyModeIcon, },
-  partyMode:{	
+    twoTone: partyModeIcon,
+  },
+  partyMode: {
     filled: partyModeOutlinedIcon,
     outlined: partyModeTwoToneIcon,
-    twoTone: pauseIcon, },
-  pause:{	
+    twoTone: pauseIcon,
+  },
+  pause: {
     filled: pauseCircleFilledIcon,
     outlined: pauseCircleFilledOutlinedIcon,
-    twoTone: pauseCircleFilledTwoToneIcon, },
-  pauseCircleFilled:{	
+    twoTone: pauseCircleFilledTwoToneIcon,
+  },
+  pauseCircleFilled: {
     filled: pauseCircleOutlineIcon,
     outlined: pauseCircleOutlineOutlinedIcon,
-    twoTone: pauseCircleOutlineTwoToneIcon, },
-  pauseCircleOutline:{	
+    twoTone: pauseCircleOutlineTwoToneIcon,
+  },
+  pauseCircleOutline: {
     filled: pauseOutlinedIcon,
     outlined: pausePresentationIcon,
-    twoTone: pausePresentationOutlinedIcon, },
-  pausePresentation:{	
+    twoTone: pausePresentationOutlinedIcon,
+  },
+  pausePresentation: {
     filled: pausePresentationTwoToneIcon,
     outlined: pauseTwoToneIcon,
-    twoTone: paymentIcon, },
-  payment:{	
+    twoTone: paymentIcon,
+  },
+  payment: {
     filled: paymentOutlinedIcon,
     outlined: paymentTwoToneIcon,
-    twoTone: peopleIcon, },
-  people:{	
+    twoTone: peopleIcon,
+  },
+  people: {
     filled: peopleOutlineIcon,
     outlined: peopleOutlinedIcon,
-    twoTone: peopleOutlineOutlinedIcon, },
-  peopleOutline:{	
+    twoTone: peopleOutlineOutlinedIcon,
+  },
+  peopleOutline: {
     filled: peopleOutlineTwoToneIcon,
     outlined: peopleTwoToneIcon,
-    twoTone: permCameraMicIcon, },
-  permCameraMic:{	
+    twoTone: permCameraMicIcon,
+  },
+  permCameraMic: {
     filled: permCameraMicOutlinedIcon,
     outlined: permCameraMicTwoToneIcon,
-    twoTone: permContactCalendarIcon, },
-  permContactCalendar:{	
+    twoTone: permContactCalendarIcon,
+  },
+  permContactCalendar: {
     filled: permContactCalendarOutlinedIcon,
     outlined: permContactCalendarTwoToneIcon,
-    twoTone: permDataSettingIcon, },
-  permDataSetting:{	
+    twoTone: permDataSettingIcon,
+  },
+  permDataSetting: {
     filled: permDataSettingOutlinedIcon,
     outlined: permDataSettingTwoToneIcon,
-    twoTone: permDeviceInformationIcon, },
-  permDeviceInformation:{	
+    twoTone: permDeviceInformationIcon,
+  },
+  permDeviceInformation: {
     filled: permDeviceInformationOutlinedIcon,
     outlined: permDeviceInformationTwoToneIcon,
-    twoTone: permIdentityIcon, },
-  permIdentity:{	
+    twoTone: permIdentityIcon,
+  },
+  permIdentity: {
     filled: permIdentityOutlinedIcon,
     outlined: permIdentityTwoToneIcon,
-    twoTone: permMediaIcon, },
-  permMedia:{	
+    twoTone: permMediaIcon,
+  },
+  permMedia: {
     filled: permMediaOutlinedIcon,
     outlined: permMediaTwoToneIcon,
-    twoTone: permPhoneMsgIcon, },
-  permPhoneMsg:{	
+    twoTone: permPhoneMsgIcon,
+  },
+  permPhoneMsg: {
     filled: permPhoneMsgOutlinedIcon,
     outlined: permPhoneMsgTwoToneIcon,
-    twoTone: permScanWifiIcon, },
-  permScanWifi:{	
+    twoTone: permScanWifiIcon,
+  },
+  permScanWifi: {
     filled: permScanWifiOutlinedIcon,
     outlined: permScanWifiTwoToneIcon,
-    twoTone: personIcon, },
-  person:{	
+    twoTone: personIcon,
+  },
+  person: {
     filled: personAddIcon,
     outlined: personAddDisabledIcon,
-    twoTone: personAddDisabledOutlinedIcon, },
-  personAdd:{	
+    twoTone: personAddDisabledOutlinedIcon,
+  },
+  personAdd: {
     filled: personAddDisabledTwoToneIcon,
     outlined: personAddOutlinedIcon,
-    twoTone: personAddTwoToneIcon, },
-  personAddDisabled:{	
+    twoTone: personAddTwoToneIcon,
+  },
+  personAddDisabled: {
     filled: personalVideoIcon,
     outlined: personalVideoOutlinedIcon,
-    twoTone: personalVideoTwoToneIcon, },
-  personalVideo:{	
+    twoTone: personalVideoTwoToneIcon,
+  },
+  personalVideo: {
     filled: personOutlineIcon,
     outlined: personOutlinedIcon,
-    twoTone: personOutlineOutlinedIcon, },
-  personOutline:{	
+    twoTone: personOutlineOutlinedIcon,
+  },
+  personOutline: {
     filled: personOutlineTwoToneIcon,
     outlined: personPinIcon,
-    twoTone: personPinCircleIcon, },
-  personPin:{	
+    twoTone: personPinCircleIcon,
+  },
+  personPin: {
     filled: personPinCircleOutlinedIcon,
     outlined: personPinCircleTwoToneIcon,
-    twoTone: personPinOutlinedIcon, },
-  personPinCircle:{	
+    twoTone: personPinOutlinedIcon,
+  },
+  personPinCircle: {
     filled: personPinTwoToneIcon,
     outlined: personTwoToneIcon,
-    twoTone: petsIcon, },
-  pets:{	
+    twoTone: petsIcon,
+  },
+  pets: {
     filled: petsOutlinedIcon,
     outlined: petsTwoToneIcon,
-    twoTone: phoneIcon, },
-  phoneAndroid:{	
+    twoTone: phoneIcon,
+  },
+  phoneAndroid: {
     filled: phoneAndroidIcon,
     outlined: phoneAndroidOutlinedIcon,
-    twoTone: phoneAndroidTwoToneIcon, },
-  phoneBluetoothSpeaker:{	
+    twoTone: phoneAndroidTwoToneIcon,
+  },
+  phoneBluetoothSpeaker: {
     filled: phoneBluetoothSpeakerIcon,
     outlined: phoneBluetoothSpeakerOutlinedIcon,
-    twoTone: phoneBluetoothSpeakerTwoToneIcon, },
-  phoneCallback:{	
+    twoTone: phoneBluetoothSpeakerTwoToneIcon,
+  },
+  phoneCallback: {
     filled: phoneCallbackIcon,
     outlined: phoneCallbackOutlinedIcon,
-    twoTone: phoneCallbackTwoToneIcon, },
-  phoneForwarded:{	
+    twoTone: phoneCallbackTwoToneIcon,
+  },
+  phoneForwarded: {
     filled: phoneForwardedIcon,
     outlined: phoneForwardedOutlinedIcon,
-    twoTone: phoneForwardedTwoToneIcon, },
-  phoneInTalk:{	
+    twoTone: phoneForwardedTwoToneIcon,
+  },
+  phoneInTalk: {
     filled: phoneInTalkIcon,
     outlined: phoneInTalkOutlinedIcon,
-    twoTone: phoneInTalkTwoToneIcon, },
-  phoneIphone:{	
+    twoTone: phoneInTalkTwoToneIcon,
+  },
+  phoneIphone: {
     filled: phoneIphoneIcon,
     outlined: phoneIphoneOutlinedIcon,
-    twoTone: phoneIphoneTwoToneIcon, },
-  phonelink:{	
+    twoTone: phoneIphoneTwoToneIcon,
+  },
+  phonelink: {
     filled: phonelinkIcon,
     outlined: phonelinkEraseIcon,
-    twoTone: phonelinkEraseOutlinedIcon, },
-  phonelinkErase:{	
+    twoTone: phonelinkEraseOutlinedIcon,
+  },
+  phonelinkErase: {
     filled: phonelinkEraseTwoToneIcon,
     outlined: phonelinkLockIcon,
-    twoTone: phonelinkLockOutlinedIcon, },
-  phonelinkLock:{	
+    twoTone: phonelinkLockOutlinedIcon,
+  },
+  phonelinkLock: {
     filled: phonelinkLockTwoToneIcon,
     outlined: phonelinkOffIcon,
-    twoTone: phonelinkOffOutlinedIcon, },
-  phonelinkOff:{	
+    twoTone: phonelinkOffOutlinedIcon,
+  },
+  phonelinkOff: {
     filled: phonelinkOffTwoToneIcon,
     outlined: phonelinkOutlinedIcon,
-    twoTone: phonelinkRingIcon, },
-  phonelinkRing:{	
+    twoTone: phonelinkRingIcon,
+  },
+  phonelinkRing: {
     filled: phonelinkRingOutlinedIcon,
     outlined: phonelinkRingTwoToneIcon,
-    twoTone: phonelinkSetupIcon, },
-  phonelinkSetup:{	
+    twoTone: phonelinkSetupIcon,
+  },
+  phonelinkSetup: {
     filled: phonelinkSetupOutlinedIcon,
     outlined: phonelinkSetupTwoToneIcon,
-    twoTone: phonelinkTwoToneIcon, },
-  phoneLocked:{	
+    twoTone: phonelinkTwoToneIcon,
+  },
+  phoneLocked: {
     filled: phoneLockedIcon,
     outlined: phoneLockedOutlinedIcon,
-    twoTone: phoneLockedTwoToneIcon, },
-  phoneMissed:{	
+    twoTone: phoneLockedTwoToneIcon,
+  },
+  phoneMissed: {
     filled: phoneMissedIcon,
     outlined: phoneMissedOutlinedIcon,
-    twoTone: phoneMissedTwoToneIcon, },
-  phonePaused:{	
+    twoTone: phoneMissedTwoToneIcon,
+  },
+  phonePaused: {
     filled: phoneOutlinedIcon,
     outlined: phonePausedIcon,
-    twoTone: phonePausedOutlinedIcon, },
-  photo:{	
+    twoTone: phonePausedOutlinedIcon,
+  },
+  photo: {
     filled: phonePausedTwoToneIcon,
     outlined: phoneTwoToneIcon,
-    twoTone: photoIcon, },
-  photoAlbum:{	
+    twoTone: photoIcon,
+  },
+  photoAlbum: {
     filled: photoAlbumIcon,
     outlined: photoAlbumOutlinedIcon,
-    twoTone: photoAlbumTwoToneIcon, },
-  photoCamera:{	
+    twoTone: photoAlbumTwoToneIcon,
+  },
+  photoCamera: {
     filled: photoCameraIcon,
     outlined: photoCameraOutlinedIcon,
-    twoTone: photoCameraTwoToneIcon, },
-  photoFilter:{	
+    twoTone: photoCameraTwoToneIcon,
+  },
+  photoFilter: {
     filled: photoFilterIcon,
     outlined: photoFilterOutlinedIcon,
-    twoTone: photoFilterTwoToneIcon, },
-  photoLibrary:{	
+    twoTone: photoFilterTwoToneIcon,
+  },
+  photoLibrary: {
     filled: photoLibraryIcon,
     outlined: photoLibraryOutlinedIcon,
-    twoTone: photoLibraryTwoToneIcon, },
-  photoSize:{	
+    twoTone: photoLibraryTwoToneIcon,
+  },
+  photoSize: {
     filled: photoOutlinedIcon,
     outlined: photoSizeSelectActualIcon,
-    twoTone: photoSizeSelectActualOutlinedIcon, },
-  photoSizeSelectActual:{	
+    twoTone: photoSizeSelectActualOutlinedIcon,
+  },
+  photoSizeSelectActual: {
     filled: photoSizeSelectActualTwoToneIcon,
     outlined: photoSizeSelectLargeIcon,
-    twoTone: photoSizeSelectLargeOutlinedIcon, },
-  photoSizeSelectLarge:{	
+    twoTone: photoSizeSelectLargeOutlinedIcon,
+  },
+  photoSizeSelectLarge: {
     filled: photoSizeSelectLargeTwoToneIcon,
     outlined: photoSizeSelectSmallIcon,
-    twoTone: photoSizeSelectSmallOutlinedIcon, },
-  photoSizeSelectSmall:{	
+    twoTone: photoSizeSelectSmallOutlinedIcon,
+  },
+  photoSizeSelectSmall: {
     filled: photoSizeSelectSmallTwoToneIcon,
     outlined: photoTwoToneIcon,
-    twoTone: pictureAsPdfIcon, },
-  pictureAsPdf:{	
+    twoTone: pictureAsPdfIcon,
+  },
+  pictureAsPdf: {
     filled: pictureAsPdfOutlinedIcon,
     outlined: pictureAsPdfTwoToneIcon,
-    twoTone: pictureInPictureIcon, },
-  pictureInPicture:{	
+    twoTone: pictureInPictureIcon,
+  },
+  pictureInPicture: {
     filled: pictureInPictureAltIcon,
     outlined: pictureInPictureAltOutlinedIcon,
-    twoTone: pictureInPictureAltTwoToneIcon, },
-  pictureInPictureAlt:{	
+    twoTone: pictureInPictureAltTwoToneIcon,
+  },
+  pictureInPictureAlt: {
     filled: pictureInPictureOutlinedIcon,
     outlined: pictureInPictureTwoToneIcon,
-    twoTone: pieChartIcon, },
-  pieChart:{	
+    twoTone: pieChartIcon,
+  },
+  pieChart: {
     filled: pieChartOutlinedIcon,
     outlined: pieChartTwoToneIcon,
-    twoTone: pinDropIcon, },
-  pinDrop:{	
+    twoTone: pinDropIcon,
+  },
+  pinDrop: {
     filled: pinDropOutlinedIcon,
     outlined: pinDropTwoToneIcon,
-    twoTone: placeIcon, },
-  place:{	
+    twoTone: placeIcon,
+  },
+  place: {
     filled: placeOutlinedIcon,
     outlined: placeTwoToneIcon,
-    twoTone: playArrowIcon, },
-  playArrow:{	
+    twoTone: playArrowIcon,
+  },
+  playArrow: {
     filled: playArrowOutlinedIcon,
     outlined: playArrowTwoToneIcon,
-    twoTone: playCircleFilledIcon, },
-  playCircleFilled:{	
+    twoTone: playCircleFilledIcon,
+  },
+  playCircleFilled: {
     filled: playCircleFilledOutlinedIcon,
     outlined: playCircleFilledTwoToneIcon,
-    twoTone: playCircleFilledWhiteIcon, },
-  playCircleFilledWhite:{	
+    twoTone: playCircleFilledWhiteIcon,
+  },
+  playCircleFilledWhite: {
     filled: playCircleFilledWhiteOutlinedIcon,
     outlined: playCircleFilledWhiteTwoToneIcon,
-    twoTone: playCircleOutlineIcon, },
-  playCircleOutline:{	
+    twoTone: playCircleOutlineIcon,
+  },
+  playCircleOutline: {
     filled: playCircleOutlineOutlinedIcon,
     outlined: playCircleOutlineTwoToneIcon,
-    twoTone: playForWorkIcon, },
-  playForWork:{	
+    twoTone: playForWorkIcon,
+  },
+  playForWork: {
     filled: playForWorkOutlinedIcon,
     outlined: playForWorkTwoToneIcon,
-    twoTone: playlistAddIcon, },
-  playlistAdd:{	
+    twoTone: playlistAddIcon,
+  },
+  playlistAdd: {
     filled: playlistAddCheckIcon,
     outlined: playlistAddCheckOutlinedIcon,
-    twoTone: playlistAddCheckTwoToneIcon, },
-  playlistAddCheck:{	
+    twoTone: playlistAddCheckTwoToneIcon,
+  },
+  playlistAddCheck: {
     filled: playlistAddOutlinedIcon,
     outlined: playlistAddTwoToneIcon,
-    twoTone: playlistPlayIcon, },
-  playlistPlay:{	
+    twoTone: playlistPlayIcon,
+  },
+  playlistPlay: {
     filled: playlistPlayOutlinedIcon,
     outlined: playlistPlayTwoToneIcon,
-    twoTone: plusOneIcon, },
-  plusOne:{	
+    twoTone: plusOneIcon,
+  },
+  plusOne: {
     filled: plusOneOutlinedIcon,
     outlined: plusOneTwoToneIcon,
-    twoTone: pollIcon, },
-  poll:{	
+    twoTone: pollIcon,
+  },
+  poll: {
     filled: pollOutlinedIcon,
     outlined: pollTwoToneIcon,
-    twoTone: polymerIcon, },
-  polymer:{	
+    twoTone: polymerIcon,
+  },
+  polymer: {
     filled: polymerOutlinedIcon,
     outlined: polymerTwoToneIcon,
-    twoTone: poolIcon, },
-  pool:{	
+    twoTone: poolIcon,
+  },
+  pool: {
     filled: poolOutlinedIcon,
     outlined: poolTwoToneIcon,
-    twoTone: portableWifiOffIcon, },
-  portableWifiOff:{	
+    twoTone: portableWifiOffIcon,
+  },
+  portableWifiOff: {
     filled: portableWifiOffOutlinedIcon,
     outlined: portableWifiOffTwoToneIcon,
-    twoTone: portraitIcon, },
-  portrait:{	
+    twoTone: portraitIcon,
+  },
+  portrait: {
     filled: portraitOutlinedIcon,
     outlined: portraitTwoToneIcon,
-    twoTone: powerIcon, },
-  power:{	
+    twoTone: powerIcon,
+  },
+  power: {
     filled: powerInputIcon,
     outlined: powerInputOutlinedIcon,
-    twoTone: powerInputTwoToneIcon, },
-  powerInput:{	
+    twoTone: powerInputTwoToneIcon,
+  },
+  powerInput: {
     filled: powerOffIcon,
     outlined: powerOffOutlinedIcon,
-    twoTone: powerOffTwoToneIcon, },
-  powerOff:{	
+    twoTone: powerOffTwoToneIcon,
+  },
+  powerOff: {
     filled: powerOutlinedIcon,
     outlined: powerSettingsNewIcon,
-    twoTone: powerSettingsNewOutlinedIcon, },
-  powerSettingsNew:{	
+    twoTone: powerSettingsNewOutlinedIcon,
+  },
+  powerSettingsNew: {
     filled: powerSettingsNewTwoToneIcon,
     outlined: powerTwoToneIcon,
-    twoTone: pregnantWomanIcon, },
-  pregnantWoman:{	
+    twoTone: pregnantWomanIcon,
+  },
+  pregnantWoman: {
     filled: pregnantWomanOutlinedIcon,
     outlined: pregnantWomanTwoToneIcon,
-    twoTone: presentToAllIcon, },
-  presentToAll:{	
+    twoTone: presentToAllIcon,
+  },
+  presentToAll: {
     filled: presentToAllOutlinedIcon,
     outlined: presentToAllTwoToneIcon,
-    twoTone: printIcon, },
-  print:{	
+    twoTone: printIcon,
+  },
+  print: {
     filled: printDisabledIcon,
     outlined: printDisabledOutlinedIcon,
-    twoTone: printDisabledTwoToneIcon, },
-  printDisabled:{	
+    twoTone: printDisabledTwoToneIcon,
+  },
+  printDisabled: {
     filled: printOutlinedIcon,
     outlined: printTwoToneIcon,
-    twoTone: priorityHighIcon, },
-  priorityHigh:{	
+    twoTone: priorityHighIcon,
+  },
+  priorityHigh: {
     filled: priorityHighOutlinedIcon,
     outlined: priorityHighTwoToneIcon,
-    twoTone: publicIcon, },
-  public:{	
+    twoTone: publicIcon,
+  },
+  public: {
     filled: publicOutlinedIcon,
     outlined: publicTwoToneIcon,
-    twoTone: publishIcon, },
-  publish:{	
+    twoTone: publishIcon,
+  },
+  publish: {
     filled: publishOutlinedIcon,
     outlined: publishTwoToneIcon,
-    twoTone: queryBuilderIcon, },
-  queryBuilder:{	
+    twoTone: queryBuilderIcon,
+  },
+  queryBuilder: {
     filled: queryBuilderOutlinedIcon,
     outlined: queryBuilderTwoToneIcon,
-    twoTone: questionAnswerIcon, },
-  questionAnswer:{	
+    twoTone: questionAnswerIcon,
+  },
+  questionAnswer: {
     filled: questionAnswerOutlinedIcon,
     outlined: questionAnswerTwoToneIcon,
-    twoTone: queueIcon, },
-  queue:{	
+    twoTone: queueIcon,
+  },
+  queue: {
     filled: queueMusicIcon,
     outlined: queueMusicOutlinedIcon,
-    twoTone: queueMusicTwoToneIcon, },
-  queueMusic:{	
+    twoTone: queueMusicTwoToneIcon,
+  },
+  queueMusic: {
     filled: queueOutlinedIcon,
     outlined: queuePlayNextIcon,
-    twoTone: queuePlayNextOutlinedIcon, },
-  queuePlayNext:{	
+    twoTone: queuePlayNextOutlinedIcon,
+  },
+  queuePlayNext: {
     filled: queuePlayNextTwoToneIcon,
     outlined: queueTwoToneIcon,
-    twoTone: radioIcon, },
-  radio:{	
+    twoTone: radioIcon,
+  },
+  radio: {
     filled: radioButtonCheckedIcon,
     outlined: radioButtonCheckedOutlinedIcon,
-    twoTone: radioButtonCheckedTwoToneIcon, },
-  radioButtonChecked:{	
+    twoTone: radioButtonCheckedTwoToneIcon,
+  },
+  radioButtonChecked: {
     filled: radioButtonUncheckedIcon,
     outlined: radioButtonUncheckedOutlinedIcon,
-    twoTone: radioButtonUncheckedTwoToneIcon, },
-  radioButtonUnchecked:{	
+    twoTone: radioButtonUncheckedTwoToneIcon,
+  },
+  radioButtonUnchecked: {
     filled: radioOutlinedIcon,
     outlined: radioTwoToneIcon,
-    twoTone: rateReviewIcon, },
-  rateReview:{	
+    twoTone: rateReviewIcon,
+  },
+  rateReview: {
     filled: rateReviewOutlinedIcon,
     outlined: rateReviewTwoToneIcon,
-    twoTone: receiptIcon, },
-  receipt:{	
+    twoTone: receiptIcon,
+  },
+  receipt: {
     filled: receiptOutlinedIcon,
     outlined: receiptTwoToneIcon,
-    twoTone: recentActorsIcon, },
-  recentActors:{	
+    twoTone: recentActorsIcon,
+  },
+  recentActors: {
     filled: recentActorsOutlinedIcon,
     outlined: recentActorsTwoToneIcon,
-    twoTone: recordVoiceOverIcon, },
-  recordVoiceOver:{	
+    twoTone: recordVoiceOverIcon,
+  },
+  recordVoiceOver: {
     filled: recordVoiceOverOutlinedIcon,
     outlined: recordVoiceOverTwoToneIcon,
-    twoTone: redeemIcon, },
-  redeem:{	
+    twoTone: redeemIcon,
+  },
+  redeem: {
     filled: redeemOutlinedIcon,
     outlined: redeemTwoToneIcon,
-    twoTone: redoIcon, },
-  redo:{	
+    twoTone: redoIcon,
+  },
+  redo: {
     filled: redoOutlinedIcon,
     outlined: redoTwoToneIcon,
-    twoTone: refreshIcon, },
-  refresh:{	
+    twoTone: refreshIcon,
+  },
+  refresh: {
     filled: refreshOutlinedIcon,
     outlined: refreshTwoToneIcon,
-    twoTone: removeIcon, },
-  remove:{	
+    twoTone: removeIcon,
+  },
+  remove: {
     filled: removeCircleIcon,
     outlined: removeCircleOutlineIcon,
-    twoTone: removeCircleOutlinedIcon, },
-  removeCircle:{	
+    twoTone: removeCircleOutlinedIcon,
+  },
+  removeCircle: {
     filled: removeCircleOutlineOutlinedIcon,
     outlined: removeCircleOutlineTwoToneIcon,
-    twoTone: removeCircleTwoToneIcon, },
-  removeCircleOutline:{	
+    twoTone: removeCircleTwoToneIcon,
+  },
+  removeCircleOutline: {
     filled: removeFromQueueIcon,
     outlined: removeFromQueueOutlinedIcon,
-    twoTone: removeFromQueueTwoToneIcon, },
-  removeFromQueue:{	
+    twoTone: removeFromQueueTwoToneIcon,
+  },
+  removeFromQueue: {
     filled: removeOutlinedIcon,
     outlined: removeRedEyeIcon,
-    twoTone: removeRedEyeOutlinedIcon, },
-  removeRedEye:{	
+    twoTone: removeRedEyeOutlinedIcon,
+  },
+  removeRedEye: {
     filled: removeRedEyeTwoToneIcon,
     outlined: removeShoppingCartIcon,
-    twoTone: removeShoppingCartOutlinedIcon, },
-  removeShoppingCart:{	
+    twoTone: removeShoppingCartOutlinedIcon,
+  },
+  removeShoppingCart: {
     filled: removeShoppingCartTwoToneIcon,
     outlined: removeTwoToneIcon,
-    twoTone: reorderIcon, },
-  reorder:{	
+    twoTone: reorderIcon,
+  },
+  reorder: {
     filled: reorderOutlinedIcon,
     outlined: reorderTwoToneIcon,
-    twoTone: repeatIcon, },
-  repeat:{	
+    twoTone: repeatIcon,
+  },
+  repeat: {
     filled: repeatOneIcon,
     outlined: repeatOneOutlinedIcon,
-    twoTone: repeatOneTwoToneIcon, },
-  repeatOne:{	
+    twoTone: repeatOneTwoToneIcon,
+  },
+  repeatOne: {
     filled: repeatOutlinedIcon,
     outlined: repeatTwoToneIcon,
-    twoTone: replayIcon, },
-  replay:{	
+    twoTone: replayIcon,
+  },
+  replay: {
     filled: replay1Icon,
     outlined: replay1OutlinedIcon,
-    twoTone: replay1TwoToneIcon, },
-  replay1:{	
+    twoTone: replay1TwoToneIcon,
+  },
+  replay1: {
     filled: replay3Icon,
     outlined: replay3OutlinedIcon,
-    twoTone: replay3TwoToneIcon, },
-  replay3:{	
+    twoTone: replay3TwoToneIcon,
+  },
+  replay3: {
     filled: replay5Icon,
     outlined: replay5OutlinedIcon,
-    twoTone: replay5TwoToneIcon, },
-  replay5:{	
+    twoTone: replay5TwoToneIcon,
+  },
+  replay5: {
     filled: replayOutlinedIcon,
     outlined: replayTwoToneIcon,
-    twoTone: replyIcon, },
-  reply:{	
+    twoTone: replyIcon,
+  },
+  reply: {
     filled: replyAllIcon,
     outlined: replyAllOutlinedIcon,
-    twoTone: replyAllTwoToneIcon, },
-  replyAll:{	
+    twoTone: replyAllTwoToneIcon,
+  },
+  replyAll: {
     filled: replyOutlinedIcon,
     outlined: replyTwoToneIcon,
-    twoTone: reportIcon, },
-  report:{	
+    twoTone: reportIcon,
+  },
+  report: {
     filled: reportOffIcon,
     outlined: reportOffOutlinedIcon,
-    twoTone: reportOffTwoToneIcon, },
-  reportOff:{	
+    twoTone: reportOffTwoToneIcon,
+  },
+  reportOff: {
     filled: reportOutlinedIcon,
     outlined: reportProblemIcon,
-    twoTone: reportProblemOutlinedIcon, },
-  reportProblem:{	
+    twoTone: reportProblemOutlinedIcon,
+  },
+  reportProblem: {
     filled: reportProblemTwoToneIcon,
     outlined: reportTwoToneIcon,
-    twoTone: restaurantIcon, },
-  restaurant:{	
+    twoTone: restaurantIcon,
+  },
+  restaurant: {
     filled: restaurantMenuIcon,
     outlined: restaurantMenuOutlinedIcon,
-    twoTone: restaurantMenuTwoToneIcon, },
-  restaurantMenu:{	
+    twoTone: restaurantMenuTwoToneIcon,
+  },
+  restaurantMenu: {
     filled: restaurantOutlinedIcon,
     outlined: restaurantTwoToneIcon,
-    twoTone: restoreIcon, },
-  restore:{	
+    twoTone: restoreIcon,
+  },
+  restore: {
     filled: restoreFromTrashIcon,
     outlined: restoreFromTrashOutlinedIcon,
-    twoTone: restoreFromTrashTwoToneIcon, },
-  restoreFromTrash:{	
+    twoTone: restoreFromTrashTwoToneIcon,
+  },
+  restoreFromTrash: {
     filled: restoreOutlinedIcon,
     outlined: restorePageIcon,
-    twoTone: restorePageOutlinedIcon, },
-  restorePage:{	
+    twoTone: restorePageOutlinedIcon,
+  },
+  restorePage: {
     filled: restorePageTwoToneIcon,
     outlined: restoreTwoToneIcon,
-    twoTone: ringVolumeIcon, },
-  ringVolume:{	
+    twoTone: ringVolumeIcon,
+  },
+  ringVolume: {
     filled: ringVolumeOutlinedIcon,
     outlined: ringVolumeTwoToneIcon,
-    twoTone: roomIcon, },
-  room:{	
+    twoTone: roomIcon,
+  },
+  room: {
     filled: roomOutlinedIcon,
     outlined: roomServiceIcon,
-    twoTone: roomServiceOutlinedIcon, },
-  roomService:{	
+    twoTone: roomServiceOutlinedIcon,
+  },
+  roomService: {
     filled: roomServiceTwoToneIcon,
     outlined: roomTwoToneIcon,
-    twoTone: rotate9DegreesCcwIcon, },
-  rotate9DegreesCcw:{	
+    twoTone: rotate9DegreesCcwIcon,
+  },
+  rotate9DegreesCcw: {
     filled: rotate9DegreesCcwOutlinedIcon,
     outlined: rotate9DegreesCcwTwoToneIcon,
-    twoTone: rotateLeftIcon, },
-  rotateLeft:{	
+    twoTone: rotateLeftIcon,
+  },
+  rotateLeft: {
     filled: rotateLeftOutlinedIcon,
     outlined: rotateLeftTwoToneIcon,
-    twoTone: rotateRightIcon, },
-  rotateRight:{	
+    twoTone: rotateRightIcon,
+  },
+  rotateRight: {
     filled: rotateRightOutlinedIcon,
     outlined: rotateRightTwoToneIcon,
-    twoTone: roundedCornerIcon, },
-  roundedCorner:{	
+    twoTone: roundedCornerIcon,
+  },
+  roundedCorner: {
     filled: roundedCornerOutlinedIcon,
     outlined: roundedCornerOutlinedIcon,
-    twoTone: roundedCornerTwoToneIcon, },
-  router:{	
+    twoTone: roundedCornerTwoToneIcon,
+  },
+  router: {
     filled: routerIcon,
     outlined: routerOutlinedIcon,
-    twoTone: routerTwoToneIcon, },
-  rowing:{	
+    twoTone: routerTwoToneIcon,
+  },
+  rowing: {
     filled: rowingIcon,
     outlined: rowingOutlinedIcon,
-    twoTone: rowingTwoToneIcon, },
-  rssFeed:{	
+    twoTone: rowingTwoToneIcon,
+  },
+  rssFeed: {
     filled: rssFeedIcon,
     outlined: rssFeedOutlinedIcon,
-    twoTone: rssFeedTwoToneIcon, },
-  rvHookup:{	
+    twoTone: rssFeedTwoToneIcon,
+  },
+  rvHookup: {
     filled: rvHookupIcon,
     outlined: rvHookupOutlinedIcon,
-    twoTone: rvHookupTwoToneIcon, },
-  satellite:{	
+    twoTone: rvHookupTwoToneIcon,
+  },
+  satellite: {
     filled: satelliteIcon,
     outlined: satelliteOutlinedIcon,
-    twoTone: satelliteTwoToneIcon, },
-  save:{	
+    twoTone: satelliteTwoToneIcon,
+  },
+  save: {
     filled: saveIcon,
     outlined: saveAltIcon,
-    twoTone: saveAltOutlinedIcon, },
-  saveAlt:{	
+    twoTone: saveAltOutlinedIcon,
+  },
+  saveAlt: {
     filled: saveAltTwoToneIcon,
     outlined: saveOutlinedIcon,
-    twoTone: saveTwoToneIcon, },
-  scanner:{	
+    twoTone: saveTwoToneIcon,
+  },
+  scanner: {
     filled: scannerIcon,
     outlined: scannerOutlinedIcon,
-    twoTone: scannerTwoToneIcon, },
-  scatterPlot:{	
+    twoTone: scannerTwoToneIcon,
+  },
+  scatterPlot: {
     filled: scatterPlotIcon,
     outlined: scatterPlotOutlinedIcon,
-    twoTone: scatterPlotTwoToneIcon, },
-  schedule:{	
+    twoTone: scatterPlotTwoToneIcon,
+  },
+  schedule: {
     filled: scheduleIcon,
     outlined: scheduleOutlinedIcon,
-    twoTone: scheduleTwoToneIcon, },
-  school:{	
+    twoTone: scheduleTwoToneIcon,
+  },
+  school: {
     filled: schoolIcon,
     outlined: schoolOutlinedIcon,
-    twoTone: schoolTwoToneIcon, },
-  score:{	
+    twoTone: schoolTwoToneIcon,
+  },
+  score: {
     filled: scoreIcon,
     outlined: scoreOutlinedIcon,
-    twoTone: scoreTwoToneIcon, },
-  screenLockLandscape:{	
+    twoTone: scoreTwoToneIcon,
+  },
+  screenLockLandscape: {
     filled: screenLockLandscapeIcon,
     outlined: screenLockLandscapeOutlinedIcon,
-    twoTone: screenLockLandscapeTwoToneIcon, },
-  screenLockPortrait:{	
+    twoTone: screenLockLandscapeTwoToneIcon,
+  },
+  screenLockPortrait: {
     filled: screenLockPortraitIcon,
     outlined: screenLockPortraitOutlinedIcon,
-    twoTone: screenLockPortraitTwoToneIcon, },
-  screenLockRotation:{	
+    twoTone: screenLockPortraitTwoToneIcon,
+  },
+  screenLockRotation: {
     filled: screenLockRotationIcon,
     outlined: screenLockRotationOutlinedIcon,
-    twoTone: screenLockRotationTwoToneIcon, },
-  screenRotation:{	
+    twoTone: screenLockRotationTwoToneIcon,
+  },
+  screenRotation: {
     filled: screenRotationIcon,
     outlined: screenRotationOutlinedIcon,
-    twoTone: screenRotationTwoToneIcon, },
-  screenShare:{	
+    twoTone: screenRotationTwoToneIcon,
+  },
+  screenShare: {
     filled: screenShareIcon,
     outlined: screenShareOutlinedIcon,
-    twoTone: screenShareTwoToneIcon, },
-  sdCard:{	
+    twoTone: screenShareTwoToneIcon,
+  },
+  sdCard: {
     filled: sdCardIcon,
     outlined: sdCardOutlinedIcon,
-    twoTone: sdCardTwoToneIcon, },
-  sdStorage:{	
+    twoTone: sdCardTwoToneIcon,
+  },
+  sdStorage: {
     filled: sdStorageIcon,
     outlined: sdStorageOutlinedIcon,
-    twoTone: sdStorageTwoToneIcon, },
-  search:{	
+    twoTone: sdStorageTwoToneIcon,
+  },
+  search: {
     filled: searchIcon,
     outlined: searchOutlinedIcon,
-    twoTone: searchTwoToneIcon, },
-  security:{	
+    twoTone: searchTwoToneIcon,
+  },
+  security: {
     filled: securityIcon,
     outlined: securityOutlinedIcon,
-    twoTone: securityTwoToneIcon, },
-  selectAll:{	
+    twoTone: securityTwoToneIcon,
+  },
+  selectAll: {
     filled: selectAllIcon,
     outlined: selectAllOutlinedIcon,
-    twoTone: selectAllTwoToneIcon, },
-  send:{	
+    twoTone: selectAllTwoToneIcon,
+  },
+  send: {
     filled: sendIcon,
     outlined: sendOutlinedIcon,
-    twoTone: sendTwoToneIcon, },
-  sentimentDissatisfied:{	
+    twoTone: sendTwoToneIcon,
+  },
+  sentimentDissatisfied: {
     filled: sentimentDissatisfiedIcon,
     outlined: sentimentDissatisfiedOutlinedIcon,
-    twoTone: sentimentDissatisfiedTwoToneIcon, },
-  sentimentSatisfied:{	
+    twoTone: sentimentDissatisfiedTwoToneIcon,
+  },
+  sentimentSatisfied: {
     filled: sentimentSatisfiedIcon,
     outlined: sentimentSatisfiedAltIcon,
-    twoTone: sentimentSatisfiedAltOutlinedIcon, },
-  sentimentSatisfiedAlt:{	
+    twoTone: sentimentSatisfiedAltOutlinedIcon,
+  },
+  sentimentSatisfiedAlt: {
     filled: sentimentSatisfiedAltTwoToneIcon,
     outlined: sentimentSatisfiedOutlinedIcon,
-    twoTone: sentimentSatisfiedTwoToneIcon, },
-  sentimentVeryDissatisfied:{	
+    twoTone: sentimentSatisfiedTwoToneIcon,
+  },
+  sentimentVeryDissatisfied: {
     filled: sentimentVeryDissatisfiedIcon,
     outlined: sentimentVeryDissatisfiedOutlinedIcon,
-    twoTone: sentimentVeryDissatisfiedTwoToneIcon, },
-  sentimentVerySatisfied:{	
+    twoTone: sentimentVeryDissatisfiedTwoToneIcon,
+  },
+  sentimentVerySatisfied: {
     filled: sentimentVerySatisfiedIcon,
     outlined: sentimentVerySatisfiedOutlinedIcon,
-    twoTone: sentimentVerySatisfiedTwoToneIcon, },
-  settings:{	
+    twoTone: sentimentVerySatisfiedTwoToneIcon,
+  },
+  settings: {
     filled: settingsIcon,
     outlined: settingsApplicationsIcon,
-    twoTone: settingsApplicationsOutlinedIcon, },
-  settingsApplications:{	
+    twoTone: settingsApplicationsOutlinedIcon,
+  },
+  settingsApplications: {
     filled: settingsApplicationsTwoToneIcon,
     outlined: settingsBackupRestoreIcon,
-    twoTone: settingsBackupRestoreOutlinedIcon, },
-  settingsBackupRestore:{	
+    twoTone: settingsBackupRestoreOutlinedIcon,
+  },
+  settingsBackupRestore: {
     filled: settingsBackupRestoreTwoToneIcon,
     outlined: settingsBluetoothIcon,
-    twoTone: settingsBluetoothOutlinedIcon, },
-  settingsBluetooth:{	
+    twoTone: settingsBluetoothOutlinedIcon,
+  },
+  settingsBluetooth: {
     filled: settingsBluetoothTwoToneIcon,
     outlined: settingsBrightnessIcon,
-    twoTone: settingsBrightnessOutlinedIcon, },
-  settingsBrightness:{	
+    twoTone: settingsBrightnessOutlinedIcon,
+  },
+  settingsBrightness: {
     filled: settingsBrightnessTwoToneIcon,
     outlined: settingsCellIcon,
-    twoTone: settingsCellOutlinedIcon, },
-  settingsCell:{	
+    twoTone: settingsCellOutlinedIcon,
+  },
+  settingsCell: {
     filled: settingsCellTwoToneIcon,
     outlined: settingsEthernetIcon,
-    twoTone: settingsEthernetOutlinedIcon, },
-  settingsEthernet:{	
+    twoTone: settingsEthernetOutlinedIcon,
+  },
+  settingsEthernet: {
     filled: settingsEthernetTwoToneIcon,
     outlined: settingsInputAntennaIcon,
-    twoTone: settingsInputAntennaOutlinedIcon, },
-  settingsInputAntenna:{	
+    twoTone: settingsInputAntennaOutlinedIcon,
+  },
+  settingsInputAntenna: {
     filled: settingsInputAntennaTwoToneIcon,
     outlined: settingsInputComponentIcon,
-    twoTone: settingsInputComponentOutlinedIcon, },
-  settingsInputComponent:{	
+    twoTone: settingsInputComponentOutlinedIcon,
+  },
+  settingsInputComponent: {
     filled: settingsInputComponentTwoToneIcon,
     outlined: settingsInputCompositeIcon,
-    twoTone: settingsInputCompositeOutlinedIcon, },
-  settingsInputComposite:{	
+    twoTone: settingsInputCompositeOutlinedIcon,
+  },
+  settingsInputComposite: {
     filled: settingsInputCompositeTwoToneIcon,
     outlined: settingsInputHdmiIcon,
-    twoTone: settingsInputHdmiOutlinedIcon, },
-  settingsInputHdmi:{	
+    twoTone: settingsInputHdmiOutlinedIcon,
+  },
+  settingsInputHdmi: {
     filled: settingsInputHdmiTwoToneIcon,
     outlined: settingsInputSvideoIcon,
-    twoTone: settingsInputSvideoOutlinedIcon, },
-  settingsInputSvideo:{	
+    twoTone: settingsInputSvideoOutlinedIcon,
+  },
+  settingsInputSvideo: {
     filled: settingsInputSvideoTwoToneIcon,
     outlined: settingsOutlinedIcon,
-    twoTone: settingsOverscanIcon, },
-  settingsOverscan:{	
+    twoTone: settingsOverscanIcon,
+  },
+  settingsOverscan: {
     filled: settingsOverscanOutlinedIcon,
     outlined: settingsOverscanTwoToneIcon,
-    twoTone: settingsPhoneIcon, },
-  settingsPhone:{	
+    twoTone: settingsPhoneIcon,
+  },
+  settingsPhone: {
     filled: settingsPhoneOutlinedIcon,
     outlined: settingsPhoneTwoToneIcon,
-    twoTone: settingsPowerIcon, },
-  settingsPower:{	
+    twoTone: settingsPowerIcon,
+  },
+  settingsPower: {
     filled: settingsPowerOutlinedIcon,
     outlined: settingsPowerTwoToneIcon,
-    twoTone: settingsRemoteIcon, },
-  settingsRemote:{	
+    twoTone: settingsRemoteIcon,
+  },
+  settingsRemote: {
     filled: settingsRemoteOutlinedIcon,
     outlined: settingsRemoteTwoToneIcon,
-    twoTone: settingsSystemDaydreamIcon, },
-  settingsSystemDaydream:{	
+    twoTone: settingsSystemDaydreamIcon,
+  },
+  settingsSystemDaydream: {
     filled: settingsSystemDaydreamOutlinedIcon,
     outlined: settingsSystemDaydreamTwoToneIcon,
-    twoTone: settingsTwoToneIcon, },
-  settingsVoice:{	
+    twoTone: settingsTwoToneIcon,
+  },
+  settingsVoice: {
     filled: settingsVoiceIcon,
     outlined: settingsVoiceOutlinedIcon,
-    twoTone: settingsVoiceTwoToneIcon, },
-  share:{	
+    twoTone: settingsVoiceTwoToneIcon,
+  },
+  share: {
     filled: shareIcon,
     outlined: shareOutlinedIcon,
-    twoTone: shareTwoToneIcon, },
-  shop:{	
+    twoTone: shareTwoToneIcon,
+  },
+  shop: {
     filled: shopIcon,
     outlined: shopOutlinedIcon,
-    twoTone: shoppingBasketIcon, },
-  shoppingBasket:{	
+    twoTone: shoppingBasketIcon,
+  },
+  shoppingBasket: {
     filled: shoppingBasketOutlinedIcon,
     outlined: shoppingBasketTwoToneIcon,
-    twoTone: shoppingCartIcon, },
-  shoppingCart:{	
+    twoTone: shoppingCartIcon,
+  },
+  shoppingCart: {
     filled: shoppingCartOutlinedIcon,
     outlined: shoppingCartTwoToneIcon,
-    twoTone: shopTwoIcon, },
-  shopTwo:{	
+    twoTone: shopTwoIcon,
+  },
+  shopTwo: {
     filled: shopTwoOutlinedIcon,
     outlined: shopTwoToneIcon,
-    twoTone: shopTwoTwoToneIcon, },
-  shortText:{	
+    twoTone: shopTwoTwoToneIcon,
+  },
+  shortText: {
     filled: shortTextIcon,
     outlined: shortTextOutlinedIcon,
-    twoTone: shortTextTwoToneIcon, },
-  showChart:{	
+    twoTone: shortTextTwoToneIcon,
+  },
+  showChart: {
     filled: showChartIcon,
     outlined: showChartOutlinedIcon,
-    twoTone: showChartTwoToneIcon, },
-  shuffle:{	
+    twoTone: showChartTwoToneIcon,
+  },
+  shuffle: {
     filled: shuffleIcon,
     outlined: shuffleOutlinedIcon,
-    twoTone: shuffleTwoToneIcon, },
-  shutterSpeed:{	
+    twoTone: shuffleTwoToneIcon,
+  },
+  shutterSpeed: {
     filled: shutterSpeedIcon,
     outlined: shutterSpeedOutlinedIcon,
-    twoTone: shutterSpeedTwoToneIcon, },
-  signalCellularBar:{	
+    twoTone: shutterSpeedTwoToneIcon,
+  },
+  signalCellularBar: {
     filled: signalCellularBarIcon,
     outlined: signalCellularBarOutlinedIcon,
-    twoTone: signalCellularBarTwoToneIcon, },
-  signalCellular1Bar:{	
+    twoTone: signalCellularBarTwoToneIcon,
+  },
+  signalCellular1Bar: {
     filled: signalCellular1BarIcon,
     outlined: signalCellular1BarOutlinedIcon,
-    twoTone: signalCellular1BarTwoToneIcon, },
-  signalCellular2Bar:{	
+    twoTone: signalCellular1BarTwoToneIcon,
+  },
+  signalCellular2Bar: {
     filled: signalCellular2BarIcon,
     outlined: signalCellular2BarOutlinedIcon,
-    twoTone: signalCellular2BarTwoToneIcon, },
-  signalCellular3Bar:{	
+    twoTone: signalCellular2BarTwoToneIcon,
+  },
+  signalCellular3Bar: {
     filled: signalCellular3BarIcon,
     outlined: signalCellular3BarOutlinedIcon,
-    twoTone: signalCellular3BarTwoToneIcon, },
-  signalCellular4Bar:{	
+    twoTone: signalCellular3BarTwoToneIcon,
+  },
+  signalCellular4Bar: {
     filled: signalCellular4BarIcon,
     outlined: signalCellular4BarOutlinedIcon,
-    twoTone: signalCellular4BarTwoToneIcon, },
-  signalCellularAlt:{	
+    twoTone: signalCellular4BarTwoToneIcon,
+  },
+  signalCellularAlt: {
     filled: signalCellularAltIcon,
     outlined: signalCellularAltOutlinedIcon,
-    twoTone: signalCellularAltTwoToneIcon, },
-  signalCellularConnectedNoInternetBar:{	
+    twoTone: signalCellularAltTwoToneIcon,
+  },
+  signalCellularConnectedNoInternetBar: {
     filled: signalCellularConnectedNoInternetBarIcon,
     outlined: signalCellularConnectedNoInternetBarOutlinedIcon,
-    twoTone: signalCellularConnectedNoInternetBarTwoToneIcon, },
-  signalCellularConnectedNoInternet1Bar:{	
+    twoTone: signalCellularConnectedNoInternetBarTwoToneIcon,
+  },
+  signalCellularConnectedNoInternet1Bar: {
     filled: signalCellularConnectedNoInternet1BarIcon,
     outlined: signalCellularConnectedNoInternet1BarOutlinedIcon,
-    twoTone: signalCellularConnectedNoInternet1BarTwoToneIcon, },
-  signalCellularConnectedNoInternet2Bar:{	
+    twoTone: signalCellularConnectedNoInternet1BarTwoToneIcon,
+  },
+  signalCellularConnectedNoInternet2Bar: {
     filled: signalCellularConnectedNoInternet2BarIcon,
     outlined: signalCellularConnectedNoInternet2BarOutlinedIcon,
-    twoTone: signalCellularConnectedNoInternet2BarTwoToneIcon, },
-  signalCellularConnectedNoInternet3Bar:{	
+    twoTone: signalCellularConnectedNoInternet2BarTwoToneIcon,
+  },
+  signalCellularConnectedNoInternet3Bar: {
     filled: signalCellularConnectedNoInternet3BarIcon,
     outlined: signalCellularConnectedNoInternet3BarOutlinedIcon,
-    twoTone: signalCellularConnectedNoInternet3BarTwoToneIcon, },
-  signalCellularConnectedNoInternet4Bar:{	
+    twoTone: signalCellularConnectedNoInternet3BarTwoToneIcon,
+  },
+  signalCellularConnectedNoInternet4Bar: {
     filled: signalCellularConnectedNoInternet4BarIcon,
     outlined: signalCellularConnectedNoInternet4BarOutlinedIcon,
-    twoTone: signalCellularConnectedNoInternet4BarTwoToneIcon, },
-  signalCellularNoSim:{	
+    twoTone: signalCellularConnectedNoInternet4BarTwoToneIcon,
+  },
+  signalCellularNoSim: {
     filled: signalCellularNoSimIcon,
     outlined: signalCellularNoSimOutlinedIcon,
-    twoTone: signalCellularNoSimTwoToneIcon, },
-  signalCellularNull:{	
+    twoTone: signalCellularNoSimTwoToneIcon,
+  },
+  signalCellularNull: {
     filled: signalCellularNullIcon,
     outlined: signalCellularNullOutlinedIcon,
-    twoTone: signalCellularNullTwoToneIcon, },
-  signalCellularOff:{	
+    twoTone: signalCellularNullTwoToneIcon,
+  },
+  signalCellularOff: {
     filled: signalCellularOffIcon,
     outlined: signalCellularOffOutlinedIcon,
-    twoTone: signalCellularOffTwoToneIcon, },
-  signalWifiBar:{	
+    twoTone: signalCellularOffTwoToneIcon,
+  },
+  signalWifiBar: {
     filled: signalWifiBarIcon,
     outlined: signalWifiBarOutlinedIcon,
-    twoTone: signalWifiBarTwoToneIcon, },
-  signalWifi1Bar:{	
+    twoTone: signalWifiBarTwoToneIcon,
+  },
+  signalWifi1Bar: {
     filled: signalWifi1BarIcon,
     outlined: signalWifi1BarLockIcon,
-    twoTone: signalWifi1BarLockOutlinedIcon, },
-  signalWifi1BarLock:{	
+    twoTone: signalWifi1BarLockOutlinedIcon,
+  },
+  signalWifi1BarLock: {
     filled: signalWifi1BarLockTwoToneIcon,
     outlined: signalWifi1BarOutlinedIcon,
-    twoTone: signalWifi1BarTwoToneIcon, },
-  signalWifi2Bar:{	
+    twoTone: signalWifi1BarTwoToneIcon,
+  },
+  signalWifi2Bar: {
     filled: signalWifi2BarIcon,
     outlined: signalWifi2BarLockIcon,
-    twoTone: signalWifi2BarLockOutlinedIcon, },
-  signalWifi2BarLock:{	
+    twoTone: signalWifi2BarLockOutlinedIcon,
+  },
+  signalWifi2BarLock: {
     filled: signalWifi2BarLockTwoToneIcon,
     outlined: signalWifi2BarOutlinedIcon,
-    twoTone: signalWifi2BarTwoToneIcon, },
-  signalWifi3Bar:{	
+    twoTone: signalWifi2BarTwoToneIcon,
+  },
+  signalWifi3Bar: {
     filled: signalWifi3BarIcon,
     outlined: signalWifi3BarLockIcon,
-    twoTone: signalWifi3BarLockOutlinedIcon, },
-  signalWifi3BarLock:{	
+    twoTone: signalWifi3BarLockOutlinedIcon,
+  },
+  signalWifi3BarLock: {
     filled: signalWifi3BarLockTwoToneIcon,
     outlined: signalWifi3BarOutlinedIcon,
-    twoTone: signalWifi3BarTwoToneIcon, },
-  signalWifi4Bar:{	
+    twoTone: signalWifi3BarTwoToneIcon,
+  },
+  signalWifi4Bar: {
     filled: signalWifi4BarIcon,
     outlined: signalWifi4BarLockIcon,
-    twoTone: signalWifi4BarLockOutlinedIcon, },
-  signalWifi4BarLock:{	
+    twoTone: signalWifi4BarLockOutlinedIcon,
+  },
+  signalWifi4BarLock: {
     filled: signalWifi4BarLockTwoToneIcon,
     outlined: signalWifi4BarOutlinedIcon,
-    twoTone: signalWifi4BarTwoToneIcon, },
-  signalWifiOff:{	
+    twoTone: signalWifi4BarTwoToneIcon,
+  },
+  signalWifiOff: {
     filled: signalWifiOffIcon,
     outlined: signalWifiOffOutlinedIcon,
-    twoTone: signalWifiOffTwoToneIcon, },
-  simCard:{	
+    twoTone: signalWifiOffTwoToneIcon,
+  },
+  simCard: {
     filled: simCardIcon,
     outlined: simCardOutlinedIcon,
-    twoTone: simCardTwoToneIcon, },
-  skipNext:{	
+    twoTone: simCardTwoToneIcon,
+  },
+  skipNext: {
     filled: skipNextIcon,
     outlined: skipNextOutlinedIcon,
-    twoTone: skipNextTwoToneIcon, },
-  skipPrevious:{	
+    twoTone: skipNextTwoToneIcon,
+  },
+  skipPrevious: {
     filled: skipPreviousIcon,
     outlined: skipPreviousOutlinedIcon,
-    twoTone: skipPreviousTwoToneIcon, },
-  slideshow:{	
+    twoTone: skipPreviousTwoToneIcon,
+  },
+  slideshow: {
     filled: slideshowIcon,
     outlined: slideshowOutlinedIcon,
-    twoTone: slideshowTwoToneIcon, },
-  slowMotionVideo:{	
+    twoTone: slideshowTwoToneIcon,
+  },
+  slowMotionVideo: {
     filled: slowMotionVideoIcon,
     outlined: slowMotionVideoOutlinedIcon,
-    twoTone: slowMotionVideoTwoToneIcon, },
-  smartphone:{	
+    twoTone: slowMotionVideoTwoToneIcon,
+  },
+  smartphone: {
     filled: smartphoneIcon,
     outlined: smartphoneOutlinedIcon,
-    twoTone: smartphoneTwoToneIcon, },
-  smokeFree:{	
+    twoTone: smartphoneTwoToneIcon,
+  },
+  smokeFree: {
     filled: smokeFreeIcon,
     outlined: smokeFreeOutlinedIcon,
-    twoTone: smokeFreeTwoToneIcon, },
-  smokingRooms:{	
+    twoTone: smokeFreeTwoToneIcon,
+  },
+  smokingRooms: {
     filled: smokingRoomsIcon,
     outlined: smokingRoomsOutlinedIcon,
-    twoTone: smokingRoomsTwoToneIcon, },
-  sms:{	
+    twoTone: smokingRoomsTwoToneIcon,
+  },
+  sms: {
     filled: smsIcon,
     outlined: smsFailedIcon,
-    twoTone: smsFailedOutlinedIcon, },
-  smsFailed:{	
+    twoTone: smsFailedOutlinedIcon,
+  },
+  smsFailed: {
     filled: smsFailedTwoToneIcon,
     outlined: smsOutlinedIcon,
-    twoTone: smsTwoToneIcon, },
-  snooze:{	
+    twoTone: smsTwoToneIcon,
+  },
+  snooze: {
     filled: snoozeIcon,
     outlined: snoozeOutlinedIcon,
-    twoTone: snoozeTwoToneIcon, },
-  sort:{	
+    twoTone: snoozeTwoToneIcon,
+  },
+  sort: {
     filled: sortIcon,
     outlined: sortByAlphaIcon,
-    twoTone: sortByAlphaOutlinedIcon, },
-  sortByAlpha:{	
+    twoTone: sortByAlphaOutlinedIcon,
+  },
+  sortByAlpha: {
     filled: sortByAlphaTwoToneIcon,
     outlined: sortOutlinedIcon,
-    twoTone: sortTwoToneIcon, },
-  spa:{	
+    twoTone: sortTwoToneIcon,
+  },
+  spa: {
     filled: spaIcon,
     outlined: spaceBarIcon,
-    twoTone: spaceBarOutlinedIcon, },
-  spaceBar:{	
+    twoTone: spaceBarOutlinedIcon,
+  },
+  spaceBar: {
     filled: spaceBarTwoToneIcon,
     outlined: spaOutlinedIcon,
-    twoTone: spaTwoToneIcon, },
-  speaker:{	
+    twoTone: spaTwoToneIcon,
+  },
+  speaker: {
     filled: speakerIcon,
     outlined: speakerGroupIcon,
-    twoTone: speakerGroupOutlinedIcon, },
-  speakerGroup:{	
+    twoTone: speakerGroupOutlinedIcon,
+  },
+  speakerGroup: {
     filled: speakerGroupTwoToneIcon,
     outlined: speakerNotesIcon,
-    twoTone: speakerNotesOffIcon, },
-  speakerNotes:{	
+    twoTone: speakerNotesOffIcon,
+  },
+  speakerNotes: {
     filled: speakerNotesOffOutlinedIcon,
     outlined: speakerNotesOffTwoToneIcon,
-    twoTone: speakerNotesOutlinedIcon, },
-  speakerNotesOff:{	
+    twoTone: speakerNotesOutlinedIcon,
+  },
+  speakerNotesOff: {
     filled: speakerNotesTwoToneIcon,
     outlined: speakerOutlinedIcon,
-    twoTone: speakerPhoneIcon, },
-  speakerPhone:{	
+    twoTone: speakerPhoneIcon,
+  },
+  speakerPhone: {
     filled: speakerPhoneOutlinedIcon,
     outlined: speakerPhoneTwoToneIcon,
-    twoTone: speakerTwoToneIcon, },
-  spellcheck:{	
+    twoTone: speakerTwoToneIcon,
+  },
+  spellcheck: {
     filled: spellcheckIcon,
     outlined: spellcheckOutlinedIcon,
-    twoTone: spellcheckTwoToneIcon, },
-  star:{	
+    twoTone: spellcheckTwoToneIcon,
+  },
+  star: {
     filled: starIcon,
     outlined: starBorderIcon,
-    twoTone: starBorderOutlinedIcon, },
-  starBorder:{	
+    twoTone: starBorderOutlinedIcon,
+  },
+  starBorder: {
     filled: starBorderTwoToneIcon,
     outlined: starHalfIcon,
-    twoTone: starHalfOutlinedIcon, },
-  starHalf:{	
+    twoTone: starHalfOutlinedIcon,
+  },
+  starHalf: {
     filled: starHalfTwoToneIcon,
     outlined: starOutlinedIcon,
-    twoTone: starRateIcon, },
-  starRate:{	
+    twoTone: starRateIcon,
+  },
+  starRate: {
     filled: starRateOutlinedIcon,
     outlined: starRateTwoToneIcon,
-    twoTone: starsIcon, },
-  stars:{	
+    twoTone: starsIcon,
+  },
+  stars: {
     filled: starsOutlinedIcon,
     outlined: starsTwoToneIcon,
-    twoTone: starTwoToneIcon, },
-  stayCurrentLandscape:{	
+    twoTone: starTwoToneIcon,
+  },
+  stayCurrentLandscape: {
     filled: stayCurrentLandscapeIcon,
     outlined: stayCurrentLandscapeOutlinedIcon,
-    twoTone: stayCurrentLandscapeTwoToneIcon, },
-  stayCurrentPortrait:{	
+    twoTone: stayCurrentLandscapeTwoToneIcon,
+  },
+  stayCurrentPortrait: {
     filled: stayCurrentPortraitIcon,
     outlined: stayCurrentPortraitOutlinedIcon,
-    twoTone: stayCurrentPortraitTwoToneIcon, },
-  stayPrimaryLandscape:{	
+    twoTone: stayCurrentPortraitTwoToneIcon,
+  },
+  stayPrimaryLandscape: {
     filled: stayPrimaryLandscapeIcon,
     outlined: stayPrimaryLandscapeOutlinedIcon,
-    twoTone: stayPrimaryLandscapeTwoToneIcon, },
-  stayPrimaryPortrait:{	
+    twoTone: stayPrimaryLandscapeTwoToneIcon,
+  },
+  stayPrimaryPortrait: {
     filled: stayPrimaryPortraitIcon,
     outlined: stayPrimaryPortraitOutlinedIcon,
-    twoTone: stayPrimaryPortraitTwoToneIcon, },
-  stop:{	
+    twoTone: stayPrimaryPortraitTwoToneIcon,
+  },
+  stop: {
     filled: stopIcon,
     outlined: stopOutlinedIcon,
-    twoTone: stopScreenShareIcon, },
-  stopScreenShare:{	
+    twoTone: stopScreenShareIcon,
+  },
+  stopScreenShare: {
     filled: stopScreenShareOutlinedIcon,
     outlined: stopScreenShareTwoToneIcon,
-    twoTone: stopTwoToneIcon, },
-  storage:{	
+    twoTone: stopTwoToneIcon,
+  },
+  storage: {
     filled: storageIcon,
     outlined: storageOutlinedIcon,
-    twoTone: storageTwoToneIcon, },
-  store:{	
+    twoTone: storageTwoToneIcon,
+  },
+  store: {
     filled: storeIcon,
     outlined: storeMallDirectoryIcon,
-    twoTone: storeMallDirectoryOutlinedIcon, },
-  storeMallDirectory:{	
+    twoTone: storeMallDirectoryOutlinedIcon,
+  },
+  storeMallDirectory: {
     filled: storeMallDirectoryTwoToneIcon,
     outlined: storeOutlinedIcon,
-    twoTone: storeTwoToneIcon, },
-  straighten:{	
+    twoTone: storeTwoToneIcon,
+  },
+  straighten: {
     filled: straightenIcon,
     outlined: straightenOutlinedIcon,
-    twoTone: straightenTwoToneIcon, },
-  streetview:{	
+    twoTone: straightenTwoToneIcon,
+  },
+  streetview: {
     filled: streetviewIcon,
     outlined: streetviewOutlinedIcon,
-    twoTone: streetviewTwoToneIcon, },
-  strikethroughS:{	
+    twoTone: streetviewTwoToneIcon,
+  },
+  strikethroughS: {
     filled: strikethroughSIcon,
     outlined: strikethroughSOutlinedIcon,
-    twoTone: strikethroughSTwoToneIcon, },
-  style:{	
+    twoTone: strikethroughSTwoToneIcon,
+  },
+  style: {
     filled: styleIcon,
     outlined: styleOutlinedIcon,
-    twoTone: styleTwoToneIcon, },
-  subdirectoryArrowLeft:{	
+    twoTone: styleTwoToneIcon,
+  },
+  subdirectoryArrowLeft: {
     filled: subdirectoryArrowLeftIcon,
     outlined: subdirectoryArrowLeftOutlinedIcon,
-    twoTone: subdirectoryArrowLeftTwoToneIcon, },
-  subdirectoryArrowRight:{	
+    twoTone: subdirectoryArrowLeftTwoToneIcon,
+  },
+  subdirectoryArrowRight: {
     filled: subdirectoryArrowRightIcon,
     outlined: subdirectoryArrowRightOutlinedIcon,
-    twoTone: subdirectoryArrowRightTwoToneIcon, },
-  subject:{	
+    twoTone: subdirectoryArrowRightTwoToneIcon,
+  },
+  subject: {
     filled: subjectIcon,
     outlined: subjectOutlinedIcon,
-    twoTone: subjectTwoToneIcon, },
-  subscriptions:{	
+    twoTone: subjectTwoToneIcon,
+  },
+  subscriptions: {
     filled: subscriptionsIcon,
     outlined: subscriptionsOutlinedIcon,
-    twoTone: subscriptionsTwoToneIcon, },
-  subtitles:{	
+    twoTone: subscriptionsTwoToneIcon,
+  },
+  subtitles: {
     filled: subtitlesIcon,
     outlined: subtitlesOutlinedIcon,
-    twoTone: subtitlesTwoToneIcon, },
-  subway:{	
+    twoTone: subtitlesTwoToneIcon,
+  },
+  subway: {
     filled: subwayIcon,
     outlined: subwayOutlinedIcon,
-    twoTone: subwayTwoToneIcon, },
-  supervisedUserCircle:{	
+    twoTone: subwayTwoToneIcon,
+  },
+  supervisedUserCircle: {
     filled: supervisedUserCircleIcon,
     outlined: supervisedUserCircleOutlinedIcon,
-    twoTone: supervisedUserCircleTwoToneIcon, },
-  supervisorAccount:{	
+    twoTone: supervisedUserCircleTwoToneIcon,
+  },
+  supervisorAccount: {
     filled: supervisorAccountIcon,
     outlined: supervisorAccountOutlinedIcon,
-    twoTone: supervisorAccountTwoToneIcon, },
-  surroundSound:{	
+    twoTone: supervisorAccountTwoToneIcon,
+  },
+  surroundSound: {
     filled: surroundSoundIcon,
     outlined: surroundSoundOutlinedIcon,
-    twoTone: surroundSoundTwoToneIcon, },
-  swapCalls:{	
+    twoTone: surroundSoundTwoToneIcon,
+  },
+  swapCalls: {
     filled: swapCallsIcon,
     outlined: swapCallsOutlinedIcon,
-    twoTone: swapCallsTwoToneIcon, },
-  swapHoriz:{	
+    twoTone: swapCallsTwoToneIcon,
+  },
+  swapHoriz: {
     filled: swapHorizIcon,
     outlined: swapHorizontalCircleIcon,
-    twoTone: swapHorizontalCircleOutlinedIcon, },
-  swapHorizontalCircle:{	
+    twoTone: swapHorizontalCircleOutlinedIcon,
+  },
+  swapHorizontalCircle: {
     filled: swapHorizontalCircleTwoToneIcon,
     outlined: swapHorizOutlinedIcon,
-    twoTone: swapHorizTwoToneIcon, },
-  swapVert:{	
+    twoTone: swapHorizTwoToneIcon,
+  },
+  swapVert: {
     filled: swapVertIcon,
     outlined: swapVerticalCircleIcon,
-    twoTone: swapVerticalCircleOutlinedIcon, },
-  swapVerticalCircle:{	
+    twoTone: swapVerticalCircleOutlinedIcon,
+  },
+  swapVerticalCircle: {
     filled: swapVerticalCircleTwoToneIcon,
     outlined: swapVertOutlinedIcon,
-    twoTone: swapVertTwoToneIcon, },
-  switchCamera:{	
+    twoTone: swapVertTwoToneIcon,
+  },
+  switchCamera: {
     filled: switchCameraIcon,
     outlined: switchCameraOutlinedIcon,
-    twoTone: switchCameraTwoToneIcon, },
-  switchVideo:{	
+    twoTone: switchCameraTwoToneIcon,
+  },
+  switchVideo: {
     filled: switchVideoIcon,
     outlined: switchVideoOutlinedIcon,
-    twoTone: switchVideoTwoToneIcon, },
-  sync:{	
+    twoTone: switchVideoTwoToneIcon,
+  },
+  sync: {
     filled: syncIcon,
     outlined: syncDisabledIcon,
-    twoTone: syncDisabledOutlinedIcon, },
-  syncDisabled:{	
+    twoTone: syncDisabledOutlinedIcon,
+  },
+  syncDisabled: {
     filled: syncDisabledTwoToneIcon,
     outlined: syncOutlinedIcon,
-    twoTone: syncProblemIcon, },
-  syncProblem:{	
+    twoTone: syncProblemIcon,
+  },
+  syncProblem: {
     filled: syncProblemOutlinedIcon,
     outlined: syncProblemTwoToneIcon,
-    twoTone: syncTwoToneIcon, },
-  systemUpdate:{	
+    twoTone: syncTwoToneIcon,
+  },
+  systemUpdate: {
     filled: systemUpdateIcon,
     outlined: systemUpdateOutlinedIcon,
-    twoTone: systemUpdateTwoToneIcon, },
-  tab:{	
+    twoTone: systemUpdateTwoToneIcon,
+  },
+  tab: {
     filled: tabIcon,
     outlined: tableChartIcon,
-    twoTone: tableChartOutlinedIcon, },
-  tableChart:{	
+    twoTone: tableChartOutlinedIcon,
+  },
+  tableChart: {
     filled: tableChartTwoToneIcon,
     outlined: tabletIcon,
-    twoTone: tabletAndroidIcon, },
-  tablet:{	
+    twoTone: tabletAndroidIcon,
+  },
+  tablet: {
     filled: tabletAndroidOutlinedIcon,
     outlined: tabletAndroidTwoToneIcon,
-    twoTone: tabletMacIcon, },
-  tabletAndroid:{	
+    twoTone: tabletMacIcon,
+  },
+  tabletAndroid: {
     filled: tabletMacOutlinedIcon,
     outlined: tabletMacTwoToneIcon,
-    twoTone: tabletOutlinedIcon, },
-  tabletMac:{	
+    twoTone: tabletOutlinedIcon,
+  },
+  tabletMac: {
     filled: tabletTwoToneIcon,
     outlined: tabOutlinedIcon,
-    twoTone: tabTwoToneIcon, },
-  tabUnselected:{	
+    twoTone: tabTwoToneIcon,
+  },
+  tabUnselected: {
     filled: tabUnselectedIcon,
     outlined: tabUnselectedOutlinedIcon,
-    twoTone: tabUnselectedTwoToneIcon, },
-  tagFaces:{	
+    twoTone: tabUnselectedTwoToneIcon,
+  },
+  tagFaces: {
     filled: tagFacesIcon,
     outlined: tagFacesOutlinedIcon,
-    twoTone: tagFacesTwoToneIcon, },
-  tapAndPlay:{	
+    twoTone: tagFacesTwoToneIcon,
+  },
+  tapAndPlay: {
     filled: tapAndPlayIcon,
     outlined: tapAndPlayOutlinedIcon,
-    twoTone: tapAndPlayTwoToneIcon, },
-  terrain:{	
+    twoTone: tapAndPlayTwoToneIcon,
+  },
+  terrain: {
     filled: terrainIcon,
     outlined: terrainOutlinedIcon,
-    twoTone: terrainTwoToneIcon, },
-  textFields:{	
+    twoTone: terrainTwoToneIcon,
+  },
+  textFields: {
     filled: textFieldsIcon,
     outlined: textFieldsOutlinedIcon,
-    twoTone: textFieldsTwoToneIcon, },
-  textFormat:{	
+    twoTone: textFieldsTwoToneIcon,
+  },
+  textFormat: {
     filled: textFormatIcon,
     outlined: textFormatOutlinedIcon,
-    twoTone: textFormatTwoToneIcon, },
-  textRotateUp:{	
+    twoTone: textFormatTwoToneIcon,
+  },
+  textRotateUp: {
     filled: textRotateUpIcon,
     outlined: textRotateUpOutlinedIcon,
-    twoTone: textRotateUpTwoToneIcon, },
-  textRotateVertical:{	
+    twoTone: textRotateUpTwoToneIcon,
+  },
+  textRotateVertical: {
     filled: textRotateVerticalIcon,
     outlined: textRotateVerticalOutlinedIcon,
-    twoTone: textRotateVerticalTwoToneIcon, },
-  textRotationDown:{	
+    twoTone: textRotateVerticalTwoToneIcon,
+  },
+  textRotationDown: {
     filled: textRotationDownIcon,
     outlined: textRotationDownOutlinedIcon,
-    twoTone: textRotationDownTwoToneIcon, },
-  textRotationNone:{	
+    twoTone: textRotationDownTwoToneIcon,
+  },
+  textRotationNone: {
     filled: textRotationNoneIcon,
     outlined: textRotationNoneOutlinedIcon,
-    twoTone: textRotationNoneTwoToneIcon, },
-  textsms:{	
+    twoTone: textRotationNoneTwoToneIcon,
+  },
+  textsms: {
     filled: textsmsIcon,
     outlined: textsmsOutlinedIcon,
-    twoTone: textsmsTwoToneIcon, },
-  texture:{	
+    twoTone: textsmsTwoToneIcon,
+  },
+  texture: {
     filled: textureIcon,
     outlined: textureOutlinedIcon,
-    twoTone: textureTwoToneIcon, },
-  theaters:{	
+    twoTone: textureTwoToneIcon,
+  },
+  theaters: {
     filled: theatersIcon,
     outlined: theatersOutlinedIcon,
-    twoTone: theatersTwoToneIcon, },
-  threeDRotation:{	
+    twoTone: theatersTwoToneIcon,
+  },
+  threeDRotation: {
     filled: threeDRotationIcon,
     outlined: threeDRotationOutlinedIcon,
-    twoTone: threeDRotationTwoToneIcon, },
-  threeSixty:{	
+    twoTone: threeDRotationTwoToneIcon,
+  },
+  threeSixty: {
     filled: threeSixtyIcon,
     outlined: threeSixtyOutlinedIcon,
-    twoTone: threeSixtyTwoToneIcon, },
-  thumbDown:{	
+    twoTone: threeSixtyTwoToneIcon,
+  },
+  thumbDown: {
     filled: thumbDownIcon,
     outlined: thumbDownAltIcon,
-    twoTone: thumbDownAltOutlinedIcon, },
-  thumbDownAlt:{	
+    twoTone: thumbDownAltOutlinedIcon,
+  },
+  thumbDownAlt: {
     filled: thumbDownAltTwoToneIcon,
     outlined: thumbDownOutlinedIcon,
-    twoTone: thumbDownTwoToneIcon, },
-  thumbsUpDown:{	
+    twoTone: thumbDownTwoToneIcon,
+  },
+  thumbsUpDown: {
     filled: thumbsUpDownIcon,
     outlined: thumbsUpDownOutlinedIcon,
-    twoTone: thumbsUpDownTwoToneIcon, },
-  thumbUp:{	
+    twoTone: thumbsUpDownTwoToneIcon,
+  },
+  thumbUp: {
     filled: thumbUpIcon,
     outlined: thumbUpAltIcon,
-    twoTone: thumbUpAltOutlinedIcon, },
-  thumbUpAlt:{	
+    twoTone: thumbUpAltOutlinedIcon,
+  },
+  thumbUpAlt: {
     filled: thumbUpAltTwoToneIcon,
     outlined: thumbUpOutlinedIcon,
-    twoTone: thumbUpTwoToneIcon, },
-  timelapse:{	
+    twoTone: thumbUpTwoToneIcon,
+  },
+  timelapse: {
     filled: timelapseIcon,
     outlined: timelapseOutlinedIcon,
-    twoTone: timelapseTwoToneIcon, },
-  timeline:{	
+    twoTone: timelapseTwoToneIcon,
+  },
+  timeline: {
     filled: timelineIcon,
     outlined: timelineOutlinedIcon,
-    twoTone: timelineTwoToneIcon, },
-  timer:{	
+    twoTone: timelineTwoToneIcon,
+  },
+  timer: {
     filled: timerIcon,
     outlined: timer1Icon,
-    twoTone: timer1OutlinedIcon, },
-  timer1:{	
+    twoTone: timer1OutlinedIcon,
+  },
+  timer1: {
     filled: timer1TwoToneIcon,
     outlined: timer3Icon,
-    twoTone: timer3OutlinedIcon, },
-  timer3:{	
+    twoTone: timer3OutlinedIcon,
+  },
+  timer3: {
     filled: timer3TwoToneIcon,
     outlined: timerOffIcon,
-    twoTone: timerOffOutlinedIcon, },
-  timerOff:{	
+    twoTone: timerOffOutlinedIcon,
+  },
+  timerOff: {
     filled: timerOffTwoToneIcon,
     outlined: timerOutlinedIcon,
-    twoTone: timerTwoToneIcon, },
-  timeToLeave:{	
+    twoTone: timerTwoToneIcon,
+  },
+  timeToLeave: {
     filled: timeToLeaveIcon,
     outlined: timeToLeaveOutlinedIcon,
-    twoTone: timeToLeaveTwoToneIcon, },
-  title:{	
+    twoTone: timeToLeaveTwoToneIcon,
+  },
+  title: {
     filled: titleIcon,
     outlined: titleOutlinedIcon,
-    twoTone: titleTwoToneIcon, },
-  toc:{	
+    twoTone: titleTwoToneIcon,
+  },
+  toc: {
     filled: tocIcon,
     outlined: tocOutlinedIcon,
-    twoTone: tocTwoToneIcon, },
-  today:{	
+    twoTone: tocTwoToneIcon,
+  },
+  today: {
     filled: todayIcon,
     outlined: todayOutlinedIcon,
-    twoTone: todayTwoToneIcon, },
-  toggleOff:{	
+    twoTone: todayTwoToneIcon,
+  },
+  toggleOff: {
     filled: toggleOffIcon,
     outlined: toggleOffOutlinedIcon,
-    twoTone: toggleOffTwoToneIcon, },
-  toggleOn:{	
+    twoTone: toggleOffTwoToneIcon,
+  },
+  toggleOn: {
     filled: toggleOnIcon,
     outlined: toggleOnOutlinedIcon,
-    twoTone: toggleOnTwoToneIcon, },
-  toll:{	
+    twoTone: toggleOnTwoToneIcon,
+  },
+  toll: {
     filled: tollIcon,
     outlined: tollOutlinedIcon,
-    twoTone: tollTwoToneIcon, },
-  tonality:{	
+    twoTone: tollTwoToneIcon,
+  },
+  tonality: {
     filled: tonalityIcon,
     outlined: tonalityOutlinedIcon,
-    twoTone: tonalityTwoToneIcon, },
-  touchApp:{	
+    twoTone: tonalityTwoToneIcon,
+  },
+  touchApp: {
     filled: touchAppIcon,
     outlined: touchAppOutlinedIcon,
-    twoTone: touchAppTwoToneIcon, },
-  toys:{	
+    twoTone: touchAppTwoToneIcon,
+  },
+  toys: {
     filled: toysIcon,
     outlined: toysOutlinedIcon,
-    twoTone: toysTwoToneIcon, },
-  trackChanges:{	
+    twoTone: toysTwoToneIcon,
+  },
+  trackChanges: {
     filled: trackChangesIcon,
     outlined: trackChangesOutlinedIcon,
-    twoTone: trackChangesTwoToneIcon, },
-  traffic:{	
+    twoTone: trackChangesTwoToneIcon,
+  },
+  traffic: {
     filled: trafficIcon,
     outlined: trafficOutlinedIcon,
-    twoTone: trafficTwoToneIcon, },
-  train:{	
+    twoTone: trafficTwoToneIcon,
+  },
+  train: {
     filled: trainIcon,
     outlined: trainOutlinedIcon,
-    twoTone: trainTwoToneIcon, },
-  tram:{	
+    twoTone: trainTwoToneIcon,
+  },
+  tram: {
     filled: tramIcon,
     outlined: tramOutlinedIcon,
-    twoTone: tramTwoToneIcon, },
-  transferWithinAStation:{	
+    twoTone: tramTwoToneIcon,
+  },
+  transferWithinAStation: {
     filled: transferWithinAStationIcon,
     outlined: transferWithinAStationOutlinedIcon,
-    twoTone: transferWithinAStationTwoToneIcon, },
-  transform:{	
+    twoTone: transferWithinAStationTwoToneIcon,
+  },
+  transform: {
     filled: transformIcon,
     outlined: transformOutlinedIcon,
-    twoTone: transformTwoToneIcon, },
-  transitEnterexit:{	
+    twoTone: transformTwoToneIcon,
+  },
+  transitEnterexit: {
     filled: transitEnterexitIcon,
     outlined: transitEnterexitOutlinedIcon,
-    twoTone: transitEnterexitTwoToneIcon, },
-  translate:{	
+    twoTone: transitEnterexitTwoToneIcon,
+  },
+  translate: {
     filled: translateIcon,
     outlined: translateOutlinedIcon,
-    twoTone: translateTwoToneIcon, },
-  trendingDown:{	
+    twoTone: translateTwoToneIcon,
+  },
+  trendingDown: {
     filled: trendingDownIcon,
     outlined: trendingDownOutlinedIcon,
-    twoTone: trendingDownTwoToneIcon, },
-  trendingFlat:{	
+    twoTone: trendingDownTwoToneIcon,
+  },
+  trendingFlat: {
     filled: trendingFlatIcon,
     outlined: trendingFlatOutlinedIcon,
-    twoTone: trendingFlatTwoToneIcon, },
-  trendingUp:{	
+    twoTone: trendingFlatTwoToneIcon,
+  },
+  trendingUp: {
     filled: trendingUpIcon,
     outlined: trendingUpOutlinedIcon,
-    twoTone: trendingUpTwoToneIcon, },
-  tripOrigin:{	
+    twoTone: trendingUpTwoToneIcon,
+  },
+  tripOrigin: {
     filled: tripOriginIcon,
     outlined: tripOriginOutlinedIcon,
-    twoTone: tripOriginTwoToneIcon, },
-  tune:{	
+    twoTone: tripOriginTwoToneIcon,
+  },
+  tune: {
     filled: tuneIcon,
     outlined: tuneOutlinedIcon,
-    twoTone: tuneTwoToneIcon, },
-  turnedIn:{	
+    twoTone: tuneTwoToneIcon,
+  },
+  turnedIn: {
     filled: turnedInIcon,
     outlined: turnedInNotIcon,
-    twoTone: turnedInNotOutlinedIcon, },
-  turnedInNot:{	
+    twoTone: turnedInNotOutlinedIcon,
+  },
+  turnedInNot: {
     filled: turnedInNotTwoToneIcon,
     outlined: turnedInOutlinedIcon,
-    twoTone: turnedInTwoToneIcon, },
-  tv:{	
+    twoTone: turnedInTwoToneIcon,
+  },
+  tv: {
     filled: tvIcon,
     outlined: tvOffIcon,
-    twoTone: tvOffOutlinedIcon, },
-  tvOff:{	
+    twoTone: tvOffOutlinedIcon,
+  },
+  tvOff: {
     filled: tvOffTwoToneIcon,
     outlined: tvOutlinedIcon,
-    twoTone: tvTwoToneIcon, },
-  unarchive:{	
+    twoTone: tvTwoToneIcon,
+  },
+  unarchive: {
     filled: unarchiveIcon,
     outlined: unarchiveOutlinedIcon,
-    twoTone: unarchiveTwoToneIcon, },
-  undo:{	
+    twoTone: unarchiveTwoToneIcon,
+  },
+  undo: {
     filled: undoIcon,
     outlined: undoOutlinedIcon,
-    twoTone: undoTwoToneIcon, },
-  unfoldLess:{	
+    twoTone: undoTwoToneIcon,
+  },
+  unfoldLess: {
     filled: unfoldLessIcon,
     outlined: unfoldLessOutlinedIcon,
-    twoTone: unfoldLessTwoToneIcon, },
-  unfoldMore:{	
+    twoTone: unfoldLessTwoToneIcon,
+  },
+  unfoldMore: {
     filled: unfoldMoreIcon,
     outlined: unfoldMoreOutlinedIcon,
-    twoTone: unfoldMoreTwoToneIcon, },
-  unsubscribe:{	
+    twoTone: unfoldMoreTwoToneIcon,
+  },
+  unsubscribe: {
     filled: unsubscribeIcon,
     outlined: unsubscribeOutlinedIcon,
-    twoTone: unsubscribeTwoToneIcon, },
-  update:{	
+    twoTone: unsubscribeTwoToneIcon,
+  },
+  update: {
     filled: updateIcon,
     outlined: updateOutlinedIcon,
-    twoTone: updateTwoToneIcon, },
-  usb:{	
+    twoTone: updateTwoToneIcon,
+  },
+  usb: {
     filled: usbIcon,
     outlined: usbOutlinedIcon,
-    twoTone: usbTwoToneIcon, },
-  verifiedUser:{	
+    twoTone: usbTwoToneIcon,
+  },
+  verifiedUser: {
     filled: verifiedUserIcon,
     outlined: verifiedUserOutlinedIcon,
-    twoTone: verifiedUserTwoToneIcon, },
-  verticalAlignBottom:{	
+    twoTone: verifiedUserTwoToneIcon,
+  },
+  verticalAlignBottom: {
     filled: verticalAlignBottomIcon,
     outlined: verticalAlignBottomOutlinedIcon,
-    twoTone: verticalAlignBottomTwoToneIcon, },
-  verticalAlignCenter:{	
+    twoTone: verticalAlignBottomTwoToneIcon,
+  },
+  verticalAlignCenter: {
     filled: verticalAlignCenterIcon,
     outlined: verticalAlignCenterOutlinedIcon,
-    twoTone: verticalAlignCenterTwoToneIcon, },
-  verticalAlignTop:{	
+    twoTone: verticalAlignCenterTwoToneIcon,
+  },
+  verticalAlignTop: {
     filled: verticalAlignTopIcon,
     outlined: verticalAlignTopOutlinedIcon,
-    twoTone: verticalAlignTopTwoToneIcon, },
-  verticalSplit:{	
+    twoTone: verticalAlignTopTwoToneIcon,
+  },
+  verticalSplit: {
     filled: verticalSplitIcon,
     outlined: verticalSplitOutlinedIcon,
-    twoTone: verticalSplitTwoToneIcon, },
-  vibration:{	
+    twoTone: verticalSplitTwoToneIcon,
+  },
+  vibration: {
     filled: vibrationIcon,
     outlined: vibrationOutlinedIcon,
-    twoTone: vibrationTwoToneIcon, },
-  videoCall:{	
+    twoTone: vibrationTwoToneIcon,
+  },
+  videoCall: {
     filled: videoCallIcon,
     outlined: videoCallOutlinedIcon,
-    twoTone: videoCallTwoToneIcon, },
-  videocam:{	
+    twoTone: videoCallTwoToneIcon,
+  },
+  videocam: {
     filled: videocamIcon,
     outlined: videocamOffIcon,
-    twoTone: videocamOffOutlinedIcon, },
-  videocamOff:{	
+    twoTone: videocamOffOutlinedIcon,
+  },
+  videocamOff: {
     filled: videocamOffTwoToneIcon,
     outlined: videocamOutlinedIcon,
-    twoTone: videocamTwoToneIcon, },
-  videogameAsset:{	
+    twoTone: videocamTwoToneIcon,
+  },
+  videogameAsset: {
     filled: videogameAssetIcon,
     outlined: videogameAssetOutlinedIcon,
-    twoTone: videogameAssetTwoToneIcon, },
-  videoLabel:{	
+    twoTone: videogameAssetTwoToneIcon,
+  },
+  videoLabel: {
     filled: videoLabelIcon,
     outlined: videoLabelOutlinedIcon,
-    twoTone: videoLabelTwoToneIcon, },
-  videoLibrary:{	
+    twoTone: videoLabelTwoToneIcon,
+  },
+  videoLibrary: {
     filled: videoLibraryIcon,
     outlined: videoLibraryOutlinedIcon,
-    twoTone: videoLibraryTwoToneIcon, },
-  viewAgenda:{	
+    twoTone: videoLibraryTwoToneIcon,
+  },
+  viewAgenda: {
     filled: viewAgendaIcon,
     outlined: viewAgendaOutlinedIcon,
-    twoTone: viewAgendaTwoToneIcon, },
-  viewArray:{	
+    twoTone: viewAgendaTwoToneIcon,
+  },
+  viewArray: {
     filled: viewArrayIcon,
     outlined: viewArrayOutlinedIcon,
-    twoTone: viewArrayTwoToneIcon, },
-  viewCarousel:{	
+    twoTone: viewArrayTwoToneIcon,
+  },
+  viewCarousel: {
     filled: viewCarouselIcon,
     outlined: viewCarouselOutlinedIcon,
-    twoTone: viewCarouselTwoToneIcon, },
-  viewColumn:{	
+    twoTone: viewCarouselTwoToneIcon,
+  },
+  viewColumn: {
     filled: viewColumnIcon,
     outlined: viewColumnOutlinedIcon,
-    twoTone: viewColumnTwoToneIcon, },
-  viewComfy:{	
+    twoTone: viewColumnTwoToneIcon,
+  },
+  viewComfy: {
     filled: viewComfyIcon,
     outlined: viewComfyOutlinedIcon,
-    twoTone: viewComfyTwoToneIcon, },
-  viewCompact:{	
+    twoTone: viewComfyTwoToneIcon,
+  },
+  viewCompact: {
     filled: viewCompactIcon,
     outlined: viewCompactOutlinedIcon,
-    twoTone: viewCompactTwoToneIcon, },
-  viewDay:{	
+    twoTone: viewCompactTwoToneIcon,
+  },
+  viewDay: {
     filled: viewDayIcon,
     outlined: viewDayOutlinedIcon,
-    twoTone: viewDayTwoToneIcon, },
-  viewHeadline:{	
+    twoTone: viewDayTwoToneIcon,
+  },
+  viewHeadline: {
     filled: viewHeadlineIcon,
     outlined: viewHeadlineOutlinedIcon,
-    twoTone: viewHeadlineTwoToneIcon, },
-  viewList:{	
+    twoTone: viewHeadlineTwoToneIcon,
+  },
+  viewList: {
     filled: viewListIcon,
     outlined: viewListOutlinedIcon,
-    twoTone: viewListTwoToneIcon, },
-  viewModule:{	
+    twoTone: viewListTwoToneIcon,
+  },
+  viewModule: {
     filled: viewModuleIcon,
     outlined: viewModuleOutlinedIcon,
-    twoTone: viewModuleTwoToneIcon, },
-  viewQuilt:{	
+    twoTone: viewModuleTwoToneIcon,
+  },
+  viewQuilt: {
     filled: viewQuiltIcon,
     outlined: viewQuiltOutlinedIcon,
-    twoTone: viewQuiltTwoToneIcon, },
-  viewStream:{	
+    twoTone: viewQuiltTwoToneIcon,
+  },
+  viewStream: {
     filled: viewStreamIcon,
     outlined: viewStreamOutlinedIcon,
-    twoTone: viewStreamTwoToneIcon, },
-  viewWeek:{	
+    twoTone: viewStreamTwoToneIcon,
+  },
+  viewWeek: {
     filled: viewWeekIcon,
     outlined: viewWeekOutlinedIcon,
-    twoTone: viewWeekTwoToneIcon, },
-  vignette:{	
+    twoTone: viewWeekTwoToneIcon,
+  },
+  vignette: {
     filled: vignetteIcon,
     outlined: vignetteOutlinedIcon,
-    twoTone: vignetteTwoToneIcon, },
-  visibility:{	
+    twoTone: vignetteTwoToneIcon,
+  },
+  visibility: {
     filled: visibilityIcon,
     outlined: visibilityOffIcon,
-    twoTone: visibilityOffOutlinedIcon, },
-  visibilityOff:{	
+    twoTone: visibilityOffOutlinedIcon,
+  },
+  visibilityOff: {
     filled: visibilityOffTwoToneIcon,
     outlined: visibilityOutlinedIcon,
-    twoTone: visibilityTwoToneIcon, },
-  voiceChat:{	
+    twoTone: visibilityTwoToneIcon,
+  },
+  voiceChat: {
     filled: voiceChatIcon,
     outlined: voiceChatOutlinedIcon,
-    twoTone: voiceChatTwoToneIcon, },
-  voicemail:{	
+    twoTone: voiceChatTwoToneIcon,
+  },
+  voicemail: {
     filled: voicemailIcon,
     outlined: voicemailOutlinedIcon,
-    twoTone: voicemailTwoToneIcon, },
-  voiceOverOff:{	
+    twoTone: voicemailTwoToneIcon,
+  },
+  voiceOverOff: {
     filled: voiceOverOffIcon,
     outlined: voiceOverOffOutlinedIcon,
-    twoTone: voiceOverOffTwoToneIcon, },
-  volumeDown:{	
+    twoTone: voiceOverOffTwoToneIcon,
+  },
+  volumeDown: {
     filled: volumeDownIcon,
     outlined: volumeDownOutlinedIcon,
-    twoTone: volumeDownTwoToneIcon, },
-  volumeMute:{	
+    twoTone: volumeDownTwoToneIcon,
+  },
+  volumeMute: {
     filled: volumeMuteIcon,
     outlined: volumeMuteOutlinedIcon,
-    twoTone: volumeMuteTwoToneIcon, },
-  volumeOff:{	
+    twoTone: volumeMuteTwoToneIcon,
+  },
+  volumeOff: {
     filled: volumeOffIcon,
     outlined: volumeOffOutlinedIcon,
-    twoTone: volumeOffTwoToneIcon, },
-  volumeUp:{	
+    twoTone: volumeOffTwoToneIcon,
+  },
+  volumeUp: {
     filled: volumeUpIcon,
     outlined: volumeUpOutlinedIcon,
-    twoTone: volumeUpTwoToneIcon, },
-  vpnKey:{	
+    twoTone: volumeUpTwoToneIcon,
+  },
+  vpnKey: {
     filled: vpnKeyIcon,
     outlined: vpnKeyOutlinedIcon,
-    twoTone: vpnKeyTwoToneIcon, },
-  vpnLock:{	
+    twoTone: vpnKeyTwoToneIcon,
+  },
+  vpnLock: {
     filled: vpnLockIcon,
     outlined: vpnLockOutlinedIcon,
-    twoTone: vpnLockTwoToneIcon, },
-  wallpaper:{	
+    twoTone: vpnLockTwoToneIcon,
+  },
+  wallpaper: {
     filled: wallpaperIcon,
     outlined: wallpaperOutlinedIcon,
-    twoTone: wallpaperTwoToneIcon, },
-  warning:{	
+    twoTone: wallpaperTwoToneIcon,
+  },
+  warning: {
     filled: warningIcon,
     outlined: warningOutlinedIcon,
-    twoTone: warningTwoToneIcon, },
-  watch:{	
+    twoTone: warningTwoToneIcon,
+  },
+  watch: {
     filled: watchIcon,
     outlined: watchLaterIcon,
-    twoTone: watchLaterOutlinedIcon, },
-  watchLater:{	
+    twoTone: watchLaterOutlinedIcon,
+  },
+  watchLater: {
     filled: watchLaterTwoToneIcon,
     outlined: watchOutlinedIcon,
-    twoTone: watchTwoToneIcon, },
-  waves:{	
+    twoTone: watchTwoToneIcon,
+  },
+  waves: {
     filled: wavesIcon,
     outlined: wavesOutlinedIcon,
-    twoTone: wavesTwoToneIcon, },
-  wbAuto:{	
+    twoTone: wavesTwoToneIcon,
+  },
+  wbAuto: {
     filled: wbAutoIcon,
     outlined: wbAutoOutlinedIcon,
-    twoTone: wbAutoTwoToneIcon, },
-  wbCloudy:{	
+    twoTone: wbAutoTwoToneIcon,
+  },
+  wbCloudy: {
     filled: wbCloudyIcon,
     outlined: wbCloudyOutlinedIcon,
-    twoTone: wbCloudyTwoToneIcon, },
-  wbIncandescent:{	
+    twoTone: wbCloudyTwoToneIcon,
+  },
+  wbIncandescent: {
     filled: wbIncandescentIcon,
     outlined: wbIncandescentOutlinedIcon,
-    twoTone: wbIncandescentTwoToneIcon, },
-  wbIridescent:{	
+    twoTone: wbIncandescentTwoToneIcon,
+  },
+  wbIridescent: {
     filled: wbIridescentIcon,
     outlined: wbIridescentOutlinedIcon,
-    twoTone: wbIridescentTwoToneIcon, },
-  wbSunny:{	
+    twoTone: wbIridescentTwoToneIcon,
+  },
+  wbSunny: {
     filled: wbSunnyIcon,
     outlined: wbSunnyOutlinedIcon,
-    twoTone: wbSunnyTwoToneIcon, },
-  wc:{	
+    twoTone: wbSunnyTwoToneIcon,
+  },
+  wc: {
     filled: wcIcon,
     outlined: wcOutlinedIcon,
-    twoTone: wcTwoToneIcon, },
-  web:{	
+    twoTone: wcTwoToneIcon,
+  },
+  web: {
     filled: webIcon,
     outlined: webAssetIcon,
-    twoTone: webAssetOutlinedIcon, },
-  webAsset:{	
+    twoTone: webAssetOutlinedIcon,
+  },
+  webAsset: {
     filled: webAssetTwoToneIcon,
     outlined: webOutlinedIcon,
-    twoTone: webTwoToneIcon, },
-  weekend:{	
+    twoTone: webTwoToneIcon,
+  },
+  weekend: {
     filled: weekendIcon,
     outlined: weekendOutlinedIcon,
-    twoTone: weekendTwoToneIcon, },
-  whatshot:{	
+    twoTone: weekendTwoToneIcon,
+  },
+  whatshot: {
     filled: whatshotIcon,
     outlined: whatshotOutlinedIcon,
-    twoTone: whatshotTwoToneIcon, },
-  whereToVote:{	
+    twoTone: whatshotTwoToneIcon,
+  },
+  whereToVote: {
     filled: whereToVoteIcon,
     outlined: whereToVoteOutlinedIcon,
-    twoTone: whereToVoteTwoToneIcon, },
-  widgets:{	
+    twoTone: whereToVoteTwoToneIcon,
+  },
+  widgets: {
     filled: widgetsIcon,
     outlined: widgetsOutlinedIcon,
-    twoTone: widgetsTwoToneIcon, },
-  wifi:{	
+    twoTone: widgetsTwoToneIcon,
+  },
+  wifi: {
     filled: wifiIcon,
     outlined: wifiLockIcon,
-    twoTone: wifiLockOutlinedIcon, },
-  wifiLock:{	
+    twoTone: wifiLockOutlinedIcon,
+  },
+  wifiLock: {
     filled: wifiLockTwoToneIcon,
     outlined: wifiOffIcon,
-    twoTone: wifiOffOutlinedIcon, },
-  wifiOff:{	
+    twoTone: wifiOffOutlinedIcon,
+  },
+  wifiOff: {
     filled: wifiOffTwoToneIcon,
     outlined: wifiOutlinedIcon,
-    twoTone: wifiTetheringIcon, },
-  wifiTethering:{	
+    twoTone: wifiTetheringIcon,
+  },
+  wifiTethering: {
     filled: wifiTetheringOutlinedIcon,
     outlined: wifiTetheringTwoToneIcon,
-    twoTone: wifiTwoToneIcon, },
-  work:{	
+    twoTone: wifiTwoToneIcon,
+  },
+  work: {
     filled: workIcon,
     outlined: workOffIcon,
-    twoTone: workOffOutlinedIcon, },
-  workOff:{	
+    twoTone: workOffOutlinedIcon,
+  },
+  workOff: {
     filled: workOffTwoToneIcon,
     outlined: workOutlineIcon,
-    twoTone: workOutlinedIcon, },
-  workOutline:{	
+    twoTone: workOutlinedIcon,
+  },
+  workOutline: {
     filled: workOutlineOutlinedIcon,
     outlined: workOutlineTwoToneIcon,
-    twoTone: workTwoToneIcon, },
-  wrapText:{	
+    twoTone: workTwoToneIcon,
+  },
+  wrapText: {
     filled: wrapTextIcon,
     outlined: wrapTextOutlinedIcon,
-    twoTone: wrapTextTwoToneIcon, },
-  youtubeSearchedFor:{	
+    twoTone: wrapTextTwoToneIcon,
+  },
+  youtubeSearchedFor: {
     filled: youtubeSearchedForIcon,
     outlined: youtubeSearchedForOutlinedIcon,
-    twoTone: youtubeSearchedForTwoToneIcon, },
-  zoomIn:{	
+    twoTone: youtubeSearchedForTwoToneIcon,
+  },
+  zoomIn: {
     filled: zoomInIcon,
     outlined: zoomInOutlinedIcon,
-    twoTone: zoomInTwoToneIcon, },
-  zoomOut:{	
+    twoTone: zoomInTwoToneIcon,
+  },
+  zoomOut: {
     filled: zoomOutIcon,
     outlined: zoomOutMapIcon,
-    twoTone: zoomOutMapOutlinedIcon, },
-  zoomOutMap:{	
+    twoTone: zoomOutMapOutlinedIcon,
+  },
+  zoomOutMap: {
     filled: zoomOutMapTwoToneIcon,
     outlined: zoomOutOutlinedIcon,
-    twoTone: zoomOutTwoToneIcon, },
+    twoTone: zoomOutTwoToneIcon,
+  },
 }

@@ -14,7 +14,6 @@ class Page extends React.Component {
     return (
       <Navigation
         title={this.props.titleText}
-        classes
         style={{ backgroundColor: 'red' }}
         {...navProps}
       >

@@ -2,7 +2,6 @@ import React from 'react'
 
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
-import List from '@material-ui/core/List'
 import Typography from '@material-ui/core/Typography'
 
 import DeleteOutline from '@material-ui/icons/DeleteOutline'
@@ -10,7 +9,6 @@ import RestoreIcon from '@material-ui/icons/RestoreOutlined'
 
 import DrawerButton from 'components/DrawerButton'
 
-const alignSelfCenter = { alignSelf: 'center' }
 const activationBtnStyle = { backgroundColor: 'white' }
 const activationBtnTxtStyle = { marginLeft: '5px' }
 
@@ -50,13 +48,11 @@ export default class NodeEditor extends React.PureComponent {
         spacing={16}
       >
         <Grid item>
-          <List>
-            <DrawerButton
-              onClick={onClickLabel}
-              primaryText="Label"
-              secondaryText={label}
-            />
-          </List>
+          <DrawerButton
+            onClick={onClickLabel}
+            primaryText="Label"
+            secondaryText={label}
+          />
         </Grid>
 
         <Grid item>
@@ -64,9 +60,7 @@ export default class NodeEditor extends React.PureComponent {
         </Grid>
 
         <Grid item>
-          <List>
-            <DrawerButton icon={icon} onClick={onClickIcon} />
-          </List>
+          <DrawerButton icon={icon} onClick={onClickIcon} />
         </Grid>
 
         <Grid item>

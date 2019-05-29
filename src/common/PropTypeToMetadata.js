@@ -9,15 +9,17 @@ export const typeToIconName = {
   decimal: 'centerFocusStrong',
   email: 'email',
   memo: 'subject',
+  name: 'personPin',
   number: 'exposurePlus2',
   multiselect: 'selectAll',
-  lookup: '',
-  percent: '',
+  lookup: 'style',
+  percent: 'showChart',
   phone: 'speakerPhone',
   picklist: 'list',
   radio: 'radiobutton',
   textfield: 'formatSize',
   time: 'accessTime',
+  url: 'http',
 }
 
 /**
@@ -31,6 +33,7 @@ export const typeToReadableName = {
   decimal: 'Decimal',
   email: 'Email',
   memo: 'Memo',
+  name: 'Name',
   number: 'Number',
   multiselect: 'Multi-Select',
   lookup: 'Lookup',
@@ -40,4 +43,5 @@ export const typeToReadableName = {
   radio: 'Radio',
   textfield: 'Text Field',
   time: 'Time',
+  url: 'URL',
 }

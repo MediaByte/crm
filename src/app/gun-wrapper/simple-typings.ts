@@ -46,11 +46,15 @@ export interface WrapperNode {
 
   getEdge(edgeKey: string): WrapperReferenceNode
 
+  getEdgeRef(edgeKey: string): WrapperNode | null
+
   getSet(setKey: string): WrapperSetNode
 
   put(data: ValidPut): Promise<Response>
 
   on(listener: Listener): void
+
+  cachePut(data: Data): void
 }
 
 export interface Data {
@@ -65,26 +69,17 @@ export type OnChangeReturn = Promise<undefined | string[] | void | boolean>
 
 export interface StringPrimitiveLeaf {
   type: 'string'
-  onChange(
-    self: Record<string, Data | undefined>,
-    nextVal: string | null,
-  ): OnChangeReturn
+  onChange(self: Partial<Data>, nextVal: string | null): OnChangeReturn
 }
 
 export interface NumberPrimitiveLeaf {
   type: 'number'
-  onChange(
-    self: Record<string, Data | undefined>,
-    nextVal: number | null,
-  ): OnChangeReturn
+  onChange(self: Partial<Data>, nextVal: number | null): OnChangeReturn
 }
 
 export interface BooleanPrimitiveLeaf {
   type: 'boolean'
-  onChange(
-    self: Record<string, Data | undefined>,
-    nextVal: boolean | null,
-  ): OnChangeReturn
+  onChange(self: Partial<Data>, nextVal: boolean | null): OnChangeReturn
 }
 
 export type PrimitiveLeaf =
@@ -94,12 +89,12 @@ export type PrimitiveLeaf =
 
 export interface EdgeLeaf {
   type: Schema
-  onChange(self: Data, nextVal: Data | null): OnChangeReturn
+  onChange(self: Partial<Data>, nextVal: Data | null): OnChangeReturn
 }
 
 export interface LiteralLeaf {
   type: Record<string, Schema>
-  onChange(self: Data, nextVal: Literal | null): OnChangeReturn
+  onChange(self: Partial<Data>, nextVal: Literal | null): OnChangeReturn
 }
 
 export interface SetLeaf {

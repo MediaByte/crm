@@ -7,6 +7,7 @@ export {} // stop jsdoc comments from merging
 
 /**
  * @typedef {import('./simple-typings').Schema} Schema
+ * @typedef {import('./simple-typings').EdgeLeaf} EdgeLeaf
  * @typedef {import('./simple-typings').Data} Data
  * @typedef {import('./simple-typings').Response} Response
  * @typedef {import('./simple-typings').GunCallback} GunCallback
@@ -17,7 +18,9 @@ export {} // stop jsdoc comments from merging
  * @typedef {import('./simple-typings').Listener} Listener
  * @typedef {import('./simple-typings').ValidPut} ValidPut
  * @typedef {import('./simple-typings').Primitive} Primitive
+ * @typedef {import('./simple-typings').PrimitiveLeaf} PrimitiveLeaf
  * @typedef {import('./simple-typings').Literal} Literal
+ * @typedef {import('./simple-typings').LiteralLeaf} LiteralLeaf
  * @typedef {import('./simple-typings').ValidSetPut} ValidSetPut
  */
 
@@ -53,8 +56,14 @@ export default class SetNode {
 
     this.setOnChange = setOnChange
 
+    /**
+     * @type {Record<string, WrapperNode|undefined>}
+     */
+    this.spawnedNodes = {}
+
     /** @type {WrapperSetNode} */
     const instance = this
+    // eslint-disable-next-line
     instance
   }
 
@@ -67,6 +76,12 @@ export default class SetNode {
     for (const [key, value] of Object.entries(nextData)) {
       if (Utils.conformsToSchema(this.itemSchema, value)) {
         this.currentData[key] = value
+
+        const spawnedNode = this.spawnedNodes[key]
+
+        if (spawnedNode) {
+          spawnedNode.cachePut(value)
+        }
       }
     }
 
@@ -150,6 +165,7 @@ export default class SetNode {
 
         for (const [k, edge] of Object.entries(edgeData)) {
           writes.push(
+            // eslint-disable-next-line no-loop-func
             new Promise(resolve => {
               gunRef.get(k).put(
                 edge,
@@ -221,7 +237,13 @@ export default class SetNode {
     }
 
     if (!(setKey in this.currentData)) {
-      throw new ReferenceError('unexistant key in SetNode.get()')
+      throw new ReferenceError(
+        `unexistant key in SetNode.get(), in set: ${
+          this.itemSchema[Utils.SCHEMA_NAME]
+        }, got key: ${setKey} --  currentData: ${JSON.stringify(
+          this.currentData,
+        )}`,
+      )
     }
 
     const gunSubInstance = this.gunInstance.get(setKey)
@@ -233,11 +255,22 @@ export default class SetNode {
       nextValOrNull => this.setOnChange(nextValOrNull, setKey),
     )
 
-    // why not?
-    node.currentData = this.currentData[setKey]
+    // initial currentData for that node
+    node.cachePut(this.currentData[setKey])
+
+    this.spawnedNodes[setKey] = node
 
     return node
   }
+
+  // 88           8b           d8            88  88           88   ad88888ba
+  // ""           `8b         d8'            88  ""           88  d8"     "8b                ,d
+  //               `8b       d8'             88               88  Y8,                        88
+  // 88  ,adPPYba,  `8b     d8'  ,adPPYYba,  88  88   ,adPPYb,88  `Y8aaaaa,     ,adPPYba,  MM88MMM
+  // 88  I8[    ""   `8b   d8'   ""     `Y8  88  88  a8"    `Y88    `"""""8b,  a8P_____88    88
+  // 88   `"Y8ba,     `8b d8'    ,adPPPPP88  88  88  8b       88          `8b  8PP"""""""    88
+  // 88  aa    ]8I     `888'     88,    ,88  88  88  "8a,   ,d88  Y8a     a8P  "8b,   ,aa    88,
+  // 88  `"YbbdP"'      `8'      `"8bbdP"Y8  88  88   `"8bbdP"Y8   "Y88888P"    `"Ybbd8"'    "Y888
 
   /**
    * Validates an object according to an schema
@@ -250,14 +283,10 @@ export default class SetNode {
     const primitiveLeaves = Utils.getPrimitiveLeaves(this.itemSchema)
     const literalLeaves = Utils.getLiteralLeaves(this.itemSchema)
     const edgeLeaves = Utils.getEdgeLeaves(this.itemSchema)
-    const setLeaves = Utils.getSetLeaves(this.itemSchema)
 
     Object.keys(objectData).forEach(key => {
       const isValidKey =
-        key in primitiveLeaves ||
-        key in literalLeaves ||
-        key in edgeLeaves ||
-        key in setLeaves
+        key in primitiveLeaves || key in literalLeaves || key in edgeLeaves
 
       if (!isValidKey) {
         errorMap.puts(key, 'unexpected key')
@@ -278,14 +307,9 @@ export default class SetNode {
 
       const value = objectData[key]
 
-      const isNull = value == null
+      const isNull = value === null
 
-      const isCorrectType = Utils.valueIsOfType(
-        // @ts-ignore
-        leaf.type,
-        // @ts-ignore
-        objectData[key],
-      )
+      const isCorrectType = Utils.valueIsOfType(leaf.type, objectData[key])
 
       if (!isNull && !isCorrectType) {
         errorMap.puts(key, `wrong data type or empty string`)
@@ -348,15 +372,6 @@ export default class SetNode {
       }
     })
 
-    Object.entries(setLeaves).forEach(([key]) => {
-      if (key in objectData) {
-        errorMap.puts(
-          key,
-          `value given for sub-set node, this value must not be initialized as it will be automatically be initialized to empty and populated by data from peers`,
-        )
-      }
-    })
-
     if (errorMap.hasErrors) {
       return {
         ok: false,
@@ -364,6 +379,8 @@ export default class SetNode {
         details: errorMap.map,
       }
     }
+
+    ////////////////////////////////////////////////////////////////////////////
 
     /**
      * @type {Record<string, OnChangeReturn>}
@@ -371,34 +388,6 @@ export default class SetNode {
     const validations = {}
 
     const setItemSchema = this.itemSchema
-
-    // validate the node itself
-    for (const key of Object.keys(objectData)) {
-      const self = {
-        // give all other data to the onChange() call if it needs to look at it
-        ...objectData,
-        [key]: undefined, // signals that this is a new node being created
-      }
-
-      // @ts-ignore
-      validations[key] = setItemSchema[key].onChange(self, objectData[key])
-    }
-
-    await Promise.all(Object.values(validations))
-
-    for (const [k, err] of Object.entries(validations)) {
-      if (await err) {
-        errorMap.puts(k, await err)
-      }
-    }
-
-    if (errorMap.hasErrors) {
-      return {
-        ok: false,
-        messages: [],
-        details: errorMap.map,
-      }
-    }
 
     // now validate the whole object against the setSchemaLeaf, this allows
     // for example, to prevent 2 items with the same value for a property and
@@ -423,8 +412,37 @@ export default class SetNode {
         objForValidation[key] =
           value === null ? null : /** @type {WrapperNode} */ (value).currentData
       } else {
-        // @ts-ignore Can't figure out this cast
-        objForValidation[key] = value
+        objForValidation[key] = /** @type {Literal|Primitive} */ (value)
+      }
+    }
+
+    // validate the node itself
+    for (const k of Object.keys(objectData)) {
+      const leaf =
+        /** @type {PrimitiveLeaf|EdgeLeaf|LiteralLeaf} */ (setItemSchema[k])
+
+      validations[k] = leaf.onChange(
+        {
+          ...objForValidation,
+          [k]: undefined,
+        },
+        /** @type {any} */ (objForValidation[k]),
+      )
+    }
+
+    await Promise.all(Object.values(validations))
+
+    for (const [k, err] of Object.entries(validations)) {
+      if (await err) {
+        errorMap.puts(k, await err)
+      }
+    }
+
+    if (errorMap.hasErrors) {
+      return {
+        ok: false,
+        messages: [],
+        details: errorMap.map,
       }
     }
 
@@ -443,7 +461,7 @@ export default class SetNode {
       messages: [],
       details: {},
     }
-  } // isValid()
+  } // isValidSet()
 
   /**
    * @param {Listener} cb

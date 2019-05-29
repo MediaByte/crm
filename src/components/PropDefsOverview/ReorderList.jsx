@@ -54,7 +54,7 @@ const ReorderItem = ({ item: propDef }) => {
       <Grid style={styles.item} container alignItems="center">
         <Icon />
         <div style={styles.itemInfo}>
-          <Typography variant="inherit">{propDef.name}</Typography>
+          <Typography variant="inherit">{propDef.label}</Typography>
           <Typography component="span" color="textSecondary">
             {propDef.typeName}
           </Typography>

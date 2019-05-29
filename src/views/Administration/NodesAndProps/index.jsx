@@ -1,3 +1,4 @@
+/* eslint no-multi-str: 0 */
 import React from 'react'
 
 import toUpper from 'lodash/toUpper'
@@ -15,6 +16,7 @@ import CloseIcon from '@material-ui/icons/Close'
 import AddNodeForm from 'components/AddNodeForm'
 import AddPropForm from 'components/AddPropForm'
 import Dialog from 'components/Dialog'
+import DrawerButton from 'components/DrawerButton'
 import IconSelector from 'components/IconSelector'
 import Messages from 'components/Messages'
 import NodeEditor from 'components/NodeEditor'
@@ -22,6 +24,7 @@ import OverlaySpinner from 'components/OverlaySpinner'
 import Page from 'views/Page/Page.jsx'
 import PcDrawer from 'components/PcDrawer'
 import PropDefsOverview from 'components/PropDefsOverview'
+import PropDefEditor from 'components/PropDefEditor'
 
 import { nameToIconMap } from 'common/NameToIcon'
 import { typeToReadableName } from 'common/PropTypeToMetadata'
@@ -34,13 +37,18 @@ import {
   Node as NodeValidator,
   PropDef as PropDefValidator,
 } from 'app/validators'
+import * as BuiltIn from 'app/gun-wrapper/BuiltIn'
 import { Card, CardActionArea, CardHeader, Avatar } from '@material-ui/core'
 import { AddCircleOutline } from '@material-ui/icons'
 /**
  * @typedef {import('app/gun-wrapper/SetNode').default} SetNode
  * @typedef {import('app/typings').Node} Node
+ * @typedef {import('app/typings').PropertyDefinition} PropDef
  * @typedef {import('app/typings').PropertyType} PropType
+ * @typedef {import('app/typings').PropDefArgument} PropDefArgument
  * @typedef {import('app/gun-wrapper/simple-typings').WrapperSetNode} WrapperSetNode
+ * @typedef {import('app/gun-wrapper/simple-typings').WrapperNode} WrapperNode
+ * @typedef {import('app/gun-wrapper/simple-typings').Response} Response
  */
 
 const NodeDrawerTab = {
@@ -84,7 +92,15 @@ const BLANK_ADD_NODE_FORM_DATA = Object.freeze({
 
 /** @type {Readonly<EditPropFlow>} */
 const INITIAL_EDIT_PROP_FLOW = {
+  currentHelpTextValue: '',
+  currentLabelValue: null,
+  currentSelectedIconIdx: null,
+  currentSettingValue: null,
+  editingHelpText: false,
+  editingIcon: false,
   selectedPropID: null,
+  selectedSettingParamID: null,
+  willChangeHelpTextStatus: false,
 }
 
 /** @type {AddNodeFlow} */
@@ -130,10 +146,6 @@ const styles = theme => ({
     flexDirection: 'column !important',
     right: '10px !important',
   },
-  labelEditorTextField: {
-    marginLeft: theme.spacing.unit * 2,
-    marginRight: theme.spacing.unit * 2,
-  },
   listItem: {
     paddingLeft: '15px',
   },
@@ -159,6 +171,10 @@ const styles = theme => ({
   smallIconButton: {},
   spinner: {
     position: 'absolute',
+  },
+  textField: {
+    marginLeft: theme.spacing.unit * 2,
+    marginRight: theme.spacing.unit * 2,
   },
 })
 
@@ -215,7 +231,15 @@ const styles = theme => ({
 
 /**
  * @typedef {object} EditPropFlow
+ * @prop {string} currentHelpTextValue
+ * @prop {number | null} currentSelectedIconIdx
+ * @prop {string|null} currentLabelValue Null when not editing it
+ * @prop {string|Record<string, string>|Record<string, number>|null} currentSettingValue
+ * @prop {boolean} editingHelpText
+ * @prop {boolean} editingIcon
  * @prop {string|null} selectedPropID
+ * @prop {string|null} selectedSettingParamID
+ * @prop {boolean} willChangeHelpTextStatus
  */
 
 /**
@@ -260,6 +284,37 @@ class NodesAndProps extends React.Component {
     showingAddRelDialog: false,
     showingPropDialog: false,
     snackbarMessage: null,
+  }
+
+  /**
+   * @private
+   * @param {any} e
+   */
+  genericErrHandler = e => {
+    this.setState({
+      snackbarMessage: Utils.reasonToString(e),
+    })
+  }
+
+  /**
+   * @private
+   * @param {Response} res
+   */
+  genericResHandler = res => {
+    if (!res.ok) {
+      if (res.messages.length) {
+        this.setState({
+          snackbarMessage: res.messages[0],
+        })
+      } else if (Object.keys(res.details).length) {
+        const [detail] = Object.entries(res.details)
+        const [key, msg] = detail
+
+        this.setState({
+          snackbarMessage: `${key}: ${msg}`,
+        })
+      }
+    }
   }
 
   /*
@@ -521,9 +576,12 @@ d8'          `8b  88888888Y"'    88888888Y"'       88           88      `8b    `
       .set({
         helpText: null,
         iconName: addPropFlow.currentlySelectedIconName,
+        indexed: false,
         label: addPropFlow.labelValue,
         name: addPropFlow.nameValue,
+        order: Object.keys(propDefs).length,
         propType: propTypeNode,
+        required: false,
       })
       .then(res => {
         if (res.ok) {
@@ -671,11 +729,18 @@ d8'          `8b  88888888Y"'    88888888Y"'       88           88      `8b    `
     })
   }
 
+  /**
+   * @private
+   */
   editNodeFlowOnClickDrawerBtnLeft = () => {}
 
+  /**
+   * @private
+   */
   editNodeFlowOnClickDrawerBtnRight = () => {}
 
   /**
+   * @private
    * @param {string} id
    */
   editNodeFlowOnClickEditNode = id => {
@@ -703,25 +768,31 @@ d8'          `8b  88888888Y"'    88888888Y"'       88           88      `8b    `
   }
 
   editNodeFlowOnClickIconBtn = () => {
-    this.setState(({ editNodeFlow, nodes, selectedNodeID }) => ({
-      editNodeFlow: {
-        ...editNodeFlow,
-        currentlySelectedIconName:
-          nodes[/** @type {string} */ (selectedNodeID)].iconName,
-        editingIcon: true,
-      },
-    }))
+    this.setState(({ editNodeFlow, nodes, selectedNodeID }) => {
+      const sni = /** @type {string} */ (selectedNodeID)
+
+      return {
+        editNodeFlow: {
+          ...editNodeFlow,
+          currentlySelectedIconName: nodes[sni].iconName,
+          editingIcon: true,
+        },
+      }
+    })
   }
 
   editNodeFlowOnClickLabel = () => {
-    this.setState(({ editNodeFlow, nodes, selectedNodeID }) => ({
-      editNodeFlow: {
-        ...editNodeFlow,
-        editingLabelCurrentValue:
-          nodes[/** @type {string} */ (selectedNodeID)].label,
-        editingLabel: true,
-      },
-    }))
+    this.setState(({ editNodeFlow, nodes, selectedNodeID }) => {
+      const sni = /** @type {string} */ (selectedNodeID)
+
+      return {
+        editNodeFlow: {
+          ...editNodeFlow,
+          editingLabelCurrentValue: nodes[sni].label,
+          editingLabel: true,
+        },
+      }
+    })
   }
 
   editNodeFlowToggleDeactivate = () => {
@@ -755,6 +826,36 @@ d8'          `8b  88888888Y"'    88888888Y"'       88           88      `8b    `
 
   /**
    * @private
+   * @param {any} e
+   */
+  editPropFlowOnChangeHelpText = e => {
+    const value = /** @type {string} */ (e.target.value)
+
+    this.setState(({ editPropFlow }) => ({
+      editPropFlow: {
+        ...editPropFlow,
+        currentHelpTextValue: value,
+      },
+    }))
+  }
+
+  /**
+   * @private
+   * @param {any} e
+   */
+  editPropFlowOnChangeLabel = e => {
+    const value = /** @type {string} */ (e.target.value)
+
+    this.setState(({ editPropFlow }) => ({
+      editPropFlow: {
+        ...editPropFlow,
+        currentLabelValue: value,
+      },
+    }))
+  }
+
+  /**
+   * @private
    * @param {string} id
    */
   editPropFlowOnClickEdit = id => {
@@ -766,10 +867,641 @@ d8'          `8b  88888888Y"'    88888888Y"'       88           88      `8b    `
     })
   }
 
+  /**
+   * @private
+   */
+  editPropFlowOnClickHelpTextSwitch = () => {
+    this.setState(({ editPropFlow }) => ({
+      editPropFlow: {
+        ...editPropFlow,
+        willChangeHelpTextStatus: !editPropFlow.willChangeHelpTextStatus,
+      },
+    }))
+  }
+
+  /**
+   * @private
+   * @param {number} idx
+   */
+  editPropFlowOnClickIcon = idx => {
+    this.setState(({ editPropFlow }) => ({
+      editPropFlow: {
+        ...editPropFlow,
+        currentSelectedIconIdx:
+          editPropFlow.currentSelectedIconIdx === idx ? null : idx,
+      },
+    }))
+  }
+
+  /**
+   * @private
+   */
+  editPropFlowOnClickLabel = () => {
+    this.setState(({ editPropFlow, nodes, selectedNodeID }) => {
+      const label =
+        nodes[/** @type {string} */ (selectedNodeID)].propDefs[
+          /** @type {string} */ (editPropFlow.selectedPropID)
+        ].label
+
+      return {
+        editPropFlow: {
+          ...editPropFlow,
+          currentLabelValue: label, // having it be an string brings up the component
+        },
+      }
+    })
+  }
+
+  /**
+   * @private
+   */
+  editPropFlowOnClickHelp = () => {
+    this.setState(({ editPropFlow, nodes, selectedNodeID }) => {
+      const selectedPropDef =
+        nodes[/** @type {string} */ (selectedNodeID)].propDefs[
+          /** @type {string} */ (editPropFlow.selectedPropID)
+        ]
+
+      return {
+        editPropFlow: {
+          ...editPropFlow,
+          editingHelpText: true,
+          currentHelpTextValue:
+            selectedPropDef.helpText === null ? '' : selectedPropDef.helpText,
+          helpTextEnabled: !!selectedPropDef.helpText,
+          willChangeHelpTextStatus: false,
+        },
+      }
+    })
+  }
+
+  /**
+   * @private
+   */
+  editPropFlowOnClickIndex = () => {
+    const { editPropFlow, nodes, selectedNodeID } = this.state
+
+    const selectedNode = nodes[/** @type {string} */ (selectedNodeID)]
+
+    const selectedPropDef =
+      selectedNode.propDefs[/** @type {string} */ (editPropFlow.selectedPropID)]
+
+    const isIndexed = selectedPropDef.indexed
+
+    nodesNode
+      .get(/** @type {string} */ (selectedNodeID))
+      .getSet('propDefs')
+      .get(/** @type {string} */ (editPropFlow.selectedPropID))
+      .put({
+        indexed: !isIndexed,
+      })
+      .then(this.genericResHandler)
+      .catch(this.genericErrHandler)
+  }
+
+  editPropFlowOnClickRequired = () => {
+    const { editPropFlow, nodes, selectedNodeID } = this.state
+
+    const selectedNode = nodes[/** @type {string} */ (selectedNodeID)]
+
+    const selectedPropDef =
+      selectedNode.propDefs[/** @type {string} */ (editPropFlow.selectedPropID)]
+
+    const isRequired = selectedPropDef.required
+
+    nodesNode
+      .get(/** @type {string} */ (selectedNodeID))
+      .getSet('propDefs')
+      .get(/** @type {string} */ (editPropFlow.selectedPropID))
+      .put({
+        required: !isRequired,
+      })
+      .then(this.genericResHandler)
+      .catch(this.genericErrHandler)
+  }
+
+  /**
+   * @private
+   */
+  editPropFlowSaveHelpTextValue = () => {
+    // sanity check
+    if (!this.editPropFlowIsHelpTextSaveable()) {
+      return
+    }
+
+    const { editPropFlow, nodes, selectedNodeID } = this.state
+
+    const selectedNode = nodes[/** @type {string} */ (selectedNodeID)]
+
+    const selectedPropDef =
+      selectedNode.propDefs[/** @type {string} */ (editPropFlow.selectedPropID)]
+
+    const value = editPropFlow.currentHelpTextValue
+
+    // note the !== here is equivalent to XOR
+    const helpTextSwitchOn =
+      (selectedPropDef && !!selectedPropDef.helpText) !==
+      editPropFlow.willChangeHelpTextStatus
+
+    // sanity check
+    if (!editPropFlow.editingHelpText) {
+      return
+    }
+
+    nodesNode
+      .get(/** @type {string} */ (selectedNodeID))
+      .getSet('propDefs')
+      .get(/** @type {string} */ (editPropFlow.selectedPropID))
+      .put({
+        // (value.length === 0 ? null : value) is sanity check
+        helpText: helpTextSwitchOn ? (value.length === 0 ? null : value) : null,
+      })
+      .then(this.genericResHandler)
+      .catch(this.genericErrHandler)
+  }
+
+  /**
+   * @private
+   */
+  editPropFlowOpenIconSelection = () => {
+    this.setState(({ editPropFlow, nodes, selectedNodeID }) => {
+      const selectedNode = nodes[/** @type {string} */ (selectedNodeID)]
+
+      const selectedPropDef =
+        selectedNode.propDefs[
+          /** @type {string} */ (editPropFlow.selectedPropID)
+        ]
+
+      return {
+        editPropFlow: {
+          ...editPropFlow,
+          editingIcon: true,
+          // if it was editing, reset to null, otherwise set it to the icon of
+          // the current selected propdef
+          currentSelectedIconIdx:
+            selectedPropDef.iconName === null
+              ? -1
+              : AVAILABLE_ICON_NAMES.indexOf(selectedPropDef.iconName),
+        },
+      }
+    })
+  }
+
+  /**
+   * @private
+   */
+  editPropFlowIsHelpTextSaveable = () => {
+    const { editPropFlow, nodes, selectedNodeID } = this.state
+
+    if (!selectedNodeID) {
+      return false
+    }
+
+    if (!editPropFlow.selectedPropID) {
+      return false
+    }
+
+    const selectedNode = nodes[selectedNodeID]
+
+    const selectedPropDef = selectedNode.propDefs[editPropFlow.selectedPropID]
+
+    // note the !== here is equivalent to XOR
+    const helpTextSwitchOn =
+      !!selectedPropDef.helpText !== editPropFlow.willChangeHelpTextStatus
+
+    // sanity check
+    if (!editPropFlow.editingHelpText) {
+      return
+    }
+
+    if (helpTextSwitchOn) {
+      if (editPropFlow.currentHelpTextValue.length === 0) {
+        return false
+      }
+
+      return editPropFlow.currentHelpTextValue !== selectedPropDef.helpText
+    } else {
+      return selectedPropDef.helpText !== null
+    }
+  }
+
+  /**
+   * @private
+   */
+  editPropFlowSaveLabelValue = () => {
+    const { editPropFlow, selectedNodeID } = this.state
+
+    const value = /** @type {string} */ editPropFlow.currentLabelValue
+
+    nodesNode
+      .get(/** @type {string} */ (selectedNodeID))
+      .getSet('propDefs')
+      .get(/** @type {string} */ (editPropFlow.selectedPropID))
+      .put({
+        label: value,
+      })
+      .then(this.genericResHandler)
+      .catch(this.genericErrHandler)
+  }
+
+  /**
+   * @private
+   */
+  editPropFlowSavePrimitiveSettingValue = () => {
+    const { editPropFlow, nodes, selectedNodeID } = this.state
+
+    const value = /** @type {string} */ editPropFlow.currentSettingValue
+
+    const paramID = /** @type {string} */ (editPropFlow.selectedSettingParamID)
+
+    const selectedNode = nodes[/** @type {string} */ (selectedNodeID)]
+
+    const selectedPropDef =
+      selectedNode.propDefs[/** @type {string} */ (editPropFlow.selectedPropID)]
+
+    const propType = selectedPropDef.propType
+
+    const selectedParam = propType.params[paramID]
+
+    const maybeMatchingArgEntry = Object.entries(
+      selectedPropDef.arguments,
+    ).find(([_, arg]) => arg.param === selectedParam)
+
+    const relevantPropDefNode = nodesNode
+      .get(/** @type {string} */ (this.state.selectedNodeID))
+      .getSet('propDefs')
+      .get(/** @type {string} */ (this.state.editPropFlow.selectedPropID))
+
+    if (maybeMatchingArgEntry) {
+      const [key] = maybeMatchingArgEntry
+
+      relevantPropDefNode
+        .getSet('arguments')
+        .get(key)
+        .put({
+          value:
+            selectedParam.type === 'string'
+              ? BuiltIn.createStringFreeValue(/** @type {string} */ (value))
+              : BuiltIn.createNumberFreeValue(Number(value)),
+        })
+        .then(this.genericResHandler)
+        .catch(this.genericErrHandler)
+    } else {
+      // CAST: we already know this edge cannot be null
+      const relevantPropType = /** @type {WrapperNode} */ (relevantPropDefNode.getEdgeRef(
+        'propType',
+      ))
+
+      const relevantParam = relevantPropType.getSet('params').get(paramID)
+
+      relevantPropDefNode
+        .getSet('arguments')
+        .set({
+          param: relevantParam,
+          value:
+            selectedParam.type === 'string'
+              ? BuiltIn.createStringFreeValue(/** @type {string} */ (value))
+              : BuiltIn.createNumberFreeValue(Number(value)),
+        })
+        .then(this.genericResHandler)
+        .catch(this.genericErrHandler)
+    }
+  }
+
+  /**
+   * @private
+   */
   editPropFlowStopEditing = () => {
     this.setState({
       editPropFlow: INITIAL_EDIT_PROP_FLOW,
     })
+  }
+
+  /**
+   * @private
+   * @param {{ target: {} }} e
+   */
+  editPropFlowOnChangeSettingTextfieldNumber = e => {
+    /** @type {string} */
+    // @ts-ignore
+    const value = e.target.value
+
+    const chars = value.split('')
+
+    if (chars.some(char => !Utils.isNumber(char))) {
+      return
+    }
+
+    this.setState(({ editPropFlow }) => {
+      return {
+        editPropFlow: {
+          ...editPropFlow,
+          currentSettingValue: value,
+        },
+      }
+    })
+  }
+
+  /**
+   * @private
+   * @param {{ target: {} }} e
+   */
+  editPropFlowOnChangeSettingTextfieldString = e => {
+    /** @type {string} */
+    // @ts-ignore
+    const value = e.target.value
+
+    this.setState(({ editPropFlow }) => {
+      return {
+        editPropFlow: {
+          ...editPropFlow,
+          currentSettingValue: value,
+        },
+      }
+    })
+  }
+
+  /**
+   * @private
+   * @param {string} paramID
+   */
+  editPropFlowOnClickSetting = paramID => {
+    ;(() => {
+      const selectedNode = /** @type {string} */ this.state.nodes[
+        /** @type {string} */ (this.state.selectedNodeID)
+      ]
+
+      const selectedPropDef =
+        selectedNode.propDefs[
+          /** @type {string} */ (this.state.editPropFlow.selectedPropID)
+        ]
+
+      const propType = selectedPropDef.propType
+
+      const selectedParam = propType.params[paramID]
+
+      const isBooleanSwitch =
+        selectedParam.type === 'boolean' && !selectedParam.multiple
+
+      if (!isBooleanSwitch) {
+        return
+      }
+
+      const maybeMatchingArgEntry = Object.entries(
+        selectedPropDef.arguments,
+      ).find(([_, arg]) => arg.param === selectedParam)
+
+      const relevantPropDefNode = nodesNode
+        .get(/** @type {string} */ (this.state.selectedNodeID))
+        .getSet('propDefs')
+        .get(/** @type {string} */ (this.state.editPropFlow.selectedPropID))
+
+      if (maybeMatchingArgEntry) {
+        const [key, matchingArg] = maybeMatchingArgEntry
+
+        relevantPropDefNode
+          .getSet('arguments')
+          .get(key)
+          .put({
+            value: BuiltIn.createBooleanFreeValue(
+              !matchingArg.value.valueIfBoolean,
+            ),
+          })
+          .then(this.genericResHandler)
+          .catch(this.genericErrHandler)
+      } else {
+        // CAST: we already know this edge cannot be null
+        const relevantPropType = /** @type {WrapperNode} */ (relevantPropDefNode.getEdgeRef(
+          'propType',
+        ))
+
+        const relevantParam = relevantPropType.getSet('params').get(paramID)
+
+        relevantPropDefNode
+          .getSet('arguments')
+          .set({
+            param: relevantParam,
+            value: BuiltIn.createBooleanFreeValue(true),
+          })
+          .then(this.genericResHandler)
+          .catch(this.genericErrHandler)
+      }
+    })()
+
+    this.setState(({ editPropFlow, nodes, selectedNodeID }) => {
+      const selectedNode =
+        /** @type {string} */ nodes[/** @type {string} */ (selectedNodeID)]
+
+      const selectedPropDef =
+        selectedNode.propDefs[
+          /** @type {string} */ (editPropFlow.selectedPropID)
+        ]
+
+      const propType = selectedPropDef.propType
+
+      const selectedParam = propType.params[paramID]
+
+      const maybeMatchingArgEntry = Object.entries(
+        selectedPropDef.arguments,
+      ).find(([_, arg]) => arg.param === selectedParam)
+
+      const maybeMatchingArg = maybeMatchingArgEntry && maybeMatchingArgEntry[1]
+
+      /**
+       * @type {EditPropFlow['currentSettingValue']}
+       */
+      let value = null
+
+      if (selectedParam.type === 'boolean') {
+        return null
+      }
+
+      if (selectedParam.type === 'number') {
+        if (selectedParam.multiple) {
+          value = maybeMatchingArg
+            ? maybeMatchingArg.value.valuesIfMultipleNumber
+            : {}
+        } else {
+          value = maybeMatchingArg
+            ? maybeMatchingArg.value.valueIfNumber === null
+              ? '0'
+              : maybeMatchingArg.value.valueIfNumber.toString()
+            : '0'
+        }
+      }
+
+      if (selectedParam.type === 'string') {
+        if (selectedParam.multiple) {
+          value = maybeMatchingArg
+            ? maybeMatchingArg.value.valuesIfMultipleString
+            : {}
+        } else {
+          value = maybeMatchingArg
+            ? maybeMatchingArg.value.valueIfString === null
+              ? ''
+              : maybeMatchingArg.value.valueIfString
+            : ''
+        }
+      }
+
+      return {
+        editPropFlow: {
+          ...editPropFlow,
+          currentSettingValue: value,
+          selectedSettingParamID: paramID,
+        },
+        nodes,
+      }
+    })
+  }
+
+  /**
+   * @private
+   * @returns {React.ReactNode}
+   */
+  editPropFlowRenderSettingEditor = () => {
+    const { classes } = this.props
+
+    const paramID = /** @type {string} */ (this.state.editPropFlow
+      .selectedSettingParamID)
+
+    const selectedNode = this.state.nodes[
+      /** @type {string} */ (this.state.selectedNodeID)
+    ]
+
+    const selectedPropDef =
+      selectedNode.propDefs[
+        /** @type {string} */ (this.state.editPropFlow.selectedPropID)
+      ]
+
+    const propType = selectedPropDef.propType
+
+    const selectedParam = propType.params[paramID]
+
+    if (selectedParam.type === 'boolean') {
+      // There wont be really be many multiboolean prop type settings better
+      // render an switch inside propsdefeditor for single boolean settings
+      return `There's an error if you're seeing this text, please contact us.`
+    }
+
+    if (selectedParam.type === 'number') {
+      if (selectedParam.multiple) {
+        return (
+          'options editor with number values' &&
+          this.state.editPropFlow.currentSettingValue
+        )
+      }
+
+      return (
+        <Grid
+          // TODO: Why do both need to be stretch?
+          alignContent="stretch"
+          alignItems="stretch"
+          justify="center"
+          container
+          direction="column"
+        >
+          <Grid item>
+            <Typography align="center" color="textSecondary" variant="body1">
+              {selectedParam.name}
+            </Typography>
+          </Grid>
+
+          <Grid className={classes.textField} item>
+            <TextField
+              autoFocus
+              fullWidth
+              onChange={this.editPropFlowOnChangeSettingTextfieldNumber}
+              type="search"
+              // @ts-ignore
+              value={
+                this.state.editPropFlow.currentSettingValue === null
+                  ? 0
+                  : this.state.editPropFlow.currentSettingValue
+              }
+              variant="outlined"
+            />
+          </Grid>
+        </Grid>
+      )
+    }
+
+    if (selectedParam.type === 'string') {
+      if (selectedParam.multiple) {
+        return 'multistring' && this.state.editPropFlow.currentSettingValue
+      }
+
+      return (
+        <Grid
+          // TODO: Why do both need to be stretch?
+          alignContent="stretch"
+          alignItems="stretch"
+          container
+          direction="column"
+          justify="center"
+        >
+          <Grid item>
+            <Typography align="center" color="textSecondary" variant="body1">
+              {selectedParam.name}
+            </Typography>
+          </Grid>
+
+          <Grid className={classes.textField} item>
+            <TextField
+              autoFocus
+              fullWidth
+              onChange={this.editPropFlowOnChangeSettingTextfieldString}
+              type="search"
+              variant="outlined"
+              value={
+                typeof this.state.editPropFlow.currentSettingValue === 'string'
+                  ? this.state.editPropFlow.currentSettingValue
+                  : ''
+              }
+            />
+          </Grid>
+        </Grid>
+      )
+    }
+
+    console.assert('unreachable')
+    return null
+  }
+
+  editPropFlowUpdateIconValue = () => {
+    const { editPropFlow, nodes, selectedNodeID } = this.state
+
+    const selectedNode = nodes[/** @type {string} */ (selectedNodeID)]
+
+    const selectedPropDef =
+      selectedNode &&
+      selectedNode.propDefs[/** @type {string} */ (editPropFlow.selectedPropID)]
+
+    if (!selectedPropDef) {
+      return
+    }
+
+    const iconName = (() => {
+      if (editPropFlow.currentSelectedIconIdx === null) {
+        return null
+      }
+
+      if (editPropFlow.currentSelectedIconIdx === -1) {
+        return null
+      }
+
+      return AVAILABLE_ICON_NAMES[editPropFlow.currentSelectedIconIdx]
+    })()
+
+    nodesNode
+      .get(/** @type {string} */ (selectedNodeID))
+      .getSet('propDefs')
+      .get(/** @type {string} */ (editPropFlow.selectedPropID))
+      .put({
+        iconName,
+      })
+      .then(this.genericResHandler)
+      .catch(this.genericErrHandler)
   }
 
   /*
@@ -838,6 +1570,7 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
   }
 
   /**
+   * @private
    * @param {string} id
    */
   onClickNode = id => {
@@ -846,7 +1579,9 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
     })
   }
 
-  /** @private */
+  /**
+   * @private
+   **/
   toggleAddNodeDialog = () => {
     this.setState(({ addNodeFlow }) => ({
       addNodeFlow: {
@@ -1036,40 +1771,163 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
   }
 
   onClickDrawerLeftBtn = () => {
-    this.setState(({ currentNodeDrawerTab, editNodeFlow, selectedNodeID }) => {
-      if (editNodeFlow.editingIcon) {
-        return {
-          currentNodeDrawerTab,
-          editNodeFlow: {
-            ...editNodeFlow,
-            currentlySelectedIconName: null,
-            editingIcon: false,
-          },
-          selectedNodeID,
-        }
-      }
+    this.setState(
+      ({
+        currentNodeDrawerTab,
+        editNodeFlow,
+        editPropFlow,
+        selectedNodeID,
+      }) => {
+        // the more 'in' an screen is, the higher up top here the handling logic
+        // for it has to be
 
-      if (editNodeFlow.editingLabel) {
-        return {
-          currentNodeDrawerTab,
-          editNodeFlow: {
-            ...editNodeFlow,
-            editingLabel: false,
-          },
-          selectedNodeID,
+        if (editPropFlow.editingIcon) {
+          return {
+            currentNodeDrawerTab,
+            editNodeFlow,
+            editPropFlow: {
+              ...editPropFlow,
+              currentSelectedIconIdx: null,
+              editingIcon: false,
+            },
+            selectedNodeID,
+          }
         }
-      }
 
-      return {
-        currentNodeDrawerTab: 0,
-        editNodeFlow: INITIAL_EDIT_NODE_FLOW,
-        selectedNodeID: null,
-      }
-    })
+        if (editPropFlow.editingHelpText) {
+          return {
+            currentNodeDrawerTab,
+            editNodeFlow,
+            editPropFlow: {
+              ...editPropFlow,
+              editingHelpText: false,
+              willChangeHelpTextStatus: false,
+            },
+            selectedNodeID,
+          }
+        }
+
+        if (editPropFlow.currentLabelValue !== null) {
+          return {
+            currentNodeDrawerTab,
+            editNodeFlow,
+            editPropFlow: {
+              ...editPropFlow,
+              currentLabelValue: null,
+            },
+            selectedNodeID,
+          }
+        }
+
+        if (editPropFlow.selectedSettingParamID) {
+          return {
+            currentNodeDrawerTab,
+            editNodeFlow,
+            editPropFlow: {
+              ...editPropFlow,
+              currentSettingValue: null,
+              selectedSettingParamID: null,
+            },
+            selectedNodeID,
+          }
+        }
+
+        if (editPropFlow.selectedPropID) {
+          return {
+            currentNodeDrawerTab,
+            editNodeFlow,
+            editPropFlow: INITIAL_EDIT_PROP_FLOW,
+            selectedNodeID,
+          }
+        }
+
+        if (editNodeFlow.editingIcon) {
+          return {
+            currentNodeDrawerTab,
+            editNodeFlow: {
+              ...editNodeFlow,
+              currentlySelectedIconName: null,
+              editingIcon: false,
+            },
+            editPropFlow,
+            selectedNodeID,
+          }
+        }
+
+        if (editNodeFlow.editingLabel) {
+          return {
+            currentNodeDrawerTab,
+            editNodeFlow: {
+              ...editNodeFlow,
+              editingLabel: false,
+            },
+            editPropFlow,
+            selectedNodeID,
+          }
+        }
+
+        return {
+          currentNodeDrawerTab: 0,
+          editNodeFlow: INITIAL_EDIT_NODE_FLOW,
+          editPropFlow,
+          selectedNodeID: null,
+        }
+      },
+    )
   }
 
   onClickDrawerRightBtn = () => {
-    const { editNodeFlow, selectedNodeID } = this.state
+    const { editNodeFlow, editPropFlow, selectedNodeID } = this.state
+
+    if (editPropFlow.editingIcon) {
+      this.editPropFlowUpdateIconValue()
+
+      this.setState(({ editPropFlow }) => ({
+        editPropFlow: {
+          ...editPropFlow,
+          editingIcon: false,
+          currentSelectedIconIdx: null,
+        },
+      }))
+    }
+
+    if (editPropFlow.editingHelpText) {
+      this.editPropFlowSaveHelpTextValue()
+
+      this.setState(({ editPropFlow }) => ({
+        editPropFlow: {
+          ...editPropFlow,
+          editingHelpText: false,
+          currentHelpTextValue: '',
+          willChangeHelpTextStatus: false,
+        },
+      }))
+    }
+
+    if (editPropFlow.currentLabelValue !== null) {
+      this.editPropFlowSaveLabelValue()
+
+      this.setState(({ editPropFlow }) => ({
+        editPropFlow: {
+          ...editPropFlow,
+          currentLabelValue: null,
+        },
+      }))
+    }
+
+    if (editPropFlow.selectedSettingParamID) {
+      this.editPropFlowSavePrimitiveSettingValue()
+
+      this.setState(({ editPropFlow }) => ({
+        editPropFlow: {
+          ...editPropFlow,
+          currentSettingValue: null,
+          selectedSettingParamID: null,
+        },
+      }))
+
+      return
+    }
 
     if (editNodeFlow.editingLabel) {
       nodesNode
@@ -1077,9 +1935,8 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
         .put({
           label: editNodeFlow.editingLabelCurrentValue,
         })
-        .then(res => {
-          console.log(res)
-        })
+        .then(this.genericResHandler)
+        .catch(this.genericErrHandler)
 
       this.setState(({ editNodeFlow }) => ({
         editNodeFlow: {
@@ -1087,6 +1944,8 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
           editingLabel: false,
         },
       }))
+
+      return
     }
 
     if (editNodeFlow.editingIcon) {
@@ -1098,9 +1957,8 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
           iconName:
             /** @type {string} */ (editNodeFlow.currentlySelectedIconName),
         })
-        .then(res => {
-          console.log(res)
-        })
+        .then(this.genericResHandler)
+        .catch(this.genericErrHandler)
 
       this.setState(({ editNodeFlow }) => ({
         editNodeFlow: {
@@ -1108,6 +1966,8 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
           editingIcon: false,
         },
       }))
+
+      return
     }
   }
 
@@ -1147,12 +2007,14 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
 
   render() {
     const { classes } = this.props
+
     const {
       addNodeFlow,
       addPropFlow,
       addNodeFormData,
       currentNodeDrawerTab,
       editNodeFlow,
+      editPropFlow,
       isReorderingProps,
       nodes,
       propTypes,
@@ -1168,6 +2030,10 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
 
     const selectedNode =
       typeof selectedNodeID === 'string' && nodes[selectedNodeID]
+
+    const selectedPropDef =
+      selectedNode &&
+      selectedNode.propDefs[/** @type {string} */ (editPropFlow.selectedPropID)]
 
     const addNodeSelectedIconIdx =
       addNodeFlow.currentlySelectedIconName === null
@@ -1189,8 +2055,62 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
       ([_, node]) => !node.active,
     )
 
+    // the falsy check is for avoiding errors when a propdef isn't yet selected
+    // we coerce helptext because we know the wrapper doesn't allow empty
+    // strings
+    // note the !== here is equivalent to XOR
+    const helpTextSwitchOn =
+      (selectedPropDef && !!selectedPropDef.helpText) !==
+      editPropFlow.willChangeHelpTextStatus
+
     return (
       <React.Fragment>
+        <Dialog
+          rightActionButtonText={addPropFlow.selectingIcon ? 'Save' : 'Next'}
+          disableRightActionButton={
+            addPropFlow.saving ||
+            (addPropFlow.currentlySelectedIconName === null &&
+              addPropFlow.selectingIcon) ||
+            !!addPropFlow.labelError ||
+            !!addPropFlow.nameError ||
+            addPropFlow.labelValue.length === 0 ||
+            addPropFlow.nameValue.length === 0 ||
+            addPropFlow.typeValue === ''
+          }
+          disableLeftActionButton={addPropFlow.saving}
+          onClickLeftActionButton={this.addPropFlowOnClickLeftACtion}
+          handleClose={this.toggleAddPropDialog}
+          onClickRightActionButton={this.addPropFlowOnClickAction}
+          showBackArrow={addPropFlow.selectingIcon}
+          showCloseButton={!addPropFlow.selectingIcon}
+          open={addPropFlow.dialogOpen}
+          title={'Add Property'}
+        >
+          <OverlaySpinner showSpinner={addPropFlow.saving}>
+            {addPropFlow.selectingIcon ? (
+              <IconSelector
+                icons={AVAILABLE_ICONS}
+                onClickIcon={this.addPropFlowOnClickIcon}
+                selectedIconIdx={addPropFlowSelectedIconIdx}
+              />
+            ) : (
+              <AddPropForm
+                availableTypes={Object.values(propTypes).map(pt => pt.name)}
+                disableLabelInput={addPropFlow.saving}
+                disableNameInput={addPropFlow.saving}
+                disableTypeSelection={addPropFlow.saving}
+                labelValue={addPropFlow.labelValue}
+                labelErrorMessage={addPropFlow.labelError}
+                nameErrorMessage={addPropFlow.nameError}
+                nameValue={addPropFlow.nameValue}
+                typeValue={addPropFlow.typeValue}
+                onLabelChange={this.addPropFormOnLabelChange}
+                onNameChange={this.addPropFormOnNameChange}
+                onTypeChange={this.addPropFormOnTypeChange}
+              />
+            )}
+          </OverlaySpinner>
+        </Dialog>
         <Snackbar
           autoHideDuration={2000}
           message={<span>{snackbarMessage}</span>}
@@ -1219,11 +2139,104 @@ a8"    `Y88  88P'   "Y8  ""     `Y8  `8b    d88b    d8'  a8P_____88  88P'   "Y8
 
         {selectedNodeID && selectedNode && (
           <PcDrawer
-            title={selectedNode.label}
+            title={(() => {
+              if (!selectedNode) {
+                return ''
+              }
+
+              let title = selectedNode.label
+
+              if (!selectedPropDef) {
+                return title
+              }
+
+              if (editPropFlow.selectedPropID) {
+                title += ' > ' + selectedPropDef.label
+              }
+
+              if (editPropFlow.currentLabelValue !== null) {
+                title += ' > Label'
+              }
+
+              if (editPropFlow.selectedSettingParamID) {
+                title +=
+                  ' > ' +
+                  selectedPropDef.propType.params[
+                    editPropFlow.selectedSettingParamID
+                  ].name
+              }
+
+              if (editPropFlow.editingHelpText) {
+                title += ' > Help Text'
+              }
+
+              if (editPropFlow.editingIcon) {
+                title += ' > Edit Icon'
+              }
+
+              return title
+            })()}
             open
             leftButtonOnClick={this.onClickDrawerLeftBtn}
             rightButtonOnClick={this.onClickDrawerRightBtn}
             rightButtonText={(() => {
+              if (editPropFlow.editingIcon) {
+                if (!selectedPropDef) {
+                  return
+                }
+
+                if (editPropFlow.currentSelectedIconIdx === null) {
+                  return
+                }
+
+                const currentIcon = selectedPropDef.iconName
+
+                const selectedIcon =
+                  editPropFlow.currentSelectedIconIdx === -1
+                    ? null
+                    : AVAILABLE_ICON_NAMES[editPropFlow.currentSelectedIconIdx]
+
+                if (currentIcon !== selectedIcon) {
+                  return 'save'
+                }
+              }
+
+              if (
+                editPropFlow.editingHelpText &&
+                this.editPropFlowIsHelpTextSaveable()
+              ) {
+                return 'save'
+              }
+
+              if (
+                editPropFlow.currentLabelValue !== null &&
+                editPropFlow.currentLabelValue.length > 0 &&
+                (selectedPropDef &&
+                  selectedPropDef.label !== editPropFlow.currentLabelValue)
+              ) {
+                return 'Save'
+              }
+
+              if (editPropFlow.selectedSettingParamID) {
+                const currentSettingValue = editPropFlow.currentSettingValue
+
+                if (typeof currentSettingValue === 'boolean') {
+                  return
+                }
+
+                if (currentSettingValue == null) {
+                  return
+                }
+
+                if (typeof currentSettingValue === 'string') {
+                  return currentSettingValue.length > 0 ? 'save' : undefined
+                }
+
+                if (typeof currentSettingValue === 'object') {
+                  return 'save'
+                }
+              }
+
               if (
                 editNodeFlow.editingIcon &&
                 editNodeFlow.currentlySelectedIconName !== null
@@ -1240,7 +2253,12 @@ a8"    `Y88  88P'   "Y8  ""     `Y8  `8b    d88b    d8'  a8P_____88  88P'   "Y8
             tabs={AVAILABLE_TABS_NAMES}
             tabsCurrentValue={currentNodeDrawerTab}
             tabsOnChange={this.handleNodeDrawerTabChange}
-            hideTabs={editNodeFlow.editingLabel || editNodeFlow.editingIcon}
+            hideTabs={
+              editNodeFlow.editingLabel ||
+              editNodeFlow.editingIcon ||
+              !!editPropFlow.selectedPropID ||
+              !!editPropFlow.selectedSettingParamID
+            }
           >
             {currentNodeDrawerTab === NodeDrawerTab.Details &&
               !editNodeFlow.editingIcon &&
@@ -1271,88 +2289,140 @@ a8"    `Y88  88P'   "Y8  ""     `Y8  `8b    d88b    d8'  a8P_____88  88P'   "Y8
             {editNodeFlow.editingLabel && (
               <TextField
                 autoFocus
-                className={classes.labelEditorTextField}
+                className={classes.textField}
                 onChange={this.editNodeFlowOnChangeLabelTextField}
-                value={editNodeFlow.editingLabelCurrentValue}
                 type="search"
+                value={editNodeFlow.editingLabelCurrentValue}
                 variant="outlined"
               />
             )}
 
-            {currentNodeDrawerTab === NodeDrawerTab.Properties && (
-              <PropDefsOverview
-                onReorderEnd={this.onReorderEnd}
-                onClickReorder={this.toggleReorderProps}
-                isReordering={isReorderingProps}
-                onClickAdd={this.toggleAddPropDialog}
-                onClickEdit={this.editPropFlowOnClickEdit}
-                propDefs={Object.entries(selectedNode.propDefs).map(
-                  ([id, propDef]) => ({
-                    id,
-                    icon: nameToIconMap[propDef.iconName]
-                      ? nameToIconMap[propDef.iconName].filled
-                      : null,
-                    name: propDef.name,
-                    typeName:
-                      typeToReadableName[propDef.propType.name] ||
-                      propDef.propType.name,
-                    unused: propDef.unused,
-                  }),
-                )}
+            {currentNodeDrawerTab === NodeDrawerTab.Properties &&
+              !editPropFlow.selectedPropID && (
+                <PropDefsOverview
+                  onReorderEnd={this.onReorderEnd}
+                  onClickReorder={this.toggleReorderProps}
+                  isReordering={isReorderingProps}
+                  onClickAdd={this.toggleAddPropDialog}
+                  onClickEdit={this.editPropFlowOnClickEdit}
+                  propDefs={Object.entries(selectedNode.propDefs).map(
+                    ([id, propDef]) => ({
+                      id,
+                      icon: propDef.iconName
+                        ? nameToIconMap[propDef.iconName]
+                          ? nameToIconMap[propDef.iconName].filled
+                          : null
+                        : null,
+                      label: propDef.label,
+                      typeName:
+                        typeToReadableName[propDef.propType.name] ||
+                        propDef.propType.name,
+                      unused: propDef.unused,
+                    }),
+                  )}
+                />
+              )}
+
+            {editPropFlow.selectedPropID &&
+              selectedPropDef &&
+              !editPropFlow.selectedSettingParamID &&
+              editPropFlow.currentLabelValue === null &&
+              !editPropFlow.editingHelpText &&
+              !editPropFlow.editingIcon && (
+                <PropDefEditor
+                  settings={getSettingsForPropDefEditor(selectedPropDef)}
+                  helpText={selectedPropDef.helpText}
+                  icon={
+                    selectedPropDef.iconName &&
+                    nameToIconMap[selectedPropDef.iconName]
+                      ? nameToIconMap[selectedPropDef.iconName].outlined
+                      : null
+                  }
+                  isIndexed={selectedPropDef.indexed}
+                  label={selectedPropDef.label}
+                  required={selectedPropDef.required}
+                  onClickSetting={this.editPropFlowOnClickSetting}
+                  onClickHelpTextBtn={this.editPropFlowOnClickHelp}
+                  onClickIconBtn={this.editPropFlowOpenIconSelection}
+                  onClickIndex={this.editPropFlowOnClickIndex}
+                  onClickLabelBtn={this.editPropFlowOnClickLabel}
+                  onClickRequired={this.editPropFlowOnClickRequired}
+                />
+              )}
+
+            {editPropFlow.currentLabelValue !== null && (
+              <Grid
+                // TODO: Why do both need to be stretch?
+                alignContent="stretch"
+                alignItems="stretch"
+                justify="center"
+                container
+                direction="column"
+              >
+                <Grid className={classes.textField} item>
+                  <TextField
+                    autoFocus
+                    fullWidth
+                    onChange={this.editPropFlowOnChangeLabel}
+                    type="search"
+                    value={editPropFlow.currentLabelValue}
+                    variant="outlined"
+                  />
+                </Grid>
+              </Grid>
+            )}
+
+            {editPropFlow.editingHelpText && (
+              <Grid
+                // TODO: Why do both need to be stretch?
+                alignContent="stretch"
+                alignItems="stretch"
+                justify="center"
+                container
+                direction="column"
+                spacing={24}
+              >
+                <DrawerButton
+                  isSwitch
+                  onClick={this.editPropFlowOnClickHelpTextSwitch}
+                  primaryText="Help Text"
+                  switchOn={helpTextSwitchOn}
+                />
+                <Typography align="center">
+                  Help Text displays a quick blurb to help users
+                </Typography>
+                <Grid className={classes.textField} item>
+                  <TextField
+                    autoFocus
+                    disabled={!helpTextSwitchOn}
+                    fullWidth
+                    onChange={this.editPropFlowOnChangeHelpText}
+                    type="search"
+                    value={
+                      editPropFlow.currentHelpTextValue === null
+                        ? ''
+                        : editPropFlow.currentHelpTextValue
+                    }
+                    variant="outlined"
+                  />
+                </Grid>
+              </Grid>
+            )}
+
+            {!!editPropFlow.selectedSettingParamID &&
+              this.editPropFlowRenderSettingEditor()}
+
+            {editPropFlow.editingIcon && (
+              <IconSelector
+                icons={AVAILABLE_ICONS}
+                onClickIcon={this.editPropFlowOnClickIcon}
+                selectedIconIdx={editPropFlow.currentSelectedIconIdx}
+                showNoIconOption
               />
             )}
 
             {currentNodeDrawerTab === NodeDrawerTab.Relationships &&
               'relationships'}
-
-            <Dialog
-              rightActionButtonText={
-                addPropFlow.selectingIcon ? 'Save' : 'Next'
-              }
-              disableRightActionButton={
-                addPropFlow.saving ||
-                (addPropFlow.currentlySelectedIconName === null &&
-                  addPropFlow.selectingIcon) ||
-                !!addPropFlow.labelError ||
-                !!addPropFlow.nameError ||
-                addPropFlow.labelValue.length === 0 ||
-                addPropFlow.nameValue.length === 0 ||
-                addPropFlow.typeValue === ''
-              }
-              disableLeftActionButton={addPropFlow.saving}
-              onClickLeftActionButton={this.addPropFlowOnClickLeftACtion}
-              handleClose={this.toggleAddPropDialog}
-              onClickRightActionButton={this.addPropFlowOnClickAction}
-              showBackArrow={addPropFlow.selectingIcon}
-              showCloseButton={!addPropFlow.selectingIcon}
-              open={addPropFlow.dialogOpen}
-              title={`Add a Property to Node ${selectedNode.label}`}
-            >
-              <OverlaySpinner showSpinner={addPropFlow.saving}>
-                {addPropFlow.selectingIcon ? (
-                  <IconSelector
-                    icons={AVAILABLE_ICONS}
-                    onClickIcon={this.addPropFlowOnClickIcon}
-                    selectedIconIdx={addPropFlowSelectedIconIdx}
-                  />
-                ) : (
-                  <AddPropForm
-                    availableTypes={Object.values(propTypes).map(pt => pt.name)}
-                    disableLabelInput={addPropFlow.saving}
-                    disableNameInput={addPropFlow.saving}
-                    disableTypeSelection={addPropFlow.saving}
-                    labelValue={addPropFlow.labelValue}
-                    labelErrorMessage={addPropFlow.labelError}
-                    nameErrorMessage={addPropFlow.nameError}
-                    nameValue={addPropFlow.nameValue}
-                    typeValue={addPropFlow.typeValue}
-                    onLabelChange={this.addPropFormOnLabelChange}
-                    onNameChange={this.addPropFormOnNameChange}
-                    onTypeChange={this.addPropFormOnTypeChange}
-                  />
-                )}
-              </OverlaySpinner>
-            </Dialog>
           </PcDrawer>
         )}
 
@@ -1571,6 +2641,95 @@ a8"    `Y88  88  ""     `Y8  88  a8"     "8a  a8"    `Y88  I8[    ""
     )
   }
 }
+
+/**
+ * @param {import('app/typings').PropertyDefinition} propDef
+ * @returns {import('components/PropDefEditor').Setting[]}
+ */
+const getSettingsForPropDefEditor = propDef =>
+  Object.entries(propDef.propType.params).map(([id, param]) => {
+    const paramName = param.name
+    const paramType = param.type
+    const multiple = param.multiple
+
+    // TODO: check this actually works, especially because of equality operator
+    const maybeArgEntry = Object.entries(propDef.arguments).find(
+      ([_, arg]) => arg.param === param,
+    )
+
+    const maybeArg = maybeArgEntry && maybeArgEntry[1]
+
+    if (paramType === 'boolean') {
+      if (multiple) {
+        // I Suspect there wont be many multiple boolean arg values
+        return {
+          settingValueOrValues: 'Click to edit',
+          id,
+          paramName,
+        }
+      } else {
+        return {
+          settingValueOrValues: maybeArg
+            ? !!maybeArg.value.valueIfBoolean
+            : false,
+          id,
+          paramName,
+        }
+      }
+    }
+
+    if (paramType === 'number') {
+      if (multiple) {
+        return {
+          settingValueOrValues: maybeArg
+            ? Object.values(maybeArg.value.valuesIfMultipleNumber).map(n =>
+                n.toString(),
+              )
+            : [],
+          id,
+          paramName,
+        }
+      } else {
+        return {
+          settingValueOrValues: maybeArg
+            ? maybeArg.value.valueIfNumber === null
+              ? 'Non set'
+              : maybeArg.value.valueIfNumber.toString()
+            : 'Non set',
+          id,
+          paramName,
+        }
+      }
+    }
+
+    if (paramType === 'string') {
+      if (multiple) {
+        return {
+          settingValueOrValues: maybeArg
+            ? Object.values(maybeArg.value.valuesIfMultipleString)
+            : [],
+          id,
+          paramName,
+        }
+      } else {
+        return {
+          settingValueOrValues: maybeArg
+            ? maybeArg.value.valueIfString === null
+              ? 'Non set'
+              : maybeArg.value.valueIfString
+            : 'Non set',
+          id,
+          paramName,
+        }
+      }
+    }
+
+    return {
+      settingValueOrValues: '',
+      id,
+      paramName,
+    }
+  })
 
 export default withStyles(
   // Cast: no way to pass in generic arguments in JSDOC+Typescript

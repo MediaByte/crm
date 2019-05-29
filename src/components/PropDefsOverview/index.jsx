@@ -65,7 +65,7 @@ const styles = theme => ({
  * @typedef {object} PropDef
  * @prop {React.ComponentType<SvgIconProps>|null} icon
  * @prop {string} id
- * @prop {string} name
+ * @prop {string} label
  * @prop {string} typeName
  * @prop {boolean} unused
  */
@@ -156,7 +156,7 @@ class PropDefsOverview extends React.PureComponent {
                   {Icon && <Icon />}
 
                   <ListItemText
-                    primary={propDef.name}
+                    primary={propDef.label}
                     secondary={propDef.typeName}
                   />
 
@@ -190,7 +190,7 @@ class PropDefsOverview extends React.PureComponent {
                   {Icon && <Icon />}
 
                   <ListItemText
-                    primary={propDef.name}
+                    primary={propDef.label}
                     secondary={propDef.typeName}
                   />
 
