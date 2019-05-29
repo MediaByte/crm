@@ -92,9 +92,10 @@ const BLANK_ADD_NODE_FORM_DATA = Object.freeze({
 
 /** @type {Readonly<EditPropFlow>} */
 const INITIAL_EDIT_PROP_FLOW = {
-  currentSettingValue: null,
   currentHelpTextValue: '',
   currentLabelValue: null,
+  currentSelectedIconIdx: null,
+  currentSettingValue: null,
   editingHelpText: false,
   editingIcon: false,
   selectedPropID: null,
@@ -231,6 +232,7 @@ const styles = theme => ({
 /**
  * @typedef {object} EditPropFlow
  * @prop {string} currentHelpTextValue
+ * @prop {number | null} currentSelectedIconIdx
  * @prop {string|null} currentLabelValue Null when not editing it
  * @prop {string|Record<string, string>|Record<string, number>|null} currentSettingValue
  * @prop {boolean} editingHelpText
@@ -879,6 +881,20 @@ d8'          `8b  88888888Y"'    88888888Y"'       88           88      `8b    `
 
   /**
    * @private
+   * @param {number} idx
+   */
+  editPropFlowOnClickIcon = idx => {
+    this.setState(({ editPropFlow }) => ({
+      editPropFlow: {
+        ...editPropFlow,
+        currentSelectedIconIdx:
+          editPropFlow.currentSelectedIconIdx === idx ? null : idx,
+      },
+    }))
+  }
+
+  /**
+   * @private
    */
   editPropFlowOnClickLabel = () => {
     this.setState(({ editPropFlow, nodes, selectedNodeID }) => {
@@ -919,6 +935,9 @@ d8'          `8b  88888888Y"'    88888888Y"'       88           88      `8b    `
     })
   }
 
+  /**
+   * @private
+   */
   editPropFlowOnClickIndex = () => {
     const { editPropFlow, nodes, selectedNodeID } = this.state
 
@@ -999,6 +1018,33 @@ d8'          `8b  88888888Y"'    88888888Y"'       88           88      `8b    `
       })
       .then(this.genericResHandler)
       .catch(this.genericErrHandler)
+  }
+
+  /**
+   * @private
+   */
+  editPropFlowOpenIconSelection = () => {
+    this.setState(({ editPropFlow, nodes, selectedNodeID }) => {
+      const selectedNode = nodes[/** @type {string} */ (selectedNodeID)]
+
+      const selectedPropDef =
+        selectedNode.propDefs[
+          /** @type {string} */ (editPropFlow.selectedPropID)
+        ]
+
+      return {
+        editPropFlow: {
+          ...editPropFlow,
+          editingIcon: true,
+          // if it was editing, reset to null, otherwise set it to the icon of
+          // the current selected propdef
+          currentSelectedIconIdx:
+            selectedPropDef.iconName === null
+              ? -1
+              : AVAILABLE_ICON_NAMES.indexOf(selectedPropDef.iconName),
+        },
+      }
+    })
   }
 
   /**
@@ -1422,6 +1468,42 @@ d8'          `8b  88888888Y"'    88888888Y"'       88           88      `8b    `
     return null
   }
 
+  editPropFlowUpdateIconValue = () => {
+    const { editPropFlow, nodes, selectedNodeID } = this.state
+
+    const selectedNode = nodes[/** @type {string} */ (selectedNodeID)]
+
+    const selectedPropDef =
+      selectedNode &&
+      selectedNode.propDefs[/** @type {string} */ (editPropFlow.selectedPropID)]
+
+    if (!selectedPropDef) {
+      return
+    }
+
+    const iconName = (() => {
+      if (editPropFlow.currentSelectedIconIdx === null) {
+        return null
+      }
+
+      if (editPropFlow.currentSelectedIconIdx === -1) {
+        return null
+      }
+
+      return AVAILABLE_ICON_NAMES[editPropFlow.currentSelectedIconIdx]
+    })()
+
+    nodesNode
+      .get(/** @type {string} */ (selectedNodeID))
+      .getSet('propDefs')
+      .get(/** @type {string} */ (editPropFlow.selectedPropID))
+      .put({
+        iconName,
+      })
+      .then(this.genericResHandler)
+      .catch(this.genericErrHandler)
+  }
+
   /*
                         88                                              88                       88                                       
                         88                                              ""                ,d     ""                                       
@@ -1699,6 +1781,19 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
         // the more 'in' an screen is, the higher up top here the handling logic
         // for it has to be
 
+        if (editPropFlow.editingIcon) {
+          return {
+            currentNodeDrawerTab,
+            editNodeFlow,
+            editPropFlow: {
+              ...editPropFlow,
+              currentSelectedIconIdx: null,
+              editingIcon: false,
+            },
+            selectedNodeID,
+          }
+        }
+
         if (editPropFlow.editingHelpText) {
           return {
             currentNodeDrawerTab,
@@ -1783,6 +1878,18 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
 
   onClickDrawerRightBtn = () => {
     const { editNodeFlow, editPropFlow, selectedNodeID } = this.state
+
+    if (editPropFlow.editingIcon) {
+      this.editPropFlowUpdateIconValue()
+
+      this.setState(({ editPropFlow }) => ({
+        editPropFlow: {
+          ...editPropFlow,
+          editingIcon: false,
+          currentSelectedIconIdx: null,
+        },
+      }))
+    }
 
     if (editPropFlow.editingHelpText) {
       this.editPropFlowSaveHelpTextValue()
@@ -2042,6 +2149,27 @@ a8"    `Y88  88P'   "Y8  ""     `Y8  `8b    d88b    d8'  a8P_____88  88P'   "Y8
             leftButtonOnClick={this.onClickDrawerLeftBtn}
             rightButtonOnClick={this.onClickDrawerRightBtn}
             rightButtonText={(() => {
+              if (editPropFlow.editingIcon) {
+                if (!selectedPropDef) {
+                  return
+                }
+
+                if (editPropFlow.currentSelectedIconIdx === null) {
+                  return
+                }
+
+                const currentIcon = selectedPropDef.iconName
+
+                const selectedIcon =
+                  editPropFlow.currentSelectedIconIdx === -1
+                    ? null
+                    : AVAILABLE_ICON_NAMES[editPropFlow.currentSelectedIconIdx]
+
+                if (currentIcon !== selectedIcon) {
+                  return 'save'
+                }
+              }
+
               if (
                 editPropFlow.editingHelpText &&
                 this.editPropFlowIsHelpTextSaveable()
@@ -2149,8 +2277,10 @@ a8"    `Y88  88P'   "Y8  ""     `Y8  `8b    d88b    d8'  a8P_____88  88P'   "Y8
                   propDefs={Object.entries(selectedNode.propDefs).map(
                     ([id, propDef]) => ({
                       id,
-                      icon: nameToIconMap[propDef.iconName]
-                        ? nameToIconMap[propDef.iconName].filled
+                      icon: propDef.iconName
+                        ? nameToIconMap[propDef.iconName]
+                          ? nameToIconMap[propDef.iconName].filled
+                          : null
                         : null,
                       label: propDef.label,
                       typeName:
@@ -2166,7 +2296,8 @@ a8"    `Y88  88P'   "Y8  ""     `Y8  `8b    d88b    d8'  a8P_____88  88P'   "Y8
               selectedPropDef &&
               !editPropFlow.selectedSettingParamID &&
               editPropFlow.currentLabelValue === null &&
-              !editPropFlow.editingHelpText && (
+              !editPropFlow.editingHelpText &&
+              !editPropFlow.editingIcon && (
                 <PropDefEditor
                   settings={getSettingsForPropDefEditor(selectedPropDef)}
                   helpText={selectedPropDef.helpText}
@@ -2181,6 +2312,7 @@ a8"    `Y88  88P'   "Y8  ""     `Y8  `8b    d88b    d8'  a8P_____88  88P'   "Y8
                   required={selectedPropDef.required}
                   onClickSetting={this.editPropFlowOnClickSetting}
                   onClickHelpTextBtn={this.editPropFlowOnClickHelp}
+                  onClickIconBtn={this.editPropFlowOpenIconSelection}
                   onClickIndex={this.editPropFlowOnClickIndex}
                   onClickLabelBtn={this.editPropFlowOnClickLabel}
                   onClickRequired={this.editPropFlowOnClickRequired}
@@ -2248,6 +2380,15 @@ a8"    `Y88  88P'   "Y8  ""     `Y8  `8b    d88b    d8'  a8P_____88  88P'   "Y8
 
             {!!editPropFlow.selectedSettingParamID &&
               this.editPropFlowRenderSettingEditor()}
+
+            {editPropFlow.editingIcon && (
+              <IconSelector
+                icons={AVAILABLE_ICONS}
+                onClickIcon={this.editPropFlowOnClickIcon}
+                selectedIconIdx={editPropFlow.currentSelectedIconIdx}
+                showNoIconOption
+              />
+            )}
 
             {currentNodeDrawerTab === NodeDrawerTab.Relationships &&
               'relationships'}
