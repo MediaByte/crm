@@ -2140,10 +2140,41 @@ a8"    `Y88  88P'   "Y8  ""     `Y8  `8b    d88b    d8'  a8P_____88  88P'   "Y8
         {selectedNodeID && selectedNode && (
           <PcDrawer
             title={(() => {
-              if (selectedNode) {
-                return selectedNode.label
+              if (!selectedNode) {
+                return ''
               }
-              return ''
+
+              let title = selectedNode.label
+
+              if (!selectedPropDef) {
+                return title
+              }
+
+              if (editPropFlow.selectedPropID) {
+                title += ' > ' + selectedPropDef.label
+              }
+
+              if (editPropFlow.currentLabelValue !== null) {
+                title += ' > Label'
+              }
+
+              if (editPropFlow.selectedSettingParamID) {
+                title +=
+                  ' > ' +
+                  selectedPropDef.propType.params[
+                    editPropFlow.selectedSettingParamID
+                  ].name
+              }
+
+              if (editPropFlow.editingHelpText) {
+                title += ' > Help Text'
+              }
+
+              if (editPropFlow.editingIcon) {
+                title += ' > Edit Icon'
+              }
+
+              return title
             })()}
             open
             leftButtonOnClick={this.onClickDrawerLeftBtn}
