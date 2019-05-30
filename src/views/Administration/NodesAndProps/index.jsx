@@ -731,16 +731,6 @@ d8'          `8b  88888888Y"'    88888888Y"'       88           88      `8b    `
 
   /**
    * @private
-   */
-  editNodeFlowOnClickDrawerBtnLeft = () => {}
-
-  /**
-   * @private
-   */
-  editNodeFlowOnClickDrawerBtnRight = () => {}
-
-  /**
-   * @private
    * @param {string} id
    */
   editNodeFlowOnClickEditNode = id => {
@@ -1562,13 +1552,6 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
     })
   }
 
-  /** @private */
-  onClickAddProperty = () => {
-    this.setState({
-      showingPropDialog: true,
-    })
-  }
-
   /**
    * @private
    * @param {string} id
@@ -1766,6 +1749,7 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
           ...INITIAL_ADD_PROP_FLOW,
           dialogOpen: !addPropFlow.dialogOpen,
         },
+        isReorderingProps: false,
       }
     })
   }
@@ -1776,6 +1760,7 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
         currentNodeDrawerTab,
         editNodeFlow,
         editPropFlow,
+        isReorderingProps,
         selectedNodeID,
       }) => {
         // the more 'in' an screen is, the higher up top here the handling logic
@@ -1790,6 +1775,7 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
               currentSelectedIconIdx: null,
               editingIcon: false,
             },
+            isReorderingProps,
             selectedNodeID,
           }
         }
@@ -1803,6 +1789,7 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
               editingHelpText: false,
               willChangeHelpTextStatus: false,
             },
+            isReorderingProps,
             selectedNodeID,
           }
         }
@@ -1815,6 +1802,7 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
               ...editPropFlow,
               currentLabelValue: null,
             },
+            isReorderingProps,
             selectedNodeID,
           }
         }
@@ -1828,6 +1816,7 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
               currentSettingValue: null,
               selectedSettingParamID: null,
             },
+            isReorderingProps,
             selectedNodeID,
           }
         }
@@ -1837,6 +1826,7 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
             currentNodeDrawerTab,
             editNodeFlow,
             editPropFlow: INITIAL_EDIT_PROP_FLOW,
+            isReorderingProps: false,
             selectedNodeID,
           }
         }
@@ -1850,6 +1840,7 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
               editingIcon: false,
             },
             editPropFlow,
+            isReorderingProps,
             selectedNodeID,
           }
         }
@@ -1862,6 +1853,7 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
               editingLabel: false,
             },
             editPropFlow,
+            isReorderingProps,
             selectedNodeID,
           }
         }
@@ -1870,6 +1862,7 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
           currentNodeDrawerTab: 0,
           editNodeFlow: INITIAL_EDIT_NODE_FLOW,
           editPropFlow,
+          isReorderingProps,
           selectedNodeID: null,
         }
       },
