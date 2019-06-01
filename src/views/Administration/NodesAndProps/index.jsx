@@ -49,6 +49,7 @@ import { AddCircleOutline } from '@material-ui/icons'
  * @typedef {import('app/gun-wrapper/simple-typings').WrapperSetNode} WrapperSetNode
  * @typedef {import('app/gun-wrapper/simple-typings').WrapperNode} WrapperNode
  * @typedef {import('app/gun-wrapper/simple-typings').Response} Response
+ * @typedef {import('components/PropDefsOverview').SimplePropDef} SimplePropDef
  */
 
 const NodeDrawerTab = {
@@ -317,6 +318,64 @@ class NodesAndProps extends React.Component {
     }
   }
 
+  /**
+   * @private
+   * @param {string} id
+   */
+  onClickNode = id => {
+    this.setState({
+      selectedNodeID: id,
+    })
+  }
+
+  /**
+   * @private
+   **/
+  toggleAddNodeDialog = () => {
+    this.setState(({ addNodeFlow }) => ({
+      addNodeFlow: {
+        ...addNodeFlow,
+        showingAddNodeDialog: !addNodeFlow.showingAddNodeDialog,
+      },
+    }))
+  }
+
+  /**
+   * @returns {import('components/PropDefsOverview').SimplePropDef[]|undefined}
+   */
+  getPropDefsForOverview() {
+    const { nodes, selectedNodeID } = this.state
+
+    if (!selectedNodeID) {
+      return undefined
+    }
+
+    const selectedNode = nodes[selectedNodeID]
+
+    if (!selectedNode) {
+      return undefined
+    }
+
+    return Utils.sanitizeOrderedItems(
+      Object.entries(selectedNode.propDefs)
+        .slice(0)
+        .sort(([_, pdA], [__, pdB]) => pdA.order - pdB.order)
+        .map(([id, propDef]) => ({
+          id,
+          icon: propDef.iconName
+            ? nameToIconMap[propDef.iconName]
+              ? nameToIconMap[propDef.iconName].filled
+              : null
+            : null,
+          label: propDef.label,
+          order: propDef.order,
+          typeName:
+            typeToReadableName[propDef.propType.name] || propDef.propType.name,
+          unused: propDef.unused,
+        })),
+    )
+  }
+
   /*
         db         88888888ba,    88888888ba,       888b      88    ,ad8888ba,    88888888ba,    88888888888  
        d88b        88      `"8b   88      `"8b      8888b     88   d8"'    `"8b   88      `"8b   88           
@@ -534,7 +593,7 @@ d8'          `8b  88888888Y"'    88888888Y"'       88           88      `8b    `
   addPropFlowHandleSave = () => {
     // this method is supposed to be called in a setState callback
     // to ensure we are looking at updated state
-    const { addPropFlow, selectedNodeID } = this.state
+    const { addPropFlow, nodes, selectedNodeID } = this.state
 
     if (!addPropFlow.saving) {
       console.warn(
@@ -568,18 +627,21 @@ d8'          `8b  88888888Y"'    88888888Y"'       88           88      `8b    `
       return propTypesNode.get(/** @type {string} */ (key))
     })()
 
-    const propDefs = nodesNode
+    const propDefsNode = nodesNode
       .get(/** @type {string} */ (selectedNodeID))
       .getSet('propDefs')
 
-    propDefs
+    const propDefs = this.getPropDefsForOverview()
+
+    propDefsNode
       .set({
         helpText: null,
         iconName: addPropFlow.currentlySelectedIconName,
         indexed: false,
         label: addPropFlow.labelValue,
         name: addPropFlow.nameValue,
-        order: Object.keys(propDefs).length,
+        order:
+          propDefs && propDefs.length > 0 ? propDefs.slice(-1)[0].order : 0,
         propType: propTypeNode,
         required: false,
       })
@@ -1552,28 +1614,6 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
     })
   }
 
-  /**
-   * @private
-   * @param {string} id
-   */
-  onClickNode = id => {
-    this.setState({
-      selectedNodeID: id,
-    })
-  }
-
-  /**
-   * @private
-   **/
-  toggleAddNodeDialog = () => {
-    this.setState(({ addNodeFlow }) => ({
-      addNodeFlow: {
-        ...addNodeFlow,
-        showingAddNodeDialog: !addNodeFlow.showingAddNodeDialog,
-      },
-    }))
-  }
-
   /** @private */
   toggleAddRelDialog = () => {
     this.setState(({ showingAddRelDialog }) => ({
@@ -1986,9 +2026,57 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
    * @private
    * @param {number} oldIndex
    * @param {number} newIndex
+   * @returns {void}
    */
   onReorderEnd = (oldIndex, newIndex) => {
-    console.log(`onReorderEnd: ${oldIndex} -> ${newIndex}`)
+    // We update the state and also write to GUN at the same time, so that the
+    // refresh is inmediate and the changes are reflected right away on screen
+    const propDefs = this.getPropDefsForOverview()
+
+    if (!propDefs) {
+      return
+    }
+
+    const newOrdered = Utils.reorder(oldIndex, newIndex, propDefs)
+
+    this.setState(({ nodes, selectedNodeID }) => {
+      const oldPropDefs = nodes[/** @type {string} */ (selectedNodeID)].propDefs
+
+      /**
+       * @type {Record<string, PropDef>}
+       */
+      const updatedPropDefs = {}
+
+      for (const simplePD of newOrdered) {
+        updatedPropDefs[simplePD.id] = {
+          ...oldPropDefs[simplePD.id],
+          order: simplePD.order,
+        }
+      }
+
+      return {
+        nodes: {
+          ...nodes,
+          [/** @type {string} */ (selectedNodeID)]: {
+            ...nodes[/** @type {string} */ (selectedNodeID)],
+            propDefs: updatedPropDefs,
+          },
+        },
+      }
+    })
+    ;(() => {
+      const { selectedNodeID } = this.state
+
+      const propDefsNode = nodesNode
+        .get(/** @type {string} */ (selectedNodeID))
+        .getSet('propDefs')
+
+      for (const simplePD of newOrdered) {
+        propDefsNode.get(simplePD.id).put({
+          order: simplePD.order,
+        })
+      }
+    })()
   }
 
   //                                               88
@@ -2055,6 +2143,8 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
     const helpTextSwitchOn =
       (selectedPropDef && !!selectedPropDef.helpText) !==
       editPropFlow.willChangeHelpTextStatus
+
+    const propDefsForOverview = this.getPropDefsForOverview()
 
     return (
       <React.Fragment>
@@ -2298,21 +2388,7 @@ a8"    `Y88  88P'   "Y8  ""     `Y8  `8b    d88b    d8'  a8P_____88  88P'   "Y8
                   isReordering={isReorderingProps}
                   onClickAdd={this.toggleAddPropDialog}
                   onClickEdit={this.editPropFlowOnClickEdit}
-                  propDefs={Object.entries(selectedNode.propDefs).map(
-                    ([id, propDef]) => ({
-                      id,
-                      icon: propDef.iconName
-                        ? nameToIconMap[propDef.iconName]
-                          ? nameToIconMap[propDef.iconName].filled
-                          : null
-                        : null,
-                      label: propDef.label,
-                      typeName:
-                        typeToReadableName[propDef.propType.name] ||
-                        propDef.propType.name,
-                      unused: propDef.unused,
-                    }),
-                  )}
+                  propDefs={propDefsForOverview || []}
                 />
               )}
 
