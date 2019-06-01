@@ -13,7 +13,7 @@ import { Typography, Grid, Divider } from '@material-ui/core'
 import ReorderIcon from '@material-ui/icons/Reorder'
 
 /**
- * @typedef {import('.').PropDef} PropDef
+ * @typedef {import('.').SimplePropDef} SimplePropDef
  */
 
 const DragHandle = SortableHandle(ReorderIcon)
@@ -44,7 +44,7 @@ const styles = {
 }
 
 /**
- * @param {{ item: PropDef }} param0
+ * @param {{ item: SimplePropDef }} param0
  */
 const ReorderItem = ({ item: propDef }) => {
   const Icon = propDef.icon
@@ -77,7 +77,7 @@ const SortableList = SortableContainer(SortableListRenderer)
 
 /**
  * @typedef {object} Props
- * @prop {PropDef[]} propDefs
+ * @prop {SimplePropDef[]} propDefs
  * @prop {SortEndHandler} onSortEnd
  */
 

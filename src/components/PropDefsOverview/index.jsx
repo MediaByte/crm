@@ -62,10 +62,11 @@ const styles = theme => ({
  */
 
 /**
- * @typedef {object} PropDef
+ * @typedef {object} SimplePropDef
  * @prop {React.ComponentType<SvgIconProps>|null} icon
  * @prop {string} id
  * @prop {string} label
+ * @prop {number} order
  * @prop {string} typeName
  * @prop {boolean} unused
  */
@@ -78,7 +79,7 @@ const styles = theme => ({
  * @prop {((id: string) => void)=} onClickEdit (Optional)
  * @prop {(() => void)=} onClickReorder (Optional)
  * @prop {((oldIndex: number, newIndex: number) => void)=} onReorderEnd
- * @prop {PropDef[]} propDefs
+ * @prop {SimplePropDef[]} propDefs
  */
 
 /**
@@ -208,13 +209,15 @@ class PropDefsOverview extends React.PureComponent {
           </List>
         )}
 
-        <IconButton
-          aria-label="Plus"
-          onClick={onClickAdd}
-          className={classes.addButton}
-        >
-          <AddCircleOutlineIcon fontSize="small" color="primary" />
-        </IconButton>
+        {!isReordering && (
+          <IconButton
+            aria-label="Plus"
+            onClick={onClickAdd}
+            className={classes.addButton}
+          >
+            <AddCircleOutlineIcon fontSize="small" color="primary" />
+          </IconButton>
+        )}
       </React.Fragment>
     )
   }
