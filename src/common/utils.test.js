@@ -1,4 +1,4 @@
-import { isAZLower, isAZUpper } from './utils'
+import { isAZLower, isAZUpper, sanitizeOrderedItems } from './utils'
 
 describe('isAZLower', () => {
   it('returns true for a-z', () => {
@@ -57,5 +57,43 @@ describe('isAZUpper', () => {
     expect(() => {
       isAZUpper('foo')
     }).toThrowError(TypeError)
+  })
+})
+
+describe('sanitizing ordered items', () => {
+  /**
+   * @param {number[]} orders
+   * @returns {{ order: number }[]}
+   */
+  const generateSample = (...orders) => orders.map(n => ({ order: n }))
+
+  it('returns the array untouched if it is shorter than 2 items in length', () => {
+    /**
+     * @type {{ order: number }[]}
+     */
+    const empty = []
+    const withOne = [{ order: Math.random() }]
+
+    expect(sanitizeOrderedItems(empty)).toEqual(empty)
+    expect(sanitizeOrderedItems(withOne)).toEqual(withOne)
+  })
+
+  it('lefts sane inputs untouched', () => {
+    expect(generateSample(1, 2)).toEqual(generateSample(1, 2))
+    expect(generateSample(1, 2, 3)).toEqual(generateSample(1, 2, 3))
+  })
+
+  it('sanitizes items', () => {
+    expect(sanitizeOrderedItems(generateSample(1, 1))).toEqual(
+      generateSample(0, 1),
+    )
+
+    expect(sanitizeOrderedItems(generateSample(1, 3, 3))).toEqual(
+      generateSample(1, 2, 3),
+    )
+
+    expect(sanitizeOrderedItems(generateSample(1, 2, 2, 2, 3))).toEqual(
+      generateSample(1, 1.5, (2 + 1.5) / 2, 2, 3),
+    )
   })
 })
