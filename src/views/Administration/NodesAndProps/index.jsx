@@ -114,7 +114,7 @@ const INITIAL_ADD_NODE_FLOW = Object.freeze({
 
 /** @type {AddPropFlow} */
 const INITIAL_ADD_PROP_FLOW = Object.freeze({
-  currentlySelectedIconName: null,
+  currentlySelectedIconIdx: null,
   dialogOpen: false,
   labelError: null,
   labelValue: '',
@@ -199,7 +199,7 @@ const styles = theme => ({
 
 /**
  * @typedef {object} AddPropFlow
- * @prop {string|null} currentlySelectedIconName
+ * @prop {number | null} currentlySelectedIconIdx
  * @prop {boolean} dialogOpen
  * @prop {string|null} labelError
  * @prop {string} labelValue
@@ -636,7 +636,11 @@ d8'          `8b  88888888Y"'    88888888Y"'       88           88      `8b    `
     propDefsNode
       .set({
         helpText: null,
-        iconName: addPropFlow.currentlySelectedIconName,
+        iconName:
+          addPropFlow.currentlySelectedIconIdx === null ||
+          addPropFlow.currentlySelectedIconIdx === -1
+            ? null
+            : AVAILABLE_ICON_NAMES[addPropFlow.currentlySelectedIconIdx],
         indexed: false,
         label: addPropFlow.labelValue,
         name: addPropFlow.nameValue,
@@ -703,25 +707,13 @@ d8'          `8b  88888888Y"'    88888888Y"'       88           88      `8b    `
    * @param {number} i
    */
   addPropFlowOnClickIcon = i => {
-    this.setState(({ addPropFlow }) => {
-      const name = AVAILABLE_ICON_NAMES[i]
-
-      if (name === addPropFlow.currentlySelectedIconName) {
-        return {
-          addPropFlow: {
-            ...addPropFlow,
-            currentlySelectedIconName: null,
-          },
-        }
-      }
-
-      return {
-        addPropFlow: {
-          ...addPropFlow,
-          currentlySelectedIconName: name,
-        },
-      }
-    })
+    this.setState(({ addPropFlow }) => ({
+      addPropFlow: {
+        ...addPropFlow,
+        currentlySelectedIconIdx:
+          i === addPropFlow.currentlySelectedIconIdx ? null : i,
+      },
+    }))
   }
 
   /**
@@ -2121,11 +2113,6 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
         ? null
         : AVAILABLE_ICON_NAMES.indexOf(addNodeFlow.currentlySelectedIconName)
 
-    const addPropFlowSelectedIconIdx =
-      addPropFlow.currentlySelectedIconName === null
-        ? null
-        : AVAILABLE_ICON_NAMES.indexOf(addPropFlow.currentlySelectedIconName)
-
     const editNodeFlowSelectedIconIdx =
       editNodeFlow.currentlySelectedIconName === null
         ? null
@@ -2152,7 +2139,7 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
           rightActionButtonText={addPropFlow.selectingIcon ? 'Save' : 'Next'}
           disableRightActionButton={
             addPropFlow.saving ||
-            (addPropFlow.currentlySelectedIconName === null &&
+            (addPropFlow.currentlySelectedIconIdx === null &&
               addPropFlow.selectingIcon) ||
             !!addPropFlow.labelError ||
             !!addPropFlow.nameError ||
@@ -2174,7 +2161,8 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
               <IconSelector
                 icons={AVAILABLE_ICONS}
                 onClickIcon={this.addPropFlowOnClickIcon}
-                selectedIconIdx={addPropFlowSelectedIconIdx}
+                selectedIconIdx={addPropFlow.currentlySelectedIconIdx}
+                showNoIconOption
               />
             ) : (
               <AddPropForm
