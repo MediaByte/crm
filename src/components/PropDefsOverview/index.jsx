@@ -18,6 +18,7 @@ import { withStyles } from '@material-ui/core/styles'
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline'
 import CompareArrowsIcon from '@material-ui/icons/CompareArrows'
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined'
+import Divider from '@material-ui/core/Divider'
 import HistoryIcon from '@material-ui/icons/History'
 
 import ReorderList from './ReorderList'
@@ -125,9 +126,7 @@ class PropDefsOverview extends React.PureComponent {
           <div className={classes.grow} />
 
           {propDefs.length === 0 && (
-            <Typography>
-              Click the plus button to add some properties to this node.
-            </Typography>
+            <Typography>Click Plus to Add Properties</Typography>
           )}
 
           {usedPropDefs.length > 0 && (
@@ -171,6 +170,7 @@ class PropDefsOverview extends React.PureComponent {
                       <EditOutlinedIcon />
                     </IconButton>
                   </ListItemSecondaryAction>
+                  <Divider inset />
                 </ListItem>
               )
             })}

@@ -52,7 +52,7 @@ const ReorderItem = ({ item: propDef }) => {
   return (
     <div style={styles.itemRoot}>
       <Grid style={styles.item} container alignItems="center">
-        <Icon />
+        {Icon && <Icon />}
         <div style={styles.itemInfo}>
           <Typography variant="inherit">{propDef.label}</Typography>
           <Typography component="span" color="textSecondary">
