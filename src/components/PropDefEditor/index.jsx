@@ -16,6 +16,10 @@ const APPEARANCE_SUBHEADER = (
 
 const ICON_SUBHEADER = <ListSubheader disableSticky>ICON</ListSubheader>
 
+const explanationTextMargin = {
+  marginTop: 20,
+}
+
 /**
  * @typedef {object} Setting
  * @prop {boolean|string|string[]} settingValueOrValues
@@ -70,7 +74,7 @@ class PropDefEditor extends React.PureComponent {
     } = this.props
 
     return (
-      <Grid container direction="column" spacing={40}>
+      <Grid container direction="column" spacing={24}>
         <Grid item>
           <List subheader={APPEARANCE_SUBHEADER}>
             <DrawerButton
@@ -122,11 +126,16 @@ class PropDefEditor extends React.PureComponent {
             primaryText="Required"
             switchOn={required}
           />
-        </Grid>
 
-        <Grid item>
-          <Typography align="center" color="textSecondary" variant="body1">
-            Users will not be able to save if this property is empty
+          <Typography
+            align="center"
+            color="textSecondary"
+            style={explanationTextMargin}
+            variant="body1"
+          >
+            {required
+              ? 'Users will not be able to save if this property is empty'
+              : 'Users will be able to save if this property is empty'}
           </Typography>
         </Grid>
 
@@ -137,11 +146,16 @@ class PropDefEditor extends React.PureComponent {
             primaryText="Index"
             switchOn={isIndexed}
           />
-        </Grid>
 
-        <Grid item>
-          <Typography align="center" color="textSecondary" variant="body1">
-            This property will appear in Universal Search results
+          <Typography
+            align="center"
+            color="textSecondary"
+            style={explanationTextMargin}
+            variant="body1"
+          >
+            {isIndexed
+              ? 'This property will appear in Universal Search results'
+              : 'This property will not appear in Universal Search results'}
           </Typography>
         </Grid>
 
