@@ -58,6 +58,8 @@ const NodeDrawerTab = {
   Relationships: 2,
 }
 
+const EMPTY_DIV = <div />
+
 const AVAILABLE_TABS_NAMES = Object.keys(NodeDrawerTab)
 
 const DEACTIVATING_NODE_EXPLANATION_TEXT =
@@ -722,7 +724,6 @@ d8'          `8b  88888888Y"'    88888888Y"'       88           88      `8b    `
   handleNodeDrawerTabChange = (_, tab) => {
     this.setState({
       currentNodeDrawerTab: tab,
-      isReorderingProps: false,
     })
   }
 
@@ -1762,7 +1763,6 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
           ...INITIAL_ADD_PROP_FLOW,
           dialogOpen: !addPropFlow.dialogOpen,
         },
-        isReorderingProps: false,
       }
     })
   }
@@ -1773,7 +1773,6 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
         currentNodeDrawerTab,
         editNodeFlow,
         editPropFlow,
-        isReorderingProps,
         selectedNodeID,
       }) => {
         // the more 'in' an screen is, the higher up top here the handling logic
@@ -1788,7 +1787,6 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
               currentSelectedIconIdx: null,
               editingIcon: false,
             },
-            isReorderingProps,
             selectedNodeID,
           }
         }
@@ -1802,7 +1800,6 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
               editingHelpText: false,
               willChangeHelpTextStatus: false,
             },
-            isReorderingProps,
             selectedNodeID,
           }
         }
@@ -1815,7 +1812,6 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
               ...editPropFlow,
               currentLabelValue: null,
             },
-            isReorderingProps,
             selectedNodeID,
           }
         }
@@ -1829,7 +1825,6 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
               currentSettingValue: null,
               selectedSettingParamID: null,
             },
-            isReorderingProps,
             selectedNodeID,
           }
         }
@@ -1839,7 +1834,6 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
             currentNodeDrawerTab,
             editNodeFlow,
             editPropFlow: INITIAL_EDIT_PROP_FLOW,
-            isReorderingProps: false,
             selectedNodeID,
           }
         }
@@ -1853,7 +1847,6 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
               editingIcon: false,
             },
             editPropFlow,
-            isReorderingProps,
             selectedNodeID,
           }
         }
@@ -1866,7 +1859,6 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
               editingLabel: false,
             },
             editPropFlow,
-            isReorderingProps,
             selectedNodeID,
           }
         }
@@ -1875,7 +1867,6 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
           currentNodeDrawerTab: 0,
           editNodeFlow: INITIAL_EDIT_NODE_FLOW,
           editPropFlow,
-          isReorderingProps,
           selectedNodeID: null,
         }
       },
@@ -2318,6 +2309,8 @@ a8"    `Y88  88P'   "Y8  ""     `Y8  `8b    d88b    d8'  a8P_____88  88P'   "Y8
             tabs={AVAILABLE_TABS_NAMES}
             tabsCurrentValue={currentNodeDrawerTab}
             tabsOnChange={this.handleNodeDrawerTabChange}
+            // hides the back button
+            leftAction={isReorderingProps ? EMPTY_DIV : undefined}
             hideTabs={
               editNodeFlow.editingLabel ||
               editNodeFlow.editingIcon ||
