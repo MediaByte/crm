@@ -1,9 +1,12 @@
 import React from 'react'
 
+import classNames from 'classnames'
+
 /**
  * @typedef {import('react-sortable-hoc').SortEndHandler} SortEndHandler
  */
 
+import Grid from '@material-ui/core/Grid'
 import IconButton from '@material-ui/core/IconButton'
 import List from '@material-ui/core/List'
 import ListSubheader from '@material-ui/core/ListSubheader'
@@ -29,6 +32,12 @@ const styles = theme => ({
   addButton: {
     alignSelf: 'flex-start',
   },
+  alignSelfCenter: {
+    alignSelf: 'center',
+  },
+  alignSelfEnd: {
+    alignSelf: 'flex-end',
+  },
   grow: {
     flexGrow: 1,
   },
@@ -48,7 +57,9 @@ const styles = theme => ({
     ...theme.custom.smallIconButton,
     transform: 'rotate(90deg)',
   },
-
+  hidden: {
+    visibility: 'hidden',
+  },
   itemRoot: {
     width: '100%',
     zIndex: 100000,
@@ -133,15 +144,21 @@ class PropDefsOverview extends React.PureComponent {
     const unusedPropDefs = propDefs.filter(propDef => propDef.unused)
 
     return (
-      <React.Fragment>
-        <Toolbar>
-          <div className={classes.grow} />
-
-          {propDefs.length === 0 && (
+      <Grid container direction="column">
+        {propDefs.length === 0 && (
+          <Grid className={classes.alignSelfCenter} item>
             <Typography>Click Plus to Add Properties</Typography>
-          )}
+          </Grid>
+        )}
 
-          {usedPropDefs.length > 0 && !isReordering && (
+        {usedPropDefs.length > 0 && (
+          <Grid
+            className={classNames(
+              classes.alignSelfEnd,
+              (usedPropDefs.length === 0 || isReordering) && classes.hidden,
+            )}
+            item
+          >
             <Tooltip title="Reorder" aria-label="Reorder" placement="left">
               <IconButton
                 className={classes.reorderIcon}
@@ -151,15 +168,17 @@ class PropDefsOverview extends React.PureComponent {
                 <CompareArrowsIcon />
               </IconButton>
             </Tooltip>
-          )}
-        </Toolbar>
+          </Grid>
+        )}
 
         {isReordering && usedPropDefs.length > 0 && (
-          <ReorderList onSortEnd={this.onSortEnd} propDefs={usedPropDefs} />
+          <Grid item>
+            <ReorderList onSortEnd={this.onSortEnd} propDefs={usedPropDefs} />
+          </Grid>
         )}
 
         {!isReordering && usedPropDefs.length > 0 && (
-          <div>
+          <Grid item>
             {usedPropDefs.map(propDef => (
               <PropDefItem
                 icon={propDef.icon}
@@ -171,34 +190,38 @@ class PropDefsOverview extends React.PureComponent {
                 onClickActionIcon={this.onClickEdit}
               />
             ))}
-          </div>
+          </Grid>
         )}
 
         {!isReordering && unusedPropDefs.length > 0 && (
-          <List subheader={UNUSED_PROP_DEFS_SUBHEADER}>
-            {unusedPropDefs.map(propDef => (
-              <PropDefItem
-                icon={propDef.icon}
-                id={propDef.id}
-                key={propDef.id}
-                label={propDef.label}
-                typeName={propDef.typeName}
-                onClickActionIcon={this.onClickEdit}
-              />
-            ))}
-          </List>
+          <Grid item>
+            <List subheader={UNUSED_PROP_DEFS_SUBHEADER}>
+              {unusedPropDefs.map(propDef => (
+                <PropDefItem
+                  icon={propDef.icon}
+                  id={propDef.id}
+                  key={propDef.id}
+                  label={propDef.label}
+                  typeName={propDef.typeName}
+                  onClickActionIcon={this.onClickEdit}
+                />
+              ))}
+            </List>
+          </Grid>
         )}
 
         {!isReordering && (
-          <IconButton
-            aria-label="Plus"
-            onClick={onClickAdd}
-            className={classes.addButton}
-          >
-            <AddCircleOutlineIcon fontSize="small" color="primary" />
-          </IconButton>
+          <Grid item>
+            <IconButton
+              aria-label="Plus"
+              onClick={onClickAdd}
+              className={classes.addButton}
+            >
+              <AddCircleOutlineIcon fontSize="small" color="primary" />
+            </IconButton>
+          </Grid>
         )}
-      </React.Fragment>
+      </Grid>
     )
   }
 }
