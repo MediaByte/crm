@@ -653,7 +653,7 @@ d8'          `8b  88888888Y"'    88888888Y"'       88           88      `8b    `
         if (res.ok) {
           this.setState({
             addPropFlow: INITIAL_ADD_PROP_FLOW,
-            snackbarMessage: 'Property added correctly',
+            snackbarMessage: 'Property created successfully',
           })
         } else {
           Object.entries(res.details).forEach(([key, detail]) => {
@@ -1230,12 +1230,6 @@ d8'          `8b  88888888Y"'    88888888Y"'       88           88      `8b    `
     // @ts-ignore
     const value = e.target.value
 
-    const chars = value.split('')
-
-    if (chars.some(char => !Utils.isNumber(char))) {
-      return
-    }
-
     this.setState(({ editPropFlow }) => {
       return {
         editPropFlow: {
@@ -1445,18 +1439,12 @@ d8'          `8b  88888888Y"'    88888888Y"'       88           88      `8b    `
           container
           direction="column"
         >
-          <Grid item>
-            <Typography align="center" color="textSecondary" variant="body1">
-              {selectedParam.name}
-            </Typography>
-          </Grid>
-
           <Grid className={classes.textField} item>
             <TextField
               autoFocus
               fullWidth
               onChange={this.editPropFlowOnChangeSettingTextfieldNumber}
-              type="search"
+              type="number"
               // @ts-ignore
               value={
                 this.state.editPropFlow.currentSettingValue === null
@@ -1484,12 +1472,6 @@ d8'          `8b  88888888Y"'    88888888Y"'       88           88      `8b    `
           direction="column"
           justify="center"
         >
-          <Grid item>
-            <Typography align="center" color="textSecondary" variant="body1">
-              {selectedParam.name}
-            </Typography>
-          </Grid>
-
           <Grid className={classes.textField} item>
             <TextField
               autoFocus
@@ -1657,7 +1639,7 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
               this.setState({
                 addNodeFlow: INITIAL_ADD_NODE_FLOW,
                 addNodeFormData: BLANK_ADD_NODE_FORM_DATA,
-                snackbarMessage: 'Node created sucessfully',
+                snackbarMessage: 'Node created successfully',
               })
             } else {
               const newAddNodeFormData = {
@@ -2155,6 +2137,7 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
           showCloseButton={!addPropFlow.selectingIcon}
           open={addPropFlow.dialogOpen}
           title={'Add Property'}
+          rightActionButtonColorPrimary
         >
           <OverlaySpinner showSpinner={addPropFlow.saving}>
             {addPropFlow.selectingIcon ? (
@@ -2215,37 +2198,33 @@ a8"    `Y88  88P'   "Y8  ""     `Y8  `8b    d88b    d8'  a8P_____88  88P'   "Y8
                 return ''
               }
 
-              let title = selectedNode.label
-
               if (!selectedPropDef) {
-                return title
-              }
-
-              if (editPropFlow.selectedPropID) {
-                title += ' > ' + selectedPropDef.label
-              }
-
-              if (editPropFlow.currentLabelValue !== null) {
-                title += ' > Label'
-              }
-
-              if (editPropFlow.selectedSettingParamID) {
-                title +=
-                  ' > ' +
-                  selectedPropDef.propType.params[
-                    editPropFlow.selectedSettingParamID
-                  ].name
+                return selectedNode.label
               }
 
               if (editPropFlow.editingHelpText) {
-                title += ' > Help Text'
+                return 'Help Text'
               }
 
               if (editPropFlow.editingIcon) {
-                title += ' > Edit Icon'
+                return 'Icon'
               }
 
-              return title
+              if (editPropFlow.selectedPropID) {
+                if (editPropFlow.currentLabelValue !== null) {
+                  return 'Label'
+                }
+
+                if (editPropFlow.selectedSettingParamID) {
+                  if (editPropFlow.selectedSettingParamID) {
+                    return selectedPropDef.propType.params[
+                      editPropFlow.selectedSettingParamID
+                    ].name
+                  }
+                }
+              }
+
+              return selectedNode.label
             })()}
             open
             leftButtonOnClick={this.onClickDrawerLeftBtn}
