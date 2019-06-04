@@ -189,6 +189,10 @@ const PropDef = {
     type: [PropDefArgument],
     async onChange() {},
   },
+  active: {
+    type: 'boolean',
+    async onChange() {},
+  },
   helpText: {
     type: 'string',
     async onChange() {},

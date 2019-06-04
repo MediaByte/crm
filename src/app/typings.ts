@@ -41,6 +41,7 @@ export interface PropDefArgument {
 
 export interface PropertyDefinition {
   arguments: Record<string, PropDefArgument>
+  active: boolean
   helpText: string | null
   iconName: string | null
   indexed: boolean
@@ -49,7 +50,6 @@ export interface PropertyDefinition {
   order: number
   propType: PropertyType
   required: boolean
-  unused: boolean
 }
 
 export interface Node {

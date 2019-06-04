@@ -6,7 +6,6 @@ import toUpper from 'lodash/toUpper'
 import Grid from '@material-ui/core/Grid'
 import IconButton from '@material-ui/core/IconButton'
 import Snackbar from '@material-ui/core/Snackbar'
-
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import { withStyles } from '@material-ui/core/styles'
@@ -372,7 +371,7 @@ class NodesAndProps extends React.Component {
           order: propDef.order,
           typeName:
             typeToReadableName[propDef.propType.name] || propDef.propType.name,
-          unused: propDef.unused,
+          unused: !propDef.active,
         })),
     )
   }
@@ -636,6 +635,7 @@ d8'          `8b  88888888Y"'    88888888Y"'       88           88      `8b    `
 
     propDefsNode
       .set({
+        active: true,
         helpText: null,
         iconName:
           addPropFlow.currentlySelectedIconIdx === null ||
