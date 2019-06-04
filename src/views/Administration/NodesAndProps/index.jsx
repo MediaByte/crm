@@ -186,7 +186,6 @@ const styles = theme => ({
 /**
  * @typedef {object} Props
  * @prop {Record<Classes, string>} classes
- *
  */
 
 /**
@@ -1884,7 +1883,19 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
   }
 
   onClickDrawerRightBtn = () => {
-    const { editNodeFlow, editPropFlow, selectedNodeID } = this.state
+    const {
+      editNodeFlow,
+      editPropFlow,
+      isReorderingProps,
+      selectedNodeID,
+    } = this.state
+
+    if (isReorderingProps) {
+      this.setState({
+        isReorderingProps: false,
+      })
+      return
+    }
 
     if (editPropFlow.editingIcon) {
       this.editPropFlowUpdateIconValue()
@@ -2230,6 +2241,10 @@ a8"    `Y88  88P'   "Y8  ""     `Y8  `8b    d88b    d8'  a8P_____88  88P'   "Y8
             leftButtonOnClick={this.onClickDrawerLeftBtn}
             rightButtonOnClick={this.onClickDrawerRightBtn}
             rightButtonText={(() => {
+              if (isReorderingProps) {
+                return 'Done'
+              }
+
               if (editPropFlow.editingIcon) {
                 if (!selectedPropDef) {
                   return

@@ -141,7 +141,7 @@ class PropDefsOverview extends React.PureComponent {
             <Typography>Click Plus to Add Properties</Typography>
           )}
 
-          {usedPropDefs.length > 0 && (
+          {usedPropDefs.length > 0 && !isReordering && (
             <Tooltip title="Reorder" aria-label="Reorder" placement="left">
               <IconButton
                 className={classes.reorderIcon}
