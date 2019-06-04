@@ -33,7 +33,8 @@ const styles = theme => ({
     background: '#fafafa',
   },
   hidden: {
-    visibility: 'hidden',
+    // visibility: 'hidden',
+    display: 'none',
   },
   menuButton: {
     color: '#fff',
@@ -108,7 +109,7 @@ class PcDrawer extends React.PureComponent {
       if (leftButtonText) {
         return (
           <Button className={classes.menuButton} onClick={leftButtonOnClick}>
-            Cancel
+            {leftButtonText}
           </Button>
         )
       }
