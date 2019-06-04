@@ -76,6 +76,10 @@ note, due to the nature of the app (offline first) this change can take some \
 time to propagate to employees, and those who are currently offline wont be \
 able to add records to the node until they become online again.'
 
+const DEACTIVATING_PROP_EXPLANATION_TEXT = ''
+
+const REACTIVATING_PROP_EXPLANATION_TEXT = ''
+
 const AVAILABLE_ICONS = Object.values(nameToIconMap).map(
   iconTriple => iconTriple.outlined,
 )
@@ -98,8 +102,10 @@ const INITIAL_EDIT_PROP_FLOW = {
   currentLabelValue: null,
   currentSelectedIconIdx: null,
   currentSettingValue: null,
+  deactivating: false,
   editingHelpText: false,
   editingIcon: false,
+  reactivating: false,
   selectedPropID: null,
   selectedSettingParamID: null,
   willChangeHelpTextStatus: false,
@@ -236,6 +242,8 @@ const styles = theme => ({
  * @prop {number | null} currentSelectedIconIdx
  * @prop {string|null} currentLabelValue Null when not editing it
  * @prop {string|Record<string, string>|Record<string, number>|null} currentSettingValue
+ * @prop {boolean} deactivating
+ * @prop {boolean} reactivating
  * @prop {boolean} editingHelpText
  * @prop {boolean} editingIcon
  * @prop {string|null} selectedPropID
@@ -870,6 +878,45 @@ d8'          `8b  88888888Y"'    88888888Y"'       88           88      `8b    `
 
   /**
    * @private
+   */
+  editPropFlowConfirmDeactivate = () => {
+    const { editPropFlow, selectedNodeID } = this.state
+
+    this.setState({
+      editPropFlow: INITIAL_EDIT_PROP_FLOW,
+    })
+
+    nodesNode
+      .get(/** @type {string} */ (selectedNodeID))
+      .getSet('propDefs')
+      .get(/** @type {string} */ (editPropFlow.selectedPropID))
+      .put({
+        active: false,
+      })
+      .then(this.genericResHandler)
+      .catch(this.genericErrHandler)
+  }
+
+  editPropFlowConfirmReactivate = () => {
+    const { editPropFlow, selectedNodeID } = this.state
+
+    this.setState({
+      editPropFlow: INITIAL_EDIT_PROP_FLOW,
+    })
+
+    nodesNode
+      .get(/** @type {string} */ (selectedNodeID))
+      .getSet('propDefs')
+      .get(/** @type {string} */ (editPropFlow.selectedPropID))
+      .put({
+        active: true,
+      })
+      .then(this.genericResHandler)
+      .catch(this.genericErrHandler)
+  }
+
+  /**
+   * @private
    * @param {any} e
    */
   editPropFlowOnChangeHelpText = e => {
@@ -901,22 +948,13 @@ d8'          `8b  88888888Y"'    88888888Y"'       88           88      `8b    `
   /**
    * @private
    */
-  editPropFlowOnClickDeactivate = () => {
-    const { editPropFlow, selectedNodeID } = this.state
-
-    this.setState({
-      editPropFlow: INITIAL_EDIT_PROP_FLOW,
-    })
-
-    nodesNode
-      .get(/** @type {string} */ (selectedNodeID))
-      .getSet('propDefs')
-      .get(/** @type {string} */ (editPropFlow.selectedPropID))
-      .put({
-        active: false,
-      })
-      .then(this.genericResHandler)
-      .catch(this.genericErrHandler)
+  editPropFlowToggleDeactivation = () => {
+    this.setState(({ editPropFlow }) => ({
+      editPropFlow: {
+        ...editPropFlow,
+        deactivating: !editPropFlow.deactivating,
+      },
+    }))
   }
 
   /**
@@ -1024,22 +1062,13 @@ d8'          `8b  88888888Y"'    88888888Y"'       88           88      `8b    `
       .catch(this.genericErrHandler)
   }
 
-  editPropFlowOnClickReactivate = () => {
-    const { editPropFlow, selectedNodeID } = this.state
-
-    this.setState({
-      editPropFlow: INITIAL_EDIT_PROP_FLOW,
-    })
-
-    nodesNode
-      .get(/** @type {string} */ (selectedNodeID))
-      .getSet('propDefs')
-      .get(/** @type {string} */ (editPropFlow.selectedPropID))
-      .put({
-        active: true,
-      })
-      .then(this.genericResHandler)
-      .catch(this.genericErrHandler)
+  editPropFlowToggleReactivation = () => {
+    this.setState(({ editPropFlow }) => ({
+      editPropFlow: {
+        ...editPropFlow,
+        reactivating: !editPropFlow.reactivating,
+      },
+    }))
   }
 
   editPropFlowOnClickRequired = () => {
@@ -2432,8 +2461,8 @@ a8"    `Y88  88P'   "Y8  ""     `Y8  `8b    d88b    d8'  a8P_____88  88P'   "Y8
                   onClickIndex={this.editPropFlowOnClickIndex}
                   onClickLabelBtn={this.editPropFlowOnClickLabel}
                   onClickRequired={this.editPropFlowOnClickRequired}
-                  onClickDeactivate={this.editPropFlowOnClickDeactivate}
-                  onClickReactivate={this.editPropFlowOnClickReactivate}
+                  onClickDeactivate={this.editPropFlowToggleDeactivation}
+                  onClickReactivate={this.editPropFlowToggleReactivation}
                 />
               )}
 
@@ -2512,6 +2541,48 @@ a8"    `Y88  88P'   "Y8  ""     `Y8  `8b    d88b    d8'  a8P_____88  88P'   "Y8
               'relationships'}
           </PcDrawer>
         )}
+
+        {/*                                                   
+8b,dPPYba,   8b,dPPYba,   ,adPPYba,   8b,dPPYba,   
+88P'    "8a  88P'   "Y8  a8"     "8a  88P'    "8a  
+88       d8  88          8b       d8  88       d8  
+88b,   ,a8"  88          "8a,   ,a8"  88b,   ,a8"  
+88`YbbdP"'   88           `"YbbdP"'   88`YbbdP"'   
+88                                    88           
+88                                    88
+                                 88                                    88                            
+                          ,d     ""                             ,d     ""                            
+                          88                                    88                                   
+,adPPYYba,   ,adPPYba,  MM88MMM  88  8b       d8  ,adPPYYba,  MM88MMM  88   ,adPPYba,   8b,dPPYba,   
+""     `Y8  a8"     ""    88     88  `8b     d8'  ""     `Y8    88     88  a8"     "8a  88P'   `"8a  
+,adPPPPP88  8b            88     88   `8b   d8'   ,adPPPPP88    88     88  8b       d8  88       88  
+88,    ,88  "8a,   ,aa    88,    88    `8b,d8'    88,    ,88    88,    88  "8a,   ,a8"  88       88  
+`"8bbdP"Y8   `"Ybbd8"'    "Y888  88      "8"      `"8bbdP"Y8    "Y888  88   `"YbbdP"'   88       88  
+*/}
+
+        <Dialog
+          handleClose={this.editPropFlowToggleDeactivation}
+          showCloseButton
+          rightActionButtonText="confirm"
+          title="DEACTIVATE"
+          open={editPropFlow.deactivating}
+          onClickRightActionButton={this.editPropFlowConfirmDeactivate}
+          rightActionButtonColorRed
+        >
+          {DEACTIVATING_PROP_EXPLANATION_TEXT}
+        </Dialog>
+
+        <Dialog
+          handleClose={this.editPropFlowToggleReactivation}
+          showCloseButton
+          rightActionButtonText="confirm"
+          title="DEACTIVATE"
+          open={editPropFlow.reactivating}
+          onClickRightActionButton={this.editPropFlowConfirmReactivate}
+          rightActionButtonColorRed
+        >
+          {REACTIVATING_PROP_EXPLANATION_TEXT}
+        </Dialog>
 
         {/*
                      88           88                                        88z
