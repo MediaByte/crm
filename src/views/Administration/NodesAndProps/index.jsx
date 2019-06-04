@@ -2322,7 +2322,8 @@ a8"    `Y88  88P'   "Y8  ""     `Y8  `8b    d88b    d8'  a8P_____88  88P'   "Y8
               editNodeFlow.editingLabel ||
               editNodeFlow.editingIcon ||
               !!editPropFlow.selectedPropID ||
-              !!editPropFlow.selectedSettingParamID
+              !!editPropFlow.selectedSettingParamID ||
+              isReorderingProps
             }
           >
             {currentNodeDrawerTab === NodeDrawerTab.Details &&
