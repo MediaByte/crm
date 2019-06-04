@@ -593,7 +593,7 @@ d8'          `8b  88888888Y"'    88888888Y"'       88           88      `8b    `
   addPropFlowHandleSave = () => {
     // this method is supposed to be called in a setState callback
     // to ensure we are looking at updated state
-    const { addPropFlow, nodes, selectedNodeID } = this.state
+    const { addPropFlow, selectedNodeID } = this.state
 
     if (!addPropFlow.saving) {
       console.warn(
@@ -900,6 +900,27 @@ d8'          `8b  88888888Y"'    88888888Y"'       88           88      `8b    `
 
   /**
    * @private
+   */
+  editPropFlowOnClickDeactivate = () => {
+    const { editPropFlow, selectedNodeID } = this.state
+
+    this.setState({
+      editPropFlow: INITIAL_EDIT_PROP_FLOW,
+    })
+
+    nodesNode
+      .get(/** @type {string} */ (selectedNodeID))
+      .getSet('propDefs')
+      .get(/** @type {string} */ (editPropFlow.selectedPropID))
+      .put({
+        active: false,
+      })
+      .then(this.genericResHandler)
+      .catch(this.genericErrHandler)
+  }
+
+  /**
+   * @private
    * @param {string} id
    */
   editPropFlowOnClickEdit = id => {
@@ -998,6 +1019,24 @@ d8'          `8b  88888888Y"'    88888888Y"'       88           88      `8b    `
       .get(/** @type {string} */ (editPropFlow.selectedPropID))
       .put({
         indexed: !isIndexed,
+      })
+      .then(this.genericResHandler)
+      .catch(this.genericErrHandler)
+  }
+
+  editPropFlowOnClickReactivate = () => {
+    const { editPropFlow, selectedNodeID } = this.state
+
+    this.setState({
+      editPropFlow: INITIAL_EDIT_PROP_FLOW,
+    })
+
+    nodesNode
+      .get(/** @type {string} */ (selectedNodeID))
+      .getSet('propDefs')
+      .get(/** @type {string} */ (editPropFlow.selectedPropID))
+      .put({
+        active: true,
       })
       .then(this.genericResHandler)
       .catch(this.genericErrHandler)
@@ -2383,6 +2422,7 @@ a8"    `Y88  88P'   "Y8  ""     `Y8  `8b    d88b    d8'  a8P_____88  88P'   "Y8
                       ? nameToIconMap[selectedPropDef.iconName].outlined
                       : null
                   }
+                  isActive={selectedPropDef.active}
                   isIndexed={selectedPropDef.indexed}
                   label={selectedPropDef.label}
                   required={selectedPropDef.required}
@@ -2392,6 +2432,8 @@ a8"    `Y88  88P'   "Y8  ""     `Y8  `8b    d88b    d8'  a8P_____88  88P'   "Y8
                   onClickIndex={this.editPropFlowOnClickIndex}
                   onClickLabelBtn={this.editPropFlowOnClickLabel}
                   onClickRequired={this.editPropFlowOnClickRequired}
+                  onClickDeactivate={this.editPropFlowOnClickDeactivate}
+                  onClickReactivate={this.editPropFlowOnClickReactivate}
                 />
               )}
 

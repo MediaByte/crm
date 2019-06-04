@@ -1,5 +1,6 @@
 import React from 'react'
 
+import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
 import List from '@material-ui/core/List'
 import ListSubheader from '@material-ui/core/ListSubheader'
@@ -8,7 +9,13 @@ import Typography from '@material-ui/core/Typography'
  * @typedef {import('@material-ui/core/SvgIcon').SvgIconProps} SvgIconProps
  */
 
+import DeleteOutline from '@material-ui/icons/DeleteOutline'
+import RestoreIcon from '@material-ui/icons/RestoreOutlined'
+
 import DrawerButton from 'components/DrawerButton'
+
+const activationBtnStyle = { backgroundColor: 'white' }
+const activationBtnTxtStyle = { marginLeft: '5px' }
 
 const APPEARANCE_SUBHEADER = (
   <ListSubheader disableSticky>APPEARANCE</ListSubheader>
@@ -31,12 +38,15 @@ const explanationTextMargin = {
  * @typedef {object} Props
  * @prop {string|null} helpText
  * @prop {React.ComponentType<SvgIconProps>|null} icon
+ * @prop {boolean} isActive
  * @prop {boolean} isIndexed
  * @prop {string} label
+ * @prop {(() => void)=} onClickDeactivate
  * @prop {(() => void)=} onClickHelpTextBtn (Optional)
  * @prop {(() => void)=} onClickIconBtn (Optional)
  * @prop {(() => void)=} onClickIndex (optional)
  * @prop {(() => void)=} onClickLabelBtn (Optional)
+ * @prop {(() => void)=} onClickReactivate (Optional)
  * @prop {(() => void)=} onClickRequired (optional)
  * @prop {((id: string) => void)=} onClickSetting (Optional)
  * @prop {boolean} required
@@ -62,12 +72,15 @@ class PropDefEditor extends React.PureComponent {
     const {
       helpText,
       icon,
+      isActive,
       isIndexed,
       label,
+      onClickDeactivate,
       onClickHelpTextBtn,
       onClickIconBtn,
       onClickIndex,
       onClickLabelBtn,
+      onClickReactivate,
       onClickRequired,
       required,
       settings,
@@ -167,6 +180,22 @@ class PropDefEditor extends React.PureComponent {
               primaryText={icon ? undefined : 'No Icon Selected'}
             />
           </List>
+        </Grid>
+
+        <Grid item>
+          <Button
+            color={isActive ? 'secondary' : 'primary'}
+            onClick={isActive ? onClickDeactivate : onClickReactivate}
+            style={activationBtnStyle}
+            fullWidth
+          >
+            {isActive ? <DeleteOutline /> : <RestoreIcon />}
+            {isActive ? (
+              <span style={activationBtnTxtStyle}>Deactivate</span>
+            ) : (
+              <span style={activationBtnTxtStyle}>Reactivate</span>
+            )}
+          </Button>
         </Grid>
       </Grid>
     )
