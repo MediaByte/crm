@@ -32,11 +32,14 @@ const styles = theme => ({
     borderLeft: '1px solid #eee',
     background: '#fafafa',
   },
+  hidden: {
+    visibility: 'hidden',
+  },
   menuButton: {
     color: '#fff',
   },
   spacer: {
-    height: theme.spacing.unit * 5,
+    height: theme.spacing.unit * 1,
   },
   title: {
     color: '#fff',
@@ -172,13 +175,14 @@ class PcDrawer extends React.PureComponent {
             </Toolbar>
           </AppBar>
 
-          {tabs && !hideTabs && (
+          {tabs && (
             <Tabs
               fullWidth
               value={tabsCurrentValue}
               onChange={this.tabsOnChange}
               indicatorColor="primary"
               textColor="primary"
+              className={hideTabs ? classes.hidden : undefined}
             >
               {tabs.map((tab, i) => (
                 <Tab label={tab} key={i} />
