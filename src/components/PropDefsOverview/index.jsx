@@ -6,9 +6,6 @@ import React from 'react'
 
 import IconButton from '@material-ui/core/IconButton'
 import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
-import ListItemText from '@material-ui/core/ListItemText'
 import ListSubheader from '@material-ui/core/ListSubheader'
 import Toolbar from '@material-ui/core/Toolbar'
 import Tooltip from '@material-ui/core/Tooltip'
@@ -17,11 +14,9 @@ import { withStyles } from '@material-ui/core/styles'
 
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline'
 import CompareArrowsIcon from '@material-ui/icons/CompareArrows'
-import EditOutlinedIcon from '@material-ui/icons/EditOutlined'
-import Divider from '@material-ui/core/Divider'
-import HistoryIcon from '@material-ui/icons/History'
 
 import ReorderList from './ReorderList'
+import PropDefItem from './PropDefItem'
 
 /**
  * @typedef {import('@material-ui/core/SvgIcon').SvgIconProps} SvgIconProps
@@ -54,9 +49,26 @@ const styles = theme => ({
     transform: 'rotate(90deg)',
   },
 
+  itemRoot: {
+    width: '100%',
+    zIndex: 100000,
+  },
+  item: {
+    background: '#fff',
+    padding: '10px 20px',
+  },
+  itemInfo: {
+    flex: 1,
+    paddingLeft: '15px',
+  },
+
   // @ts-ignore
   smallIconButton: theme.custom.smallIconButton,
 })
+
+const UNUSED_PROP_DEFS_SUBHEADER = (
+  <ListSubheader component="div">Unused Properties</ListSubheader>
+)
 
 /**
  * @typedef {keyof ReturnType<typeof styles>} ClassKey
@@ -89,12 +101,12 @@ const styles = theme => ({
 class PropDefsOverview extends React.PureComponent {
   /**
    * @private
-   * @param {any} e
+   * @param {string} id
    */
-  onClickEdit = e => {
+  onClickEdit = id => {
     const { onClickEdit } = this.props
 
-    onClickEdit && onClickEdit(e.currentTarget.dataset.id)
+    onClickEdit && onClickEdit(id)
   }
 
   /**
@@ -147,65 +159,33 @@ class PropDefsOverview extends React.PureComponent {
         )}
 
         {!isReordering && usedPropDefs.length > 0 && (
-          <List>
-            {usedPropDefs.map(propDef => {
-              const Icon = propDef.icon
-
-              return (
-                <ListItem className={classes.listItem} key={propDef.id}>
-                  {Icon && <Icon />}
-
-                  <ListItemText
-                    primary={propDef.label}
-                    secondary={propDef.typeName}
-                  />
-
-                  <ListItemSecondaryAction>
-                    <IconButton
-                      aria-label="Edit"
-                      className={classes.smallIconButton}
-                      data-id={propDef.id}
-                      onClick={this.onClickEdit}
-                    >
-                      <EditOutlinedIcon />
-                    </IconButton>
-                  </ListItemSecondaryAction>
-                  <Divider inset />
-                </ListItem>
-              )
-            })}
-          </List>
+          <div>
+            {usedPropDefs.map(propDef => (
+              <PropDefItem
+                icon={propDef.icon}
+                id={propDef.id}
+                key={propDef.id}
+                label={propDef.label}
+                typeName={propDef.typeName}
+                isActive
+                onClickActionIcon={this.onClickEdit}
+              />
+            ))}
+          </div>
         )}
 
         {!isReordering && unusedPropDefs.length > 0 && (
-          <List
-            subheader={
-              <ListSubheader component="div">Unused Properties</ListSubheader>
-            }
-          >
-            {unusedPropDefs.map(propDef => {
-              const Icon = propDef.icon
-
-              return (
-                <ListItem className={classes.listItem} key={propDef.id}>
-                  {Icon && <Icon />}
-
-                  <ListItemText
-                    primary={propDef.label}
-                    secondary={propDef.typeName}
-                  />
-
-                  <ListItemSecondaryAction>
-                    <IconButton
-                      aria-label="History"
-                      className={classes.smallIconButton}
-                    >
-                      <HistoryIcon />
-                    </IconButton>
-                  </ListItemSecondaryAction>
-                </ListItem>
-              )
-            })}
+          <List subheader={UNUSED_PROP_DEFS_SUBHEADER}>
+            {unusedPropDefs.map(propDef => (
+              <PropDefItem
+                icon={propDef.icon}
+                id={propDef.id}
+                key={propDef.id}
+                label={propDef.label}
+                typeName={propDef.typeName}
+                onClickActionIcon={this.onClickEdit}
+              />
+            ))}
           </List>
         )}
 

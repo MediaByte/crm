@@ -1,70 +1,30 @@
 import React from 'react'
 
-import {
-  SortableContainer,
-  SortableElement,
-  SortableHandle,
-} from 'react-sortable-hoc'
-import { Typography, Grid, Divider } from '@material-ui/core'
+import { SortableContainer, SortableElement } from 'react-sortable-hoc'
 /**
  * @typedef {import('react-sortable-hoc').SortEndHandler} SortEndHandler
  */
 
-import ReorderIcon from '@material-ui/icons/Reorder'
+import PropDefItem from './PropDefItem'
 
 /**
  * @typedef {import('.').SimplePropDef} SimplePropDef
  */
 
-const DragHandle = SortableHandle(ReorderIcon)
-/**
- * React sortable hoc doesn't work well with libraries that depend on parent component
- * had to create list and list item from scratch
- */
-const devideInset = '60px'
-const styles = {
-  itemRoot: {
-    width: '100%',
-    zIndex: 100000,
-  },
-  item: {
-    background: '#fff',
-    padding: '10px 20px',
-  },
-  devide: {
-    backgroundColor: '#eee',
-    height: '1px',
-    marginLeft: devideInset,
-    width: `calc(100% - ${devideInset})`,
-  },
-  itemInfo: {
-    flex: 1,
-    paddingLeft: '15px',
-  },
-}
-
 /**
  * @param {{ item: SimplePropDef }} param0
  */
-const ReorderItem = ({ item: propDef }) => {
-  const Icon = propDef.icon
-
-  return (
-    <div style={styles.itemRoot}>
-      <Grid style={styles.item} container alignItems="center">
-        {Icon && <Icon />}
-        <div style={styles.itemInfo}>
-          <Typography variant="inherit">{propDef.label}</Typography>
-          <Typography component="span" color="textSecondary">
-            {propDef.typeName}
-          </Typography>
-        </div>
-        <DragHandle />
-      </Grid>
-      <Divider inset />
-    </div>
-  )
-}
+const ReorderItem = ({ item: propDef }) => (
+  <PropDefItem
+    icon={propDef.icon}
+    id={propDef.id}
+    key={propDef.id}
+    label={propDef.label}
+    typeName={propDef.typeName}
+    isActive
+    isReordering
+  />
+)
 
 const SortableItem = SortableElement(ReorderItem)
 
