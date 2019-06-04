@@ -1,14 +1,14 @@
 import React from 'react'
 
+import classNames from 'classnames'
+
 /**
  * @typedef {import('react-sortable-hoc').SortEndHandler} SortEndHandler
  */
 
+import Grid from '@material-ui/core/Grid'
 import IconButton from '@material-ui/core/IconButton'
 import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
-import ListItemText from '@material-ui/core/ListItemText'
 import ListSubheader from '@material-ui/core/ListSubheader'
 import Toolbar from '@material-ui/core/Toolbar'
 import Tooltip from '@material-ui/core/Tooltip'
@@ -17,10 +17,9 @@ import { withStyles } from '@material-ui/core/styles'
 
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline'
 import CompareArrowsIcon from '@material-ui/icons/CompareArrows'
-import EditOutlinedIcon from '@material-ui/icons/EditOutlined'
-import HistoryIcon from '@material-ui/icons/History'
 
 import ReorderList from './ReorderList'
+import PropDefItem from './PropDefItem'
 
 /**
  * @typedef {import('@material-ui/core/SvgIcon').SvgIconProps} SvgIconProps
@@ -32,6 +31,12 @@ import ReorderList from './ReorderList'
 const styles = theme => ({
   addButton: {
     alignSelf: 'flex-start',
+  },
+  alignSelfCenter: {
+    alignSelf: 'center',
+  },
+  alignSelfEnd: {
+    alignSelf: 'flex-end',
   },
   grow: {
     flexGrow: 1,
@@ -52,10 +57,29 @@ const styles = theme => ({
     ...theme.custom.smallIconButton,
     transform: 'rotate(90deg)',
   },
+  hidden: {
+    visibility: 'hidden',
+  },
+  itemRoot: {
+    width: '100%',
+    zIndex: 100000,
+  },
+  item: {
+    background: '#fff',
+    padding: '10px 20px',
+  },
+  itemInfo: {
+    flex: 1,
+    paddingLeft: '15px',
+  },
 
   // @ts-ignore
   smallIconButton: theme.custom.smallIconButton,
 })
+
+const UNUSED_PROP_DEFS_SUBHEADER = (
+  <ListSubheader component="div">Unused Properties</ListSubheader>
+)
 
 /**
  * @typedef {keyof ReturnType<typeof styles>} ClassKey
@@ -88,12 +112,12 @@ const styles = theme => ({
 class PropDefsOverview extends React.PureComponent {
   /**
    * @private
-   * @param {any} e
+   * @param {string} id
    */
-  onClickEdit = e => {
+  onClickEdit = id => {
     const { onClickEdit } = this.props
 
-    onClickEdit && onClickEdit(e.currentTarget.dataset.id)
+    onClickEdit && onClickEdit(id)
   }
 
   /**
@@ -120,17 +144,21 @@ class PropDefsOverview extends React.PureComponent {
     const unusedPropDefs = propDefs.filter(propDef => propDef.unused)
 
     return (
-      <React.Fragment>
-        <Toolbar>
-          <div className={classes.grow} />
+      <Grid container direction="column">
+        {propDefs.length === 0 && (
+          <Grid className={classes.alignSelfCenter} item>
+            <Typography>Click Plus to Add Properties</Typography>
+          </Grid>
+        )}
 
-          {propDefs.length === 0 && (
-            <Typography>
-              Click the plus button to add some properties to this node.
-            </Typography>
-          )}
-
-          {usedPropDefs.length > 0 && (
+        {usedPropDefs.length > 0 && (
+          <Grid
+            className={classNames(
+              classes.alignSelfEnd,
+              (usedPropDefs.length === 0 || isReordering) && classes.hidden,
+            )}
+            item
+          >
             <Tooltip title="Reorder" aria-label="Reorder" placement="left">
               <IconButton
                 className={classes.reorderIcon}
@@ -140,85 +168,60 @@ class PropDefsOverview extends React.PureComponent {
                 <CompareArrowsIcon />
               </IconButton>
             </Tooltip>
-          )}
-        </Toolbar>
+          </Grid>
+        )}
 
         {isReordering && usedPropDefs.length > 0 && (
-          <ReorderList onSortEnd={this.onSortEnd} propDefs={usedPropDefs} />
+          <Grid item>
+            <ReorderList onSortEnd={this.onSortEnd} propDefs={usedPropDefs} />
+          </Grid>
         )}
 
         {!isReordering && usedPropDefs.length > 0 && (
-          <List>
-            {usedPropDefs.map(propDef => {
-              const Icon = propDef.icon
-
-              return (
-                <ListItem className={classes.listItem} key={propDef.id}>
-                  {Icon && <Icon />}
-
-                  <ListItemText
-                    primary={propDef.label}
-                    secondary={propDef.typeName}
-                  />
-
-                  <ListItemSecondaryAction>
-                    <IconButton
-                      aria-label="Edit"
-                      className={classes.smallIconButton}
-                      data-id={propDef.id}
-                      onClick={this.onClickEdit}
-                    >
-                      <EditOutlinedIcon />
-                    </IconButton>
-                  </ListItemSecondaryAction>
-                </ListItem>
-              )
-            })}
-          </List>
+          <Grid item>
+            {usedPropDefs.map(propDef => (
+              <PropDefItem
+                icon={propDef.icon}
+                id={propDef.id}
+                key={propDef.id}
+                label={propDef.label}
+                typeName={propDef.typeName}
+                isActive
+                onClickActionIcon={this.onClickEdit}
+              />
+            ))}
+          </Grid>
         )}
 
         {!isReordering && unusedPropDefs.length > 0 && (
-          <List
-            subheader={
-              <ListSubheader component="div">Unused Properties</ListSubheader>
-            }
-          >
-            {unusedPropDefs.map(propDef => {
-              const Icon = propDef.icon
-
-              return (
-                <ListItem className={classes.listItem} key={propDef.id}>
-                  {Icon && <Icon />}
-
-                  <ListItemText
-                    primary={propDef.label}
-                    secondary={propDef.typeName}
-                  />
-
-                  <ListItemSecondaryAction>
-                    <IconButton
-                      aria-label="History"
-                      className={classes.smallIconButton}
-                    >
-                      <HistoryIcon />
-                    </IconButton>
-                  </ListItemSecondaryAction>
-                </ListItem>
-              )
-            })}
-          </List>
+          <Grid item>
+            <List subheader={UNUSED_PROP_DEFS_SUBHEADER}>
+              {unusedPropDefs.map(propDef => (
+                <PropDefItem
+                  icon={propDef.icon}
+                  id={propDef.id}
+                  key={propDef.id}
+                  label={propDef.label}
+                  typeName={propDef.typeName}
+                  onClickActionIcon={this.onClickEdit}
+                />
+              ))}
+            </List>
+          </Grid>
         )}
 
         {!isReordering && (
-          <IconButton
-            aria-label="Plus"
-            onClick={onClickAdd}
-            className={classes.addButton}
-          >
-            <AddCircleOutlineIcon fontSize="small" color="primary" />
-          </IconButton>
+          <Grid item>
+            <IconButton
+              aria-label="Plus"
+              onClick={onClickAdd}
+              className={classes.addButton}
+            >
+              <AddCircleOutlineIcon fontSize="small" color="primary" />
+            </IconButton>
+          </Grid>
         )}
-      </React.Fragment>
+      </Grid>
     )
   }
 }

@@ -6,7 +6,6 @@ import toUpper from 'lodash/toUpper'
 import Grid from '@material-ui/core/Grid'
 import IconButton from '@material-ui/core/IconButton'
 import Snackbar from '@material-ui/core/Snackbar'
-
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import { withStyles } from '@material-ui/core/styles'
@@ -57,6 +56,8 @@ const NodeDrawerTab = {
   Properties: 1,
   Relationships: 2,
 }
+
+const EMPTY_DIV = <div />
 
 const AVAILABLE_TABS_NAMES = Object.keys(NodeDrawerTab)
 
@@ -186,7 +187,6 @@ const styles = theme => ({
 /**
  * @typedef {object} Props
  * @prop {Record<Classes, string>} classes
- *
  */
 
 /**
@@ -371,7 +371,7 @@ class NodesAndProps extends React.Component {
           order: propDef.order,
           typeName:
             typeToReadableName[propDef.propType.name] || propDef.propType.name,
-          unused: propDef.unused,
+          unused: !propDef.active,
         })),
     )
   }
@@ -593,7 +593,7 @@ d8'          `8b  88888888Y"'    88888888Y"'       88           88      `8b    `
   addPropFlowHandleSave = () => {
     // this method is supposed to be called in a setState callback
     // to ensure we are looking at updated state
-    const { addPropFlow, nodes, selectedNodeID } = this.state
+    const { addPropFlow, selectedNodeID } = this.state
 
     if (!addPropFlow.saving) {
       console.warn(
@@ -635,6 +635,7 @@ d8'          `8b  88888888Y"'    88888888Y"'       88           88      `8b    `
 
     propDefsNode
       .set({
+        active: true,
         helpText: null,
         iconName:
           addPropFlow.currentlySelectedIconIdx === null ||
@@ -653,7 +654,7 @@ d8'          `8b  88888888Y"'    88888888Y"'       88           88      `8b    `
         if (res.ok) {
           this.setState({
             addPropFlow: INITIAL_ADD_PROP_FLOW,
-            snackbarMessage: 'Property added correctly',
+            snackbarMessage: 'Property created successfully',
           })
         } else {
           Object.entries(res.details).forEach(([key, detail]) => {
@@ -723,7 +724,6 @@ d8'          `8b  88888888Y"'    88888888Y"'       88           88      `8b    `
   handleNodeDrawerTabChange = (_, tab) => {
     this.setState({
       currentNodeDrawerTab: tab,
-      isReorderingProps: false,
     })
   }
 
@@ -900,6 +900,27 @@ d8'          `8b  88888888Y"'    88888888Y"'       88           88      `8b    `
 
   /**
    * @private
+   */
+  editPropFlowOnClickDeactivate = () => {
+    const { editPropFlow, selectedNodeID } = this.state
+
+    this.setState({
+      editPropFlow: INITIAL_EDIT_PROP_FLOW,
+    })
+
+    nodesNode
+      .get(/** @type {string} */ (selectedNodeID))
+      .getSet('propDefs')
+      .get(/** @type {string} */ (editPropFlow.selectedPropID))
+      .put({
+        active: false,
+      })
+      .then(this.genericResHandler)
+      .catch(this.genericErrHandler)
+  }
+
+  /**
+   * @private
    * @param {string} id
    */
   editPropFlowOnClickEdit = id => {
@@ -998,6 +1019,24 @@ d8'          `8b  88888888Y"'    88888888Y"'       88           88      `8b    `
       .get(/** @type {string} */ (editPropFlow.selectedPropID))
       .put({
         indexed: !isIndexed,
+      })
+      .then(this.genericResHandler)
+      .catch(this.genericErrHandler)
+  }
+
+  editPropFlowOnClickReactivate = () => {
+    const { editPropFlow, selectedNodeID } = this.state
+
+    this.setState({
+      editPropFlow: INITIAL_EDIT_PROP_FLOW,
+    })
+
+    nodesNode
+      .get(/** @type {string} */ (selectedNodeID))
+      .getSet('propDefs')
+      .get(/** @type {string} */ (editPropFlow.selectedPropID))
+      .put({
+        active: true,
       })
       .then(this.genericResHandler)
       .catch(this.genericErrHandler)
@@ -1230,12 +1269,6 @@ d8'          `8b  88888888Y"'    88888888Y"'       88           88      `8b    `
     // @ts-ignore
     const value = e.target.value
 
-    const chars = value.split('')
-
-    if (chars.some(char => !Utils.isNumber(char))) {
-      return
-    }
-
     this.setState(({ editPropFlow }) => {
       return {
         editPropFlow: {
@@ -1445,18 +1478,12 @@ d8'          `8b  88888888Y"'    88888888Y"'       88           88      `8b    `
           container
           direction="column"
         >
-          <Grid item>
-            <Typography align="center" color="textSecondary" variant="body1">
-              {selectedParam.name}
-            </Typography>
-          </Grid>
-
           <Grid className={classes.textField} item>
             <TextField
               autoFocus
               fullWidth
               onChange={this.editPropFlowOnChangeSettingTextfieldNumber}
-              type="search"
+              type="number"
               // @ts-ignore
               value={
                 this.state.editPropFlow.currentSettingValue === null
@@ -1484,12 +1511,6 @@ d8'          `8b  88888888Y"'    88888888Y"'       88           88      `8b    `
           direction="column"
           justify="center"
         >
-          <Grid item>
-            <Typography align="center" color="textSecondary" variant="body1">
-              {selectedParam.name}
-            </Typography>
-          </Grid>
-
           <Grid className={classes.textField} item>
             <TextField
               autoFocus
@@ -1657,7 +1678,7 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
               this.setState({
                 addNodeFlow: INITIAL_ADD_NODE_FLOW,
                 addNodeFormData: BLANK_ADD_NODE_FORM_DATA,
-                snackbarMessage: 'Node created sucessfully',
+                snackbarMessage: 'Node created successfully',
               })
             } else {
               const newAddNodeFormData = {
@@ -1781,7 +1802,6 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
           ...INITIAL_ADD_PROP_FLOW,
           dialogOpen: !addPropFlow.dialogOpen,
         },
-        isReorderingProps: false,
       }
     })
   }
@@ -1792,7 +1812,6 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
         currentNodeDrawerTab,
         editNodeFlow,
         editPropFlow,
-        isReorderingProps,
         selectedNodeID,
       }) => {
         // the more 'in' an screen is, the higher up top here the handling logic
@@ -1807,7 +1826,6 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
               currentSelectedIconIdx: null,
               editingIcon: false,
             },
-            isReorderingProps,
             selectedNodeID,
           }
         }
@@ -1821,7 +1839,6 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
               editingHelpText: false,
               willChangeHelpTextStatus: false,
             },
-            isReorderingProps,
             selectedNodeID,
           }
         }
@@ -1834,7 +1851,6 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
               ...editPropFlow,
               currentLabelValue: null,
             },
-            isReorderingProps,
             selectedNodeID,
           }
         }
@@ -1848,7 +1864,6 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
               currentSettingValue: null,
               selectedSettingParamID: null,
             },
-            isReorderingProps,
             selectedNodeID,
           }
         }
@@ -1858,7 +1873,6 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
             currentNodeDrawerTab,
             editNodeFlow,
             editPropFlow: INITIAL_EDIT_PROP_FLOW,
-            isReorderingProps: false,
             selectedNodeID,
           }
         }
@@ -1872,7 +1886,6 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
               editingIcon: false,
             },
             editPropFlow,
-            isReorderingProps,
             selectedNodeID,
           }
         }
@@ -1885,7 +1898,6 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
               editingLabel: false,
             },
             editPropFlow,
-            isReorderingProps,
             selectedNodeID,
           }
         }
@@ -1894,7 +1906,6 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
           currentNodeDrawerTab: 0,
           editNodeFlow: INITIAL_EDIT_NODE_FLOW,
           editPropFlow,
-          isReorderingProps,
           selectedNodeID: null,
         }
       },
@@ -1902,7 +1913,19 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
   }
 
   onClickDrawerRightBtn = () => {
-    const { editNodeFlow, editPropFlow, selectedNodeID } = this.state
+    const {
+      editNodeFlow,
+      editPropFlow,
+      isReorderingProps,
+      selectedNodeID,
+    } = this.state
+
+    if (isReorderingProps) {
+      this.setState({
+        isReorderingProps: false,
+      })
+      return
+    }
 
     if (editPropFlow.editingIcon) {
       this.editPropFlowUpdateIconValue()
@@ -2155,6 +2178,7 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
           showCloseButton={!addPropFlow.selectingIcon}
           open={addPropFlow.dialogOpen}
           title={'Add Property'}
+          rightActionButtonColorPrimary
         >
           <OverlaySpinner showSpinner={addPropFlow.saving}>
             {addPropFlow.selectingIcon ? (
@@ -2215,42 +2239,42 @@ a8"    `Y88  88P'   "Y8  ""     `Y8  `8b    d88b    d8'  a8P_____88  88P'   "Y8
                 return ''
               }
 
-              let title = selectedNode.label
-
               if (!selectedPropDef) {
-                return title
-              }
-
-              if (editPropFlow.selectedPropID) {
-                title += ' > ' + selectedPropDef.label
-              }
-
-              if (editPropFlow.currentLabelValue !== null) {
-                title += ' > Label'
-              }
-
-              if (editPropFlow.selectedSettingParamID) {
-                title +=
-                  ' > ' +
-                  selectedPropDef.propType.params[
-                    editPropFlow.selectedSettingParamID
-                  ].name
+                return selectedNode.label
               }
 
               if (editPropFlow.editingHelpText) {
-                title += ' > Help Text'
+                return 'Help Text'
               }
 
               if (editPropFlow.editingIcon) {
-                title += ' > Edit Icon'
+                return 'Icon'
               }
 
-              return title
+              if (editPropFlow.selectedPropID) {
+                if (editPropFlow.currentLabelValue !== null) {
+                  return 'Label'
+                }
+
+                if (editPropFlow.selectedSettingParamID) {
+                  if (editPropFlow.selectedSettingParamID) {
+                    return selectedPropDef.propType.params[
+                      editPropFlow.selectedSettingParamID
+                    ].name
+                  }
+                }
+              }
+
+              return selectedNode.label
             })()}
             open
             leftButtonOnClick={this.onClickDrawerLeftBtn}
             rightButtonOnClick={this.onClickDrawerRightBtn}
             rightButtonText={(() => {
+              if (isReorderingProps) {
+                return 'Done'
+              }
+
               if (editPropFlow.editingIcon) {
                 if (!selectedPropDef) {
                   return
@@ -2324,11 +2348,14 @@ a8"    `Y88  88P'   "Y8  ""     `Y8  `8b    d88b    d8'  a8P_____88  88P'   "Y8
             tabs={AVAILABLE_TABS_NAMES}
             tabsCurrentValue={currentNodeDrawerTab}
             tabsOnChange={this.handleNodeDrawerTabChange}
+            // hides the back button
+            leftAction={isReorderingProps ? EMPTY_DIV : undefined}
             hideTabs={
               editNodeFlow.editingLabel ||
               editNodeFlow.editingIcon ||
               !!editPropFlow.selectedPropID ||
-              !!editPropFlow.selectedSettingParamID
+              !!editPropFlow.selectedSettingParamID ||
+              isReorderingProps
             }
           >
             {currentNodeDrawerTab === NodeDrawerTab.Details &&
@@ -2395,6 +2422,7 @@ a8"    `Y88  88P'   "Y8  ""     `Y8  `8b    d88b    d8'  a8P_____88  88P'   "Y8
                       ? nameToIconMap[selectedPropDef.iconName].outlined
                       : null
                   }
+                  isActive={selectedPropDef.active}
                   isIndexed={selectedPropDef.indexed}
                   label={selectedPropDef.label}
                   required={selectedPropDef.required}
@@ -2404,6 +2432,8 @@ a8"    `Y88  88P'   "Y8  ""     `Y8  `8b    d88b    d8'  a8P_____88  88P'   "Y8
                   onClickIndex={this.editPropFlowOnClickIndex}
                   onClickLabelBtn={this.editPropFlowOnClickLabel}
                   onClickRequired={this.editPropFlowOnClickRequired}
+                  onClickDeactivate={this.editPropFlowOnClickDeactivate}
+                  onClickReactivate={this.editPropFlowOnClickReactivate}
                 />
               )}
 
