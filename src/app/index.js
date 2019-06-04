@@ -274,7 +274,150 @@ const setUpPropTypes = () => {
       name: 'name',
     })
     .then(res => {
-      if (!res.ok) {
+      if (res.ok) {
+        res.reference
+          .getSet('params')
+          .set({
+            multiple: false,
+            name: 'Avatar',
+            type: 'boolean',
+          })
+          .then(res => {
+            if (!res.ok) {
+              console.log(res)
+            }
+          })
+
+        res.reference
+          .getSet('params')
+          .set({
+            multiple: false,
+            name: 'Display Prefix Selection',
+            type: 'boolean',
+          })
+          .then(res => {
+            if (!res.ok) {
+              console.log(res)
+            }
+          })
+
+        res.reference
+          .getSet('params')
+          .set({
+            multiple: true,
+            name: 'Prefixes',
+            type: 'string',
+          })
+          .then(res => {
+            if (!res.ok) {
+              console.log(res)
+            }
+          })
+
+        res.reference
+          .getSet('params')
+          .set({
+            multiple: false,
+            name: 'Main Field Label',
+            type: 'string',
+          })
+          .then(res => {
+            if (!res.ok) {
+              console.log(res)
+            }
+          })
+
+        res.reference
+          .getSet('params')
+          .set({
+            multiple: false,
+            name: 'Character Limit',
+            type: 'number',
+          })
+          .then(res => {
+            if (!res.ok) {
+              console.log(res)
+            }
+          })
+
+        res.reference
+          .getSet('params')
+          .set({
+            multiple: false,
+            name: 'Enable Secondary Field',
+            type: 'boolean',
+          })
+          .then(res => {
+            if (!res.ok) {
+              console.log(res)
+            }
+          })
+
+        res.reference
+          .getSet('params')
+          .set({
+            multiple: false,
+            name: 'Secondary Field Label',
+            type: 'string',
+          })
+          .then(res => {
+            if (!res.ok) {
+              console.log(res)
+            }
+          })
+
+        res.reference
+          .getSet('params')
+          .set({
+            multiple: false,
+            name: 'Secondary Field Character Limit',
+            type: 'number',
+          })
+          .then(res => {
+            if (!res.ok) {
+              console.log(res)
+            }
+          })
+
+        res.reference
+          .getSet('params')
+          .set({
+            multiple: false,
+            name: 'Enable Tertiary Field',
+            type: 'boolean',
+          })
+          .then(res => {
+            if (!res.ok) {
+              console.log(res)
+            }
+          })
+
+        res.reference
+          .getSet('params')
+          .set({
+            multiple: false,
+            name: 'Tertiary Field Label',
+            type: 'string',
+          })
+          .then(res => {
+            if (!res.ok) {
+              console.log(res)
+            }
+          })
+
+        res.reference
+          .getSet('params')
+          .set({
+            multiple: false,
+            name: 'Tertiary Field Character Limit',
+            type: 'number',
+          })
+          .then(res => {
+            if (!res.ok) {
+              console.log(res)
+            }
+          })
+      } else {
         console.warn(res)
       }
     })
