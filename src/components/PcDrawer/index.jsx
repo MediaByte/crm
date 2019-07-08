@@ -164,7 +164,7 @@ class PcDrawer extends React.PureComponent {
                   <Typography
                     align="center"
                     className={classes.title}
-                    variant="h3"
+                    variant="title"
                   >
                     {title}
                   </Typography>

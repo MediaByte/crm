@@ -21,9 +21,7 @@ import BottomNavigation from '@material-ui/core/BottomNavigation'
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction'
 import InputBase from '@material-ui/core/InputBase'
 import Hidden from '@material-ui/core/Hidden'
-import Button from '@material-ui/core/Button'
-import withWidth, { isWidthUp, isWidthDown } from '@material-ui/core/withWidth'
-import Backdrop from '@material-ui/core/Backdrop'
+import withWidth, { isWidthUp } from '@material-ui/core/withWidth'
 import Paper from '@material-ui/core/Paper'
 import Avatar from '@material-ui/core/Avatar'
 
@@ -42,6 +40,8 @@ import Logo from 'assets/img/crmLogo.png'
 import navStyles from 'components/Navigation/navStyle.js'
 
 import { nameToIconMap } from 'common/NameToIcon'
+import { Clear, ChevronLeft } from '@material-ui/icons'
+import { InputAdornment, Dialog, CircularProgress } from '@material-ui/core'
 
 const DASHBOARD = 0
 const CALENDAR = 1
@@ -83,7 +83,7 @@ const NOTIFICATIONS = 2
  * @augments React.Component<Props, State>
  */
 class Navigation extends React.Component {
-  searchBoxRef = React.createRef()
+  mobileSearchInputRef = React.createRef()
 
   /**
    * @param {Props} props
@@ -98,7 +98,7 @@ class Navigation extends React.Component {
       disableUnderline: true,
       value: 0,
       sidebarOpen: false,
-      searchBoxOpen: isWidthUp('lg', props.width),
+      searchBoxOpen: false,
       searchResultsAnchor: null,
       searchBoxFocused: false,
       searchBoxCurrentText: '',
@@ -106,44 +106,19 @@ class Navigation extends React.Component {
       notificationsOpen: false,
     }
   }
-
-  /**
-   * @param {Props} prevProps
-   */
-  componentDidUpdate(prevProps) {
-    const prevWidth = prevProps.width
-
-    const newWidth = this.props.width
-
-    if (prevWidth === newWidth) return
-
-    const isBigScreen = isWidthUp('lg', newWidth)
-
-    if (isBigScreen) {
-      this.setState({
-        searchBoxOpen: true,
-      })
-    }
-    // if we go from big to small screen close the searchbox
-    else if (this.state.searchBoxOpen) {
-      this.setState({
-        searchBoxOpen: false,
-      })
+  componentDidUpdate(prevProps, prevState) {
+    const { searchBoxCurrentText } = this.state
+    const { onSearchBoxChange } = this.props
+    if (
+      prevState.searchBoxCurrentText !== searchBoxCurrentText &&
+      onSearchBoxChange
+    ) {
     }
   }
 
-  openSidebar = () => {
-    this.setState({
-      sidebarOpen: true,
-    })
+  toggleSidebar = () => {
+    this.setState({ sidebarOpen: !this.state.sidebarOpen })
   }
-
-  closeSidebar = () => {
-    this.setState({
-      sidebarOpen: false,
-    })
-  }
-
   onFocusSearchBox = () => {
     this.setState({
       searchBoxFocused: true,
@@ -151,25 +126,14 @@ class Navigation extends React.Component {
   }
 
   toggleSearch = () => {
-    this.setState(
-      ({ searchBoxOpen }) => ({
-        searchBoxOpen: !searchBoxOpen,
-      }),
-      () => {
-        const isTabletOrSmaller = isWidthDown('md', this.props.width)
-        const searchBoxWasOpened = this.state.searchBoxOpen
+    const { searchBoxOpen, sidebarOpen } = this.state
+    this.setState({ searchBoxOpen: !searchBoxOpen })
 
-        if (isTabletOrSmaller && searchBoxWasOpened) {
-          // this.searchBoxRef.current.focus()
-        }
-      },
-    )
+    if (!searchBoxOpen && sidebarOpen) this.toggleSidebar()
   }
 
   toggleNotifications = () => {
-    this.setState(({ notificationsOpen }) => ({
-      notificationsOpen: !notificationsOpen,
-    }))
+    this.setState({ notificationsOpen: !this.state.notificationsOpen })
   }
 
   /**
@@ -196,6 +160,12 @@ class Navigation extends React.Component {
     }
   }
 
+  clearSearch = () => {
+    this.setState({ searchBoxCurrentText: '' }, () => {
+      this.mobileSearchInputRef.current.focus()
+    })
+  }
+
   onBlurSearchBox = () => {
     this.setState({
       searchBoxFocused: false,
@@ -207,11 +177,9 @@ class Navigation extends React.Component {
    */
   onChangeSearchBox = e => {
     const { onSearchBoxChange } = this.props
-
     /** @type {string} */
     // @ts-ignore
     const txt = e.target.value
-
     this.setState(
       {
         searchBoxCurrentText: txt,
@@ -222,6 +190,9 @@ class Navigation extends React.Component {
         }
       },
     )
+    this.setState({
+      searchBoxCurrentText: txt,
+    })
   }
 
   render() {
@@ -245,12 +216,11 @@ class Navigation extends React.Component {
       notificationsOpen,
     } = this.state
 
-    const isBigScreen = isWidthUp('lg', width)
+    const isBigScreen = isWidthUp('md', width)
 
     const shouldRenderTitle = isBigScreen || !searchBoxOpen
 
     const shouldRenderMenuButton = (() => {
-      const isBigScreen = isWidthUp('lg', width)
       const searchBoxClosed = !searchBoxOpen
 
       // will always be rendered on big screens because both search box
@@ -281,7 +251,7 @@ class Navigation extends React.Component {
           </Link>
           <IconButton
             className={classNames(classes.menuButtonMobile)}
-            onClick={this.closeSidebar}
+            onClick={this.toggleSidebar}
             style={{ color: '#fff' }}
           >
             <MenuIcon />
@@ -341,7 +311,7 @@ class Navigation extends React.Component {
                 <IconButton
                   color="inherit"
                   aria-label="Open drawer"
-                  onClick={sidebarOpen ? this.closeSidebar : this.openSidebar}
+                  onClick={this.toggleSidebar}
                   className={classNames(
                     classes.menuButton,
                     sidebarOpen && classes.menuButtonOpened,
@@ -357,94 +327,165 @@ class Navigation extends React.Component {
                 </Typography>
               )}
 
-              {searchBoxOpen && (
-                <div>
-                  {!isBigScreen && <Backdrop open={true} />}
-                  <div className={classes.itemSearch}>
-                    <div className={classes.search}>
-                      <div className={classes.searchIcon}>
-                        <SearchIcon />
-                      </div>
-                      <InputBase
-                        autoFocus={!isBigScreen}
-                        placeholder="Search..."
-                        inputRef={this.searchBoxRef}
-                        classes={{
-                          root: classes.inputRoot,
-                          input: classes.inputInput,
-                        }}
-                        onFocus={this.onFocusSearchBox}
-                        onBlur={this.onBlurSearchBox}
-                        onChange={this.onChangeSearchBox}
-                        value={searchBoxCurrentText}
-                      />
+              <Hidden smDown>
+                <div className={classes.itemSearch}>
+                  <div className={classes.search}>
+                    <div className={classes.searchIcon}>
+                      <SearchIcon />
                     </div>
 
-                    {searchBoxCurrentText && (
-                      <Paper
-                        className={classNames(
-                          classes.searchResultsHolder,
-                          !searchBoxFocused && classes.hidden,
-                        )}
-                      >
-                        {isLoadingSearchResults ? (
-                          <Typography>Show spinner here</Typography>
-                        ) : (
-                          <List>
-                            {searchResults && searchResults.length ? (
-                              searchResults.map(sr => {
-                                const icon = nameToIconMap[sr.iconName || '']
-                                const SRIcon = icon && icon.outlined
-
-                                return (
-                                  <ListItem button>
-                                    {SRIcon && (
-                                      <Avatar>
-                                        <SRIcon />
-                                      </Avatar>
-                                    )}
-                                    <ListItemText
-                                      primary={sr.displayText}
-                                      secondary={sr.nodeName}
-                                    />
-                                  </ListItem>
-                                )
-                              })
-                            ) : (
-                              <ListItem>
-                                <ListItemText primary="No results found" />
-                              </ListItem>
-                            )}
-                          </List>
-                        )}
-                      </Paper>
-                    )}
-
-                    <Hidden lgUp>
-                      <Button
-                        color="primary"
-                        variant="outlined"
-                        onClick={this.toggleSearch}
-                      >
-                        Cancel
-                      </Button>
-                    </Hidden>
+                    <InputBase
+                      autoFocus={!isBigScreen}
+                      placeholder="Search..."
+                      type="search"
+                      classes={{
+                        root: classes.inputRoot,
+                        input: classes.inputInput,
+                      }}
+                      onFocus={this.onFocusSearchBox}
+                      onBlur={this.onBlurSearchBox}
+                      onChange={this.onChangeSearchBox}
+                      value={searchBoxCurrentText}
+                    />
                   </div>
+
+                  {searchBoxCurrentText && (
+                    <Paper
+                      elevation={2}
+                      className={classNames(
+                        classes.searchResultsHolder,
+                        !searchBoxFocused && classes.hidden,
+                      )}
+                    >
+                      {isLoadingSearchResults ? (
+                        <Grid container justify="center" alignItems="center">
+                          <Grid item>
+                            <CircularProgress />
+                          </Grid>
+                        </Grid>
+                      ) : (
+                        <List>
+                          {searchResults && searchResults.length ? (
+                            searchResults.map(sr => {
+                              const icon = nameToIconMap[sr.iconName || '']
+                              const SRIcon = icon && icon.outlined
+
+                              return (
+                                <ListItem button>
+                                  {SRIcon && (
+                                    <Avatar>
+                                      <SRIcon />
+                                    </Avatar>
+                                  )}
+                                  <ListItemText
+                                    primary={sr.displayText}
+                                    secondary={sr.nodeName}
+                                  />
+                                </ListItem>
+                              )
+                            })
+                          ) : (
+                            <ListItem>
+                              <ListItemText primary="No results found" />
+                            </ListItem>
+                          )}
+                        </List>
+                      )}
+                    </Paper>
+                  )}
                 </div>
-              )}
+              </Hidden>
 
-              {!searchBoxOpen && (
-                <IconButton color="inherit">
-                  <SearchIcon onClick={this.toggleSearch} />
+              <Hidden mdUp>
+                <Dialog
+                  fullScreen
+                  open={this.state.searchBoxOpen}
+                  onClose={this.toggleSearch}
+                >
+                  <AppBar
+                    position="fixed"
+                    elevation={0}
+                    className={classNames(classes.appBar)}
+                  >
+                    <Toolbar className={classes.toolbar}>
+                      <Grid
+                        container
+                        justify="space-between"
+                        alignItems="center"
+                      >
+                        <IconButton onClick={this.toggleSearch}>
+                          <ChevronLeft />
+                        </IconButton>
+                        <Grid item style={{ flex: 1 }}>
+                          <InputBase
+                            fullWidth
+                            autoFocus
+                            onChange={this.onChangeSearchBox}
+                            value={searchBoxCurrentText}
+                            placeholder="Search..."
+                            inputRef={this.mobileSearchInputRef}
+                            endAdornment={
+                              <InputAdornment position="start">
+                                {searchBoxCurrentText.length ? (
+                                  <IconButton onClick={this.clearSearch}>
+                                    <Clear />
+                                  </IconButton>
+                                ) : (
+                                  <SearchIcon color="disabled" />
+                                )}
+                              </InputAdornment>
+                            }
+                          />
+                        </Grid>
+                      </Grid>
+                    </Toolbar>
+                  </AppBar>
+                  {isLoadingSearchResults ? (
+                    <Grid container justify="center" alignItems="center">
+                      <Grid item>
+                        <CircularProgress />
+                      </Grid>
+                    </Grid>
+                  ) : (
+                    <List>
+                      {searchResults && searchResults.length ? (
+                        searchResults.map(sr => {
+                          const icon = nameToIconMap[sr.iconName || '']
+                          const SRIcon = icon && icon.outlined
+
+                          return (
+                            <ListItem button>
+                              {SRIcon && (
+                                <Avatar>
+                                  <SRIcon />
+                                </Avatar>
+                              )}
+                              <ListItemText
+                                primary={sr.displayText}
+                                secondary={sr.nodeName}
+                              />
+                            </ListItem>
+                          )
+                        })
+                      ) : (
+                        <ListItem>
+                          <ListItemText primary="No results found" />
+                        </ListItem>
+                      )}
+                    </List>
+                  )}
+                </Dialog>
+
+                <IconButton onClick={this.toggleSearch}>
+                  <SearchIcon />
                 </IconButton>
-              )}
+              </Hidden>
 
-              <Hidden mdDown>
-                <IconButton color="inherit" className={classes.iconHeader}>
+              <Hidden smDown>
+                <IconButton className={classes.iconHeader}>
                   <CalendarTodayOutlined />
                 </IconButton>
                 <IconButton
-                  color="inherit"
                   className={classes.iconHeader}
                   onClick={this.toggleNotifications}
                 >
@@ -470,7 +511,7 @@ class Navigation extends React.Component {
             <div style={{ height: '100%' }}>{children}</div>
           </main>
         </Grid>
-        <Hidden lgUp>
+        <Hidden mdUp>
           <BottomNavigation
             value={value}
             onChange={this.handleChange}
