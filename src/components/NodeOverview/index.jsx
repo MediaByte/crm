@@ -274,7 +274,7 @@ class NodeOverview extends React.PureComponent {
             position: 'absolute',
             bottom: '40px',
             right: '50px',
-            backgroundColor: '#f34930',
+            backgroundColor: '#fafafa',
             color: '#fff',
             transition:
               'background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',

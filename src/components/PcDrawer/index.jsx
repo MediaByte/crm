@@ -24,6 +24,10 @@ const styles = theme => ({
     flex: 1,
     marginTop: theme.spacing.unit * 3,
   },
+  appBar: {
+    dropShadow: 'none',
+    boxShadow: 'none',
+  },
   drawerWidth: {
     [theme.breakpoints.down('xs')]: {
       width: '100vw',
@@ -31,6 +35,7 @@ const styles = theme => ({
     width: '480px',
     borderLeft: '1px solid #eee',
     background: '#fafafa',
+    boxShadow: 'none',
   },
   hidden: {
     // visibility: 'hidden',
@@ -154,7 +159,7 @@ class PcDrawer extends React.PureComponent {
         open={open}
       >
         <Grid container direction="column">
-          <AppBar position="sticky">
+          <AppBar position="sticky" className={classes.appBar}>
             <Toolbar>
               <Grid container justify="space-between" alignItems="center">
                 <Grid item xs>

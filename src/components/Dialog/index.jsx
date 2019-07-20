@@ -9,6 +9,7 @@ import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import { default as MuiDialog } from '@material-ui/core/Dialog'
 import { withStyles } from '@material-ui/core/styles'
+import Divider from '@material-ui/core/Divider'
 
 import Close from '@material-ui/icons/Close'
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft'
@@ -27,7 +28,7 @@ const styles = theme => ({
   // the buttons's positions.
   actionButton: { position: 'absolute', right: 1 },
   appBar: {
-    dropShadow: 'none',
+    boxShadow: 'none',
     position: 'sticky',
     flex: 1,
     top: 0,
@@ -38,6 +39,7 @@ const styles = theme => ({
     paddingLeft: '10px',
     paddingRight: '10px',
     paddingTop: '20px',
+    boxShadow: 'none',
   },
   leftActionButton: { position: 'absolute', left: -1 },
   newTitle: {
@@ -50,16 +52,20 @@ const styles = theme => ({
     fontWeight: 'bold',
     textAlign: 'center',
     color: '#0dacc4',
+    boxShadow: 'none',
   },
   noShadow: {
-    dropShadow: 'none',
     backgroundColor: '#fff',
+    boxShadow: 'none',
     borderBottom: '1px solid #ddd',
   },
   noStyle: {
+    [theme.breakpoints.up('sm')]: {
+      padding: 0,
+      boxShadow: 'none',
+    },
     [theme.breakpoints.down('md')]: {
       boxShadow: 'none',
-      dropShadow: 'none',
     },
   },
 })

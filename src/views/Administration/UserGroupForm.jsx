@@ -36,7 +36,7 @@ const styles = theme => ({
   },
   root: {
     borderRadius: 0,
-    boxShadow: 'none',
+    //boxShadow: 'none',
     borderTop: '1px solid #ddd',
     borderBottom: '1px solid #ddd',
   },
@@ -95,7 +95,7 @@ const styles = theme => ({
   },
   root3: {
     borderRadius: 0,
-    boxShadow: 'none',
+    //boxShadow: 'none',
     borderBottom: '1px solid #ddd',
     //borderTop: "1px solid #ddd"
   },
@@ -107,6 +107,7 @@ const styles = theme => ({
   },
   appBar: {
     dropShadow: 'none',
+    boxShadow: 'none',
     position: 'sticky',
     flex: 1,
     top: 0,
@@ -127,6 +128,7 @@ const styles = theme => ({
     dropShadow: 'none',
     backgroundColor: '#fff',
     borderBottom: '1px solid #ddd',
+    boxShadow: 'none',
   },
   noStyle: {
     [theme.breakpoints.down('md')]: {

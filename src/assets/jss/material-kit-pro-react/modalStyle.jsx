@@ -21,6 +21,7 @@ const modalStyle = theme => ({
     paddingBottom: '0',
     paddingLeft: '24px',
     minHeight: '16.43px',
+    boxShadow: 'none',
   },
   modalTitle: {
     margin: '0',
@@ -116,6 +117,7 @@ const modalStyle = theme => ({
       paddingRight: '24px',
       paddingBottom: '0',
       paddingLeft: '24px',
+      boxShadow: 'none',
     },
     '& $modalBody': {
       paddingBottom: '0',

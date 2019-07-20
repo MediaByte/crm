@@ -5,6 +5,7 @@ import Grid from '@material-ui/core/Grid'
 import List from '@material-ui/core/List'
 import ListSubheader from '@material-ui/core/ListSubheader'
 import Typography from '@material-ui/core/Typography'
+
 /**
  * @typedef {import('@material-ui/core/SvgIcon').SvgIconProps} SvgIconProps
  */
@@ -95,6 +96,7 @@ class PropDefEditor extends React.PureComponent {
               primaryText="Label"
               secondaryText={label}
             />
+
             {settings.map(setting => (
               <DrawerButton
                 key={setting.id}

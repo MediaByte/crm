@@ -429,7 +429,7 @@ export const Root = {
       if (initialization) {
         return false
       } else {
-        // here check that the caleer is authorized to delete or edit prop types
+        // here check that the caller is authorized to delete or edit prop types
         // prop types shouldn't be changed after making them available to
         // agencies
         return ['no modifications for now']

@@ -30,6 +30,8 @@ import { typeToReadableName } from 'common/PropTypeToMetadata'
 
 import { nodes as nodesNode, propTypes as propTypesNode } from 'app'
 
+import CardContent from '@material-ui/core/CardContent'
+
 import * as Utils from 'common/utils'
 
 import {
@@ -37,8 +39,9 @@ import {
   PropDef as PropDefValidator,
 } from 'app/validators'
 import * as BuiltIn from 'app/gun-wrapper/BuiltIn'
-import { Card, CardActionArea, CardHeader, Avatar } from '@material-ui/core'
+import { Card, CardHeader, Avatar } from '@material-ui/core'
 import { AddCircleOutline } from '@material-ui/icons'
+
 /**
  * @typedef {import('app/gun-wrapper/SetNode').default} SetNode
  * @typedef {import('app/typings').Node} Node
@@ -164,9 +167,21 @@ const styles = theme => ({
   pointerCursor: {
     cursor: 'pointer',
   },
+  card: {
+    display: 'flex',
+  },
+  details: {
+    display: 'flex',
+  },
+  avatar: {
+    width: 151,
+  },
   nodesContainer: {
     paddingBottom: '30px',
     paddingTop: '10px',
+  },
+  content: {
+    flex: '1 0 auto',
   },
   root: {
     margin: theme.spacing.unit,
@@ -2726,8 +2741,8 @@ a8"    `Y88  88  ""     `Y8  88  a8"     "8a  a8"    `Y88  I8[    ""
                         this.onClickNode(id)
                       }}
                     >
-                      <Card>
-                        <CardActionArea>
+                      <Card className={classes.card}>
+                        <div className={classes.details}>
                           <CardHeader
                             avatar={
                               Icon && (
@@ -2736,10 +2751,20 @@ a8"    `Y88  88  ""     `Y8  88  a8"     "8a  a8"    `Y88  I8[    ""
                                 </Avatar>
                               )
                             }
-                            title={node.label}
-                            subheader={node.name}
                           />
-                        </CardActionArea>
+                        </div>
+                        <CardContent className={classes.content}>
+                          <Typography component="h5" variant="h5">
+                            {node.label}
+                          </Typography>
+                          <Typography
+                            variant="body2"
+                            color="textSecondary"
+                            component="p"
+                          >
+                            {node.name}
+                          </Typography>
+                        </CardContent>
                       </Card>
                     </Grid>
                   )
@@ -2774,8 +2799,8 @@ a8"    `Y88  88  ""     `Y8  88  a8"     "8a  a8"    `Y88  I8[    ""
                       this.onClickNode(id)
                     }}
                   >
-                    <Card>
-                      <CardActionArea>
+                    <Card className={classes.card}>
+                      <div className={classes.details}>
                         <CardHeader
                           avatar={
                             Icon && (
@@ -2784,10 +2809,20 @@ a8"    `Y88  88  ""     `Y8  88  a8"     "8a  a8"    `Y88  I8[    ""
                               </Avatar>
                             )
                           }
-                          title={node.label}
-                          subheader={node.name}
                         />
-                      </CardActionArea>
+                      </div>
+                      <CardContent className={classes.content}>
+                        <Typography component="h5" variant="h5">
+                          {node.label}
+                        </Typography>
+                        <Typography
+                          variant="body2"
+                          color="textSecondary"
+                          component="p"
+                        >
+                          {node.name}
+                        </Typography>
+                      </CardContent>
                     </Card>
                   </Grid>
                 )
@@ -2851,9 +2886,9 @@ const getSettingsForPropDefEditor = propDef =>
         return {
           settingValueOrValues: maybeArg
             ? maybeArg.value.valueIfNumber === null
-              ? 'Non set'
+              ? 'None set'
               : maybeArg.value.valueIfNumber.toString()
-            : 'Non set',
+            : 'None set',
           id,
           paramName,
         }
@@ -2873,9 +2908,9 @@ const getSettingsForPropDefEditor = propDef =>
         return {
           settingValueOrValues: maybeArg
             ? maybeArg.value.valueIfString === null
-              ? 'Non set'
+              ? 'None set'
               : maybeArg.value.valueIfString
-            : 'Non set',
+            : 'None set',
           id,
           paramName,
         }

@@ -10,7 +10,6 @@ import Grid from '@material-ui/core/Grid'
 import IconButton from '@material-ui/core/IconButton'
 import List from '@material-ui/core/List'
 import ListSubheader from '@material-ui/core/ListSubheader'
-import Toolbar from '@material-ui/core/Toolbar'
 import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
 import { withStyles } from '@material-ui/core/styles'
@@ -192,6 +191,17 @@ class PropDefsOverview extends React.PureComponent {
             ))}
           </Grid>
         )}
+        {!isReordering && (
+          <Grid item>
+            <IconButton
+              aria-label="Plus"
+              onClick={onClickAdd}
+              className={classes.addButton}
+            >
+              <AddCircleOutlineIcon fontSize="small" color="primary" />
+            </IconButton>
+          </Grid>
+        )}
 
         {!isReordering && unusedPropDefs.length > 0 && (
           <Grid item>
@@ -207,18 +217,6 @@ class PropDefsOverview extends React.PureComponent {
                 />
               ))}
             </List>
-          </Grid>
-        )}
-
-        {!isReordering && (
-          <Grid item>
-            <IconButton
-              aria-label="Plus"
-              onClick={onClickAdd}
-              className={classes.addButton}
-            >
-              <AddCircleOutlineIcon fontSize="small" color="primary" />
-            </IconButton>
           </Grid>
         )}
       </Grid>

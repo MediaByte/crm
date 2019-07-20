@@ -10,6 +10,7 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  Divider,
 } from '@material-ui/core'
 import ErrorOutline from '@material-ui/icons/ErrorOutline'
 
@@ -176,7 +177,6 @@ export default class AddPropForm extends React.PureComponent {
               {availableTypes.map(type => {
                 const label = typeToReadableName[type] || type
                 const Icon = nameToIconMap[typeToIconName[type]]
-
                 return (
                   <MenuItem value={type} key={type}>
                     {Icon && (

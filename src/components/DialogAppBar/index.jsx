@@ -118,6 +118,7 @@ const styles = theme => ({
     flex: 1,
     top: 0,
     zIndex: 10,
+    boxShadow: 'none',
   },
   closeButton: { position: 'absolute', left: -1 },
   newTitle: {
@@ -133,11 +134,16 @@ const styles = theme => ({
     dropShadow: 'none',
     backgroundColor: '#fff',
     borderBottom: '1px solid #ddd',
+    boxShadow: 'none',
   },
   noStyle: {
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.up('sm')]: {
+      padding: 0,
       boxShadow: 'none',
-      dropShadow: 'none',
+    },
+    [theme.breakpoints.down('md')]: {
+      //boxShadow: 'none',
+      boxShadow: 'none',
     },
   },
 })

@@ -20,7 +20,7 @@ export const propTypes = root.getSet('propTypes')
 const setUpPropTypes = () => {
   propTypes
     .set({
-      name: 'textfield',
+      name: 'Text Field',
     })
     .then(res => {
       if (res.ok) {
@@ -271,7 +271,7 @@ const setUpPropTypes = () => {
 
   propTypes
     .set({
-      name: 'name',
+      name: 'Name',
     })
     .then(res => {
       if (res.ok) {
@@ -279,21 +279,8 @@ const setUpPropTypes = () => {
           .getSet('params')
           .set({
             multiple: false,
-            name: 'Avatar',
-            type: 'boolean',
-          })
-          .then(res => {
-            if (!res.ok) {
-              console.log(res)
-            }
-          })
-
-        res.reference
-          .getSet('params')
-          .set({
-            multiple: false,
-            name: 'Display Prefix Selection',
-            type: 'boolean',
+            name: 'Display Fields',
+            type: 'string',
           })
           .then(res => {
             if (!res.ok) {
@@ -306,7 +293,7 @@ const setUpPropTypes = () => {
           .set({
             multiple: true,
             name: 'Prefixes',
-            type: 'string',
+            //type: 'string',
           })
           .then(res => {
             if (!res.ok) {

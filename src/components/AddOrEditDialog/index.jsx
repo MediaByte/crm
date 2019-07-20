@@ -108,6 +108,7 @@ const Transition = props => <Slide direction="up" {...props} />
 const styles = theme => ({
   appBar: {
     dropShadow: 'none',
+    boxShadow: 'none',
   },
   menuButton: {
     marginLeft: -12,
@@ -117,14 +118,17 @@ const styles = theme => ({
     dropShadow: 'none',
     backgroundColor: '#fff',
     borderBottom: '1px solid #ddd',
+    boxShadow: 'none',
   },
   root: {
     padding: 10,
     [theme.breakpoints.up('sm')]: {
       padding: 0,
+      boxShadow: 'none',
     },
     [theme.breakpoints.up('md')]: {
       padding: 0,
+      boxShadow: 'none',
     },
   },
   title: {

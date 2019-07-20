@@ -21,7 +21,7 @@ import 'assets/scss/material-kit-pro-react.css'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 
 const theme = createMuiTheme({
-  shadows: ['none'],
+  //shadows: ['none'],
   typography: {
     fontFamily: '"Montserrat", "Helvetica", "Arial", sans-serif',
     fontSize: 13,
@@ -35,6 +35,9 @@ const theme = createMuiTheme({
     },
     text: {
       primary: '#333',
+    },
+    background: {
+      default: '#fafafa',
     },
   },
   custom: {

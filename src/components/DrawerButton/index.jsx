@@ -75,7 +75,6 @@ class DrawerButton extends React.PureComponent {
               <Icon />
             </ListItemIcon>
           )}
-
           <ListItemText
             primary={primaryText}
             // @ts-ignore

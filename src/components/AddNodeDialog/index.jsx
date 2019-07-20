@@ -254,6 +254,7 @@ const Transition = props => <Slide direction="up" {...props} />
 const styles = theme => ({
   appBar: {
     dropShadow: 'none',
+    boxShadow: 'none',
   },
   dialogBody: {
     padding: theme.spacing.unit * 2,
@@ -274,13 +275,18 @@ const styles = theme => ({
     backgroundColor: '#fff',
     borderBottom: '1px solid #ddd',
     dropShadow: 'none',
+    boxShadow: 'none',
   },
   root: {
     [theme.breakpoints.up('sm')]: {
       padding: 0,
+      boxShadow: 'none',
+      dropShadow: 'none',
     },
     [theme.breakpoints.up('md')]: {
       padding: 0,
+      dropShadow: 'none',
+      boxShadow: 'none',
     },
     padding: 10,
   },

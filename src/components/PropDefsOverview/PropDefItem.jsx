@@ -79,8 +79,8 @@ class PropDefItem extends React.PureComponent {
               {isActive ? <EditOutlinedIcon /> : <HistoryIcon />}
             </IconButton>
           )}
+          <Divider />
         </Grid>
-        <Divider inset />
       </div>
     )
   }

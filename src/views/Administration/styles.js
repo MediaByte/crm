@@ -6,17 +6,17 @@ const styles = theme => ({
     float: 'right',
   },
   paper: {
-    boxShadow: 'none',
+    //boxShadow: 'none',
   },
   root: {
     borderRadius: 0,
-    boxShadow: 'none',
+    //boxShadow: 'none',
     borderTop: '1px solid #ddd',
     borderBottom: '1px solid #ddd',
   },
   root3: {
     borderRadius: 0,
-    boxShadow: 'none',
+    //boxShadow: 'none',
     borderBottom: '1px solid #ddd',
   },
   input: {
@@ -151,7 +151,7 @@ const styles = theme => ({
   },
   appBar: {
     // flexGrow: 1,
-    dropShadow: 'none',
+    //dropShadow: 'none',
   },
   menuButton: {
     marginLeft: -12,

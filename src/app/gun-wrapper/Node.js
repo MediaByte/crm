@@ -34,7 +34,7 @@ import SetNode from './SetNode'
  *******************************************************************************
  ******************************************************************************/
 
-// validatee edge success before writing primitives
+// validate edge success before writing primitives
 
 export {} // stop jsdoc comments from merging
 
