@@ -39,7 +39,7 @@ import Logo from 'assets/img/crmLogo.png'
 //styles
 import navStyles from 'components/Navigation/navStyle.js'
 
-import { nameToIconMap } from 'common/NameToIcon'
+import { nameToIconMap } from '../../common/NameToIcon'
 import { Clear, ChevronLeft } from '@material-ui/icons'
 import { InputAdornment, Dialog, CircularProgress } from '@material-ui/core'
 
@@ -58,12 +58,13 @@ const NOTIFICATIONS = 2
 /**
  * @typedef {object} Props
  * @prop {Classes} classes
- * @prop {'administration'|'dashboard'} component
+ * @prop {'administration'|'dashboard'|'empty-node'} component
  * @prop {import('@material-ui/core/styles/createBreakpoints').Breakpoint} width
  * @prop {((text: string) => void)=} onSearchBoxChange
  * @prop {(SearchResult[])=} searchResults
  * @prop {(boolean|null|undefined)=} isLoadingSearchResults
  * @prop {string} title
+ * @prop {object | null} selectedNode
  */
 
 /**
@@ -204,6 +205,7 @@ class Navigation extends React.Component {
       searchResults,
       width,
       title,
+      selectedNode,
     } = this.props
 
     const {
@@ -234,6 +236,14 @@ class Navigation extends React.Component {
 
       return false
     })()
+
+    const nodeIcon =
+      selectedNode &&
+      selectedNode.iconName &&
+      nameToIconMap[selectedNode.iconName] &&
+      nameToIconMap[selectedNode.iconName]
+
+    const NodeIcon = nodeIcon && nodeIcon.outlined
 
     const renderMenu = (
       <div>
@@ -293,6 +303,27 @@ class Navigation extends React.Component {
               </ListItemIcon>
               <ListItemText disableTypography primary="Administration" />
             </ListItem>
+
+            {selectedNode && (
+              <ListItem
+                selected={component === 'empty-node'}
+                classes={{ selected: classes.selected }}
+                button
+                component={props => (
+                  // @ts-ignore
+                  <NavLink to={`/management/empty-node`} {...props} />
+                )}
+              >
+                <ListItemIcon className={classes.iconMenu}>
+                  {nodeIcon && <NodeIcon />}
+                </ListItemIcon>
+                <ListItemText
+                  disableTypography
+                  primary={selectedNode.label}
+                  style={{ color: '#fff' }}
+                />
+              </ListItem>
+            )}
           </List>
         </div>
       </div>

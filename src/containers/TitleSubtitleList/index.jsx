@@ -136,7 +136,7 @@ class TitleSubtitleList extends React.PureComponent {
     const { extractFilterable, items } = this.props
 
     if (extractFilterable) {
-      const filters = items.map(extractFilterable)
+      const filters = items && items.map(extractFilterable)
       // avoid repeated filters
       const uniqueFilters = _.uniqBy(filters, 'value')
 
@@ -181,11 +181,11 @@ class TitleSubtitleList extends React.PureComponent {
     const { currentFilter, filterMenuOpen, searchActive } = this.state
 
     const items =
-      currentFilter && extractFilterable
+      (currentFilter && extractFilterable
         ? unfiltered.filter(
             item => extractFilterable(item).value === currentFilter,
           )
-        : unfiltered
+        : unfiltered) || []
 
     return (
       <React.Fragment>

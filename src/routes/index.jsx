@@ -4,6 +4,7 @@ import AdminPanel from 'views/Administration/Administration.jsx'
 import PasswordRules from 'views/Administration/PasswordRules.jsx'
 import ManageEmployees from 'views/Administration/ManageEmployees.jsx'
 import ManageUserGroups from 'views/Administration/ManageUserGroups.jsx'
+import EmptyNode from 'views/Administration/EmptyNode.jsx'
 import Landing from 'views/Landing/Landing.js'
 import NodesAndProps from 'views/Administration/NodesAndProps'
 
@@ -30,6 +31,11 @@ var indexRoutes = [
     path: '/management/user-groups',
     name: 'Manage User Groups',
     component: ManageUserGroups,
+  },
+  {
+    path: '/management/empty-node/:id',
+    name: 'Empty Node',
+    component: EmptyNode,
   },
   {
     path: '/management/nodes-and-props',
