@@ -205,7 +205,7 @@ class Navigation extends React.Component {
       searchResults,
       width,
       title,
-      selectedNode,
+      nodes,
     } = this.props
 
     const {
@@ -237,13 +237,9 @@ class Navigation extends React.Component {
       return false
     })()
 
-    const nodeIcon =
-      selectedNode &&
-      selectedNode.iconName &&
-      nameToIconMap[selectedNode.iconName] &&
-      nameToIconMap[selectedNode.iconName]
-
-    const NodeIcon = nodeIcon && nodeIcon.outlined
+    const sortedNodes = Object.entries(nodes || {})
+      .map(([key, value]) => ({ ...value, id: key }))
+      .sort((a, b) => a.label - b.label)
 
     const renderMenu = (
       <div>
@@ -304,26 +300,41 @@ class Navigation extends React.Component {
               <ListItemText disableTypography primary="Administration" />
             </ListItem>
 
-            {selectedNode && (
-              <ListItem
-                selected={component === 'empty-node'}
-                classes={{ selected: classes.selected }}
-                button
-                component={props => (
-                  // @ts-ignore
-                  <NavLink to={`/management/empty-node`} {...props} />
-                )}
-              >
-                <ListItemIcon className={classes.iconMenu}>
-                  {nodeIcon && <NodeIcon />}
-                </ListItemIcon>
-                <ListItemText
-                  disableTypography
-                  primary={selectedNode.label}
-                  style={{ color: '#fff' }}
-                />
-              </ListItem>
-            )}
+            {sortedNodes &&
+              sortedNodes.map(node => {
+                const nodeIcon =
+                  node &&
+                  node.iconName &&
+                  nameToIconMap[node.iconName] &&
+                  nameToIconMap[node.iconName]
+
+                const NodeIcon = nodeIcon && nodeIcon.outlined
+
+                return (
+                  <ListItem
+                    key={node.id}
+                    selected={component === 'empty-node'}
+                    classes={{ selected: classes.selected }}
+                    button
+                    component={props => (
+                      // @ts-ignore
+                      <NavLink
+                        to={`/management/empty-node/${node.id}`}
+                        {...props}
+                      />
+                    )}
+                  >
+                    <ListItemIcon className={classes.iconMenu}>
+                      {nodeIcon && <NodeIcon />}
+                    </ListItemIcon>
+                    <ListItemText
+                      disableTypography
+                      primary={node.label}
+                      style={{ color: '#fff' }}
+                    />
+                  </ListItem>
+                )
+              })}
           </List>
         </div>
       </div>
