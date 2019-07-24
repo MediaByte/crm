@@ -2721,7 +2721,7 @@ a8"    `Y88  88  ""     `Y8  88  a8"     "8a  a8"    `Y88  I8[    ""
 88      `888    `"Y8888Y"'    88888888Y"'    88888888888  "Y88888P"   
 */}
 
-        <Page titleText="Nodes And Properties" nodes={nodes}>
+        <Page titleText="Nodes And Properties">
           <div className={classes.root}>
             <div>
               <Grid container className={classes.nodesContainer} spacing={24}>

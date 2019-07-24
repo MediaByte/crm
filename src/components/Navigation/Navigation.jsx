@@ -38,6 +38,7 @@ import NotificationsCenter from 'components/NotificationCenter/NotificationsCent
 import Logo from 'assets/img/crmLogo.png'
 //styles
 import navStyles from 'components/Navigation/navStyle.js'
+import { nodes as nodesNode } from 'app'
 
 import { nameToIconMap } from '../../common/NameToIcon'
 import { Clear, ChevronLeft } from '@material-ui/icons'
@@ -105,15 +106,6 @@ class Navigation extends React.Component {
       searchBoxCurrentText: '',
       drawerOpen: false,
       notificationsOpen: false,
-    }
-  }
-  componentDidUpdate(prevProps, prevState) {
-    const { searchBoxCurrentText } = this.state
-    const { onSearchBoxChange } = this.props
-    if (
-      prevState.searchBoxCurrentText !== searchBoxCurrentText &&
-      onSearchBoxChange
-    ) {
     }
   }
 
@@ -196,6 +188,26 @@ class Navigation extends React.Component {
     })
   }
 
+  setNodes = nodes => this.setState({ nodes })
+
+  componentDidMount() {
+    nodesNode.on(this.setNodes)
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { searchBoxCurrentText } = this.state
+    const { onSearchBoxChange } = this.props
+    if (
+      prevState.searchBoxCurrentText !== searchBoxCurrentText &&
+      onSearchBoxChange
+    ) {
+    }
+  }
+
+  componentWillUnmount() {
+    nodesNode.off(this.setNodes)
+  }
+
   render() {
     const {
       classes,
@@ -205,7 +217,6 @@ class Navigation extends React.Component {
       searchResults,
       width,
       title,
-      nodes,
     } = this.props
 
     const {
@@ -216,6 +227,7 @@ class Navigation extends React.Component {
       value,
       searchBoxCurrentText,
       notificationsOpen,
+      nodes,
     } = this.state
 
     const isBigScreen = isWidthUp('md', width)
