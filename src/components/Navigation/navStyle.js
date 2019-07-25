@@ -48,11 +48,12 @@ const navStyles = theme => ({
     // [theme.breakpoints.down('sm')]: {
     //   paddingTop: '40px',
     // },
+    width: '100%',
     height: '100%',
-    paddingTop: '40px',
-    paddingBottom: '30px',
+    paddingTop: '8px',
+    //paddingBottom: '30px',
     [theme.breakpoints.up('sm')]: {
-      paddingTop: '70px',
+      paddingTop: '8px',
     },
   },
   headerInput: {
@@ -179,7 +180,7 @@ const navStyles = theme => ({
       position: 'absolute',
       paddingBottom: '20px',
     },
-    padding: theme.spacing.unit * 3,
+    //padding: theme.spacing.unit * 3,
     // height: '100vh',
     width: '100%',
     // overflowX: 'hidden',

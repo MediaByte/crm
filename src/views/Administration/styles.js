@@ -78,7 +78,8 @@ const styles = theme => ({
   },
   demoLeft: {
     backgroundColor: '#fff',
-    // width: "100%",
+    marginLeft: '0%',
+    paddingTop: '25px',
     height: '100%',
     borderRight: '1px solid #ddd',
     overflow: 'scroll',

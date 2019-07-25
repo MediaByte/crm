@@ -28,9 +28,9 @@ const navStyles = theme => ({
     // [theme.breakpoints.down('sm')]: {
     //   paddingTop: '40px',
     // },
-    // width: "100%",
+    width: '100%',
     height: '100%',
-    paddingTop: '44px',
+    paddingTop: '8px',
     // paddingBottom: '30px',
     [theme.breakpoints.up('sm')]: {
       // position: "fixed",

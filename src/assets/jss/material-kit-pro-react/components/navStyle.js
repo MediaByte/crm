@@ -29,10 +29,10 @@ const navStyles = theme => ({
     //   paddingTop: '40px',
     // },
     height: '100%',
-    paddingTop: '40px',
-    paddingBottom: '30px',
+    paddingTop: '8px',
+    //paddingBottom: '30px',
     [theme.breakpoints.up('sm')]: {
-      paddingTop: '70px',
+      paddingTop: '8px',
     },
   },
   headerInput: {
@@ -164,7 +164,7 @@ const navStyles = theme => ({
     // height: '100vh',
     width: '100%',
     // overflowX: 'hidden',
-    paddingBottom: '20px',
+    //paddingBottom: '20px',
     [theme.breakpoints.up('sm')]: {
       height: '100vh',
       overflowX: 'hidden',

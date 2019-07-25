@@ -13,7 +13,7 @@ import ErrorOutlineOutlined from '@material-ui/icons/ErrorOutlineOutlined'
 import { nodes as nodesNode } from 'app'
 import styles from './styles.js'
 import TitleSubtitleList from '../../containers/TitleSubtitleList'
-import Page from 'views/Page/Page.jsx'
+import PageColumn from 'views/Page/Page.jsx'
 
 /**
  * @typedef {import('app/typings').Node} Node
@@ -90,7 +90,7 @@ class EmptyNode extends Component {
 
     return (
       <div>
-        <Page
+        <PageColumn
           component={'empty-node'}
           titleText={(selectedNode && selectedNode.label) || ''}
         >
@@ -109,7 +109,7 @@ class EmptyNode extends Component {
               {this.renderContent()}
             </Grid>
           </Grid>
-        </Page>
+        </PageColumn>
       </div>
     )
   }
