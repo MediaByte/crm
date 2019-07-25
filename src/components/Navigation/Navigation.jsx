@@ -250,6 +250,7 @@ class Navigation extends React.Component {
     })()
 
     const sortedNodes = Object.entries(nodes || {})
+      .filter(([_, node]) => node.active)
       .map(([key, value]) => ({ ...value, id: key }))
       .sort((a, b) => a.label - b.label)
 
