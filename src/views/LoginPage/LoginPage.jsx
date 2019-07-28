@@ -12,18 +12,22 @@ import LockOutlined from '@material-ui/icons/LockOutlined'
 // core components
 import GridContainer from 'components/Grid/GridContainer.jsx'
 import GridItem from 'components/Grid/GridItem.jsx'
-import Button from 'components/CustomButtons/Button.jsx'
+import Button from '@material-ui/core/Button'
 import Card from 'components/Card/Card.jsx'
 import CardBody from 'components/Card/CardBody.jsx'
 import CardHeader from 'components/Card/CardHeader.jsx'
-import CustomInput from 'components/CustomInput/CustomInput.jsx'
 import Grid from '@material-ui/core/Grid'
+import TextField from '@material-ui/core/TextField';
+
 
 //Styles
-import loginPageStyle from 'assets/jss/material-kit-pro-react/views/loginPageStyle.jsx'
+import loginPageStyles from './loginPageStyles.js'
+
 //Media
 import Logo from 'assets/img/crmLogo.png'
+
 const gun = Gun('https://pineconeserver.herokuapp.com/gun')
+
 class LoginPage extends React.Component {
   constructor(props) {
     super(props)
@@ -81,11 +85,11 @@ class LoginPage extends React.Component {
           })
     })
   }
+ 
 
   render() {
     const { classes } = this.props
     const { authenticated, correctEmail, username } = this.state
-
     return !authenticated ? (
       <div>
         <div className={classes.container}>
@@ -109,7 +113,9 @@ class LoginPage extends React.Component {
                         <EmailOutlined className={classes.inputIconsColor} />
                       </Grid>
                       <Grid item xs={10}>
-                        <CustomInput
+                        <TextField
+                          label="Email*"
+                          fullWidth
                           id="email"
                           labelText="Email*"
                           success={correctEmail}
@@ -128,7 +134,9 @@ class LoginPage extends React.Component {
                         <LockOutlined className={classes.inputIconsColor} />
                       </Grid>
                       <Grid item xs={10}>
-                        <CustomInput
+                        <TextField
+                          label="Password*"
+                          fullWidth
                           id="pass"
                           labelText="Password*"
                           error={this.state.inputError}
@@ -159,11 +167,11 @@ class LoginPage extends React.Component {
                     <div style={{ marginBottom: 15 }}>
                       <Button
                         fullWidth={true}
-                        color="info"
+                        color="primary"
                         variant="raised"
                         onClick={this.handleAuthentication}
                       >
-                        Login
+                        Login 
                       </Button>
                     </div>
                   </CardBody>
@@ -178,4 +186,4 @@ class LoginPage extends React.Component {
     )
   }
 }
-export default withStyles(loginPageStyle)(LoginPage)
+export default withStyles(loginPageStyles)(LoginPage)
