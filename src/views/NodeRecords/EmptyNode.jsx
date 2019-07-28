@@ -5,7 +5,6 @@ import 'react-block-ui/style.css'
 //material ui components
 import { Hidden, withStyles } from '@material-ui/core'
 import Grid from '@material-ui/core/Grid'
-
 import ErrorOutlineOutlined from '@material-ui/icons/ErrorOutlineOutlined'
 
 //project components
@@ -14,10 +13,6 @@ import { nodes as nodesNode } from 'app'
 import styles from '../../views/styles'
 import TitleSubtitleList from '../../containers/TitleSubtitleList'
 import PageColumn from 'views/Page/Page.jsx'
-
-/**
- * @typedef {import('app/typings').Node} Node
- */
 
 class EmptyNode extends Component {
   state = {

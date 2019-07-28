@@ -1,7 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-import Add from '@material-ui/icons/Add'
 import Cloud from '@material-ui/icons/CloudDownloadOutlined'
 import FilterList from '@material-ui/icons/FilterList'
 import IconButton from '@material-ui/core/IconButton'
@@ -9,6 +8,7 @@ import InputAdornment from '@material-ui/core/InputAdornment'
 import Search from '@material-ui/icons/Search'
 import TextField from '@material-ui/core/TextField'
 import { withStyles } from '@material-ui/core'
+import StatusFilterMenu from '../StatusFilterMenu'
 /**
  * @typedef {import('@material-ui/core').Theme} Theme
  * @typedef {import('@material-ui/core/TextField').BaseTextFieldProps} BaseTextFieldProps
@@ -18,7 +18,64 @@ import { withStyles } from '@material-ui/core'
  * @typedef {import('@material-ui/core/styles').StyleRulesCallback<K>} StyleRulesCallback
  */
 
-import StatusFilterMenu from '../StatusFilterMenu'
+import Add from '@material-ui/icons/Add'
+import Dialog from 'components/Dialog'
+import OverlaySpinner from 'components/OverlaySpinner'
+import AddRecordForm from 'components/AddRecordForm'
+
+/**
+ * @typedef {import('app/typings').Node} Node
+ * @typedef {import('app/typings').PropertyType} PropType
+ */
+
+/** @type {AddRecordFlow} */
+const INITIAL_ADD_RECORD_FLOW = Object.freeze({
+  savingRecord: false,
+  showingAddRecordDialog: false,
+})
+
+/** @type {AddRecordFormData} */
+const BLANK_ADD_RECORD_FORM_DATA = Object.freeze({
+  currentLabelErrorMessage: null,
+  currentLabelValue: '',
+  currentNameErrorMessage: null,
+  currentNameValue: '',
+  detailsIfError: null,
+  messagesIfError: null,
+})
+
+/**
+ * @typedef {object} AddRecordFlow
+ * @prop {boolean} savingRecord
+ * @prop {boolean} showingAddRecordDialog
+ */
+
+/**
+ * @typedef {object} AddRecordFormData
+ * @prop {string|null} currentLabelErrorMessage
+ * @prop {string} currentLabelValue
+ * @prop {string|null} currentNameErrorMessage
+ * @prop {string} currentNameValue
+ * @prop {Record<'name'|'label', string[]|undefined>|null} detailsIfError
+ * @prop {string[]|null} messagesIfError
+ */
+
+/**
+ * @prop {Record<Classes, string>} classes
+ */
+
+/**
+ * @typedef {object} State
+ * @prop {AddRecordFlow} AddRecordFlow
+ * @prop {AddRecordFormData} AddRecordFormData
+ * @prop {Record<string, Node>} nodes
+ * @prop {Record<string, PropType>} propTypes
+ * @prop {string|null} selectedNodeID Non-null when editing a node's property
+ * definitions or relationships definitions.
+ * @prop {boolean} showingAddRelDialog
+ * @prop {string|null} snackbarMessage
+ */
+
 /**
  * @typedef {import('../StatusFilterMenu').Props} StatusFilterMenuProps
  */
@@ -67,6 +124,73 @@ export {} // stop jsdoc comments from merging
  * @augments React.PureComponent<Props>
  */
 class ListToolbar extends React.PureComponent {
+  /** @type {State} */
+  state = {
+    AddRecordFlow: {
+      savingRecord: false,
+      showingAddRecordDialog: false,
+    },
+    //addPropFlow: INITIAL_ADD_PROP_FLOW,
+    AddRecordFormData: BLANK_ADD_RECORD_FORM_DATA,
+    //editNodeFlow: INITIAL_EDIT_NODE_FLOW,
+    //editPropFlow: INITIAL_EDIT_PROP_FLOW,
+    nodes: {},
+    propTypes: {},
+    selectedNodeID: null,
+    showingAddRelDialog: false,
+    snackbarMessage: null,
+  }
+
+  /**
+   * @private
+   **/
+  toggleAddRecordDialog = () => {
+    this.setState(({ AddRecordFlow }) => ({
+      AddRecordFlow: {
+        ...AddRecordFlow,
+        showingAddRecordDialog: !AddRecordFlow.showingAddRecordDialog,
+      },
+    }))
+  }
+
+  /**
+   * @private
+   */
+  addRecordFlowToggleDialog = () => {
+    this.setState(({ AddRecordFlow }) => ({
+      addRecordFlow: {
+        ...INITIAL_ADD_RECORD_FLOW,
+        showingAddRecordDialog: !AddRecordFlow.showingAddRecordDialog,
+      },
+      addRecordFormData: BLANK_ADD_RECORD_FORM_DATA,
+    }))
+  }
+
+  /**
+   * @private
+   */
+
+  addRecordFlowOnClickLeftAction = () => {
+    this.setState(({ AddRecordFlow }) => ({
+      AddRecordFlow: {
+        ...AddRecordFlow,
+      },
+    }))
+  }
+
+  closeAddRecordDialog = () => {
+    this.setState({
+      addRecordFlow: INITIAL_ADD_RECORD_FLOW,
+      addRecordFormData: BLANK_ADD_RECORD_FORM_DATA,
+      showingAddRecordDialog: false,
+    })
+  }
+  /** @private */
+  handleCloseRecordForm = () => {
+    this.setState({
+      showingAddRecordDialog: false,
+    })
+  }
   render() {
     const {
       classes,
@@ -76,7 +200,7 @@ class ListToolbar extends React.PureComponent {
       filterMenuOpen,
       numberOfRecords,
       onChangeSearchValue,
-      onClickAdd,
+
       onClickDownload,
       onClickFilterButton,
       onClickSearch,
@@ -85,6 +209,8 @@ class ListToolbar extends React.PureComponent {
       possibleStatuses,
       showSearch,
     } = this.props
+
+    const { AddRecordFlow, AddRecordFormData } = this.state
 
     return (
       <div className={classes.root}>
@@ -111,9 +237,31 @@ class ListToolbar extends React.PureComponent {
             />
           </div>
         )}
-
+        <Dialog
+          handleClose={this.closeAddRecordDialog}
+          showCloseButton
+          onClickLeftActionButton={this.toggleAddRecordDialog || undefined}
+          rightActionButtonText="Save"
+          title="Add Record"
+          open={AddRecordFlow.showingAddRecordDialog}
+          rightActionButtonColorPrimary
+        >
+          <OverlaySpinner showSpinner={AddRecordFlow.savingRecord}>
+            <React.Fragment>
+              <AddRecordForm
+                currentLabelValue={AddRecordFormData.currentLabelValue}
+                currentNameErrorMessage={
+                  AddRecordFormData.currentNameErrorMessage
+                }
+                currentNameValue={AddRecordFormData.currentNameValue}
+                disableLabelInput={AddRecordFlow.savingRecord}
+                disableNameInput={AddRecordFlow.savingRecord}
+              />
+            </React.Fragment>
+          </OverlaySpinner>
+        </Dialog>
         <div className={classes.filters}>
-          <IconButton onClick={onClickAdd}>
+          <IconButton onClick={this.toggleAddRecordDialog} aria-label="Plus">
             <Add />
           </IconButton>
           <IconButton onClick={onClickDownload}>
