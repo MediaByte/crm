@@ -21,7 +21,7 @@ import Typography from '@material-ui/core/Typography'
 
 import BackArrow from '@material-ui/icons/ArrowBackIosOutlined'
 
-import UserGroupForm from '../../views/Administration/UserGroupForm'
+import UserGroupForm from '../../views/ManageUserGroups/UserGroupForm'
 
 import { user } from '../../state/userGroups/user_data.js'
 
