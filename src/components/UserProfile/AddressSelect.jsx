@@ -7,7 +7,7 @@ import MenuItem from '@material-ui/core/MenuItem'
 import FormControl from '@material-ui/core/FormControl'
 import Select from '@material-ui/core/Select'
 import Chip from '@material-ui/core/Chip'
-import styles from 'assets/jss/material-kit-pro-react/customSelectStyle.jsx'
+import styles from 'views/styles.js'
 
 const names = ['Home', 'Mailing', 'Work']
 
