@@ -26,7 +26,7 @@ import avatar from 'assets/img/faces/marc.jpg'
 //constants
 import { MAX_PHONES_PER_COSTUMER } from '../../constants/config'
 //styles
-import styles from 'assets/jss/material-kit-pro-react/components/newProfileStyle.jsx'
+import styles from 'views/styles.js'
 //State
 import { connect } from 'react-redux'
 import {
