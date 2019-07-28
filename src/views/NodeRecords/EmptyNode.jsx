@@ -11,7 +11,7 @@ import ErrorOutlineOutlined from '@material-ui/icons/ErrorOutlineOutlined'
 //project components
 
 import { nodes as nodesNode } from 'app'
-import styles from './styles.js'
+import styles from '../../views/styles'
 import TitleSubtitleList from '../../containers/TitleSubtitleList'
 import PageColumn from 'views/Page/Page.jsx'
 
@@ -52,8 +52,8 @@ class EmptyNode extends Component {
     return (
       <Hidden only={['xs']}>
         <div>
-          <div className={classes.noGroups}>
-            <ErrorOutlineOutlined className={classes.icon} />
+          <div className={classes.noRecordSelected}>
+            <ErrorOutlineOutlined className={classes.noRecordsIcon} />
             No Records Selected
           </div>
         </div>
@@ -101,7 +101,7 @@ class EmptyNode extends Component {
               sm={5}
               md={4}
               lg={3}
-              className={classes.demoLeft}
+              className={classes.RecordListContainer}
             >
               <div>{this.renderUserGroups()}</div>
             </Grid>

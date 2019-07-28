@@ -10,26 +10,13 @@ import Cards from 'components/Cards/Card.jsx'
 //gundb
 import Gun from 'gun/gun'
 
+//import Styles
+import dashboardStyles from './dashboardStyles'
+
 const gun = Gun('https://crm-server.herokuapp.com/gun')
 const db = gun.get('users')
 
-const styles = theme => ({
-  root: {},
-  layout: {
-    display: 'flex',
-    justifyContent: 'space-between',
-  },
-  content: {
-    display: 'flex',
-    justifyContent: 'center',
-    [theme.breakpoints.up('sm')]: {
-      marginTop: '0px',
-    },
-    [theme.breakpoints.down('xs')]: {
-      marginTop: theme.spacing.unit * 2,
-    },
-  },
-})
+
 
 class Dashboard extends Component {
   constructor(props) {
@@ -131,4 +118,5 @@ Dashboard.propTypes = {
   classes: PropTypes.object.isRequired,
 }
 
-export default withStyles(styles)(Dashboard)
+
+export default withStyles(dashboardStyles)(Dashboard)

@@ -14,7 +14,7 @@ import { connect } from 'react-redux'
 import { groups } from 'state/newUser/actions.js'
 
 //Styles
-import styles from 'assets/jss/material-kit-pro-react/customSelectStyle.jsx'
+import styles from 'views/styles.js'
 const mapStateToProps = state => {
   return {
     groups: state.newUser.groups,

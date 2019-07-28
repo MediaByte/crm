@@ -10,7 +10,6 @@ import {
   InputLabel,
   Select,
   MenuItem,
-  Divider,
 } from '@material-ui/core'
 import ErrorOutline from '@material-ui/icons/ErrorOutline'
 

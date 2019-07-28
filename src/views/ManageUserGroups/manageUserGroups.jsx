@@ -16,7 +16,7 @@ import MoreHoriz from '@material-ui/icons/MoreHoriz'
 import ErrorOutlineOutlined from '@material-ui/icons/ErrorOutlineOutlined'
 
 //project components
-import styles from './styles.js'
+import styles from '../../views/styles.js'
 import UserGroupForm from './UserGroupForm'
 import PageColumn from 'views/Page/PageColumn.jsx'
 
@@ -131,7 +131,7 @@ class ManageUserGroups extends Component {
     if (noUsers) {
       return (
         <Hidden only={['xs']}>
-          <div className={classes.noGroups}>
+          <div className={classes.noRecordSelected}>
             <ErrorOutlineOutlined className={classes.icon} />
             No User Group Selected
           </div>
@@ -238,7 +238,7 @@ class ManageUserGroups extends Component {
       return (
         <Hidden only={['xs']}>
           <div>
-            <div className={classes.noGroups}>
+            <div className={classes.noRecordSelected}>
               <ErrorOutlineOutlined className={classes.icon} />
               No User Groups Selected
             </div>
@@ -360,7 +360,7 @@ class ManageUserGroups extends Component {
               sm={5}
               md={4}
               lg={3}
-              className={classes.demoLeft}
+              className={classes.RecordListContainer}
             >
               <div>{this.renderUserGroups()}</div>
             </Grid>

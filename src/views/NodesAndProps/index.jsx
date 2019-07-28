@@ -9,9 +9,10 @@ import Snackbar from '@material-ui/core/Snackbar'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import { withStyles } from '@material-ui/core/styles'
-
+import CardContent from '@material-ui/core/CardContent'
 import CloseIcon from '@material-ui/icons/Close'
 
+//import Components
 import AddNodeForm from 'components/AddNodeForm'
 import AddPropForm from 'components/AddPropForm'
 import Dialog from 'components/Dialog'
@@ -24,23 +25,27 @@ import Page from 'views/Page/Page.jsx'
 import PcDrawer from 'components/PcDrawer'
 import PropDefsOverview from 'components/PropDefsOverview'
 import PropDefEditor from 'components/PropDefEditor'
+import { Card, CardHeader, Avatar } from '@material-ui/core'
+import { AddCircleOutline } from '@material-ui/icons'
 
+//import Icons
 import { nameToIconMap } from 'common/NameToIcon'
 import { typeToReadableName } from 'common/PropTypeToMetadata'
 
+//import 
 import { nodes as nodesNode, propTypes as propTypesNode } from 'app'
 
-import CardContent from '@material-ui/core/CardContent'
 
 import * as Utils from 'common/utils'
+//import Styles
+import nodeStyles from './nodeStyle'
 
 import {
   Node as NodeValidator,
   PropDef as PropDefValidator,
 } from 'app/validators'
 import * as BuiltIn from 'app/gun-wrapper/BuiltIn'
-import { Card, CardHeader, Avatar } from '@material-ui/core'
-import { AddCircleOutline } from '@material-ui/icons'
+
 
 /**
  * @typedef {import('app/gun-wrapper/SetNode').default} SetNode
@@ -146,63 +151,7 @@ const INITIAL_EDIT_NODE_FLOW = {
 }
 
 /**
- * @param {import('@material-ui/core/styles').Theme} theme
- */
-const styles = theme => ({
-  toRight: {
-    marginLeft: 'auto',
-  },
-  itemOption: {
-    display: 'flex !important',
-    flexDirection: 'column !important',
-    right: '10px !important',
-  },
-  listItem: {
-    paddingLeft: '15px',
-  },
-  nodeEditorContainer: {
-    paddingLeft: theme.spacing.unit * 2,
-    paddingRight: theme.spacing.unit * 2,
-  },
-  pointerCursor: {
-    cursor: 'pointer',
-  },
-  card: {
-    display: 'flex',
-  },
-  details: {
-    display: 'flex',
-  },
-  avatar: {
-    width: 151,
-  },
-  nodesContainer: {
-    paddingBottom: '30px',
-    paddingTop: '10px',
-  },
-  content: {
-    flex: '1 0 auto',
-  },
-  root: {
-    margin: theme.spacing.unit,
-    marginTop: theme.spacing.unit * 4,
-    width: 'auto',
-    [theme.breakpoints.down('xs')]: {
-      marginTop: theme.spacing.unit * 2,
-    },
-  },
-  smallIconButton: {},
-  spinner: {
-    position: 'absolute',
-  },
-  textField: {
-    marginLeft: theme.spacing.unit * 2,
-    marginRight: theme.spacing.unit * 2,
-  },
-})
-
-/**
- * @typedef {keyof ReturnType<typeof styles>} Classes
+ * @typedef {keyof ReturnType<typeof nodeStyles>} Classes
  */
 
 /**
@@ -2721,7 +2670,8 @@ a8"    `Y88  88  ""     `Y8  88  a8"     "8a  a8"    `Y88  I8[    ""
 88      `888    `"Y8888Y"'    88888888Y"'    88888888888  "Y88888P"   
 */}
 
-        <Page titleText="Nodes And Properties">
+        <Page 
+        titleText="Nodes And Properties">
           <div className={classes.root}>
             <div>
               <Grid container className={classes.nodesContainer} spacing={24}>
@@ -2783,7 +2733,7 @@ a8"    `Y88  88  ""     `Y8  88  a8"     "8a  a8"    `Y88  I8[    ""
               <Typography variant="subtitle1">UNUSED NODES</Typography>
             )}
 
-            <Grid container className={classes.nodesContainer}>
+            <Grid container className={classes.nodesContainer} spacing={24}>
               {unusedNodes.map(([id, node]) => {
                 const Icon = nameToIconMap[node.iconName]
 
@@ -2792,6 +2742,7 @@ a8"    `Y88  88  ""     `Y8  88  a8"     "8a  a8"    `Y88  I8[    ""
                     className={classes.pointerCursor}
                     item
                     xs={12}
+                    sm={6}
                     md={3}
                     key={id}
                     // TODO: fix callback in render()
@@ -2926,5 +2877,5 @@ const getSettingsForPropDefEditor = propDef =>
 
 export default withStyles(
   // Cast: no way to pass in generic arguments in JSDOC+Typescript
-  /** @type {import('@material-ui/core/styles').StyleRulesCallback<Classes>} */ (styles),
+  /** @type {import('@material-ui/core/styles').StyleRulesCallback<Classes>} */ (nodeStyles),
 )(NodesAndProps)

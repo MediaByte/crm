@@ -14,7 +14,7 @@ import Clear from '@material-ui/icons/Clear'
 import Check from '@material-ui/icons/Check'
 // core components
 
-import customInputStyle from 'assets/jss/material-kit-pro-react/components/customInputStyle.jsx'
+import styles from 'views/styles.js'
 
 function CustomInput({ ...props }) {
   const {
@@ -99,4 +99,4 @@ CustomInput.propTypes = {
   white: PropTypes.bool,
 }
 
-export default withStyles(customInputStyle)(CustomInput)
+export default withStyles(styles)(CustomInput)

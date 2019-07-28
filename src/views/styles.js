@@ -1,32 +1,42 @@
+/**
+ * @param {import('@material-ui/core/styles').Theme} theme
+ */
+
 const styles = theme => ({
   overlay: {
     background: 'rgba(255,255,255,0.5)',
   },
+
   iconsRight: {
     float: 'right',
   },
+
   paper: {
-    //boxShadow: 'none',
   },
+
   root: {
     borderRadius: 0,
     //boxShadow: 'none',
     borderTop: '1px solid #ddd',
     borderBottom: '1px solid #ddd',
   },
+
   root3: {
     borderRadius: 0,
     //boxShadow: 'none',
     borderBottom: '1px solid #ddd',
   },
+
   input: {
     marginBottom: -10,
     width: 215,
   },
+
   gridMainPanel: {
     flexGrow: 1,
     width: '100%',
   },
+
   mainPanel: {
     flexGrow: 1,
     paddingTop: 10,
@@ -38,37 +48,41 @@ const styles = theme => ({
     width: '100%',
     height: '100%',
   },
+
   item: {
     border: '1px solid black',
     padding: 10,
     marginTop: 0,
   },
+
   itemSubContent: {
     paddingLeft: '25px',
   },
+
   grid: {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     padding: 5,
   },
+
   userProfileGrid: {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
   },
+
   gridContainer: {
     flexGrow: 1,
-    // display: 'flex',
-    // justifyContent: 'center',
-    // alignItems: "stretch",
     height: '100%',
   },
+
   renderUsers: {
     overflow: 'auto',
 
     height: '600px',
   },
+
   content: {},
   demo: {
     backgroundColor: '#f6f6f6',
@@ -76,14 +90,15 @@ const styles = theme => ({
     height: '100%',
     overflow: 'scroll',
   },
-  demoLeft: {
+
+  RecordListContainer: {
     backgroundColor: '#fff',
     marginLeft: '0%',
     paddingTop: '25px',
     height: '100%',
     borderRight: '1px solid #ddd',
-    overflow: 'scroll',
   },
+
   demoContent: {
     padding: 10,
     [theme.breakpoints.up('sm')]: {
@@ -93,15 +108,21 @@ const styles = theme => ({
       padding: 0,
     },
   },
+
   list: {
     width: '100%',
     borderRadius: 0,
   },
-  noGroups: {
+
+  noRecordSelected: {
     textAlign: 'center',
-    padding: '40px 0',
+    padding: '180px 0',
+    direction: 'row',
+    align: 'center',
+    justify: 'center',
   },
-  icon: {
+
+  noRecordsIcon: {
     fontSize: '50px',
     display: 'block',
     margin: '0 auto',
@@ -112,13 +133,16 @@ const styles = theme => ({
     fontSize: theme.typography.pxToRem(15),
     fontWeight: theme.typography.fontWeightRegular,
   },
+
   selected: {
     backgroundColor: '#f00',
   },
+
   subtitle: {
     fontSize: '0.9rem',
     fontWeight: 'bold',
   },
+
   title: {
     marginBottom: 10,
     color: '#aaa',
@@ -128,13 +152,16 @@ const styles = theme => ({
       marginLeft: 30,
     },
   },
+
   titleBold: {
     fontWeight: 'bold',
   },
+
   titlePadding: {
     marginBottom: 10,
     paddingLeft: 25,
   },
+
   icons: {
     cursor: 'pointer',
     '&:hover': {
@@ -147,13 +174,14 @@ const styles = theme => ({
       padding: 12,
     },
   },
+
   padding: {
     paddingLeft: 25,
   },
+
   appBar: {
-    // flexGrow: 1,
-    //dropShadow: 'none',
   },
+
   menuButton: {
     marginLeft: -12,
     marginRight: 20,
