@@ -9,6 +9,7 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import PersonAdd from '@material-ui/icons/PersonAdd'
+import ScatterPlot from '@material-ui/icons/ScatterPlotOutlined'
 import GroupAdd from '@material-ui/icons/GroupAdd'
 import InfoOutlined from '@material-ui/icons/InfoOutlined'
 import Avatar from '@material-ui/core/Avatar'
@@ -21,51 +22,8 @@ import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight'
 //project files
 import Page from 'views/Page/Page'
 
-const styles = theme => ({
-  demo: {
-    marginTop: theme.spacing.unit * 3,
-  },
-  content: {
-    [theme.breakpoints.down('xs')]: {
-      marginTop: theme.spacing.unit * 4,
-      marginButtom: theme.spacing.unit * 4,
-      padding: theme.spacing.unit,
-      paddingTop: theme.spacing.unit,
-    },
-  },
-  Avatar: {
-    margin: theme.spacing.unit,
-  },
-  button: {
-    height: '100%',
-    width: '100%',
-    minWidth: 'auto',
-    maxWidth: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  panelTitle: {
-    fontWeight: 'bold',
-    fontSize: '14px',
-    marginBottom: '15px',
-    [theme.breakpoints.up('md')]: {
-      marginTop: theme.spacing.unit * 5,
-    },
-    [theme.breakpoints.down('sm')]: {
-      fontSize: '14px',
-      marginTop: theme.spacing.unit * 2,
-      marginBottom: 0,
-    },
-  },
-  listItem: {
-    backgroundColor: theme.palette.background.paper,
-    [theme.breakpoints.down('sm')]: {
-      paddingTop: 7,
-      paddingBottom: 7,
-      marginBottom: 1,
-    },
-  },
-})
+//styles
+import adminStyles from './adminStyles.js'
 
 class AdminPanel extends React.Component {
   componentDidMount() {
@@ -76,8 +34,7 @@ class AdminPanel extends React.Component {
     const { classes } = this.props
     return (
       <Page component={'administration'} titleText={'Administration'}>
-        <div className={classes.content}>
-          <div className={classes.demo}>
+        <div className={classes.AdminContent}>
             <List>
               <ListItem
                 component={props => (
@@ -85,10 +42,10 @@ class AdminPanel extends React.Component {
                 )}
                 className={classes.listItem}
               >
-                <Avatar className={classes.avatar}>TS</Avatar>
+                <Avatar className={classes.UserAvatar}>TS</Avatar>
                 <ListItemText
                   primary="Tony Stark"
-                  secondary="tony.startk@avenger.org"
+                  secondary="tony.stark@avenger.org"
                 />
                 <ListItemSecondaryAction>
                   <IconButton>
@@ -98,7 +55,7 @@ class AdminPanel extends React.Component {
               </ListItem>
             </List>
           </div>
-          <div className={classes.demo}>
+          <div className={classes.SpacingBetweenLists}>
             <List>
               <ListItem
                 component={props => (
@@ -148,23 +105,10 @@ class AdminPanel extends React.Component {
                   </IconButton>
                 </ListItemSecondaryAction>
               </ListItem>
-              {/* <ListItem
-                component={props => (
-                  <NavLink to={'/passwordrules'} {...props} />
-                )}
-                className={classes.listItem}
-              >
-                <ListItemText primary="Password Rules" />
-                <ListItemSecondaryAction>
-                  <IconButton>
-                    <KeyboardArrowRight />
-                  </IconButton>
-                </ListItemSecondaryAction>
-              </ListItem> */}
             </List>
           </div>
 
-          <div className={classes.demo}>
+          <div className={classes.SpacingBetweenLists}>
             <List>
               <ListItem
                 component={props => (
@@ -173,7 +117,7 @@ class AdminPanel extends React.Component {
                 className={classes.listItem}
               >
                 <ListItemIcon>
-                  <PersonAdd />
+                  <ScatterPlot />
                 </ListItemIcon>
                 <ListItemText primary="Nodes and Properties" />
                 <ListItemSecondaryAction>
@@ -184,10 +128,9 @@ class AdminPanel extends React.Component {
               </ListItem>
             </List>
           </div>
-        </div>
       </Page>
     )
   }
 }
 
-export default withStyles(styles)(AdminPanel)
+export default withStyles(adminStyles)(AdminPanel)
