@@ -8,7 +8,7 @@ import PropTypes from 'prop-types'
 import withStyles from '@material-ui/core/styles/withStyles'
 import Button from '@material-ui/core/Button'
 
-import buttonStyle from 'assets/jss/material-kit-pro-react/components/buttonStyle.jsx'
+import styles from 'views/styles.js'
 
 function RegularButton(props) {
   const {
@@ -27,6 +27,7 @@ function RegularButton(props) {
     className,
     ...rest
   } = props
+  
   const btnClasses = classNames({
     [classes.button]: true,
     [classes[size]]: size,
@@ -84,4 +85,4 @@ RegularButton.propTypes = {
   fileButton: PropTypes.bool,
 }
 
-export default withStyles(buttonStyle)(RegularButton)
+export default withStyles(styles)(RegularButton)
