@@ -1,12 +1,11 @@
 import DashboardMain from 'views/Dashboard/Dashboard.jsx'
 import LoginPage from 'views/LoginPage/LoginPage.jsx'
 import AdminPanel from 'views/Administration/Administration.jsx'
-import PasswordRules from 'views/Administration/PasswordRules.jsx'
-import ManageEmployees from 'views/Administration/ManageEmployees.jsx'
-import ManageUserGroups from 'views/Administration/ManageUserGroups.jsx'
-import EmptyNode from 'views/Administration/EmptyNode.jsx'
+import ManageEmployees from 'views/ManageEmployees/ManageEmployees'
+import ManageUserGroups from 'views/ManageUserGroups/ManageUserGroups'
+import EmptyNode from 'views/NodeRecords/EmptyNode'
 import Landing from 'views/Landing/Landing.js'
-import NodesAndProps from 'views/Administration/NodesAndProps'
+import NodesAndProps from 'views/NodesAndProps'
 
 var indexRoutes = [
   { path: '/login', name: 'LoginPage', component: LoginPage },
@@ -21,7 +20,6 @@ var indexRoutes = [
     component: AdminPanel,
     exact: true,
   },
-  { path: '/passwordrules', name: 'Administration', component: PasswordRules },
   {
     path: '/management/employees',
     name: 'Administration',
