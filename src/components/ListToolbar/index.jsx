@@ -200,7 +200,6 @@ class ListToolbar extends React.PureComponent {
       filterMenuOpen,
       numberOfRecords,
       onChangeSearchValue,
-
       onClickDownload,
       onClickFilterButton,
       onClickSearch,

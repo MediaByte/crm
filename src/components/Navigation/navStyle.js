@@ -251,8 +251,8 @@ const navStyles = theme => ({
     color: '#fff',
   },
   selected: {
-    backgroundColor: 'rgba(255,255,255,0.2)',
-    color: '#616161',
+    backgroundColor: 'rgba(255,255,255,0.2) !important',
+    color: 'white !important',
     fontWeight: 600,
   },
   iconMenu: {

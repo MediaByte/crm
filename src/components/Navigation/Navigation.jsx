@@ -331,7 +331,7 @@ class Navigation extends React.Component {
                   <ListItem
                     key={node.id}
                     selected={component === 'empty-node'}
-                    classes={{ selected: '{node.id}' && classes.selected }}
+                    classes={{ selected: classes.selected }}
                     button
                     component={props => (
                       // @ts-ignore
