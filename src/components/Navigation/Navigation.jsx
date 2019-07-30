@@ -230,7 +230,7 @@ class Navigation extends React.Component {
       nodes,
     } = this.state
 
-    const isBigScreen = isWidthUp('md', width)
+    const isBigScreen = isWidthUp('sm', width)
 
     const shouldRenderTitle = isBigScreen || !searchBoxOpen
 
@@ -310,7 +310,11 @@ class Navigation extends React.Component {
               <ListItemIcon className={classes.iconMenu}>
                 <Laptop />
               </ListItemIcon>
-              <ListItemText disableTypography primary="Administration" />
+              <ListItemText
+                disableTypography
+                primary="Administration"
+                style={{ color: '#fff' }}
+              />
             </ListItem>
 
             {sortedNodes &&
@@ -327,7 +331,7 @@ class Navigation extends React.Component {
                   <ListItem
                     key={node.id}
                     selected={component === 'empty-node'}
-                    classes={{ selected: classes.selected }}
+                    classes={{ selected: '{node.id}' && classes.selected }}
                     button
                     component={props => (
                       // @ts-ignore
@@ -536,7 +540,7 @@ class Navigation extends React.Component {
                 </IconButton>
               </Hidden>
 
-              <Hidden smDown>
+              <Hidden xsDown>
                 <IconButton className={classes.iconHeader}>
                   <CalendarTodayOutlined />
                 </IconButton>
@@ -566,7 +570,7 @@ class Navigation extends React.Component {
             <div style={{ height: '100%' }}>{children}</div>
           </main>
         </Grid>
-        <Hidden mdUp>
+        <Hidden smUp>
           <BottomNavigation
             value={value}
             onChange={this.handleChange}

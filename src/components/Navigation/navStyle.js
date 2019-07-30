@@ -88,7 +88,7 @@ const navStyles = theme => ({
       marginLeft: '75px',
       // marginRight: 22,
     },
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('xs')]: {
       marginLeft: '10px',
       // marginRight: 22,
     },
@@ -146,10 +146,6 @@ const navStyles = theme => ({
       overflow: 'hidden',
     },
     [theme.breakpoints.down('xs')]: {
-      width: '0px',
-      marginLeft: '-1px',
-    },
-    [theme.breakpoints.down('sm')]: {
       width: '0px',
       marginLeft: '-1px',
     },
@@ -255,8 +251,8 @@ const navStyles = theme => ({
     color: '#fff',
   },
   selected: {
-    backgroundColor: 'rgba(255,255,255,0.2) !important',
-    color: 'white !important',
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    color: '#616161',
     fontWeight: 600,
   },
   iconMenu: {
