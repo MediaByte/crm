@@ -336,6 +336,8 @@ class Navigation extends React.Component {
                     component={props => (
                       // @ts-ignore
                       <NavLink
+                        activeStyle={{ color: 'red' }}
+                        exact
                         to={`/management/empty-node/${node.id}`}
                         {...props}
                       />

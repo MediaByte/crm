@@ -2,6 +2,13 @@ export interface Node {
   iconName: string
   label: string
   name: string
+  [key: string]: string
+}
+
+export interface UserGroup {
+  description: string
+  name: string
+  [key: string]: string
 }
 
 // https://wireframepro.mockflow.com/editor.jsp?editor=off&publicid=Mb463e057e92c741775914daa3f0d85dc1555362653946&projectid=M04a8571b048cf9b9fe440fd668645c4a1552258306778&perm=Reviewer#/page/D85aa2ea3a8c9e923614a86b90e6fa358
@@ -58,4 +65,10 @@ export interface Node {
   iconName: string
   label: string
   propDefs: Record<string, PropertyDefinition>
+}
+
+export interface UserGroup {
+  active: boolean
+  description: string
+  name: string
 }

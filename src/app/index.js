@@ -1,19 +1,26 @@
 import Gun from 'gun/gun'
 
 import { Node } from './gun-wrapper/Node'
+import { UserGroup } from './gun-wrapper/UserGroup'
 import { Root } from './appSchema'
 
 /**
  * @typedef {import('./gun-wrapper/SetNode').default} SetNode
+ * @typedef {import('./gun-wrapper/SetGroup').default} SetGroup
+
  */
 
 const GUN_ROOT_KEY = 'PINECONE_CIVIC_ROOT'
 
 const root = new Node(Root, Gun().get(GUN_ROOT_KEY))
 
+const Groups = new UserGroup(Root, Gun().get(GUN_ROOT_KEY))
+
 window.___root = root
 
 export const nodes = root.getSet('nodes')
+
+export const userGroups = Groups.getSet('userGroups')
 
 export const propTypes = root.getSet('propTypes')
 

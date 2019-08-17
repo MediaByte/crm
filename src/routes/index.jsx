@@ -2,7 +2,7 @@ import DashboardMain from 'views/Dashboard/Dashboard.jsx'
 import LoginPage from 'views/LoginPage/LoginPage.jsx'
 import AdminPanel from 'views/Administration/Administration.jsx'
 import ManageEmployees from 'views/ManageEmployees/ManageEmployees'
-import ManageUserGroups from 'views/ManageUserGroups/ManageUserGroups'
+import userGroups from 'views/ManageUserGroups'
 import EmptyNode from 'views/NodeRecords/EmptyNode'
 import Landing from 'views/Landing/Landing.js'
 import NodesAndProps from 'views/NodesAndProps'
@@ -28,7 +28,7 @@ var indexRoutes = [
   {
     path: '/management/user-groups',
     name: 'Manage User Groups',
-    component: ManageUserGroups,
+    component: userGroups,
   },
   {
     path: '/management/empty-node/:id',

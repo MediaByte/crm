@@ -26,6 +26,10 @@ export {} // stop jsdoc comments from merging
  */
 const UserGroup = {
   [Utils.SCHEMA_NAME]: 'UserGroup',
+  active: {
+    type: 'boolean',
+    onChange: BuiltIn.nonNullableOnChange,
+  },
   name: {
     type: 'string',
     async onChange(_, nextVal) {
@@ -39,6 +43,10 @@ const UserGroup = {
 
       return false
     },
+  },
+  description: {
+    type: 'string',
+    async onChange() {},
   },
 }
 
@@ -63,13 +71,7 @@ const User = {
   },
   userGroup: {
     type: UserGroup,
-    async onChange(_, nextVal) {
-      if (nextVal == null) {
-        return ['value must be specified']
-      }
-
-      return false
-    },
+    async onChange() {},
   },
 }
 

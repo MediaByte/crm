@@ -32,9 +32,8 @@ import { AddCircleOutline } from '@material-ui/icons'
 import { nameToIconMap } from 'common/NameToIcon'
 import { typeToReadableName } from 'common/PropTypeToMetadata'
 
-//import 
+//import
 import { nodes as nodesNode, propTypes as propTypesNode } from 'app'
-
 
 import * as Utils from 'common/utils'
 //import Styles
@@ -45,7 +44,6 @@ import {
   PropDef as PropDefValidator,
 } from 'app/validators'
 import * as BuiltIn from 'app/gun-wrapper/BuiltIn'
-
 
 /**
  * @typedef {import('app/gun-wrapper/SetNode').default} SetNode
@@ -2670,8 +2668,7 @@ a8"    `Y88  88  ""     `Y8  88  a8"     "8a  a8"    `Y88  I8[    ""
 88      `888    `"Y8888Y"'    88888888Y"'    88888888888  "Y88888P"   
 */}
 
-        <Page 
-        titleText="Nodes And Properties">
+        <Page titleText="Nodes And Properties">
           <div className={classes.root}>
             <div>
               <Grid container className={classes.nodesContainer} spacing={24}>
@@ -2688,6 +2685,7 @@ a8"    `Y88  88  ""     `Y8  88  a8"     "8a  a8"    `Y88  I8[    ""
                       key={id}
                       // TODO: fix callback in render()
                       onClick={() => {
+                        console.log(id)
                         this.onClickNode(id)
                       }}
                     >

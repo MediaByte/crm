@@ -1,5 +1,6 @@
 import { SCHEMA_NAME } from './Utils'
 import { Node as NodeInstance } from './Node'
+import { UserGroup as Group } from './UserGroup'
 
 export interface Ack {
   err: string | undefined
@@ -16,6 +17,10 @@ export type ValidPut = Record<string, Primitive | Literal | null>
 export type ValidSetPut = Record<
   string,
   Primitive | Literal | WrapperNode | null
+>
+export type ValidGroupSetPut = Record<
+  string,
+  Primitive | Literal | WrapperGroup | null
 >
 
 export interface WrapperReferenceNode {
@@ -49,6 +54,45 @@ export interface WrapperNode {
   getEdgeRef(edgeKey: string): WrapperNode | null
 
   getSet(setKey: string): WrapperSetNode
+
+  put(data: ValidPut): Promise<Response>
+
+  on(listener: Listener): void
+
+  cachePut(data: Data): void
+}
+
+export interface WrapperReferenceGroup {
+  put(ref: WrapperGroup | null): Promise<Response>
+}
+
+export interface WrapperSetGroup {
+  currentData: Data
+  gunInstance: object
+
+  cachePut(data: Data): void
+
+  get(key: string): WrapperGroup
+
+  on(cb: Listener): void
+
+  off(cb?: Listener): void
+
+  set(data: ValidGroupSetPut): Promise<SetResponse>
+}
+
+export interface WrapperGroup {
+  currentData: Data
+  gunInstance: object
+  schema: Schema
+
+  get(key: string): WrapperReferenceGroup | WrapperSetGroup
+
+  getEdge(edgeKey: string): WrapperReferenceGroup
+
+  getEdgeRef(edgeKey: string): WrapperGroup | null
+
+  getSet(setKey: string): WrapperSetGroup
 
   put(data: ValidPut): Promise<Response>
 
@@ -129,10 +173,20 @@ interface _OKSetResponse {
   reference: NodeInstance
 }
 
+interface _OKSetGroupResponse {
+  ok: true
+  messages: string[]
+  details: Record<string, string[]>
+  reference: Group
+}
+
 interface _NonOKSetResponse {
   ok: false
   messages: string[]
   details: Record<string, string[]>
 }
 
-export type SetResponse = _OKSetResponse | _NonOKSetResponse
+export type SetResponse =
+  | _OKSetResponse
+  | _NonOKSetResponse
+  | _OKSetGroupResponse

@@ -5,9 +5,19 @@ import Grid from '@material-ui/core/Grid'
 import List from '@material-ui/core/List'
 import ListSubheader from '@material-ui/core/ListSubheader'
 import Typography from '@material-ui/core/Typography'
+import { withStyles } from '@material-ui/core/styles'
 
 /**
  * @typedef {import('@material-ui/core/SvgIcon').SvgIconProps} SvgIconProps
+ */
+
+/**
+ * @typedef {import('@material-ui/core').Theme} Theme
+ */
+
+/**
+ * @template K
+ * @typedef {import('@material-ui/core/styles').StyleRulesCallback<K>} StyleRulesCallback
  */
 
 import DeleteOutline from '@material-ui/icons/DeleteOutline'
@@ -55,7 +65,19 @@ const explanationTextMargin = {
  */
 
 /**
- * @augments React.PureComponent<Props>
+ * @param {Theme} theme
+ */
+const styles = theme => ({
+  actionButton: {
+    position: 'absolute',
+    bottom: 34,
+  },
+})
+
+export {} // stop jsdoc from merging
+
+/**
+ * @augments React.PureComponent<Props & { classes: Classes }>
  */
 class PropDefEditor extends React.PureComponent {
   /**
@@ -85,10 +107,17 @@ class PropDefEditor extends React.PureComponent {
       onClickRequired,
       required,
       settings,
+      classes,
     } = this.props
 
     return (
-      <Grid container direction="column" spacing={24}>
+      <Grid
+        container
+        direction="column"
+        justify="flex-start"
+        alignItems="stretch"
+        spacing={24}
+      >
         <Grid item>
           <List subheader={APPEARANCE_SUBHEADER}>
             <DrawerButton
@@ -186,6 +215,7 @@ class PropDefEditor extends React.PureComponent {
 
         <Grid item>
           <Button
+            className={classes.actionButton}
             color={isActive ? 'secondary' : 'primary'}
             onClick={isActive ? onClickDeactivate : onClickReactivate}
             style={activationBtnStyle}
@@ -204,4 +234,15 @@ class PropDefEditor extends React.PureComponent {
   }
 }
 
-export default PropDefEditor
+/**
+ * @typedef {keyof ReturnType<typeof styles>} ClassNames
+ * @typedef {Record<ClassNames, string>} Classes
+ */
+
+export {} // stop jsdoc comments from merging
+
+const styled = withStyles(
+  /** @type {StyleRulesCallback<ClassNames>} */ (styles),
+)(PropDefEditor)
+
+export default styled
