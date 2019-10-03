@@ -40,6 +40,7 @@ const activationBtnTxtStyle = { marginLeft: '5px' }
 const styles = theme => ({
   actionButton: {
     position: 'absolute',
+    marginRight: theme.spacing.unit * 2,
     bottom: 34,
   },
 })
@@ -92,6 +93,7 @@ class NodeEditor extends React.PureComponent {
             color={isNodeActive ? 'secondary' : 'primary'}
             onClick={isNodeActive ? onClickDeactivate : onClickReactivate}
             style={activationBtnStyle}
+            fullWidth
           >
             {isNodeActive ? <DeleteOutline /> : <RestoreIcon />}
             {isNodeActive ? (
