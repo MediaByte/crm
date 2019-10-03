@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom'
 //React Router 4 Components
 import { createBrowserHistory } from 'history'
 import { Router, Route, Switch } from 'react-router'
-import indexRoutes from 'routes/index.jsx'
+import Routes from 'routes/index.jsx'
 
 //State Management
 import { Provider } from 'react-redux'
@@ -40,11 +40,6 @@ const theme = createMuiTheme({
       default: '#fafafa',
     },
   },
-  custom: {
-    smallIconButton: {
-      padding: '5px !important',
-    },
-  },
 })
 
 //Reducers
@@ -64,13 +59,7 @@ ReactDOM.render(
   <Provider store={store}>
     <Router history={hist}>
       <MuiThemeProvider theme={theme}>
-        <Switch>
-          {indexRoutes.map((prop, key) => {
-            return (
-              <Route path={prop.path} key={key} component={prop.component} />
-            )
-          })}
-        </Switch>
+        <Routes />
       </MuiThemeProvider>
     </Router>
   </Provider>,

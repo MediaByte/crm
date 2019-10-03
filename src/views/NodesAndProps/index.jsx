@@ -25,8 +25,20 @@ import Page from 'views/Page/Page.jsx'
 import PcDrawer from 'components/PcDrawer'
 import PropDefsOverview from 'components/PropDefsOverview'
 import PropDefEditor from 'components/PropDefEditor'
-import { Card, CardHeader, Avatar } from '@material-ui/core'
-import { AddCircleOutline } from '@material-ui/icons'
+import {
+  Card,
+  CardHeader,
+  Avatar,
+  Divider,
+  ListItemText,
+  ListItem,
+  List,
+  ListItemAvatar,
+  ListItemSecondaryAction,
+  ListItemIcon,
+  Icon,
+} from '@material-ui/core'
+import { AddCircleOutline, Link, KeyboardArrowRight } from '@material-ui/icons'
 
 //import Icons
 import { nameToIconMap } from 'common/NameToIcon'
@@ -44,6 +56,15 @@ import {
   PropDef as PropDefValidator,
 } from 'app/validators'
 import * as BuiltIn from 'app/gun-wrapper/BuiltIn'
+import ListToolbar from 'components/ListToolbar'
+
+import _ from 'lodash'
+import { node } from 'prop-types'
+
+/**
+ * @typedef {import('../../components/ListToolbar').Props} ListToolbarProps
+ * @typedef {import('../../components/StatusFilterMenu').Status} Filter
+ */
 
 /**
  * @typedef {import('app/gun-wrapper/SetNode').default} SetNode
@@ -153,8 +174,37 @@ const INITIAL_EDIT_NODE_FLOW = {
  */
 
 /**
+ * @template T
  * @typedef {object} Props
  * @prop {Record<Classes, string>} classes
+ * @prop {(React.ComponentType<import('@material-ui/core/SvgIcon').SvgIconProps>)=} icon
+ * @prop {'user-groups'} component
+ * @prop {((item: T) => Filter)=} extractFilterable (Optional) Must be provided
+ * for the filter mechanism to work, this function should return an object with
+ * `displayValue` and `value` props for each item of the list. `displayValue` is
+ * what will be shown in the UI, and `value` is what will be actually used for
+ * filtering. This function should be pure, as an initial map over the items
+ * will be used for getting all possible filtering values.
+ * @prop {((item: T) => number)=} extractID (Optional) Extract the id from the
+ * item, this will be passed as the first argument to the `onClickItem` prop.
+ * Index will be used if not be provided.
+ * @prop {((item: T) => string)=} extractSubtitle (Optional) Extract the
+ * subtitle from the item. If not provided, no subtitle will be rendered.
+ * @prop {(item: T) => string} extractTitle Extract the title to be rendered.
+ * @prop {T[]} items The items that will be rendered.
+ * @prop {((nextSearchTerm: string) => void)=} onChangeSearchTerm (Optional) If
+ * provided, gets called with the next search term inputted into the search
+ * field.
+ * @prop {(() => void)=} onClickAdd
+ * @prop {ListToolbarProps['onClickDownload']=} onClickDownload
+ * @prop {((itemID: number) => void)=} onClickItem (Optional) Gets called with
+ * the ID of the item (if the `extractID` prop is defined), otherwise the
+ * function will be passed the index of the item.
+ * @prop {number[]=} selectedIDs (Optional) If provided, the items with these
+ * IDs will be highlighted.
+ * @prop {(boolean|null)=} showToolbar (Optional) If set to true, an utility
+ * toolbar will be provided, it includes some add and download action icons, a
+ * toggeable search field and a toggeable pop-over filter menu.
  */
 
 /**
@@ -213,6 +263,8 @@ const INITIAL_EDIT_NODE_FLOW = {
  * @prop {boolean} willChangeHelpTextStatus
  */
 
+export {} // stop jsdoc comments from merging
+
 /**
  * @typedef {object} State
  * @prop {AddNodeFlow} addNodeFlow
@@ -229,10 +281,16 @@ const INITIAL_EDIT_NODE_FLOW = {
  * @prop {boolean} showingAddRelDialog
  * @prop {boolean} showingPropDialog
  * @prop {string|null} snackbarMessage
+ * @prop {string|undefined} currentFilter If null, the list is not filtered, if it's
+ * an string, the list will be filtered according to the `extractFilterable`
+ * prop.
+ * @prop {boolean} filterMenuOpen
+ * @prop {boolean} searchActive
  */
 
 /**
- * @augments React.Component<Props, State>
+ * @template T
+ * @augments React.Component<Props<T>, State>
  */
 class NodesAndProps extends React.Component {
   /** @type {State} */
@@ -255,6 +313,40 @@ class NodesAndProps extends React.Component {
     showingAddRelDialog: false,
     showingPropDialog: false,
     snackbarMessage: null,
+    currentFilter: undefined,
+    filterMenuOpen: false,
+    searchActive: false,
+  }
+
+  /**
+   * @private
+   * @type {Filter[]}
+   */
+  possibleFilters = []
+
+  /**
+   * A ref for the filter icon button, this ref is used for attaching the filter
+   * pop-over menu to it, (that is, it will appear alongside it when open).
+   * @type {React.RefObject<SVGSVGElement>}
+   */
+  filterIconRef = React.createRef()
+
+  /**
+   * @param {Props<T>} props
+   */
+  constructor(props) {
+    super(props)
+
+    this.refreshPossiblefilters()
+  }
+
+  /**
+   * @param {Props<T>} prevProps
+   */
+  componentDidUpdate(prevProps) {
+    if (prevProps.items !== this.props.items) {
+      this.refreshPossiblefilters()
+    }
   }
 
   /**
@@ -2092,8 +2184,90 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
   // 88          "8b,   ,aa  88       88  "8a,   ,d88  "8b,   ,aa  88
   // 88           `"Ybbd8"'  88       88   `"8bbdP"Y8   `"Ybbd8"'  88
 
+  /**
+   * @private
+   * @param {React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>} e
+   */
+  onChangeSearchTerm = e => {
+    const { onChangeSearchTerm } = this.props
+
+    if (onChangeSearchTerm) {
+      onChangeSearchTerm(e.target.value)
+    }
+  }
+
+  /**
+   * @private
+   * @param {string} nextFilter
+   */
+  onFilterChange = nextFilter => {
+    if (nextFilter === '') {
+      this.setState({
+        currentFilter: undefined,
+      })
+    } else {
+      this.setState({
+        currentFilter: nextFilter,
+      })
+    }
+  }
+
+  /**
+   * @private
+   */
+  refreshPossiblefilters() {
+    const { extractFilterable, items } = this.props
+
+    if (extractFilterable) {
+      const filters = items && items.map(extractFilterable)
+      // avoid repeated filters
+      const uniqueFilters = _.uniqBy(filters, 'value')
+
+      this.possibleFilters = uniqueFilters
+    } else {
+      this.possibleFilters = []
+    }
+  }
+
+  /**
+   * @private
+   */
+  toggleFilterMenu = () => {
+    this.setState(({ filterMenuOpen }) => ({
+      filterMenuOpen: !filterMenuOpen,
+    }))
+  }
+
+  /**
+   * @private
+   */
+  toggleSearch = () => {
+    this.setState(({ searchActive }) => ({
+      searchActive: !searchActive,
+    }))
+  }
+
   render() {
-    const { classes } = this.props
+    const {
+      classes,
+      match,
+      history,
+      filterIconRef,
+      filterMenuAnchorEl,
+      filterMenuCurrentStatusValue,
+      numberOfRecords,
+      onChangeSearchValue,
+      onClickDownload,
+      onClickFilterButton,
+      items: unfiltered,
+      extractFilterable,
+      icon: Icon,
+      onClickSearch,
+      onCloseFilterMenu,
+      onFilterMenuStatusChange,
+      possibleStatuses,
+      showSearch,
+    } = this.props
 
     const {
       addNodeFlow,
@@ -2107,7 +2281,17 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
       propTypes,
       selectedNodeID,
       snackbarMessage,
+      currentFilter,
+      filterMenuOpen,
+      searchActive,
     } = this.state
+
+    const items =
+      (currentFilter && extractFilterable
+        ? unfiltered.filter(
+            item => extractFilterable(item).value === currentFilter,
+          )
+        : unfiltered) || []
 
     const validAddNodeFormData =
       addNodeFormData.currentLabelErrorMessage === null &&
@@ -2132,10 +2316,9 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
         ? null
         : AVAILABLE_ICON_NAMES.indexOf(editNodeFlow.currentlySelectedIconName)
 
-    const activeNodes = Object.entries(nodes).filter(([_, node]) => node.active)
-    const unusedNodes = Object.entries(nodes).filter(
-      ([_, node]) => !node.active,
-    )
+    const Available_Nodes = Object.entries(nodes)
+
+    console.log(Available_Nodes)
 
     // the falsy check is for avoiding errors when a propdef isn't yet selected
     // we coerce helptext because we know the wrapper doesn't allow empty
@@ -2667,117 +2850,55 @@ a8"    `Y88  88  ""     `Y8  88  a8"     "8a  a8"    `Y88  I8[    ""
 88     `8888   Y8a.    .a8P   88      .a8P   88          Y8a     a8P  
 88      `888    `"Y8888Y"'    88888888Y"'    88888888888  "Y88888P"   
 */}
-
-        <Page titleText="Nodes And Properties">
-          <div className={classes.root}>
-            <div>
-              <Grid container className={classes.nodesContainer} spacing={24}>
-                {activeNodes.map(([id, node]) => {
-                  const Icon = nameToIconMap[node.iconName]
-
-                  return (
-                    <Grid
-                      className={classes.pointerCursor}
-                      item
-                      xs={12}
-                      sm={6}
-                      md={3}
-                      key={id}
-                      // TODO: fix callback in render()
-                      onClick={() => {
-                        console.log(id)
-                        this.onClickNode(id)
-                      }}
-                    >
-                      <Card className={classes.card}>
-                        <div className={classes.details}>
-                          <CardHeader
-                            avatar={
-                              Icon && (
-                                <Avatar aria-label="icon">
-                                  <Icon.outlined />
-                                </Avatar>
-                              )
-                            }
-                          />
-                        </div>
-                        <CardContent className={classes.content}>
-                          <Typography component="h5" variant="h5">
-                            {node.label}
-                          </Typography>
-                          <Typography
-                            variant="body2"
-                            color="textSecondary"
-                            component="p"
-                          >
-                            {node.name}
-                          </Typography>
-                        </CardContent>
-                      </Card>
-                    </Grid>
-                  )
-                })}
-              </Grid>
-
-              <IconButton
-                onClick={this.addNodeFlowToggleDialog}
-                aria-label="Plus"
-              >
-                <AddCircleOutline fontSize="small" color="primary" />
-              </IconButton>
-            </div>
-
-            {unusedNodes.length > 0 && (
-              <Typography variant="subtitle1">UNUSED NODES</Typography>
-            )}
-
-            <Grid container className={classes.nodesContainer} spacing={24}>
-              {unusedNodes.map(([id, node]) => {
-                const Icon = nameToIconMap[node.iconName]
-
-                return (
-                  <Grid
-                    className={classes.pointerCursor}
-                    item
-                    xs={12}
-                    sm={6}
-                    md={3}
-                    key={id}
-                    // TODO: fix callback in render()
-                    onClick={() => {
-                      this.onClickNode(id)
-                    }}
-                  >
-                    <Card className={classes.card}>
-                      <div className={classes.details}>
-                        <CardHeader
-                          avatar={
-                            Icon && (
-                              <Avatar aria-label="icon">
-                                <Icon.outlined />
-                              </Avatar>
-                            )
-                          }
-                        />
-                      </div>
-                      <CardContent className={classes.content}>
-                        <Typography component="h5" variant="h5">
-                          {node.label}
-                        </Typography>
-                        <Typography
-                          variant="body2"
-                          color="textSecondary"
-                          component="p"
-                        >
-                          {node.name}
-                        </Typography>
-                      </CardContent>
-                    </Card>
-                  </Grid>
-                )
-              })}
-            </Grid>
-          </div>
+        <Page titleText={'Nodes And Properties'}>
+          <List className={classes.list}>
+            <ListToolbar
+              filterIconRef={this.filterIconRef}
+              // @ts-ignore it works
+              filterMenuAnchorEl={this.filterIconRef.current}
+              filterMenuCurrentStatusValue={currentFilter}
+              filterMenuOpen={filterMenuOpen}
+              numberOfRecords={items.length}
+              onChangeSearchValue={this.onChangeSearchTerm}
+              onClickAdd={this.addNodeFlowToggleDialog}
+              onClickDownload={onClickDownload}
+              onClickFilterButton={this.toggleFilterMenu}
+              onClickSearch={this.toggleSearch}
+              onCloseFilterMenu={this.toggleFilterMenu}
+              onFilterMenuStatusChange={this.onFilterChange}
+              possibleStatuses={this.possibleFilters}
+              showSearch={searchActive}
+              className={classes.listToolBar}
+            />
+            <Divider />
+            {Available_Nodes.map(([id, node]) => {
+              const Icon = nameToIconMap[node.iconName]
+              return (
+                <ListItem
+                  key={id}
+                  className={classes.listItem}
+                  onClick={() => {
+                    this.onClickNode(id)
+                  }}
+                >
+                  {Icon && (
+                    <ListItemIcon>
+                      <Icon.outlined />
+                    </ListItemIcon>
+                  )}
+                  <ListItemText primary={node.label} secondary={node.name} />
+                  <ListItemSecondaryAction>
+                    <Typography color={node.active ? 'primary' : 'secondary'}>
+                      {node.active ? 'Active' : 'Inactive'}
+                      <IconButton disabled>
+                        <KeyboardArrowRight />
+                      </IconButton>
+                    </Typography>
+                  </ListItemSecondaryAction>
+                </ListItem>
+              )
+            })}
+          </List>
         </Page>
       </React.Fragment>
     )

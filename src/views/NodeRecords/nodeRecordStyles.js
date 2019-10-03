@@ -11,8 +11,7 @@ const styles = theme => ({
     float: 'right',
   },
 
-  paper: {
-  },
+  paper: {},
 
   root: {
     borderRadius: 0,
@@ -79,7 +78,6 @@ const styles = theme => ({
 
   renderUsers: {
     overflow: 'auto',
-
     height: '600px',
   },
 
@@ -94,7 +92,6 @@ const styles = theme => ({
   RecordListContainer: {
     backgroundColor: '#fff',
     marginLeft: '0%',
-    paddingTop: '25px',
     height: '100%',
     borderRight: '1px solid #ddd',
   },
@@ -179,8 +176,7 @@ const styles = theme => ({
     paddingLeft: 25,
   },
 
-  appBar: {
-  },
+  appBar: {},
 
   menuButton: {
     marginLeft: -12,

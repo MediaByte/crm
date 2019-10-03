@@ -10,7 +10,7 @@ const groupStyles = theme => ({
       padding: theme.spacing.unit,
       marginLeft: '5px',
       marginRight: '5px',
-      overflow: 'scroll',
+      overflow: 'auto',
     },
     [theme.breakpoints.up('sm')]: {
       marginTop: theme.spacing.unit * 5,
@@ -30,21 +30,21 @@ const groupStyles = theme => ({
 
   list: {
     [theme.breakpoints.down('xs')]: {
-      marginTop: theme.spacing.unit,
+      marginTop: theme.spacing.unit * 3,
       paddingBottom: theme.spacing.unit * 7.5,
     },
     [theme.breakpoints.up('sm')]: {
-      marginTop: theme.spacing.unit,
+      marginTop: theme.spacing.unit * 3,
       padding: theme.spacing.unit,
       paddingBottom: theme.spacing.unit * 5,
     },
     [theme.breakpoints.up('md')]: {
-      marginTop: theme.spacing.unit,
+      marginTop: theme.spacing.unit * 2,
       padding: theme.spacing.unit,
       paddingBottom: theme.spacing.unit * 5,
     },
     [theme.breakpoints.up('lg')]: {
-      marginTop: theme.spacing.unit,
+      marginTop: theme.spacing.unit * 2,
       padding: theme.spacing.unit * 2,
       paddingBottom: theme.spacing.unit * 5,
     },
@@ -67,6 +67,11 @@ const groupStyles = theme => ({
       paddingBottom: 8,
       marginBottom: 2,
     },
+  },
+
+  listToolBar: {
+    backgroundColor: theme.palette.background.paper,
+    width: '100%',
   },
 
   groupEditorContainer: {

@@ -78,13 +78,13 @@ class NavigationColumn extends React.Component {
     let page
     switch (value) {
       case 0:
-        page = '/pinecone/dashboard/test@gmail.com'
+        page = '/dashboard/test@gmail.com'
         break
       case 1:
-        page = '/admin/test@gmail.com'
+        page = '/admin'
         break
       default:
-        page = '/admin/test@gmail.com'
+        page = '/admin'
         break
     }
     console.log('page', page)
@@ -104,10 +104,7 @@ class NavigationColumn extends React.Component {
     const renderMenu = (
       <div>
         <div className={classes.toolbar}>
-          <Link
-            to="/pinecone/dashboard/test@gmail.com"
-            className={classes.toolbarLink}
-          >
+          <Link to="/dashboard/test@gmail.com" className={classes.toolbarLink}>
             <img
               width={25}
               src={Logo}
@@ -131,7 +128,7 @@ class NavigationColumn extends React.Component {
               classes={{ selected: classes.selected }}
               button
               component={props => (
-                <NavLink to={`/pinecone/dashboard/test@gmail.com`} {...props} />
+                <NavLink to={`/dashboard/test@gmail.com`} {...props} />
               )}
             >
               <ListItemIcon className={classes.iconMenu}>
@@ -159,9 +156,7 @@ class NavigationColumn extends React.Component {
               selected={component === 'administration'}
               classes={{ selected: classes.selected }}
               button
-              component={props => (
-                <NavLink to={'/admin/test@gmail.com'} {...props} />
-              )}
+              component={props => <NavLink to={'/admin'} {...props} />}
             >
               <ListItemIcon className={classes.iconMenu}>
                 <Laptop />

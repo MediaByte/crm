@@ -7,7 +7,7 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import IconButton from '@material-ui/core/IconButton'
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
-import { Grid, TextField, Typography } from '@material-ui/core'
+import { Grid, TextField, Typography, Divider } from '@material-ui/core'
 import GroupEditor from 'components/GroupEditor'
 import PcDrawer from 'components/PcDrawer'
 
@@ -36,6 +36,16 @@ import Page from 'views/Page/Page'
 //styles
 import groupStyles from './groupStyles.js'
 import Messages from 'components/Messages/index.jsx'
+import { Switch, Route, Link } from 'react-router-dom'
+import { userGroupsList } from 'state/userGroups/user_data.js'
+import ListToolbar from '../../components/ListToolbar'
+
+import _ from 'lodash'
+
+/**
+ * @typedef {import('../../components/ListToolbar').Props} ListToolbarProps
+ * @typedef {import('../../components/StatusFilterMenu').Status} Filter
+ */
 
 /**
  * @typedef {import('app/typings').UserGroup} UserGroup
@@ -100,8 +110,36 @@ const INITIAL_EDIT_GROUP_FLOW = {
  */
 
 /**
+ * @template T
  * @typedef {object} Props
  * @prop {Record<Classes, string>} classes
+ * @prop {'user-groups'} component
+ * @prop {((item: T) => Filter)=} extractFilterable (Optional) Must be provided
+ * for the filter mechanism to work, this function should return an object with
+ * `displayValue` and `value` props for each item of the list. `displayValue` is
+ * what will be shown in the UI, and `value` is what will be actually used for
+ * filtering. This function should be pure, as an initial map over the items
+ * will be used for getting all possible filtering values.
+ * @prop {((item: T) => number)=} extractID (Optional) Extract the id from the
+ * item, this will be passed as the first argument to the `onClickItem` prop.
+ * Index will be used if not be provided.
+ * @prop {((item: T) => string)=} extractSubtitle (Optional) Extract the
+ * subtitle from the item. If not provided, no subtitle will be rendered.
+ * @prop {(item: T) => string} extractTitle Extract the title to be rendered.
+ * @prop {T[]} items The items that will be rendered.
+ * @prop {((nextSearchTerm: string) => void)=} onChangeSearchTerm (Optional) If
+ * provided, gets called with the next search term inputted into the search
+ * field.
+ * @prop {(() => void)=} onClickAdd
+ * @prop {ListToolbarProps['onClickDownload']=} onClickDownload
+ * @prop {((itemID: number) => void)=} onClickItem (Optional) Gets called with
+ * the ID of the item (if the `extractID` prop is defined), otherwise the
+ * function will be passed the index of the item.
+ * @prop {number[]=} selectedIDs (Optional) If provided, the items with these
+ * IDs will be highlighted.
+ * @prop {(boolean|null)=} showToolbar (Optional) If set to true, an utility
+ * toolbar will be provided, it includes some add and download action icons, a
+ * toggeable search field and a toggeable pop-over filter menu.
  */
 
 /**
@@ -128,10 +166,11 @@ const INITIAL_EDIT_GROUP_FLOW = {
  * @prop {boolean} editingName
  * @prop {string} editingDescCurrentValue
  * @prop {string} editingNameCurrentValue
- * @prop {boolean} reactivating 
+ * @prop {boolean} reactivating
  * @prop {string|null} selectedGroupID
-
  */
+
+export {} // stop jsdoc comments from merging
 
 /**
  * @typedef {object} State
@@ -143,14 +182,25 @@ const INITIAL_EDIT_GROUP_FLOW = {
  * @prop {string|null} selectedGroupID Non-null when editing a group's property
  * definitions or relationships definitions.
  * @prop {string|null} snackbarMessage
+ * @prop {string|undefined} currentFilter If null, the list is not filtered, if it's
+ * an string, the list will be filtered according to the `extractFilterable`
+ * prop.
+ * @prop {boolean} filterMenuOpen
+ * @prop {boolean} searchActive
  */
 
 /**
  * @augments React.Component<Props, State>
  */
 
+/**
+ * @template T
+ * @augments React.PureComponent<Props<T>, State>
+ */
 class ManageUserGroups extends React.Component {
-  /** @type {State} */
+  /**
+   * @type {State}
+   */
   state = {
     addGroupFlow: {
       savingGroup: false,
@@ -162,7 +212,41 @@ class ManageUserGroups extends React.Component {
     userGroups: {},
     selectedGroupID: null,
     snackbarMessage: null,
+    currentFilter: undefined,
+    filterMenuOpen: false,
+    searchActive: false,
   }
+  /**
+   * @private
+   * @type {Filter[]}
+   */
+  possibleFilters = []
+
+  /**
+   * A ref for the filter icon button, this ref is used for attaching the filter
+   * pop-over menu to it, (that is, it will appear alongside it when open).
+   * @type {React.RefObject<SVGSVGElement>}
+   */
+  filterIconRef = React.createRef()
+
+  /**
+   * @param {Props<T>} props
+   */
+  constructor(props) {
+    super(props)
+
+    this.refreshPossiblefilters()
+  }
+
+  /**
+   * @param {Props<T>} prevProps
+   */
+  componentDidUpdate(prevProps) {
+    if (prevProps.items !== this.props.items) {
+      this.refreshPossiblefilters()
+    }
+  }
+
   /**
    * @private
    * @param {any} e
@@ -202,6 +286,7 @@ class ManageUserGroups extends React.Component {
       selectedGroupID: id,
     })
   }
+
   /**
    * @private
    **/
@@ -625,8 +710,89 @@ class ManageUserGroups extends React.Component {
     }
   }
 
+  /**
+   * @private
+   * @param {React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>} e
+   */
+  onChangeSearchTerm = e => {
+    const { onChangeSearchTerm } = this.props
+
+    if (onChangeSearchTerm) {
+      onChangeSearchTerm(e.target.value)
+    }
+  }
+
+  /**
+   * @private
+   * @param {string} nextFilter
+   */
+  onFilterChange = nextFilter => {
+    if (nextFilter === '') {
+      this.setState({
+        currentFilter: undefined,
+      })
+    } else {
+      this.setState({
+        currentFilter: nextFilter,
+      })
+    }
+  }
+
+  /**
+   * @private
+   */
+  refreshPossiblefilters() {
+    const { extractFilterable, items } = this.props
+
+    if (extractFilterable) {
+      const filters = items && items.map(extractFilterable)
+      // avoid repeated filters
+      const uniqueFilters = _.uniqBy(filters, 'value')
+
+      this.possibleFilters = uniqueFilters
+    } else {
+      this.possibleFilters = []
+    }
+  }
+
+  /**
+   * @private
+   */
+  toggleFilterMenu = () => {
+    this.setState(({ filterMenuOpen }) => ({
+      filterMenuOpen: !filterMenuOpen,
+    }))
+  }
+
+  /**
+   * @private
+   */
+  toggleSearch = () => {
+    this.setState(({ searchActive }) => ({
+      searchActive: !searchActive,
+    }))
+  }
+
   render() {
-    const { classes } = this.props
+    const {
+      classes,
+      match,
+      history,
+      filterIconRef,
+      filterMenuAnchorEl,
+      filterMenuCurrentStatusValue,
+      numberOfRecords,
+      onChangeSearchValue,
+      onClickDownload,
+      onClickFilterButton,
+      items: unfiltered,
+      extractFilterable,
+      onClickSearch,
+      onCloseFilterMenu,
+      onFilterMenuStatusChange,
+      possibleStatuses,
+      showSearch,
+    } = this.props
 
     const {
       addGroupFlow,
@@ -635,7 +801,17 @@ class ManageUserGroups extends React.Component {
       editGroupFlow,
       userGroups,
       selectedGroupID,
+      currentFilter,
+      filterMenuOpen,
+      searchActive,
     } = this.state
+
+    const items =
+      (currentFilter && extractFilterable
+        ? unfiltered.filter(
+            item => extractFilterable(item).value === currentFilter,
+          )
+        : unfiltered) || []
 
     const validAddGroupFormData =
       addGroupFormData.currentDescErrorMessage === null &&
@@ -647,6 +823,8 @@ class ManageUserGroups extends React.Component {
       typeof selectedGroupID === 'string' && userGroups[selectedGroupID]
 
     const Groups = Object.entries(userGroups)
+
+    console.log(this.props)
 
     return (
       <React.Fragment>
@@ -805,30 +983,34 @@ class ManageUserGroups extends React.Component {
           //component={'ManageUserGroups'}
           titleText={'User Groups'}
         >
-          <Grid
-            //alignContent="center"
-            alignItems="flex-start"
-            container
-            direction="row"
-            justify="flex-end"
-          >
-            <IconButton
-              className={classes.Icon}
-              onClick={this.addGroupFlowToggleDialog}
-              aria-label="Plus"
-            >
-              <Add color="primary" />
-            </IconButton>
-          </Grid>
-
           <List className={classes.list}>
+            <ListToolbar
+              filterIconRef={this.filterIconRef}
+              // @ts-ignore it works
+              filterMenuAnchorEl={this.filterIconRef.current}
+              filterMenuCurrentStatusValue={currentFilter}
+              filterMenuOpen={filterMenuOpen}
+              numberOfRecords={items.length}
+              onChangeSearchValue={this.onChangeSearchTerm}
+              onClickAdd={this.addGroupFlowToggleDialog}
+              onClickDownload={onClickDownload}
+              onClickFilterButton={this.toggleFilterMenu}
+              onClickSearch={this.toggleSearch}
+              onCloseFilterMenu={this.toggleFilterMenu}
+              onFilterMenuStatusChange={this.onFilterChange}
+              possibleStatuses={this.possibleFilters}
+              showSearch={searchActive}
+              className={classes.listToolBar}
+            />
+            <Divider />
             {Groups.map(([id, userGroup]) => (
               <ListItem
-                className={classes.listItem}
                 key={id}
+                className={classes.listItem}
+                component={props => (
+                  <Link to={`${match.url}/${id}`} {...props} />
+                )}
                 onClick={() => {
-                  console.log(id)
-                  console.log(userGroup)
                   this.onClickGroup(id)
                 }}
               >

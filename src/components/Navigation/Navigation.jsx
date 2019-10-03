@@ -138,11 +138,11 @@ class Navigation extends React.Component {
     switch (value) {
       case DASHBOARD:
         this.setState({ value })
-        return <Redirect to="/pinecone/dashboard/test@gmail.com" />
+        return <Redirect to="/dashboard/test@gmail.com" />
 
       case CALENDAR:
         this.setState({ value })
-        return <Redirect to="/pinecone/dashboard/test@gmail.com" />
+        return <Redirect to="/dashboard/test@gmail.com" />
 
       case NOTIFICATIONS:
         this.toggleNotifications()
@@ -257,10 +257,7 @@ class Navigation extends React.Component {
     const renderMenu = (
       <div>
         <div className={classes.toolbar}>
-          <Link
-            to="/pinecone/dashboard/test@gmail.com"
-            className={classes.toolbarLink}
-          >
+          <Link to="/dashboard" className={classes.toolbarLink}>
             <img
               width={25}
               src={Logo}
@@ -285,7 +282,7 @@ class Navigation extends React.Component {
               button
               component={props => (
                 // @ts-ignore
-                <NavLink to={`/pinecone/dashboard/test@gmail.com`} {...props} />
+                <NavLink to={`/dashboard`} {...props} />
               )}
             >
               <ListItemIcon className={classes.iconMenu}>
@@ -304,7 +301,7 @@ class Navigation extends React.Component {
               button
               component={props => (
                 // @ts-ignore
-                <NavLink to={'/admin/test@gmail.com'} {...props} />
+                <NavLink to={'/admin'} {...props} />
               )}
             >
               <ListItemIcon className={classes.iconMenu}>
@@ -338,7 +335,7 @@ class Navigation extends React.Component {
                       <NavLink
                         activeStyle={{ color: 'red' }}
                         exact
-                        to={`/management/empty-node/${node.id}`}
+                        to={`/node/${node.id}`}
                         {...props}
                       />
                     )}

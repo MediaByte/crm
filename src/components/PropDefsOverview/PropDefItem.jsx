@@ -107,7 +107,7 @@ const styles = theme => ({
   },
 
   // @ts-ignore
-  smallIconButton: theme.custom.smallIconButton,
+  smallIconButton: {},
 })
 
 export default withStyles(styles)(PropDefItem)

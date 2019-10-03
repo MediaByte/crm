@@ -1,6 +1,8 @@
-import React from 'react'
+import React, { Component } from 'react'
 //react router
 import { NavLink } from 'react-router-dom'
+
+import PropTypes from 'prop-types'
 
 //material-ui components
 import { withStyles } from '@material-ui/core/styles'
@@ -24,113 +26,72 @@ import Page from 'views/Page/Page'
 
 //styles
 import adminStyles from './adminStyles.js'
+import ManageEmployees from 'views/ManageEmployees/ManageEmployees.jsx'
+import Dashboard from 'views/Dashboard/Dashboard.jsx'
+import { Typography, Divider } from '@material-ui/core'
+import ManageUserGroups from 'views/ManageUserGroups/index.jsx'
+import { Label } from '@material-ui/icons'
 
-class AdminPanel extends React.Component {
-  componentDidMount() {
-    window.scrollTo(0, 0)
-    document.body.scrollTop = 0
-  }
+class AdminPanel extends Component {
   render() {
-    const { classes } = this.props
+    const { classes, match } = this.props
+
     return (
       <Page component={'administration'} titleText={'Administration'}>
-        <div className={classes.AdminContent}>
-            <List>
-              <ListItem
-                component={props => (
-                  <NavLink to={'/management/employees'} {...props} />
-                )}
-                className={classes.listItem}
-              >
-                <Avatar className={classes.UserAvatar}>TS</Avatar>
-                <ListItemText
-                  primary="Tony Stark"
-                  secondary="tony.stark@avenger.org"
-                />
-                <ListItemSecondaryAction>
-                  <IconButton>
-                    <KeyboardArrowRight />
-                  </IconButton>
-                </ListItemSecondaryAction>
-              </ListItem>
-            </List>
-          </div>
-          <div className={classes.SpacingBetweenLists}>
-            <List>
-              <ListItem
-                component={props => (
-                  <NavLink to={'/management/employees'} {...props} />
-                )}
-                className={classes.listItem}
-              >
-                <ListItemIcon>
-                  <PersonAdd />
-                </ListItemIcon>
-                <ListItemText primary="Manage Employees" />
-                <ListItemSecondaryAction>
-                  <IconButton>
-                    <KeyboardArrowRight />
-                  </IconButton>
-                </ListItemSecondaryAction>
-              </ListItem>
-              <ListItem
-                component={props => (
-                  <NavLink to={'/management/user-groups'} {...props} />
-                )}
-                className={classes.listItem}
-              >
-                <ListItemIcon>
-                  <GroupAdd />
-                </ListItemIcon>
-                <ListItemText primary="Manage User Groups" />
-                <ListItemSecondaryAction>
-                  <IconButton>
-                    <KeyboardArrowRight />
-                  </IconButton>
-                </ListItemSecondaryAction>
-              </ListItem>
-              <ListItem
-                component={props => (
-                  <NavLink to={'/management/user-groups'} {...props} />
-                )}
-                className={classes.listItem}
-              >
-                <ListItemIcon>
-                  <InfoOutlined />
-                </ListItemIcon>
-                <ListItemText primary="Agency Details" />
-                <ListItemSecondaryAction>
-                  <IconButton>
-                    <KeyboardArrowRight />
-                  </IconButton>
-                </ListItemSecondaryAction>
-              </ListItem>
-            </List>
-          </div>
-
-          <div className={classes.SpacingBetweenLists}>
-            <List>
-              <ListItem
-                component={props => (
-                  <NavLink to={'/management/nodes-and-props'} {...props} />
-                )}
-                className={classes.listItem}
-              >
-                <ListItemIcon>
-                  <ScatterPlot />
-                </ListItemIcon>
-                <ListItemText primary="Nodes and Properties" />
-                <ListItemSecondaryAction>
-                  <IconButton>
-                    <KeyboardArrowRight />
-                  </IconButton>
-                </ListItemSecondaryAction>
-              </ListItem>
-            </List>
-          </div>
+        <List className={classes.AdminContent}>
+          <ListItem
+            component={props => (
+              <NavLink to={`${match.url}/employees`} {...props} />
+            )}
+            className={classes.listItem}
+          >
+            <ListItemIcon>
+              <PersonAdd />
+            </ListItemIcon>
+            <ListItemText primary="Manage Employees" />
+            <ListItemSecondaryAction>
+              <IconButton>
+                <KeyboardArrowRight />
+              </IconButton>
+            </ListItemSecondaryAction>
+          </ListItem>
+          <ListItem
+            component={props => (
+              <NavLink to={`${match.url}/user-groups`} {...props} />
+            )}
+            className={classes.listItem}
+          >
+            <ListItemIcon>
+              <GroupAdd />
+            </ListItemIcon>
+            <ListItemText primary="Manage User Groups" />
+            <ListItemSecondaryAction>
+              <IconButton>
+                <KeyboardArrowRight />
+              </IconButton>
+            </ListItemSecondaryAction>
+          </ListItem>
+        </List>
+        <List className={classes.SpacingBetweenLists}>
+          <ListItem
+            component={props => (
+              <NavLink to={`${match.url}/nodes-and-props`} {...props} />
+            )}
+            className={classes.listItem}
+          >
+            <ListItemIcon>
+              <ScatterPlot />
+            </ListItemIcon>
+            <ListItemText primary="Nodes and Properties" />
+            <ListItemSecondaryAction>
+              <IconButton>
+                <KeyboardArrowRight />
+              </IconButton>
+            </ListItemSecondaryAction>
+          </ListItem>
+        </List>
       </Page>
     )
   }
 }
-
 export default withStyles(adminStyles)(AdminPanel)

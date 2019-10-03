@@ -67,6 +67,7 @@ const navStyles = theme => ({
   },
   appbarAndContentContainer: {
     display: 'flex',
+    overflow: 'auto',
   },
   appBar: {
     transition: theme.transitions.create(['width', 'margin'], {

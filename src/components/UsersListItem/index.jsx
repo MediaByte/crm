@@ -25,7 +25,7 @@ import getInitialsFromName from './getInitialsFromName'
  * This will probably get passed an id prop in the future
  * @type {React.SFC}
  */
-const ItemNavLink = props => <NavLink to={'/management/employees'} {...props} />
+const ItemNavLink = props => <NavLink to={'/employees'} {...props} />
 
 /**
  * @typedef {object} UsersListItemProps

@@ -21,7 +21,7 @@ class EmptyNode extends Component {
 
   renderUserGroups() {
     return (
-      <div style={{ width: '100%' }}>
+      <div style={{ width: '100%', marginTop: '8px' }}>
         <TitleSubtitleList
           extractID={userGroup => userGroup.id}
           extractFilterable={userGroup => ({

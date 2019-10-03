@@ -92,7 +92,6 @@ class NodeEditor extends React.PureComponent {
             color={isNodeActive ? 'secondary' : 'primary'}
             onClick={isNodeActive ? onClickDeactivate : onClickReactivate}
             style={activationBtnStyle}
-            fullWidth
           >
             {isNodeActive ? <DeleteOutline /> : <RestoreIcon />}
             {isNodeActive ? (

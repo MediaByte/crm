@@ -53,7 +53,7 @@ const styles = theme => ({
   },
   reorderIcon: {
     // @ts-ignore
-    ...theme.custom.smallIconButton,
+    padding: '5px !important',
     transform: 'rotate(90deg)',
   },
   hidden: {
@@ -73,7 +73,9 @@ const styles = theme => ({
   },
 
   // @ts-ignore
-  smallIconButton: theme.custom.smallIconButton,
+  smallIconButton: {
+    padding: '5px !important',
+  },
 })
 
 const UNUSED_PROP_DEFS_SUBHEADER = (

@@ -1,4 +1,5 @@
 import React from 'react'
+import { Route, Link } from 'react-router-dom'
 import {
   Button,
   Drawer,
@@ -104,6 +105,7 @@ class PcDrawer extends React.PureComponent {
       open,
       tabs,
       tabsCurrentValue,
+      match,
     } = this.props
 
     const leftEl = (() => {
@@ -121,8 +123,8 @@ class PcDrawer extends React.PureComponent {
 
       return (
         <IconButton
-          onClick={leftButtonOnClick}
           className={classes.menuButton}
+          onClick={leftButtonOnClick}
           aria-label="Close drawer"
         >
           <ChevronLeft />
