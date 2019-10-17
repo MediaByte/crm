@@ -23,7 +23,7 @@ import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 const theme = createMuiTheme({
   //shadows: ['none'],
   typography: {
-    fontFamily: '"Montserrat", "Helvetica", "Arial", sans-serif',
+    fontFamily: 'Montserrat',
     fontSize: 13,
     h3: {
       fontSize: '0.8rem',
@@ -37,7 +37,7 @@ const theme = createMuiTheme({
       primary: '#333',
     },
     background: {
-      default: '#fafafa',
+      default: '#f0eef5',
     },
   },
 })

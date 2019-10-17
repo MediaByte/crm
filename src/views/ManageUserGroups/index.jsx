@@ -7,12 +7,13 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import IconButton from '@material-ui/core/IconButton'
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
-import { Grid, TextField, Typography, Divider } from '@material-ui/core'
+import { TextField, Typography, Divider } from '@material-ui/core'
 import GroupEditor from 'components/GroupEditor'
 import PcDrawer from 'components/PcDrawer'
+import PermissionsOverview from 'components/PermissionsOverview'
+import Hidden from '@material-ui/core/Hidden'
 
 import * as Utils from 'common/utils'
-import Add from '@material-ui/icons/Add'
 import Dialog from 'components/Dialog'
 import OverlaySpinner from 'components/OverlaySpinner'
 import AddGroupForm from 'components/AddGroupForm'
@@ -36,11 +37,11 @@ import Page from 'views/Page/Page'
 //styles
 import groupStyles from './groupStyles.js'
 import Messages from 'components/Messages/index.jsx'
-import { Switch, Route, Link } from 'react-router-dom'
-import { userGroupsList } from 'state/userGroups/user_data.js'
+import { Link } from 'react-router-dom'
 import ListToolbar from '../../components/ListToolbar'
 
 import _ from 'lodash'
+import { nullableOnChange } from 'app/gun-wrapper/BuiltIn.js'
 
 /**
  * @typedef {import('../../components/ListToolbar').Props} ListToolbarProps
@@ -63,6 +64,7 @@ const GroupDrawerTab = {
 const AVAILABLE_TABS_NAMES = Object.keys(GroupDrawerTab)
 
 const DEACTIVATING_GROUP_EXPLANATION_TEXT =
+  // eslint-disable-next-line no-multi-str
   'Deactivating a node prevents \
 adding new records to it, either by you or other employees. Properties and \
 relationships can still be edited. Please note, due to the nature of the app \
@@ -71,6 +73,7 @@ those who are currently offline will be able to add records to the node until \
 they become online again.'
 
 const REACTIVATING_GROUP_EXPLANATION_TEXT =
+  // eslint-disable-next-line no-multi-str
   'Reactivating a node allows for \
 records to be added to it again, either by you or other employees. Please \
 note, due to the nature of the app (offline first) this change can take some \
@@ -104,6 +107,19 @@ const INITIAL_EDIT_GROUP_FLOW = {
   reactivating: false,
   selectedGroupID: null,
 }
+/** @type {Readonly<EditPermissionFlow>} */
+const INITIAL_EDIT_PERM_FLOW = {
+  editingPermissions: false,
+  currentSettingValue: null,
+  selectedPermissionID: null,
+}
+
+/**
+ * @typedef {object} EditPermissionFlow
+ * @prop {string|null} currentSettingValue
+ * @prop {boolean} editingPermissions
+ * @prop {string|null} selectedPermissionID
+ */
 
 /**
  * @typedef {keyof ReturnType<typeof groupStyles>} Classes
@@ -179,6 +195,7 @@ export {} // stop jsdoc comments from merging
  * @prop {Record<string, UserGroup>} userGroups
  * @prop {number} currentGroupDrawerTab
  * @prop {EditGroupFlow} editGroupFlow
+ * @prop {EditPermissionFlow} editPermissionFlow
  * @prop {string|null} selectedGroupID Non-null when editing a group's property
  * definitions or relationships definitions.
  * @prop {string|null} snackbarMessage
@@ -195,7 +212,7 @@ export {} // stop jsdoc comments from merging
 
 /**
  * @template T
- * @augments React.PureComponent<Props<T>, State>
+ * @augments React.Component<Props<T>, State>
  */
 class ManageUserGroups extends React.Component {
   /**
@@ -209,6 +226,7 @@ class ManageUserGroups extends React.Component {
     addGroupFormData: BLANK_ADD_GROUP_FORM_DATA,
     currentGroupDrawerTab: GroupDrawerTab.Details,
     editGroupFlow: INITIAL_EDIT_GROUP_FLOW,
+    editPermissionFlow: INITIAL_EDIT_PERM_FLOW,
     userGroups: {},
     selectedGroupID: null,
     snackbarMessage: null,
@@ -383,6 +401,19 @@ class ManageUserGroups extends React.Component {
       editGroupFlow: {
         ...INITIAL_EDIT_GROUP_FLOW,
         selectedGroupID: id,
+      },
+    })
+  }
+
+  /**
+   * @private
+   * @param {string} id
+   */
+  editPermFlowOnClickEdit = id => {
+    this.setState({
+      editPermissionFlow: {
+        ...INITIAL_EDIT_PERM_FLOW,
+        selectedPermissionID: id,
       },
     })
   }
@@ -824,7 +855,7 @@ class ManageUserGroups extends React.Component {
 
     const Groups = Object.entries(userGroups)
 
-    console.log(this.props)
+    console.log(groupGroups)
 
     return (
       <React.Fragment>
@@ -973,8 +1004,10 @@ class ManageUserGroups extends React.Component {
                 variant="outlined"
               />
             )}
-            {currentGroupDrawerTab === GroupDrawerTab.Permissions &&
-              'permissions'}
+            {currentGroupDrawerTab === GroupDrawerTab.Permissions && (
+              //!editPermissionFlow.selectedPermissionID && (
+              <PermissionsOverview onClickEdit={this.editPermFlowOnClickEdit} />
+            )}
             {currentGroupDrawerTab === GroupDrawerTab.Members && 'members'}
           </PcDrawer>
         )}
@@ -1030,6 +1063,9 @@ class ManageUserGroups extends React.Component {
                 </ListItemSecondaryAction>
               </ListItem>
             ))}
+            <Hidden smUp>
+              <Divider color="ddd" />
+            </Hidden>
           </List>
         </Page>
       </React.Fragment>

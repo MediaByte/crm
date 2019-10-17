@@ -54,6 +54,7 @@ const styles = theme => ({
   reorderIcon: {
     // @ts-ignore
     padding: '5px !important',
+    paddingRight: '8px',
     transform: 'rotate(90deg)',
   },
   hidden: {
@@ -79,7 +80,7 @@ const styles = theme => ({
 })
 
 const UNUSED_PROP_DEFS_SUBHEADER = (
-  <ListSubheader component="div">Unused Properties</ListSubheader>
+  <ListSubheader component="div">UNUSED PROPERTIES</ListSubheader>
 )
 
 /**

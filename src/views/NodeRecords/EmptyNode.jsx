@@ -17,6 +17,7 @@ import PageColumn from 'views/Page/Page.jsx'
 class EmptyNode extends Component {
   state = {
     nodes: {},
+    addRecord: false,
   }
 
   renderUserGroups() {

@@ -31,29 +31,26 @@ const adminStyles = theme => ({
   },
 
   AdminContent: {
+    backgroundColor: theme.palette.background.paper,
     [theme.breakpoints.down('xs')]: {
       marginTop: theme.spacing.unit * 8,
-      paddingBottom: theme.spacing.unit * 7.5,
+      borderTop: '1px solid #ddd',
+      borderBottom: '1px solid #ddd',
     },
     [theme.breakpoints.up('sm')]: {
       marginTop: theme.spacing.unit * 8,
-      padding: theme.spacing.unit,
-      paddingBottom: theme.spacing.unit * 5,
+      borderRadius: '2.5px',
+      marginRight: theme.spacing.unit * 1.5,
+      marginLeft: theme.spacing.unit * 1.5,
     },
     [theme.breakpoints.up('md')]: {
       marginTop: theme.spacing.unit * 8,
-      padding: theme.spacing.unit,
-      paddingBottom: theme.spacing.unit * 5,
     },
     [theme.breakpoints.up('lg')]: {
-      marginTop: theme.spacing.unit * 7,
-      padding: theme.spacing.unit * 2,
-      paddingBottom: theme.spacing.unit * 5,
+      marginTop: theme.spacing.unit * 8,
     },
     [theme.breakpoints.up('xl')]: {
       marginTop: theme.spacing.unit * 7,
-      padding: theme.spacing.unit * 4,
-      paddingBottom: theme.spacing.unit * 5,
     },
   },
 
@@ -62,7 +59,11 @@ const adminStyles = theme => ({
   },
 
   listItem: {
-    backgroundColor: theme.palette.background.paper,
+    [theme.breakpoints.down('xs')]: {
+      paddingTop: 7,
+      paddingBottom: 7,
+      marginBottom: 1,
+    },
     [theme.breakpoints.down('sm')]: {
       paddingTop: 7,
       paddingBottom: 7,

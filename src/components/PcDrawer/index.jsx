@@ -34,8 +34,8 @@ const styles = theme => ({
       width: '100vw',
     },
     width: '480px',
-    borderLeft: '1px solid #eee',
-    background: '#fafafa',
+    borderLeft: '1px solid #ddd',
+    background: '#f0eef5',
     boxShadow: 'none',
   },
   hidden: {
@@ -105,7 +105,6 @@ class PcDrawer extends React.PureComponent {
       open,
       tabs,
       tabsCurrentValue,
-      match,
     } = this.props
 
     const leftEl = (() => {

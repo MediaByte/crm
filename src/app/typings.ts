@@ -59,6 +59,36 @@ export interface PropertyDefinition {
   required: boolean
 }
 
+export interface PermTypeParam {
+  name: string
+  type: 'string'
+  multiple: boolean
+}
+export interface PermissionName {
+  name: string
+  params: Record<string, PermTypeParam>
+}
+
+export interface PermDefArgument {
+  param: PermTypeParam
+  /**
+   * Look at the param reference, and based on the combination of param.type and
+   * param.multiple, you'll know whether to access value.valueIfboolean or
+   * value.valuesIfMultipleString, etc.
+   */
+  value: FreeValue
+}
+
+export interface Permisssions {
+  arguments: Record<string, PermDefArgument>
+  view: boolean
+  create: boolean
+  edit: boolean
+  remove: boolean
+  merge: boolean
+  PermType: PermissionName
+}
+
 export interface Node {
   active: boolean
   name: string
@@ -71,4 +101,5 @@ export interface UserGroup {
   active: boolean
   description: string
   name: string
+  permDefs: Record<string, Permissions>
 }

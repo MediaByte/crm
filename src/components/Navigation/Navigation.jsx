@@ -65,7 +65,6 @@ const NOTIFICATIONS = 2
  * @prop {(SearchResult[])=} searchResults
  * @prop {(boolean|null|undefined)=} isLoadingSearchResults
  * @prop {string} title
- * @prop {object | null} selectedNode
  */
 
 /**
@@ -79,6 +78,7 @@ const NOTIFICATIONS = 2
  * @prop {string} searchBoxCurrentText
  * @prop {boolean} drawerOpen
  * @prop {boolean} notificationsOpen
+ * @prop {string | null} selectedNodeID
  */
 
 /**
@@ -106,6 +106,7 @@ class Navigation extends React.Component {
       searchBoxCurrentText: '',
       drawerOpen: false,
       notificationsOpen: false,
+      selectedNodeID: null,
     }
   }
 
@@ -118,6 +119,15 @@ class Navigation extends React.Component {
     })
   }
 
+  /**
+   * @private
+   * @param {string} id
+   */
+  onClickNode = id => {
+    this.setState({
+      selectedNodeID: id,
+    })
+  }
   toggleSearch = () => {
     const { searchBoxOpen, sidebarOpen } = this.state
     this.setState({ searchBoxOpen: !searchBoxOpen })
@@ -326,23 +336,23 @@ class Navigation extends React.Component {
 
                 return (
                   <ListItem
+                    button
                     key={node.id}
                     selected={component === 'empty-node'}
                     classes={{ selected: classes.selected }}
-                    button
                     component={props => (
                       // @ts-ignore
-                      <NavLink
-                        activeStyle={{ color: 'red' }}
-                        exact
-                        to={`/node/${node.id}`}
-                        {...props}
-                      />
+                      <NavLink exact to={`/node/${node.id}`} {...props} />
                     )}
+                    onClick={() => {
+                      this.onClickNode(node.id)
+                    }}
                   >
-                    <ListItemIcon className={classes.iconMenu}>
-                      {nodeIcon && <NodeIcon />}
-                    </ListItemIcon>
+                    {NodeIcon && (
+                      <ListItemIcon className={classes.iconMenu}>
+                        <NodeIcon />
+                      </ListItemIcon>
+                    )}
                     <ListItemText
                       disableTypography
                       primary={node.label}

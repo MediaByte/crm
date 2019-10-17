@@ -10,7 +10,6 @@ import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import { withStyles } from '@material-ui/core/styles'
 import CloseIcon from '@material-ui/icons/Close'
-import Hidden from '@material-ui/core/Hidden'
 
 //import Components
 import AddNodeForm from 'components/AddNodeForm'
@@ -173,7 +172,7 @@ const INITIAL_EDIT_NODE_FLOW = {
  * @typedef {object} Props
  * @prop {Record<Classes, string>} classes
  * @prop {(React.ComponentType<import('@material-ui/core/SvgIcon').SvgIconProps>)=} icon
- * @prop {'NodesAndProps'} component
+ * @prop {'user-groups'} component
  * @prop {((item: T) => Filter)=} extractFilterable (Optional) Must be provided
  * for the filter mechanism to work, this function should return an object with
  * `displayValue` and `value` props for each item of the list. `displayValue` is
@@ -287,7 +286,7 @@ export {} // stop jsdoc comments from merging
  * @template T
  * @augments React.Component<Props<T>, State>
  */
-class NodesAndProps extends React.Component {
+class Users extends React.Component {
   /** @type {State} */
   state = {
     addNodeFlow: {
@@ -2322,8 +2321,6 @@ aa    ]8I  "8a,   ,a88  88b,   ,a8"  aa    ]8I  "8a,   ,aa  88          88  88b,
 
     const propDefsForOverview = this.getPropDefsForOverview()
 
-    console.log(nodesNode)
-
     return (
       <React.Fragment>
         <Dialog
@@ -2895,9 +2892,6 @@ a8"    `Y88  88  ""     `Y8  88  a8"     "8a  a8"    `Y88  I8[    ""
                 </ListItem>
               )
             })}
-            <Hidden smUp>
-              <Divider color="ddd" />
-            </Hidden>
           </List>
         </Page>
       </React.Fragment>
@@ -2997,4 +2991,4 @@ const getSettingsForPropDefEditor = propDef =>
 export default withStyles(
   // Cast: no way to pass in generic arguments in JSDOC+Typescript
   /** @type {import('@material-ui/core/styles').StyleRulesCallback<Classes>} */ (nodeStyles),
-)(NodesAndProps)
+)(Users)

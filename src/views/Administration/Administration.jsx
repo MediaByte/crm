@@ -30,7 +30,7 @@ import ManageEmployees from 'views/ManageEmployees/ManageEmployees.jsx'
 import Dashboard from 'views/Dashboard/Dashboard.jsx'
 import { Typography, Divider } from '@material-ui/core'
 import ManageUserGroups from 'views/ManageUserGroups/index.jsx'
-import { Label } from '@material-ui/icons'
+import { Label, BorderBottom } from '@material-ui/icons'
 
 class AdminPanel extends Component {
   render() {
@@ -55,6 +55,7 @@ class AdminPanel extends Component {
               </IconButton>
             </ListItemSecondaryAction>
           </ListItem>
+          <Divider inset />
           <ListItem
             component={props => (
               <NavLink to={`${match.url}/user-groups`} {...props} />
@@ -72,7 +73,7 @@ class AdminPanel extends Component {
             </ListItemSecondaryAction>
           </ListItem>
         </List>
-        <List className={classes.SpacingBetweenLists}>
+        <List className={classes.AdminContent}>
           <ListItem
             component={props => (
               <NavLink to={`${match.url}/nodes-and-props`} {...props} />

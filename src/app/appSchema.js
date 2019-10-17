@@ -232,6 +232,79 @@ const PropDef = {
 /**
  * @type {Schema}
  */
+const PermTypeParam = {
+  [Utils.SCHEMA_NAME]: 'PermTypeParam',
+  /**
+   * An identifiable name for the parameter.
+   */
+  name: {
+    type: 'string',
+    async onChange(_, nextVal) {
+      if (nextVal == null) {
+        return ['value must be specified']
+      }
+
+      return undefined
+    },
+  },
+}
+
+/**
+ * @type {Schema}
+ */
+const PermissionName = {
+  [Utils.SCHEMA_NAME]: 'PermissionName',
+  name: {
+    type: 'string',
+    async onChange(self, nextVal) {
+      const initialization = typeof self.params === 'undefined'
+
+      if (nextVal === null) {
+        return ['cannot be null']
+      }
+
+      if (initialization) {
+        return false
+      }
+
+      return
+    },
+  },
+  params: {
+    type: [PermTypeParam],
+    async onChange(_, __, key) {
+      const initialization = typeof key === 'undefined'
+
+      if (initialization) {
+        return false
+      }
+
+      return ['Cannot change any proptype data after it exists']
+    },
+  },
+}
+
+/**
+ * An argument for a parameter of a prop type, to be found inside prop
+ * definitions.
+ * @type {Schema}
+ */
+const PermDefArgument = {
+  [Utils.SCHEMA_NAME]: 'PermDefArgument',
+  // akin to a named parameter in a function
+  param: {
+    type: PermTypeParam,
+    async onChange() {},
+  },
+  value: {
+    type: { FreeValue },
+    async onChange() {},
+  },
+}
+
+/**
+ * @type {Schema}
+ */
 const RecordProp = {
   [Utils.SCHEMA_NAME]: 'RecordProp',
   /**

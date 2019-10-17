@@ -31,27 +31,24 @@ const groupStyles = theme => ({
   list: {
     [theme.breakpoints.down('xs')]: {
       marginTop: theme.spacing.unit * 3,
-      paddingBottom: theme.spacing.unit * 7.5,
+      marginBottom: theme.spacing.unit * 8,
+      //borderBottom: '1px solid #ddd',
     },
     [theme.breakpoints.up('sm')]: {
-      marginTop: theme.spacing.unit * 3,
-      padding: theme.spacing.unit,
-      paddingBottom: theme.spacing.unit * 5,
+      marginTop: theme.spacing.unit * 8,
+      borderRadius: '2.5px',
+      marginRight: theme.spacing.unit * 1.5,
+      marginLeft: theme.spacing.unit * 1.5,
+      marginBottom: theme.spacing.unit * 4,
     },
     [theme.breakpoints.up('md')]: {
-      marginTop: theme.spacing.unit * 2,
-      padding: theme.spacing.unit,
-      paddingBottom: theme.spacing.unit * 5,
+      marginTop: theme.spacing.unit * 8,
     },
     [theme.breakpoints.up('lg')]: {
-      marginTop: theme.spacing.unit * 2,
-      padding: theme.spacing.unit * 2,
-      paddingBottom: theme.spacing.unit * 5,
+      marginTop: theme.spacing.unit * 8,
     },
     [theme.breakpoints.up('xl')]: {
-      marginTop: theme.spacing.unit,
-      padding: theme.spacing.unit * 4,
-      paddingBottom: theme.spacing.unit * 5,
+      marginTop: theme.spacing.unit * 7,
     },
   },
 
@@ -63,9 +60,9 @@ const groupStyles = theme => ({
       marginBottom: 1,
     },
     [theme.breakpoints.up('md')]: {
-      paddingTop: 8,
-      paddingBottom: 8,
-      marginBottom: 2,
+      paddingTop: 7,
+      paddingBottom: 7,
+      marginBottom: 1,
     },
   },
 

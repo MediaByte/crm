@@ -2,7 +2,6 @@ import React from 'react'
 
 import { SortableHandle } from 'react-sortable-hoc'
 
-import Divider from '@material-ui/core/Divider'
 import Grid from '@material-ui/core/Grid'
 import IconButton from '@material-ui/core/IconButton'
 import Typography from '@material-ui/core/Typography'
@@ -13,6 +12,10 @@ import HistoryIcon from '@material-ui/icons/History'
 import ReorderIcon from '@material-ui/icons/Reorder'
 
 const DragHandle = SortableHandle(ReorderIcon)
+
+/**
+ * @typedef {keyof ReturnType<typeof styles>} ClassKey
+ */
 
 /**
  * @typedef {object} Props
@@ -79,7 +82,6 @@ class PropDefItem extends React.PureComponent {
               {isActive ? <EditOutlinedIcon /> : <HistoryIcon />}
             </IconButton>
           )}
-          <Divider />
         </Grid>
       </div>
     )
@@ -92,14 +94,17 @@ class PropDefItem extends React.PureComponent {
 const styles = theme => ({
   hidden: {
     visibility: 'hidden',
+    color: 'textSecondary',
   },
   item: {
     background: '#FFFFFF',
-    padding: '10px 20px',
+    padding: '3.5px 3.5px',
+    paddingLeft: '10px',
+    marginBottom: 1,
   },
   itemInfo: {
     flex: 1,
-    paddingLeft: '15px',
+    paddingLeft: '25px',
   },
   itemRoot: {
     width: '100%',
@@ -107,7 +112,11 @@ const styles = theme => ({
   },
 
   // @ts-ignore
-  smallIconButton: {},
+  smallIconButton: {
+    color: '#757575',
+  },
 })
 
-export default withStyles(styles)(PropDefItem)
+export default withStyles(
+  /** @type {import('@material-ui/core/styles').StyleRulesCallback<ClassKey>} */ (styles),
+)(PropDefItem)
